@@ -24,7 +24,7 @@ library(stringr)
 ```
 
 ```{r}
-fake_df <- readRDS(here::here('sandbox', 'validation', 'fake.RDS'))
+fake_df <- readRDS(here::here('sandbox', 'student', 'fake.RDS'))
 
 DT::datatable(head(fake_df))
 ```

@@ -1,0 +1,48 @@
+---
+title: "S_14"
+output: html_document
+date: '2022-06-17'
+---
+
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r load libraries}
+library(tidyverse)
+library(datasets)
+library(plotly)
+library(gt)
+library(glue)
+library(stringr)
+library(DT)
+library(purrr)
+library(here)
+library(stringr)
+```
+
+```{r}
+fake_df <- readRDS(here::here('sandbox', 'validation', 'fake.RDS'))
+
+DT::datatable(head(fake_df))
+```
+
+## S_14_missing_birthdate
+
+```{r}
+s_14_test_values <- head(fake_df, 20) %>% 
+  mutate(birth_date = ifelse(as.integer(student_id) %% 2 == 0, NA, birth_date)) 
+```
+
+```{r}
+s_14_missing_birthdate <- s_14_test_values %>% 
+  mutate(s_14_missing_birthdate = is.na(birth_date)) %>% 
+  mutate(s_14_missing_birthdate_activity_date = spbpers_activity_date) %>% 
+  mutate(s_14_missing_birthdate_age = spbpers_activity_date_days_past)
+```
+
+```{r}
+datatable(s_14_missing_birthdate)
+```

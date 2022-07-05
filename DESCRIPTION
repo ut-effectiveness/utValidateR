@@ -1,0 +1,16 @@
+Package: utValidateR
+Title: Validate Data Elements in Warehouse and Reporting Pipelines
+Version: 0.0.0.9000
+Authors@R: c(
+    person("Matt", "Nickodemus", , "mattnickodemus@gmail.com", role = c("aut", "cre")),
+    person("LaVoy", "Canfield", , "brentenlavoy@gmail.com", role = c("aut")),
+    person("Utah Tech University", role = c("cph", "fnd"))
+    )
+Description: A collection of functions used by the Office of Institutional 
+    Effectiveness at Utah Tech University to validate data elements. Used in
+    to validate elements within the warehouse ETL pipeline, or elements in the
+    reporting layer. Used in USHE and IPEDS reporting.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2

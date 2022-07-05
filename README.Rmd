@@ -1,0 +1,40 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# utValidateR <img src="man/figures/README-ut_ie_logo.png" align="right" width="120" />
+
+<!-- badges: start -->
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+<!-- badges: end -->
+
+The goal of utValidateR is to validate elements within the warehouse ETL pipeline, or elements in the reporting layer. The functions in this library are used in USHE and IPEDS reporting. The functions also for the basis for the campus data audits. 
+
+## Installation
+
+You can install the development version of utValidateR from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("dsu-effectiveness/utValidateR")
+```
+
+## Example
+
+This is a basic example which shows you how to solve a common problem:
+
+```{r example}
+#library(utValidateR)
+## basic example code
+```

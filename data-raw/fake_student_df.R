@@ -40,6 +40,20 @@ credits <- as.integer(rnorm(sample_size, mean = 120, sd = 40)) +
   sample(c(rep(NA, 10), c(rep(1, 100)), c(rep(.5, 50)), c(rep(.3, 50))  ),
          sample_size, replace = TRUE)
 
+gpa <- rnorm(sample_size, mean = 3, sd = .5) %>% round(digits = 2) +
+  sample(c(rep(.01, 100), NA), sample_size, replace = TRUE)
+
+college_id_list <- c('NS','GE','HO','CT','HS','CE','NU','HU','FA','MA','HI','SC',
+                     'BU','EF','TE','ED', NA)
+
+college_desc_list <- c('History/Political Science','Coll of Humanities/Soc Sci',
+    '* Natural Sciences','Computer Information Tech','Mathematics','College of Business',
+    'College of the Arts','Nursing','Humanities & Social Sciences','Global & Community Outreach',
+    'General Education','Coll of Sci, Engr & Tech','*Education/Family Studies/PE',
+    'College of Education','Technologies','College of Health Sciences')
+
+level_id_list <- c('CE','00','UG','NC','GR', NA)
+
 ## Data Frames ####
 
 ssn <- tibble(
@@ -102,7 +116,28 @@ major <- tibble(
   student_type_code = sample(student_type_code_list, sample_size, replace = TRUE),
   primary_level_class_id = sample(primary_level_class_id_list, sample_size, replace = TRUE),
   primary_degree_id = sample(primary_degree_id_list, sample_size, replace = TRUE),
-  institutional_cumulative_credits_earned = sample(credits, sample_size, replace = TRUE)
+  institutional_cumulative_credits_earned = sample(credits, sample_size, replace = TRUE),
+  institutional_cumulative_gpa = gpa,
+  full_time_part_time_code = sample(c(rep('P', 4), rep('F', 10), NA), sample_size, replace = TRUE),
+  transfer_cumulative_credits_earned = sample(credits, sample_size, replace = TRUE),
+  secondary_major_cip_code = stringr::str_pad(sample(1:99999, sample_size, replace = TRUE), 5, pad = '0')
+)
+
+test_scores <- tibble(
+  act_composite_score = sample(c(1:36, NA), sample_size, replace = TRUE),
+  act_english_score = sample(c(1:36, NA), sample_size, replace = TRUE),
+  act_math_score = sample(c(1:36, NA), sample_size, replace = TRUE),
+  act_reading_score = sample(c(1:36, NA), sample_size, replace = TRUE),
+  act_science_score = sample(c(1:36, NA), sample_size, replace = TRUE),
+  high_school_graduation_date = sample(seq(as.Date('1990/01/01'), as.Date('2022/01/01'), by="day"), sample_size),
+  is_pell_eligible = sample(c(TRUE, FALSE, NA), sample_size, replace = TRUE),
+  is_pell_awarded = sample(c(TRUE, FALSE, NA), sample_size, replace = TRUE),
+  is_bia = sample(c(TRUE, FALSE), sample_size, replace = TRUE),
+  primary_major_college_id = sample(college_id_list, sample_size, replace = TRUE),
+  primary_major_college_desc = sample(college_desc_list, sample_size, replace = TRUE),
+  secondary_major_college_id = sample(college_id_list, sample_size, replace = TRUE),
+  secondary_major_college_desc = sample(college_desc_list, sample_size, replace = TRUE),
+  level_id = sample(level_id_list, sample_size, replace = TRUE)
 )
 
 

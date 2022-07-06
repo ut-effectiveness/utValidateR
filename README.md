@@ -24,11 +24,14 @@ You can install the development version of utValidateR from
 devtools::install_github("dsu-effectiveness/utValidateR")
 ```
 
-## Example
+## Fake data set
 
-This is a basic example which shows you how to solve a common problem:
+`utValidateR` contains a simulated data set. This data simulates the
+structure of the data pulled from the data warehouse when submitting the
+Student file to USHE. Use this data set to test your validation
+functions. To load the data set, run the following code.
 
 ``` r
-#library(utValidateR)
-## basic example code
+library(utValidateR)
+data("fake_student_df")
 ```

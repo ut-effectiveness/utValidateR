@@ -10,18 +10,29 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r load libraries}
-library(tidyverse)
-library(datasets)
-library(plotly)
-library(gt)
-library(glue)
-library(stringr)
+### Markdown libraries
+
+Here we list all the libraries needed for this markdown document. The functions listed here are not dependent upon these libraries.
+
+```{r}
 library(DT)
 library(purrr)
 library(here)
 library(stringr)
 ```
+
+
+### Function dependent libraries
+
+These libraries should go in the package dependency list. 
+
+```{r function dependent libraries}
+library(dplyr)
+library(rlang)
+```
+
+
+### Fake data sets
 
 ```{r}
 fake_df <- readRDS(here::here('sandbox', 'student', 'fake.RDS'))
@@ -29,20 +40,64 @@ fake_df <- readRDS(here::here('sandbox', 'student', 'fake.RDS'))
 DT::datatable(head(fake_df))
 ```
 
-## S_14_missing_birthdate
-
 ```{r}
 s_14_test_values <- head(fake_df, 20) %>% 
   mutate(birth_date = ifelse(as.integer(student_id) %% 2 == 0, NA, birth_date)) 
+
+DT::datatable(s_14_test_values)
 ```
+
+## S_14_missing_birthdate
+
+We want this function to append three columns to the input data frame. 
+
+- `s_14_status`: This is a boolean indicating is the birth date is present or not.
+- `s_14_activity_date`: This is a date field pulled from spbpers indicating the minimum date birth date was last updated.
+- `s_14_age`: Integer field giving the minimum age of the birth date. 
 
 ```{r}
 s_14_missing_birthdate <- s_14_test_values %>% 
-  mutate(s_14_missing_birthdate = is.na(birth_date)) %>% 
-  mutate(s_14_missing_birthdate_activity_date = spbpers_activity_date) %>% 
-  mutate(s_14_missing_birthdate_age = spbpers_activity_date_days_past)
+  mutate(s_14_status = is.na(birth_date)) %>% 
+  mutate(s_14_activity_date = spbpers_activity_date) %>% 
+  mutate(s_14_age = spbpers_activity_date_days_past) 
 ```
 
 ```{r}
 datatable(s_14_missing_birthdate)
 ```
+
+### The function
+
+I am imagining we are going to have several functions which test for missing elements, so let's just put together a single function to help with all of them.
+
+```{r}
+check_missing_field <- function(input_df, input_field_name, activity_date_name, output_field_name) {
+  
+  # Capture the output field name as a text element so that we can use it in
+  # in the mutate statement as the name of the field.
+  ofn_char <- ensym(output_field_name)
+  
+  ofn <- paste0(ofn_char, '_status')
+  activity_char <- paste0(ofn_char, '_activity_date')
+  
+  output_df <- input_df %>% 
+    mutate( {{ofn}} := is.na( {{input_field_name}} )) %>% 
+    mutate( {{activity_char}} := {{activity_date_name}}   ) 
+  
+  return(output_df)
+  
+}
+```
+
+```{r}
+check_missing_field(s_14_test_values, birth_date, spbpers_activity_date, s_14) %>% View()
+```
+
+
+
+```{r}
+check_missing_field(input_df, birth_date, spbpers_activity_date, s_14)
+```
+
+
+

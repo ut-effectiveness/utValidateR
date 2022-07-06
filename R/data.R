@@ -1,0 +1,20 @@
+#' Fake student file containing 10,000 rows
+#'
+#' A dataset containing a simulated file from the student file submission process
+#' with USHE. This file would be pulled from the data warehouse, and then fed into
+#' the validation and shaping scripts in the utValidateR package.
+#'
+#' @format A data frame with 10,000 rows and 32 variables:
+#' \describe{
+#'   \item{ssn}{simulated social security number}
+#'   \item{first_name}{first name of student}
+#'   \item{last_name}{last name of student}
+#'   \item{middle_name}{middle name of student}
+#'   \item{previous_last_name}{previous last name of student}
+#'   \item{previous_first_name}{previous first name of student}
+#'   \item{previous_middle_name}{previous middle name of student}
+#'   \item{local_address_zip_code}{the students local zip code}
+#'   ...
+#' }
+#' @source The script for creating this data set is in the dev folder
+"fake_student_df"

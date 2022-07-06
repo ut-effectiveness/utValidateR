@@ -29,8 +29,10 @@ devtools::install_github("dsu-effectiveness/utValidateR")
 `utValidateR` contains a simulated data set. This data simulates the
 structure of the data pulled from the data warehouse when submitting the
 Student file to USHE. Use this data set to test your validation
-functions. To load the data set, run the following code.
+functions. The dataset loads automatically when you load the
+`utValidateR` package.
 
 ``` r
-data("fake_student_df")
+library(DT)
+View(head(fake_student_df))
 ```

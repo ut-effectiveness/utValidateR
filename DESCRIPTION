@@ -19,3 +19,7 @@ BugReports: https://github.com/dsu-effectiveness/utValidateR/issues
 Depends: 
     R (>= 2.10)
 LazyData: true
+Imports: 
+    utValidateR (>= 0.0.0.9000)
+Remotes:  
+    dsu-effectiveness/utValidateR

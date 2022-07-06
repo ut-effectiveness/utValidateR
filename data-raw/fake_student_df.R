@@ -54,6 +54,12 @@ college_desc_list <- c('History/Political Science','Coll of Humanities/Soc Sci',
 
 level_id_list <- c('CE','00','UG','NC','GR', NA)
 
+term_id_list <- c(
+  seq(201020, 202220, 100),
+  seq(201040, 202240, 100),
+  NA
+)
+
 ## Data Frames ####
 
 ssn <- tibble(
@@ -137,7 +143,8 @@ test_scores <- tibble(
   primary_major_college_desc = sample(college_desc_list, sample_size, replace = TRUE),
   secondary_major_college_id = sample(college_id_list, sample_size, replace = TRUE),
   secondary_major_college_desc = sample(college_desc_list, sample_size, replace = TRUE),
-  level_id = sample(level_id_list, sample_size, replace = TRUE)
+  level_id = sample(level_id_list, sample_size, replace = TRUE),
+  term_id = sample(term_id_list, sample_size, replace = TRUE)
 )
 
 
@@ -150,7 +157,8 @@ fake_student_df <- bind_cols(
   mailing_address,
   code_stuff,
   demographic,
-  major
+  major,
+  test_scores
 )
 
 ## Create the data frame

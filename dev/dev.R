@@ -5,4 +5,4 @@
 # install.packages("devtools")
 devtools::install_github("dsu-effectiveness/utValidateR")
 
-usethis::use_dev_package("utValidateR")
+usethis::use_dev_package("utValidateR2")

@@ -3,6 +3,6 @@
 
 # Add Dev Package Dependency ####
 # install.packages("devtools")
-devtools::install_github("dsu-effectiveness/utValidateR")
+#devtools::install_github("dsu-effectiveness/utValidateR")
 
-usethis::use_dev_package("utValidateR2")
+usethis::use_dev_package("utValidateR")

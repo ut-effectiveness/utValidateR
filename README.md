@@ -32,6 +32,5 @@ Student file to USHE. Use this data set to test your validation
 functions. To load the data set, run the following code.
 
 ``` r
-library(utValidateR)
 data("fake_student_df")
 ```

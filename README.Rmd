@@ -36,6 +36,5 @@ devtools::install_github("dsu-effectiveness/utValidateR")
 
 
 ```{r fake student data}
-library(utValidateR)
 data("fake_student_df")
 ```

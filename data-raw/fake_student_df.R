@@ -148,9 +148,9 @@ test_scores <- tibble(
 )
 
 activity_dates <- tibble(
-  sgbstdn_activity_date <- sample(seq(as.Date('2018/01/01'), as.Date('2022/01/01'), by="day"), sample_size, replace = TRUE),
-  spriden_activity_date <- sample(seq(as.Date('2018/01/01'), as.Date('2022/01/01'), by="day"), sample_size, replace = TRUE),
-  sabsupl_activity_date <- sample(seq(as.Date('2018/01/01'), as.Date('2022/01/01'), by="day"), sample_size, replace = TRUE)
+  sgbstdn_activity_date = sample(seq(as.Date('2018/01/01'), as.Date('2022/01/01'), by="day"), sample_size, replace = TRUE),
+  spriden_activity_date = sample(seq(as.Date('2018/01/01'), as.Date('2022/01/01'), by="day"), sample_size, replace = TRUE),
+  sabsupl_activity_date = sample(seq(as.Date('2018/01/01'), as.Date('2022/01/01'), by="day"), sample_size, replace = TRUE)
 )
 
 

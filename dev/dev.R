@@ -3,6 +3,14 @@
 
 # Add Dev Package Dependency ####
 # install.packages("devtools")
-#devtools::install_github("dsu-effectiveness/utValidateR")
+devtools::install_github("dsu-effectiveness/utValidateR")
 
 usethis::use_dev_package("utValidateR")
+
+
+
+## Student #####
+# Run this code to create the folder in data-raw that houses the code to generate
+# fake data set.
+usethis::use_data_raw(name = "fake_student_df", open = FALSE)
+

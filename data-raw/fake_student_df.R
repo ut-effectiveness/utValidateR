@@ -147,6 +147,12 @@ test_scores <- tibble(
   term_id = sample(term_id_list, sample_size, replace = TRUE)
 )
 
+activity_dates <- tibble(
+  sgbstdn_activity_date <- sample(seq(as.Date('2018/01/01'), as.Date('2022/01/01'), by="day"), sample_size, replace = TRUE),
+  spriden_activity_date <- sample(seq(as.Date('2018/01/01'), as.Date('2022/01/01'), by="day"), sample_size, replace = TRUE),
+  sabsupl_activity_date <- sample(seq(as.Date('2018/01/01'), as.Date('2022/01/01'), by="day"), sample_size, replace = TRUE)
+)
+
 
 ## Combine all the data frames into one
 
@@ -158,7 +164,8 @@ fake_student_df <- bind_cols(
   code_stuff,
   demographic,
   major,
-  test_scores
+  test_scores,
+  activity_dates
 )
 
 ## Create the data frame

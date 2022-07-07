@@ -35,14 +35,10 @@ library(rlang)
 ### Fake data sets
 
 ```{r}
-fake_df <- readRDS(here::here('sandbox', 'student', 'fake.RDS'))
-
-DT::datatable(head(fake_df))
-```
-
-```{r}
-s_14_test_values <- head(fake_df, 20) %>% 
-  mutate(birth_date = ifelse(as.integer(student_id) %% 2 == 0, NA, birth_date)) 
+data("fake_student_df")
+s_14_test_values <- fake_student_df[21:30,] %>% 
+  mutate(birth_date = NA) %>% 
+  bind_rows(head(fake_student_df, 20))
 
 DT::datatable(s_14_test_values)
 ```
@@ -51,7 +47,7 @@ DT::datatable(s_14_test_values)
 
 We want this function to append three columns to the input data frame. 
 
-- `s_14_status`: This is a boolean indicating is the birth date is present or not.
+- `s_14_status`: This is a boolean indicating if the birth date is present or not.
 - `s_14_activity_date`: This is a date field pulled from spbpers indicating the minimum date birth date was last updated.
 - `s_14_age`: Integer field giving the minimum age of the birth date. 
 

@@ -48,6 +48,7 @@
             LEFT JOIN quad.section_instructor_assignment b
                    ON b.section_id = a.section_id
                   AND b.is_primary_instructor
+         /* Pivot buildings and rooms on crn based on building_room_rank */
             LEFT JOIN quad.section_schedule c
                    ON c.section_id = a.section_id
                   AND c.building_room_rank = '1'
@@ -64,5 +65,5 @@
             LEFT JOIN quad.term h
                    ON h.term_id = a.term_id
                 WHERE a.term_id >= (SELECT term_id FROM quad.term WHERE is_previous_term) -- Previous Term and forward
-                  AND is_enrolled = TRUE -- We may want to exclude this for validating.  If so we will need to exclude transfer courses: is_transfer = FALSE
-                  ORDER BY a.term_id, a.course_number;
+                  AND is_enrolled = TRUE
+                  ORDER BY a.term_id, a.course_number

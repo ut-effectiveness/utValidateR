@@ -84,9 +84,9 @@ s_14_missing_birthdate <- s_14_test_values %>%
 DT::datatable(s_14_missing_birthdate)
 ```
 
-### The function
+### The functions
 
-I am imagining we are going to have several functions which test for missing elements, so let's just put together a single function to help with all of them.
+I am imagining we are going to have several functions which test for missing elements, so let's just put together a single function to help with all of them. We will also need to add `get_age()` to the package.
 
 ```{r}
 check_missing_field <- function(input_df, input_field_name, activity_date_name, output_field_name) {

@@ -13,6 +13,7 @@
                       a.final_grade,
                       b.latest_high_school_code,
                       a.budget_code,
+                      a.attribute_code,
                       a.course_reference_number,
                       a.course_level_id,
                -- TODO Add activity dates here

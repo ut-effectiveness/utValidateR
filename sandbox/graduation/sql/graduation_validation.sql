@@ -41,7 +41,9 @@
                    a.primary_major_desc,
                    a.degree_desc,
             -- TODO: Add activity dates here
-                   a.shrdgmr_activity_date
+                   a.shrdgmr_activity_date,
+                   b.shrtgpa_activity_date,
+                   d.gorsdav_activity_date
               FROM quad.student_degree_program_application a
          LEFT JOIN quad.student_term_level b
                 ON b.student_id = a.student_id

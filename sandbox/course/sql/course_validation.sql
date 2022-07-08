@@ -43,7 +43,12 @@
                       d.meet_end_time AS meet_end_time_2,
                       e.meet_end_time AS meet_end_time_3,
                       f.course_title,
-                      a.course_reference_number
+                      a.course_reference_number,
+                      a.ssbsect_activity_date,
+                      c.ssrmeet_activity_date,
+                      f.scbcrse_activity_date,
+                      b.sirasgn_activity_date,
+                      b.spriden_activity_date
                  FROM quad.student_section a
             LEFT JOIN quad.section_instructor_assignment b
                    ON b.section_id = a.section_id

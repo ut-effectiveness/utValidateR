@@ -19,6 +19,7 @@ library(DT)
 library(purrr)
 library(here)
 library(stringr)
+library(utValidateR)
 ```
 
 
@@ -29,50 +30,64 @@ These libraries should go in the package dependency list.
 ```{r function dependent libraries}
 library(dplyr)
 library(rlang)
+library(lubridate)
 ```
 
 
 ### Fake data sets
 
 ```{r}
-fake_df <- readRDS(here::here('sandbox', 'student', 'fake.RDS'))
-load(here::here("data", "fake_student_df.rda"))
 
-glimpse(fake_df)
-glimpse(fake_student_df)
-
-DT::datatable(head(fake_df))
-```
-
-```{r}
-s_14_test_values <- head(fake_df, 20) %>% 
-  mutate(birth_date = ifelse(as.integer(student_id) %% 2 == 0, NA, birth_date)) 
+data("fake_student_df")
+s_14_test_values <- fake_student_df[21:30,] %>% 
+  mutate(birth_date = NA) %>% 
+  bind_rows(head(fake_student_df, 20))
 
 DT::datatable(s_14_test_values)
 ```
 
 ## S_14_missing_birthdate
 
+### Getting the age of an error
+
+We will use the `lubridate` package to do this.
+
+```{r}
+test_date <- s_14_test_values$spriden_activity_date[1]
+interval(test_date, Sys.Date()) %/% days(x=1)
+```
+
+The test date is `r test_date` and the system date is `r Sys.Date()`. 
+
+```{r}
+get_age <- function(x) {
+  interval(x, Sys.Date()) %/% days(x=1)
+}
+```
+
+
+### Building the function
+
 We want this function to append three columns to the input data frame. 
 
-- `s_14_status`: This is a boolean indicating is the birth date is present or not.
+- `s_14_status`: This is a boolean indicating if the birth date is present or not.
 - `s_14_activity_date`: This is a date field pulled from spbpers indicating the minimum date birth date was last updated.
 - `s_14_age`: Integer field giving the minimum age of the birth date. 
 
 ```{r}
 s_14_missing_birthdate <- s_14_test_values %>% 
   mutate(s_14_status = is.na(birth_date)) %>% 
-  mutate(s_14_activity_date = spbpers_activity_date) %>% 
-  mutate(s_14_age = spbpers_activity_date_days_past) 
+  mutate(s_14_activity_date = spriden_activity_date) %>% 
+  mutate(s_14_error_age = get_age(spriden_activity_date))
 ```
 
 ```{r}
-datatable(s_14_missing_birthdate)
+DT::datatable(s_14_missing_birthdate)
 ```
 
-### The function
+### The functions
 
-I am imagining we are going to have several functions which test for missing elements, so let's just put together a single function to help with all of them.
+I am imagining we are going to have several functions which test for missing elements, so let's just put together a single function to help with all of them. We will also need to add `get_age()` to the package.
 
 ```{r}
 check_missing_field <- function(input_df, input_field_name, activity_date_name, output_field_name) {
@@ -83,10 +98,12 @@ check_missing_field <- function(input_df, input_field_name, activity_date_name, 
   
   ofn <- paste0(ofn_char, '_status')
   activity_char <- paste0(ofn_char, '_activity_date')
+  age_char <- paste0(ofn_char, '_error_age')
   
   output_df <- input_df %>% 
     mutate( {{ofn}} := is.na( {{input_field_name}} )) %>% 
-    mutate( {{activity_char}} := {{activity_date_name}}   ) 
+    mutate( {{activity_char}} := {{activity_date_name}}   ) %>% 
+    mutate( {{age_char}} := get_age( {{activity_date_name}}  )     )
   
   return(output_df)
   
@@ -94,14 +111,10 @@ check_missing_field <- function(input_df, input_field_name, activity_date_name, 
 ```
 
 ```{r}
-check_missing_field(s_14_test_values, birth_date, spbpers_activity_date, s_14) %>% View()
+check_missing_field(s_14_test_values, birth_date, spriden_activity_date, s_14) %>% 
+  DT::datatable()
 ```
 
-
-
-```{r}
-check_missing_field(input_df, birth_date, spbpers_activity_date, s_14)
-```
 
 
 

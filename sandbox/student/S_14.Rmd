@@ -36,6 +36,10 @@ library(rlang)
 
 ```{r}
 fake_df <- readRDS(here::here('sandbox', 'student', 'fake.RDS'))
+load(here::here("data", "fake_student_df.rda"))
+
+glimpse(fake_df)
+glimpse(fake_student_df)
 
 DT::datatable(head(fake_df))
 ```

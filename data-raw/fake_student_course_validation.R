@@ -10,7 +10,7 @@ student_course_validation_pull <- get_data_from_sql_file(
   'none') %>%
   order_cols()
 
-student_course_validation <- student_course_validation_pull %>%
+fake_student_course_validation <- student_course_validation_pull %>%
   select(-sis_system_id, -ssn, -student_id) %>%
   mutate(ssn = ssn(nrow(student_course_validation_pull))[['ssn']]) %>%
   mutate(sis_system_id = fake_id(8, nrow(student_course_validation_pull), TRUE)) %>%
@@ -22,4 +22,4 @@ student_course_validation <- student_course_validation_pull %>%
   stir(section_number) %>%
   order_cols()
 
-#usethis::use_data(fake_student_course_validation, overwrite = TRUE)
+usethis::use_data(fake_student_course_validation, overwrite = TRUE)

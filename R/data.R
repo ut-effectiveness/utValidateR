@@ -1,8 +1,38 @@
-#' Fake student file containing 10,000 rows
+#' Fake student-courses validation file
 #'
-#' A dataset containing a simulated file from the student file submission process
-#' with USHE. This file would be pulled from the data warehouse, and then fed into
-#' the validation and shaping scripts in the utValidateR package.
+#' A dataset containing simulated data for the student-courses validation process
+#' with USHE. This dataset would be pulled from the data warehouse, and then fed into
+#' the validation scripts in the utValidateR package.
+#'
+#' @format A data frame with 9,1570 rows and 18 variables:
+#' \describe{
+#'    \item{attempted_credits}{}
+#'    \item{attribute_code}{}
+#'    \item{budget_code}{}
+#'    \item{contact_hours}{}
+#'    \item{course_level_id}{}
+#'    \item{course_number}{}
+#'    \item{course_reference_number}{}
+#'    \item{earned_credits}{}
+#'    \item{final_grade}{}
+#'    \item{latest_high_school_code}{}
+#'    \item{part_term_weeks}{}
+#'    \item{section_number}{}
+#'    \item{sis_student_id}{}
+#'    \item{sis_system_id}{}
+#'    \item{ssbsect_activity_date}{}
+#'    \item{ssn}{}
+#'    \item{subject_code}{}
+#'    \item{term_id}{}
+#' }
+#' @source The script for creating this data set is in the dev folder
+'fake_student_course_validation'
+
+#' Fake student validation file
+#'
+#' A dataset containing simulated data for the student-courses validation process
+#' with USHE. This dataset would be pulled from the data warehouse, and then fed into
+#' the validation scripts in the utValidateR package.
 #'
 #' @format A data frame with 10,000 rows and 54 variables:
 #' \describe{
@@ -60,7 +90,7 @@
 #'    \item{term_id}{}
 #'    \item{transfer_cumulative_credits_earned}{}
 #'    \item{us_citizenship_code}{}
-#'   ...
+#'
 #' }
 #' @source The script for creating this data set is in the dev folder
 "fake_student_df"

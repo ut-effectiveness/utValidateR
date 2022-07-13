@@ -188,3 +188,66 @@ glimpse(resultdf)
 
 And that's where things currently stand! Obvious next steps include expanding the rule set, refining functions, testing, etc. But before I go too far with this approach I want to see whether this design strategy makes sense and gather any feedback from the team in Utah. 
 
+### Update 7/13
+
+Rather than specifying the rules with anonymous `function()` calls, we can define a function factory (called `check()`) to simplify the syntax and apply quality-control assertions. 
+
+```{r}
+#' @importFrom assertthat assert_that noNA
+assert_no_missing <- function(vec, expr_chr) {
+  msg <- sprintf("Missing values found when evaluating %s", expr_chr)
+  assert_that(noNA(vec), msg = msg)
+}
+
+assert_logical <- function(vec, expr_chr) {
+  msg <- sprintf("Non-logical vector created when evaluating %s", expr_chr)
+  assert_that(is.logical(vec), msg = msg)
+}
+
+assert_length <- function(vec, df, expr_chr) {
+  msg <- sprintf("Wrong-length vector created when evaluating %s", expr_chr)
+  assert_that(length(vec) == nrow(df), msg = msg)
+}
+
+#' importFrom rlang eval_tidy enexpr
+check <- function(expr) {
+  expr <- enexpr(expr)
+  expr_chr <- deparse(expr)
+  outfun <- function(df, ...) {
+    out2 <- eval_tidy(expr, df)
+    
+    assert_no_missing(out2, expr_chr)
+    assert_logical(out2, expr_chr)
+    assert_length(out2, df, expr_chr)
+    
+    out2
+  }
+  outfun
+}
+```
+
+Then the rules can be specified as follows, with the remainder of the workflow the same as above. 
+
+```{r}
+rule_spec <- tribble(
+  ~rule,  ~checker,
+  "S00a", check(!is_duplicated(student_id)),
+  "S00b", check(!is_duplicated(ssn)),
+  "S03a", check(!is.na(student_id) & !is.na(ssn)),
+  "S03b", check(!is.na(ssn)),
+  "S03c", check((us_citizenship_code != 1) | !is.na(ssn)),
+  "S04b", check(str_detect(ssn_regex, ssn)),
+  "S06a", check(!is.na(last_name)),
+  "S06b", check(!has_nonalpha(last_name)),
+  "S06c", check(!is.na(first_name)),
+  "S06d", check(!has_nonalpha(first_name)),
+  "S06e", check(is.na(middle_name) | !has_nonalpha(middle_name)),
+  "S07a", check(is.na(previous_last_name) | !has_nonalpha(previous_last_name)),
+  "S07b", check(is.na(previous_first_name) | !has_nonalpha(previous_first_name)),
+  "S08a", check(!is.na(local_address_zip_code)),
+  "S09a", check(!is.na(us_citizenship_code)),
+  "S10a", check(!is.na(first_admit_country_code))
+)
+```
+
+

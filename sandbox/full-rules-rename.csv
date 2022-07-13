@@ -1,0 +1,1965 @@
+﻿description,type,status,steward,ushe_element,ushe_rule,ushe_file,ushe_field,ushe_notes,ushe_sql,banner,activity_date,edify
+institution id unknown,USHE,Failure,,"S01, C01, G01, SC01, B01, R01","S01a, C01a, G01a, SC01a, B01a, R01b","Student, Course, Graduation, Builldings, Rooms","s_inst, c_inst, g_inst, sc_inst, b_inst, r_inst",G_Inst Unknown,"into #g01a
+from graduation_ext'+@year+'
+where g_inst not in (select distinct i_id from Reference.dbo.inst)
+Order by g_banner_id",,n/a,
+missing instituion,USHE,Failure,,"C01, G01, SC01, R01","G01b, SC01a, R01a","Graduation, Student Course, Rooms","G_INST, sc_inst, r_inst",G_Inst NULL,"into #g01b
+from graduation_ext'+@year+'
+Where (g_inst is null or g_inst = '''')
+Order by g_banner_id",,n/a,
+duplicate student_id's,Database,Failure,,S00,S00a,Student,s_banner_id,Duplicate Records by Banner_ID,"INTO #s00a
+FROM students_'+ @extract +'
+WHERE s_instance = @instance
+and s_inst = @inst
+GROUP BY s_inst, s_banner_id
+HAVING count(s_banner_id)>1
+Order by s_banner_id",banner.spriden_id,spriden_activity_date,student_id
+duplicate ssn,Database,Failure,,S00,S00b,Student,s_id,Duplicate Records by S_ID,"INTO #s00b
+FROM students_'+ @extract +'
+WHERE s_instance = @instance
+and s_inst = @inst
+GROUP BY s_inst, s_id
+HAVING count(s_id)>1
+Order by s_id",banner.spbpers_ssn,spbpers_activity_date,student.ssn
+"missing ushe_academic_year, version_id, season",USHE,Failure,,"S02, SC02, C02","S02a, SC02a, C02","Student, Course","s_year, s_term, s_extract, sc_year, sc_term, sc_extract, c_year, c_term, c_extract",Wrong year/term/extract in submission files,"into #s02a
+from students_'+ @extract +'
+where (s_instance in (
+select distinct concat(s_year,s_term,s_extract)
+from students_'+ @extract +')
+and s_instance != @instance)
+or (s_year IS NULL OR s_term IS NULL OR s_extract is null)
+and s_inst = @inst
+Order by s_banner_id",n/a,n/a,"ushe_academic_year, version_id, season"
+missing student_id or _ssn,Database,Failure,,"S03, G02, SC03","S03a, G02a, SC03","Student, Graduation, Student Course","s_id, g_id, sc_id",Every record should have an s_id for every student,"INTO #s03a
+FROM students_'+ @extract +'
+WHERE (s_id in (''000000000'',''00000000'') or s_id IS NULL
+OR s_id = '''')
+and s_inst = @inst
+Order by s_banner_id","banner.spbpers_ssn, banner.spriden_id",spbpers_activity_date,"student.student_id, student.ssn"
+missing ssn,USHE,Failure,,S03,S03b,Student,s_ssn,"Missing SSN with s_id_flag. If they are non-residents,
+--they should have an institutional id AND s_id_flag should be flagged I","INTO #s03b
+FROM students_'+ @extract +'
+WHERE s_ssn IS NULL AND s_id_flag = ''S''
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.spbpers_ssn,spbpers_activity_date,student.ssn
+missin ssn with citz code of 1,Database,Failure,,S03,S03c,Student,"s_ssn, s_citz_code","Residents Missing SSN. These are the students who are flagged as residents should have SSNs. However, students may decide not to release their SSN if they dont want to, so no SSNs is not entirely uncommon","INTO #s03c
+FROM students_'+ @extract +'
+WHERE s_ssn is null AND s_citz_code = ''1''
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.spbpers_cit_code,spbpers_activity_date,student.us_citizenship_code
+s_id not equal to S or I,USHE,Failure,,S04,S04a,Student,s_id_flag,Every student should have an id_flag,"INTO #s04a
+FROM students_'+ @extract +'
+WHERE s_id_flag not IN (''S'',''I'')
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",,n/a,"student.ssn, student.student_id"
+invalid ssn,Database,Failure,,"S04, G02","S04b, G02c","Student, Graduation","s_id, g_id",check for invalid S_ID,"INTO #s04b
+FROM students_'+ @extract +'
+WHERE s_instance = @instance
+AND s_inst = @inst
+AND s_id_flag = ''s''
+AND (S_ID IN (''078051120'',''111111111'',''123456789'',''219099999'')
+OR (S_ID >= ''987654320'' AND S_ID <= ''987654329'')
+OR S_ID=''999999999''
+OR S_ID LIKE ''000%''
+OR S_ID LIKE ''666%''
+OR S_ID LIKE ''9%''
+OR S_ID LIKE ''%[a-Z]%''
+OR LEN(S_ID) < 9
+OR SUBSTRING(S_ID,4,2) = ''00''
+OR SUBSTRING(S_ID,6,4) = ''0000'')
+ORDER BY S_ID_error, S_ID",banner.spbpers_ssn,spbpers_activity_date,student.ssn
+s_id must match s_banner_id when s_id_flag is S,USHE,Failure,,S04,S04c,Student,s_id,incorrect id_flag,"INTO #s04c
+FROM students_'+ @extract +'
+WHERE (S_id=S_BANNER_ID
+or s_id=(Case when S_BANNER_ID like ''[a-Z]%'' THEN ''0''+CAST(right(S_BANNER_ID,8) as varchar) ELSE S_BANNER_ID END)
+or s_id like ''[a-z]%'')
+AND S_ID_FLAG =''s''
+AND s_instance = @instance
+AND s_inst = @inst
+Order by s_banner_id","banner.spbpers_ssn, banner.spriden_id",n/a,"student.student_id, student.ssn"
+s_id must NOT match s_banner_id when s_id_flag is I,USHE,Failure,,S04,S04d,Student,s_id,"incorrect id_flag. With I flag, s_id should match s_banner_id","INTO #s04d
+FROM students_'+ @extract +'
+WHERE S_ID != S_BANNER_ID
+AND S_ID_FLAG =''I''
+AND s_instance = @instance
+AND s_inst = @inst
+Order by s_banner_id","banner.spbpers_ssn, banner.spriden_id",n/a,"student.student_id, student.ssn"
+invalid previous_id,Database,Failure,,S05,S05a,Student,s_previous_id,Default Previous ID,"INTO #s05a
+FROM students_'+ @extract +'
+WHERE s_previous_id in (''000000000'',''00000000'',''0000000'',''000000'',''00000'',''0000'',''000'',''00'',''0'')
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",,n/a,student.previous_student_id
+missing last name,Database,Failure,,"S06, G03","S06a, G03a","Student, Graduation","s_last, g_last_name",Every student should have a last name,"INTO #s06a
+FROM students_'+ @extract +'
+WHERE s_last is null
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.spriden_last_name,spriden_activity_date,student.last_name
+last name with non-alpha characters,Database,Warning,,"S06, G03","S06b, G03b","Student, Graduation","s_last, g_last_name",S_Last name with Non-Alpha characters,"INTO #s06b
+from students_'+ @extract +'
+where (s_last is not null or s_last <> '''')
+and s_last like ''%[^ -`a-Z]%''
+and s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.spriden_last_name,spriden_activity_date,student.last_name
+missing first name,Database,Failure,,"S06, G04","S06c, G03c","Student, Graduation","s_first, g_first",Every student should have a first name,"INTO #s06c
+FROM students_'+ @extract +'
+WHERE s_first is null
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.spriden_first_name,spriden_activity_date,student.first_name
+first name with non-alpha characters,Database,Warning,,"S06, G05","S06d, G03d","Student, Graduation","s_first, g_first",S_First name with Non-Alpha characters,"INTO #s06d
+from students_'+ @extract +'
+where (s_first is not null or s_first <> '''')
+and s_first like ''%[^ -`a-Z]%''
+and s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.spriden_first_name,spriden_activity_date,student.first_name
+middle name with non-alpha characters,Database,Warning,,"S06, G06","S06e, G03f","Student, Graduation","s_middle, g_middle",S_Middle name with Non-Alpha characters,"into #s06e
+from students_'+ @extract +'
+where (s_middle is not null or s_middle <> '''')
+and s_middle like ''%[^ -`a-Z]%''
+and s_middle not like ''%''''%'' -- this allows an apostrophe to be in the string
+and s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.spriden_mi,spriden_activity_date,student.middle_name
+suffix last name with non-alpha characters,Database,Warning,,S06,S06f,Student,s_suffix,S_Suffix name with Non-Alpha characters,"into #s06f
+from students_'+ @extract +'
+where (s_suffix is not null or s_suffix <> '''')
+and s_suffix like ''%[^ -`a-Z]%''
+and s_suffix not like ''%''''%'' -- this allows an apostrophe to be in the string
+and s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.spbpers_name_suffix,spbpers_activity_date,student.name_suffix
+previous last name with non-alpha characters,Database,Warning,,S07,S07a,Student,s_prev_last,S_Prev_Last name with Non-Alpha characters,"into #s07a
+from students_'+ @extract +'
+where (s_prev_last is not null or s_prev_last <> '''')
+and s_prev_last like ''%[^ -`a-Z]%''
+and s_prev_last not like ''%''''%'' -- this allows an apostrophe to be in the string
+and s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.spriden_last_name,spriden_activity_date,student.previous_last_name
+previous first name with non-alpha characters,Database,Warning,,S07,S07b,Student,s_prev_first,S_Prev_First name with Non-Alpha characters,"into #s07b
+from students_'+ @extract +'
+where (s_prev_first is not null or s_prev_first <> '''')
+and s_prev_first like ''%[^ -`a-Z]%''
+and s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.spriden_first_name,spriden_activity_date,student.previous_first_name
+previous middle name with non-alpha characters,Database,Warning,,S07,S07c,Student,s_prev_middle,S_Prev_Middle name with Non-Alpha characters,"into #s07c
+from students_'+ @extract +'
+where (s_prev_middle is not null or s_prev_middle <> '''')
+and s_prev_middle like ''%[^ -`a-Z]%''
+and s_prev_middle not like ''%''''%'' -- this allows an apostrophe to be in the string
+and s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.spriden_mi,spriden_activity_date,student.previous_middle_name
+previous suffix last name with non-alpha characters,Database,Warning,,"S07, G03","S07d, G03h","Student, Graduation","s_suffix, g_suffix",S_Suffix name with Non-Alpha characters,"into #s07d
+from students_'+ @extract +'
+where (s_prev_suffix is not null or s_prev_suffix <> '''')
+and s_prev_suffix like ''%[^ -`a-Z]%''
+and s_prev_suffix not like ''%''''%'' -- this allows an apostrophe to be in the string
+and s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.spbpers_name_suffix,spbpers_activity_date,student.name_suffix
+missing zip code,Database,Failure,,S08,S08a,Student,s_curr_zip,Every student should have a zip code,"INTO #s08a
+FROM students_'+ @extract +'
+WHERE s_curr_zip is null
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.spraddr_zip,spraddr_activity_date,"student.local_address_zip_code, student.mailing_address_zip_code"
+invalid zip code,Database,Failure,,S08,S08b,Student,s_curr_zip,Invalid zip code,"INTO #s08b
+FROM students_'+ @extract +'
+WHERE (len(s_curr_zip) < 5 or s_curr_zip in (''11111'',''99999'') or s_curr_zip like ''0000%'' or (len(s_curr_zip)> 10))
+and s_curr_zip not in (''00000'',''000000000'',''00000-0000'') --All zeros is allowed
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.spraddr_zip,spraddr_activity_date,"student.local_address_zip_code, student.mailing_address_zip_code"
+missing citizenship code,Database,Failure,,S09,S09a,Student,s_citz_code,Missing citzenship code,"INTO #s09a
+FROM students_'+ @extract +'
+WHERE (s_citz_code not in (select distinct code from reference.dbo.citz_code))
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.spbpers_cit_code,spbpers_activity_date,student.us_citizenship_code
+missing citizenship code (Nonresident Alien mismatch),Database,Failure,,S09,S09b,Student,s_citz_code,Nonresident Alien mismatch,"INTO #s09b
+FROM students_'+ @extract +'
+WHERE ((s_citz_code = ''2'' AND s_ethnic_n is null)
+or (s_citz_code is null AND s_ethnic_n = ''N'')
+or (s_citz_code !=''2'' AND s_ethnic_n = ''N'')
+or (s_citz_code =''2'' AND s_ethnic_n != ''N''))
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.spbpers_cit_code,spbpers_activity_date,student.us_citizenship_code
+missing county code,Database,Failure,,"S10, G04","S10a, G04a","Student, Graduation","s_county_origin, g_county_origin",There should be a county origin for every record,"INTO #s10a
+FROM students_'+ @extract +'
+WHERE (s_county_origin NOT IN (select distinct county_no from reference.dbo.county))
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.sabsupl_cnty_code_admit,sabsupl_activity_date,student.first_admit_county_code
+state code is UT but county code is out of state,Database,Failure,,S11,S11a,Student,"s_state_origin, s_county_origin",Checks where the state is UT but county is out of state,"INTO #s11a
+FROM students_'+ @extract +'
+WHERE s_county_origin IN (''097'',''099'')
+AND s_state_origin=''UT'' AND
+s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id","banner.sabsupl_stat_code_admit, banner.sabsupl_cnty_code_admit",sabsupl_activity_date,"student.first_admit_state_code, student.first_admit_county_code"
+missing birthdates,Database,Failure,,"S12, G05, G08","S12, G05, G08a","Student, Graduation","s_birth_dt, g_birth_dt, g_date",There should be a birth date for every record,"INTO #s12
+FROM students_'+ @extract +'
+WHERE s_birth_dt is null
+and s_reg_status not in (''NM'',''CE'')
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.spbpers_birth_date,spbpers_activity_date,student.birth_date
+invalid birthdate,Database,Failure,,"S12, G05","S12A, G05a","Student, Graduation",s_birth_dt,Checks for invalid birth date year equal to current year or future years,"INTO #s12a
+FROM students_'+ @extract +'
+WHERE left(S_BIRTH_DT,4)>= s_year
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.spbpers_birth_date,spbpers_activity_date,student.birth_date
+invalid birthdate formating of YYYYMMDD,USHE,Failure,,S12,S12B,Student,s_birth_dt,Checks for valid date format YYYYMMDD,"INTO #s12b
+FROM students_'+ @extract +'
+WHERE isdate(S_BIRTH_DT)!=1
+and s_birth_dt <> ''0''
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.spbpers_birth_date,n/a,student.birth_date
+age over 100,Database,Failure,,S12,S12C,Student,s_birth_dt,Birth date older than 100 years,"INTO #s12c
+FROM students_'+ @extract +'
+WHERE left(S_BIRTH_DT,4) <= left(Convert(varchar(8),dateadd(year,-100,getdate()),112),4)
+and s_birth_dt <> ''0''
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.spbpers_birth_date,spbpers_activity_date,student.birth_date
+missing or invalid gender,Database,Failure,,"S13, G06","S13, G06a","Student, Graduation","s_gender, g_gender",Please resolve any missing OR invalid values,"INTO #s13
+FROM students_'+ @extract +'
+WHERE (s_gender not IN (''m'',''f'') OR s_gender is null)
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.spbpers_sex,spbpers_activity_date,student.gender_code
+gender change after census,USHE,Warning,,S13,S13a,Student,s_gender,GENDER CHANGED BASED ON 3RD WEEK DATA,"INTO #s13a
+FROM students_'+ @extract +' a, PRODUCTION.DBO.STUDENTS b
+WHERE a.s_instance = @instance
+AND a.s_inst = @inst
+AND a.s_YEAR = b.s_YEAR
+AND a.S_TERM = b.s_TERM
+AND a.s_inst = b.s_inst
+AND a.S_ID = b.s_ID
+AND a.S_GENDER <> b.s_GENDER
+Order by a.s_banner_id",banner.spbpers_sex,n/a,student.gender_code
+gender change after previous term,USHE,Warning,,S13,S13b,Student,s_gender,Gender change from last instance,"select max(s_inst_cd) as max_term, s_inst, s_banner_id
+into #maxterm
+from PRODUCTION.dbo.students_eh
+group by s_inst, s_banner_id
+
+select a.s_banner_id, a.s_inst, a.s_gender
+into #maxterm2 from
+PRODUCTION.dbo.students_eh a
+inner join
+#maxterm b
+on a.S_BANNER_ID=b.S_BANNER_ID
+and a.s_inst=b.s_inst
+and s_inst_cd=b.max_term
+
+SELECT '''' [S13b Gend Chng from Last Instance], a.s_inst, a.S_ID, a.S_BANNER_ID, b.S_GENDER AS last_GENDER, a.S_GENDER AS current_GENDER
+into #s13b
+FROM students_'+ @extract +' a, #maxterm2 b
+WHERE a.s_inst=@inst
+AND a.s_inst = b.s_inst
+AND a.S_banner_ID = b.s_banner_ID
+AND a.S_GENDER <> b.s_GENDER
+Order by a.s_banner_id",banner.spbpers_sex,n/a,student.gender_code
+invalid ethnicity code (Asian),USHE,Failure,,"S14, G07","S14a, G07a","Student, Graduation","s_ethnic_a, g_ethnic_a",Ethnicity Asian Please resolve any invalid codes.,"INTO #s14a
+FROM students_'+ @extract +'
+WHERE s_ethnic_a != ''A''
+AND s_ethnic_a IS NOT NULL
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",dsc.ipeds_ethnicity,n/a,student.is_asian
+invalid ethnicity code (Black),USHE,Failure,,"S14, G07","S14b, G07b","Student, Graduation","s_ethnic_b, g_ethnic_b",Ethnicity Black Please resolve any invalid codes.,"INTO #s14b
+FROM students_'+ @extract +'
+WHERE s_ethnic_b != ''B''
+AND s_ethnic_b IS NOT NULL
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",dsc.ipeds_ethnicity,n/a,student.is_black
+invalid ethnicity code (Hispanic),USHE,Failure,,"S14, G07","S14h, G07c","Student, Graduation","s_ethnic_h, g_ethnic_h",Ethnicity Hispanic Please resolve any invalid codes,"INTO #s14h
+FROM students_'+ @extract +'
+WHERE s_ethnic_h != ''H''
+AND s_ethnic_h IS NOT NULL
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",dsc.ipeds_ethnicity,n/a,student.is_hispanic_latino_ethnicity
+invalid ethnicity code (American Indian),USHE,Failure,,"S14, G07","S14i, G07d","Student, Graduation","s_ethnic_i, g_ethnic_i",Ethnicity American Indian Please resolve any invalid codes,"INTO #s14i
+FROM students_'+ @extract +'
+WHERE s_ethnic_i != ''I''
+AND s_ethnic_i IS NOT NULL
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",dsc.ipeds_ethnicity,n/a,student.is_american_indian_alaskan
+invalid ethnicity codes,USHE,Failure,,S14,S14m,Student,s_ethnic_ipeds,No multiple ethnicities,"into #s14m
+from REFERENCE..INST
+where I_ID not in (
+select S_INST
+from students_'+ @extract +'
+where s_instance = @instance
+and s_ethnic_ipeds not in (''H'',''A'',''B'',''I'',''P'',''W'',''N'',''U'')
+)
+and I_ID = @inst
+Order by I_ID",dsc.ipeds_ethnicity,n/a,n/a
+invalid ethnicity code (Non-Resident Alien),USHE,Failure,,"S14, G07","S14n, G07g","Student, Graduation","s_ethnic_n, g_ethnic_n",Ethnicity Non-Resident Alien Please resolve any invalid codes,"INTO #s14n
+FROM students_'+ @extract +'
+WHERE s_ethnic_n != ''N''
+AND s_ethnic_n IS NOT NULL
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",dsc.ipeds_ethnicity,n/a,student.is_international
+invalid ethnicity code (Pacific Islander),USHE,Failure,,"S14, G07","S14p, G07e","Student, Graduation","s_ethnic_p, g_ethnic_p",Ethnicity Pacific Islander Please resolve any invalid codes.,"INTO #s14p
+FROM students_'+ @extract +'
+WHERE s_ethnic_p != ''P''
+AND s_ethnic_p IS NOT NULL
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",dsc.ipeds_ethnicity,n/a,student.is_hawaiian_pacific_islander
+invalid ethnicity code (Unspecified),USHE,Failure,,"S14, G07","S14u, G07h","Student, Graduation","s_ethnic_u, g_ethnic_u",Ethnicity Unspecified Please resolve any invalid codes.,"INTO #s14u
+FROM students_'+ @extract +'
+WHERE s_ethnic_u != ''U''
+AND s_ethnic_u IS NOT NULL
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",dsc.ipeds_ethnicity,n/a,student.is_other_race
+Unspecified when already specified with a race/ethnicity,USHE,Failure,,"S14, G07","S14u, G07i","Student, Graduation","s_ethnic_u, g_ethnic_u","Ethnicity Unspecified When already specified. These students are marked ''U'' for unspecified even though
+--they have an ethnicity marked elsewhere in the same record.","SELECT '''' [S14UA FTL Invalid ethnic_u],
+s_inst, s_banner_id, s_last, s_first, s_gender, s_ethnic_u,
+s_ethnic_h, s_ethnic_a, s_ethnic_b, s_ethnic_i, s_ethnic_p, s_ethnic_w, s_ethnic_n
+INTO #s14ua
+FROM students_'+ @extract +'
+WHERE s_ethnic_u = ''U''
+AND (s_ethnic_h IS NOT NULL OR s_ethnic_a IS NOT NULL OR s_ethnic_b IS NOT NULL OR
+s_ethnic_i IS NOT NULL OR s_ethnic_p IS NOT NULL OR s_ethnic_w IS NOT NULL OR s_ethnic_n IS NOT NULL)
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",dsc.ipeds_ethnicity,n/a,student.is_other_race
+invalid ethnicity code (White),USHE,Failure,,"S14, G07","S14w, G07f","Student, Graduation","s_ethnic_w, g_ethnic_w",Ethnicity White Please resolve any invalid codes.,"INTO #s14w
+FROM students_'+ @extract +'
+WHERE s_ethnic_w != ''W''
+AND s_ethnic_w IS NOT NULL
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",dsc.ipeds_ethnicity,n/a,student.is_white
+missing residency,Database,Failure,,S15,S15a,Student,s_regent_res,There should be a residency status for each record.,"INTO #s15
+FROM students_'+ @extract +'
+WHERE (s_regent_res not IN (''R'',''N'',''A'',''M'')
+OR s_regent_res is null)
+AND s_instance = @instance
+and s_inst = @inst
+and s_inst != ''3671''
+Order by s_banner_id",banner.sgbstdn_resd_code,sgbstdn_activity_date,student_term_level.residency_code
+missing cip code,Database,Failure,,"S16, S30, G09","S16a, S37A, S30a, G09b","Student, Graduation","s_curr_cip, g_cip",Declared Major CIP codes There should be a s_curr_cip for each record.,"SELECT '''' [S16A FTL Invalid s_curr_cip],
+s_inst, s_banner_id, s_last, s_first, s_gender, s_curr_cip
+INTO #s16a
+FROM students_'+ @extract +'
+WHERE s_deg_intent != ''0''
+and s_instance = @instance
+and s_inst = @inst
+EXCEPT
+SELECT '''' [S-16A FTL Invalid s_curr_cip],
+s_inst, s_banner_id, s_last, s_first, s_gender, s_curr_cip
+FROM students_'+ @extract +'
+WHERE s_instance = @instance
+and s_inst = @inst
+AND s_curr_cip IN (SELECT distinct cip_code FROM REFERENCE.dbo.cip WHERE cip_code not IN
+('''',''999999'',''000000'') and Inactive <> ''Y'')
+Order by s_banner_id",banner.stvmajr_cipc_code,stvmajr_activity_date,"student_term_level.primary_major_cip_code, student_term_level.secondary_major_cip_code"
+invalid registration status codes,USHE,Failure,,S17,S17a,Student,s_reg_status,Checking for valid registration status values,"SELECT '''' [S17A FTL Invalid Reg Status], s_banner_id, s_inst, s_year, s_term, s_extract, s_reg_status
+INTO #s17a
+FROM students_'+ @extract +'
+WHERE s_reg_status not IN (select distinct code from reference.dbo.reg_status)
+and s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.sgbstdn_styp_code,n/a,student_term_level.student_type_code
+graduate class level coded with an undergraduate student type,Database,Failure,,S17,S17b,Student,s_reg_status,Graduates as entering Undergrads,"INTO #s17b
+FROM students_'+ @extract +'
+WHERE s_reg_status IN (''CS'',''HS'',''FF'',''FH'',''TU'')
+AND s_level IN (''GN'',''GG'')
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_id","banner.sgbstdn_styp_code, class function in banner",sgbstdn_activity_date,"student_term_level.student_type_code, student_term_level.primary_level_class_id"
+first time freshman with prior enrollment record,Database,Failure,,S17,S17b,Student,s_reg_status,Shows students coded as first time students even though they have records in past semesters.,"SELECT distinct '''' [S17C Reg Status FF conflict],
+s_id, s_banner_id, s_inst, s_year ""Previous Year"", s_term ""Previous Term"",
+s_extract ""Previous Extract"", s_reg_status ""Previous Reg Status"", ''FF'' ""Current Reg Status""
+INTO #s17c
+FROM production.dbo.students, production.dbo.student_courses
+WHERE (s_instance != left(@instance,5)+''3'')
+AND s_extract = ''E''
+and (s_term != ''1''
+and left(s_instance,4) <> left(@instance,4))
+AND s_key = sc_s_key
+AND sc_grade != ''w''
+AND s_reg_status NOT IN (''CE'', ''HS'', ''NC'', ''NM'')
+and s_inst = @inst
+AND s_id IN
+(SELECT DISTINCT s_id FROM students_'+ @extract +'
+WHERE s_instance = @instance
+AND s_reg_status = ''FF''
+AND s_inst = @inst)
+ORDER BY s_year, s_term, s_banner_id",banner.sgbstdn_styp_code,sgbstdn_activity_date,student_term_level.student_type_code
+first time freshman out of HS with prior enrollment record,Database,Failure,,S17,S17c,Student,s_reg_status,Shows students coded as first time students out of HS even though they have records in past semesters.,"SELECT distinct '''' [S17D Reg Status FH conflict], s_id,
+s_banner_id, s_inst, s_year ""Previous Year"", s_term as [Previous Term],
+s_extract as [Previous Extract], s_reg_status as [Previous Reg Status], ''FH'' as [Current Reg Status]
+INTO #s17d
+FROM production.dbo.students, production.dbo.student_courses
+WHERE (s_instance != left(@instance,5)+''3'')
+AND s_reg_status not in (''HS'',''NM'',''CE'')
+AND s_extract = ''E''
+and (s_term != ''1''
+and left(s_instance,4) <> left(@instance,4))
+AND s_key = sc_s_key
+and s_inst = @inst
+and s_id = sc_id
+AND sc_grade != ''w''
+AND s_id IN
+(SELECT DISTINCT s_id FROM students_'+ @extract +'
+WHERE s_instance = @instance
+AND s_reg_status = ''FH''
+AND s_inst = @inst)
+ORDER BY s_year, s_term, s_banner_id",banner.sgbstdn_styp_code,sgbstdn_activity_date,student_term_level.student_type_code
+HS students that are over 20 yrs old and under 10,USHE,Warning,,S17,S17e,Student,s_reg_status,"This query shows the age of students who are taking
+classes FROM the institution while still IN high school.","SELECT DISTINCT '''' [S17E HS Stu over 20 under 10], s_banner_id, s_inst, s_year, s_term, s_extract, s_reg_status, s_age, s_birth_dt
+INTO #s17e
+FROM students_'+ @extract +'
+WHERE s_reg_status = ''HS''
+AND (cast(s_age as float)>20 OR cast(s_age as float)<10)
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.sgbstdn_styp_code,n/a,student_term_level.student_type_code
+First Time Freshman that are under 18 yrs old,USHE,Warning,,S17,S17f,Student,s_reg_status,These students --may-- be miscoded. Possibly should be ''FH''.,"INTO #s17f
+FROM students_'+ @extract +'
+WHERE s_reg_status = ''FF'' AND s_age<18
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.sgbstdn_styp_code,n/a,student_term_level.student_type_code
+First Time Freshman out of HS that are over 21,USHE,Warning,,S17,S17g,Student,s_reg_status,First-time Freshmen out of HS over 21. These students --may-- be miscoded.,"SELECT '''' [S17G FH over 21yrs], s_banner_id, s_inst, s_year, s_term, s_extract, s_reg_status, s_age, s_birth_dt, s_high_school, s_hs_grad_date
+INTO #s17g
+FROM students_'+ @extract +'
+WHERE s_reg_status = ''FH'' AND s_age>21
+AND s_high_school not in (''459300'', ''459400'')
+and s_high_school not in (select hs_act_code from reference.dbo.highschools where hs_alternative = ''Y'')
+and s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.sgbstdn_styp_code,n/a,student_term_level.student_type_code
+invalid student type enrolled in concurrent classes,USHE,Failure,,S17,"S17h, S17i",Student,s_reg_status,Traditional students attending concurrent enrollment classes.,"INTO #s17i
+from students_'+ @extract +', courses_'+ @extract +', student_courses_'+ @extract +'
+where s_key = sc_s_key and sc_c_key = c_key
+and c_budget_code in (''bc'',''sf'')
+and s_reg_status != ''HS''
+AND s_instance = @instance
+and s_extract = ''e''
+and s_inst = @inst
+Order by s_banner_id",banner.sgbstdn_styp_code,sgbstdn_activity_date,student_term_level.student_type_code
+student type change after census,USHE,Warning,,S17,S17j,Student,s_reg_status,REGISTRATION STATUS CHANGED BASED ON 3RD WEEK DATA,"INTO #s17j
+FROM students_'+ @extract +' a, PRODUCTION.DBO.STUDENTS b
+WHERE a.s_instance = @instance
+AND a.s_inst = @inst
+AND a.s_YEAR = b.s_YEAR
+AND a.S_TERM = b.s_TERM
+AND a.s_inst = b.s_inst
+AND a.S_ID = b.s_ID
+AND a.S_REG_STATUS <> b.s_REG_STATUS
+Order by a.s_banner_id",banner.sgbstdn_styp_code,n/a,student_term_level.student_type_code
+First Time Freshman in HS under 16,USHE,Warning,,S17,S17k,Student,s_reg_status,First-time Student under 16.,"INTO #s17k
+FROM students_'+ @extract +'
+WHERE s_reg_status = ''FH'' AND s_age<16
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.sgbstdn_styp_code,n/a,student_term_level.student_type_code
+missing class level,Database,Failure,,S18,S18a,Student,s_level,There should be a valid level for each student.,"INTO #s18a
+FROM students_'+ @extract +'
+WHERE s_level not IN (select distinct code from reference.dbo.S_LEVEL where Inactive <> ''Y'')
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",class function in banner,n/a,student_term_level.primary_level_class_id
+UG student types cannot be graduate class levels,Database,Failure,,S18,S18b,Student,s_level,"Class Level vs. Registration Status a student registered as Undgergrad cannot be grad class level
+--or a student registered as grad connot be an undergrad class level","INTO #s18b
+FROM students_'+ @extract +'
+WHERE s_instance = @instance
+AND s_inst = @inst
+AND (
+(S_REG_STATUS in (''hs'',''fh'',''ff'',''tu'',''cs'',''rs'') AND s_level in (''gn'',''gg''))
+OR (S_REG_STATUS in (''NG'',''TG'',''CG'',''RG'') AND s_level in (''fr'',''so'',''jr'',''sr'',''ug''))
+)",class function in banner,n/a,student_term_level.primary_level_class_id
+GR student types cannot be undergraduate class levels,Database,Failure,,S18,S18b,Student,s_level,"Class Level vs. Registration Status a student registered as Undgergrad cannot be grad class level
+--or a student registered as grad connot be an undergrad class level","INSERT INTO #s18b
+SELECT '''' [S18B FTL Level and reg_status conflict],
+s_inst, s_banner_id, s_last, s_first, s_gender, s_reg_status, s_level
+FROM students_'+ @extract +'
+WHERE s_instance = @instance
+AND s_inst = @inst
+AND S_REG_STATUS in (''NG'',''TG'',''CG'',''RG'')
+AND s_level in (''fr'',''so'',''jr'',''sr'',''ug'')
+Order by s_banner_id",class function in banner,n/a,student_term_level.primary_level_class_id
+missing degree id,Database,Failure,,"S19, G17","S19a, G17a",Student,"s_deg_intent, g_ipeds",There should be a degree intent for each student.,"INTO #s19a
+FROM students_'+ @extract +'
+WHERE s_deg_intent NOT IN (Select ipeds_code from Reference.dbo.IPEDS_Awards where Inactive = ''N'')
+and (s_deg_intent <> ''0'' or s_deg_intent is null)
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.sgbstdn_degc_code_1,sgbstdn_activity_date,student_term_level.primary_degree_id
+invalid credit format,Database,Failure,,"S20, 24, G12, G13, G14, G15, G22, G23, SC07, SC08, SC09, SC11, C08","S20a, 24a, G12a, G13a, G14a, G15a, G22a, G23a, SC07a, SC08a, SC09a, SC11a, C08a","Student, Course, Graudation, Courses","s_cum_hrs_ugrad, s_trans_total, g_trans_total, g_grad_hrs, g_hrs_other, g_remedial_hrs, g_we_earned_contact_hrs, g_we_program_hrs, sc_att_cr, sc_earned_cr, sc_contact_hrs, sc_membership_hrs, c_contact_hrs",S_CUM_HRS_UGrad wrong format,"Into #s20a
+From students_'+ @extract +'
+Where (cast(s_cum_hrs_ugrad as float) In (''00000'', ''0000'',''000'',''00'')
+or cast(s_cum_hrs_ugrad as float) = ''''
+or len(s_cum_hrs_ugrad) > ''6''
+or cast(s_cum_hrs_ugrad as float) > ''9999.9''
+or cast(s_cum_hrs_ugrad as float) < ''0''
+or s_cum_hrs_ugrad like ''%[^.0-9]%'' )
+and s_cum_hrs_ugrad <> ''0''
+and s_cum_hrs_ugrad <> ''0.0''
+and s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),shrlgpa_activity_date,"student_term_level.institutional_cumulative_credits_earned, student_term_level.transfer_cumulative_credits_earned"
+missing institutional cumulative gpa,Database,Failure,,S21,S21,Student,s_cum_gpa_ugrad,,"SELECT ''''[S21 s_cum_gpa_ugrad student count], s_inst, cast(left(s_cum_gpa_ugrad,1) as varchar) as ugrad_gpa, count(*) student_count
+INTO #s21
+FROM students_'+ @extract +'
+WHERE s_instance = @instance
+and s_inst = @inst
+and left(s_cum_gpa_ugrad,1) <> ''0''
+GROUP by s_inst, left(s_cum_gpa_ugrad,1)
+ORDER by left(s_cum_gpa_ugrad,1)
+
+INSERT INTO #s21
+SELECT ''''[S21 s_cum_gpa_ugrad student count], s_inst, ''Less than 1'' as ugrad_gpa, count(*) student_count
+FROM students_'+ @extract +'
+WHERE s_instance = @instance
+AND s_inst = @inst
+AND s_cum_gpa_ugrad != ''0''
+and (left(s_cum_gpa_ugrad,1) = ''0'' or left(s_cum_gpa_ugrad,1) = ''.'')
+GROUP by s_inst",banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa),shrlgpa_activity_date,"student_term_level.institutional_cumulative_gpa, student_term_level.level_id"
+invalid institutional cumulative gpa format,Database,Failure,,"S21, S22, S23, S43, G11","S21a, S22a, S23c, S43b, G11a","Student, Graduation","s_cum_gpa_ugrad, s_cum_hrs_grad, g_gpa",S_CUM_GPA_UGRAD wrong format,"Into #s21a
+From students_'+ @extract +'
+Where (cast(s_cum_gpa_ugrad as float) In (''0000'',''000'',''00'')
+or cast(s_cum_gpa_ugrad as float) = ''''
+or len(s_cum_gpa_ugrad) > ''5''
+or cast(s_cum_gpa_ugrad as float) > ''4.000''
+or cast(s_cum_gpa_ugrad as float) < ''0''
+or s_cum_gpa_ugrad like ''%[^.0-9]%'' )
+and cast(s_cum_gpa_ugrad as float) <> ''0''
+and s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa),shrlgpa_activity_date,"student_term_level.institutional_cumulative_gpa, student_term_level.level_id, student_term_level.institutional_gpa"
+missing GPA at end of term,Database,Failure,,"S21, S22, 23","S21b, S22b, 23d",Student,"s_cum_gpa_ugrad, s_cum_hrs_grad",UGrads without UGrad GPA,"Into #s21b
+From students_'+ @extract +' s
+join student_courses_'+ @extract +' sc on (s.s_banner_id = sc.sc_banner_id and s.s_extract = sc.sc_extract and s.s_instance = sc.sc_instance)
+WHERE s_level not IN (''GN'',''GG'')
+and (s_cum_gpa_ugrad = ''0'' or s_cum_gpa_ugrad = '''' or s_cum_gpa_ugrad is null)
+and sc_grade not in (''CR'',''NG'',''P'',''SP'')
+and cast(sc_earned_cr as float) > ''0''
+and cast(s_cum_hrs_ugrad as float) > ''0''
+and cast(sc_att_cr as float) > ''0''
+and s_extract = ''e''
+and s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa),shrlgpa_activity_date,"student_term_level.institutional_cumulative_gpa, student_term_level.level_id"
+UG students have hours and gpa in GR hours or GPA,USHE,Failure,,S23,S23a,Student,s_cum_gpa_ugrad,"Checking if undergraduate students have any hours OR gpa IN
+graduate hours OR gpa.","SELECT '''' [S23A Undergrads w Grad GPA],
+s_inst, s_banner_id, s_last, s_first, s_gender,
+s_cum_gpa_ugrad as [UGRAD GPA],
+s_cum_hrs_ugrad as [UGRAD HRS], s_cum_gpa_grad as [GRAD GPA],
+s_cum_hrs_grad as [GRAD HRS], s_level
+INTO #s23a
+FROM students_'+ @extract +'
+WHERE s_level not IN (''GN'',''GG'')
+AND cast(s_cum_gpa_grad as float) > 0
+AND s_inst != ''3677''
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa),n/a,"student_term_level.institutional_cumulative_gpa, student_term_level.level_id"
+missing part-time/full-time status,Database,Failure,,S25,S25a,Student,s_pt_ft,Part-time/Full-time Should be a value for each student.,"INTO #s25a
+FROM students_'+ @extract +'
+WHERE (s_pt_ft NOT IN (''p'',''f'') or s_pt_ft is null)
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",sum(banner.sfrstcr_credit_hr),n/a,student_term_level.full_time_part_time_code
+invalid age format,USHE,Failure,,S26,S26a,Student,s_age,wrong format,"Into #s26a
+From students_'+ @extract +'
+Where (cast(s_age as float) In (''000'',''00'')
+or cast(s_age as float) = ''''
+or len(s_age) > ''3''
+or cast(s_age as float) > ''125''
+or cast(s_age as float) < ''0''
+or s_age like ''%[^.0-9]%'' )
+and s_age <> ''0''
+and s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.spbpers_birth_date,n/a,student.birth_date
+age and birthdate do not align,Database,Failure,,S26,S26b,Student,s_age,Checking s_age vs calculated age by birthdate. Plus or Minus 1 year buffer.,"SELECT '''' [S26B FTL s_age vs calc birth_dt age],
+s_inst, s_banner_id, s_last, s_first, s_gender, S_BIRTH_DT, s_age,
+CASE when S_TERM in (''1'',''2'') THEN (S_year-1)-left(S_BIRTH_DT,4) ELSE S_year-left(S_BIRTH_DT,4) END as Calculated_Age
+INTO #s26b
+FROM students_'+ @extract +'
+WHERE s_instance = @instance
+and s_inst = @inst
+and S_BIRTH_DT is not null
+Order by s_banner_id
+
+Delete from #s26b where cast(s_age as float) in (Calculated_Age, Calculated_Age-1, Calculated_Age+1)
+
+IF EXISTS (select * from #s26b) (select * into s26b from #s26b) drop table #s26b",banner.spbpers_birth_date,spbpers_activity_date,student.birth_date
+US state codes do not align with country code,Database,Failure,,S27,S27a,Student,"s_state_origin, s_country_origin","Country origin codes WHERE there is a state code within US, but the country is not ''US''.","INTO #s27b
+FROM students_'+ @extract +'
+WHERE (s_county_origin=''097''
+or s_state_origin=''XX'')
+AND s_country_origin=''US''
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.sabsupl_natn_code_admit,sabsupl_activity_date,first_admit_country_iso_code to quad.student
+State and county do not align with country code (US),Database,Failure,,S27,S27b,Student,"s_state_origin, s_county_origin","state AND county code point outside of US, but the country code is ''US''","INTO #s27b
+FROM students_'+ @extract +'
+WHERE (s_county_origin=''097''
+or s_state_origin=''XX'')
+AND s_country_origin=''US''
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.sabsupl_natn_code_admit,sabsupl_activity_date,first_admit_country_iso_code to quad.student
+country code not found on ISO list,Database,Failure,,S27,S27c,Student,s_country_code,Country codes. Where there is a country code not in the ISO list.,"INTO #s27c
+FROM students_'+ @extract +'
+WHERE s_instance = @instance
+and s_inst = @inst
+EXCEPT
+SELECT '''' [S27C FTL Country not in ISO list], s_inst, s_banner_id,
+s_last, s_first, s_gender, s_county_origin, s_state_origin, s_country_origin
+FROM students_'+ @extract +'
+WHERE s_country_origin IN (SELECT ISO_code FROM REFERENCE.dbo.country_2018_forward)
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.sabsupl_natn_code_admit,sabsupl_activity_date,first_admit_country_iso_code to quad.student
+invalid UT high school code,Database,Failure,,S28,S28a,Student,s_high_school,"Should be a valid high school code for each student.
+--We are mainly concerned with zeroes AND invalid 45 series high schools. Anything not 45
+--comes FROM out of state unless it is invalid","INTO #s28a
+FROM students_'+ @extract +'
+WHERE s_high_school NOT IN (SELECT distinct hs_act_code FROM reference.dbo.highschools)
+AND s_state_origin = ''UT''
+and s_high_school <> ''888888''
+and s_reg_status in (''CS'',''FF'',''FH'',''HS'',''RS'')
+AND s_instance = @instance
+and s_inst = @inst
+and s_inst <> ''63''
+Order by s_banner_id",banner.sorhsch_sgbi_code,sorhsch_activity_date,
+invalid HB75 waiver code,USHE,Failure,,S29,S29a,Student,s_hb75_waiver,Checking for valid HB75 Waiver codes. Should be less than OR equal to 100.,"INTO #s29a
+FROM students_'+ @extract +'
+WHERE S_HB75_WAIVER > 100
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id","banner.rpratrm, sfrrgfe",n/a,student_term_level.house_bill_75_waiver
+invalid HB75 waiver format,USHE,Failure,,S29,S29b,Student,s_hb75_waiver,Checking for valid HB75 Waiver codes format,"Into #s29b
+From students_'+ @extract +'
+Where (cast(s_hb75_waiver as float) In (''000'',''00'')
+or cast(s_hb75_waiver as float) = ''''
+or len(s_hb75_waiver) > ''3''
+or cast(s_hb75_waiver as float) > ''100''
+or cast(s_hb75_waiver as float) < ''0''
+or s_hb75_waiver like ''%[^.0-9]%'' )
+and s_hb75_waiver <> ''0''
+and s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id","banner.rpratrm, sfrrgfe",n/a,student_term_level.house_bill_75_waiver
+missing cip code,Database,Failure,,S30,S30a,Student,s_curr_cip2,Declared Major CIP codes There should be a s_curr_cip2 for each record.,"INTO #s30a
+FROM students_'+ @extract +'
+WHERE s_instance = @instance AND s_curr_cip2 IS NOT NULL
+and s_inst = @inst
+EXCEPT
+SELECT '''' [S30A FTL S_Curr_Cip2 Invalid],
+s_inst, s_banner_id, s_last, s_first, s_curr_cip2
+FROM students_'+ @extract +'
+WHERE s_instance = @instance
+and s_inst = @inst
+AND s_curr_cip2 IN (SELECT distinct cip_code FROM REFERENCE.dbo.cip WHERE cip_code not IN
+('''',''999999'',''000000'') and Inactive <> ''Y'')
+Order by s_banner_id",banner.stvmajr_cipc_code,stvmajr_activity_date,student_term_level.secondary_major_cip_code
+Membership hours should be 0,USHE,Failure,,S31,S31a,Student,s_cum_membership,The institutions in this query should not have membership hours.,"INTO #s31a
+FROM students_'+ @extract +'
+WHERE s_instance = @instance
+and s_inst = @inst
+AND s_inst not IN (''5220'',''5221'',''3679'',''3676'',''63'')
+AND cast(s_cum_membership as float) != 0
+Order by s_banner_id",n/a,n/a,n/a
+invalid CLEP wrong format,Database,Failure,,S32,S32a,Student,s_total_clep,S_Total_CLEP wrong format,"Into #s32a
+From students_'+ @extract +'
+Where (cast(s_total_clep as float) In (''00000'',''0000'',''000'',''00'')
+or cast(s_total_clep as float) = ''''
+or len(s_total_clep) > ''6''
+or cast(s_total_clep as float) > ''9999.9''
+or cast(s_total_clep as float) < ''0''
+or s_total_clep like ''%[^.0-9]%'' )
+and s_total_clep <> ''0''
+and s_total_clep <> ''0.0''
+and s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",shrtgpa_hours_earned,shrtgpa_activity_date,student_term_level. transfer_cumulative_clep_earned
+invalid AP wrong format,Database,Failure,,S33,S33a,Student,s_total_ap,S_Total_AP wrong format,"Into #s33a
+From students_'+ @extract +'
+Where (cast(s_total_ap as float) In (''00000'',''0000'',''000'',''00'')
+or cast(s_total_ap as float) = ''''
+or len(s_total_ap) > ''6''
+or cast(s_total_ap as float) > ''9999.9''
+or cast(s_total_ap as float) < ''0''
+or s_total_ap like ''%[^.0-9]%'' )
+and s_total_ap <> ''0''
+and s_total_ap <> ''0.0''
+and s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",shrtgpa_hours_earned,shrtgpa_activity_date,student_term_level. transfer_cumulative_ap_earned
+invalid ssid,Database,Failure,,"S34, G20","S34a, G20a","Student, Graduation","s_ssid, g_ssid",S_SSID is invalid,"Into #s34a
+FROM students_'+ @extract +'
+Where (len(s_ssid) > ''7''
+or len(s_ssid) < ''7''
+or substring(s_ssid,1,1) not in (''1'',''2'')
+or s_ssid = '''')
+and s_ssid is not null
+and s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",goradid_additional_id,goradid_activity_date,student.ssid
+ssid does not align with student type and state code,Database,Failure,,S34,S34b,Student,s_ssid,Bad SSID for Reg Status of HS and State of UT,"Into #s34b
+FROM students_'+ @extract +'
+Where s_reg_status = ''HS''
+and s_state_origin = ''UT''
+and (len(s_ssid) <> ''7'' or left(s_ssid,1) not in (''1'', ''2''))
+and s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id","goradid_additional_id, banner.sabsupl_stat_code_admit, banner.sgbstdn_styp_code",goradid_activity_date,"student.ssid, student.first_admit_state_code, student_term_level.student_type_code"
+missing ssid for Utah HS students,Database,Failure,,S34,S34c,Student,s_ssid,NULL SSID for HS Count,"into #s34c
+FROM students_'+ @extract +' s
+join student_courses_'+ @extract +' sc on (s.s_banner_id = sc.sc_banner_id)
+Where s_ssid is NULL
+and s_reg_status = ''HS''
+and s_state_origin = ''UT''
+and s_instance = @instance
+AND s_inst = @inst
+GROUP BY s_ssid, sc_student_type
+Order by s_ssid","goradid_additional_id, banner.sabsupl_stat_code_admit, banner.sgbstdn_styp_code",goradid_activity_date,"student.ssid, student.first_admit_state_code, student_term_level.student_type_code"
+missing ssid for concurrent students,Database,Failure,,S34,S34d,Student,s_ssid,NULL SSID for CE Students,"into #s34d
+FROM students_'+ @extract +' s
+join student_courses_'+ @extract +' sc on (s.s_banner_id = sc.sc_banner_id)
+join courses_'+ @extract +' c on (sc.sc_c_key = c.c_key)
+Where s_ssid is NULL
+and c.c_budget_code in (''BC'',''SF'')
+and s_instance = @instance
+AND s_inst = @inst
+Order by s_banner_id","goradid_additional_id, banner.sabsupl_stat_code_admit, banner.sgbstdn_styp_code",goradid_activity_date,"student.ssid, student_section.budget_code"
+missing ssid for first time freshman and highschool students,Database,Warning,,S34,S34e,Student,s_ssid,"Please provide as many SSIDs as possible. Our hope is for every freshmen
+--AND high school student FROM Utah to have an SSID.","SELECT '''' [S34E FF-FH-HS SSID count], COUNT(s_ssid) as [Number of SSIDs],
+COUNT(*) as [Total FF-FH-HS Students]
+INTO #s34e
+FROM students_'+ @extract +'
+WHERE s_reg_status IN (''FF'',''FH'',''HS'')
+and s_instance = @instance
+and s_inst = @inst","goradid_additional_id, banner.sgbstdn_styp_code",goradid_activity_date,"student.ssid, student_term_level.student_type_code"
+invalid student id,Database,Failure,,"S35, G21, SC13","S35a, G21a, SC13a","Student, Graduation, Student Course","s_banner_id, g_banner_id, sc_banner_id",There should be a valid institutionally assigned ID for all records.,"INTO #s35a
+FROM students_'+ @extract +'
+WHERE (s_banner_id is null
+OR s_banner_id = ''''
+OR LEN(s_banner_id) != 9)
+AND s_instance = @instance
+and s_inst in (Select distinct I_ID From Reference.dbo.Inst)
+and s_inst = @inst
+Order by s_banner_id",banner.spriden_id,spriden_activity_date,student_term_level.student_id
+invalid student id,Database,Failure,,"S35, G21, SC13","S35b, G21b, SC13b","Student, Graduation, Student Course","s_banner_id, g_banner_id, sc_banner_id",Changed to look for Alpha Characters at the start of the banner id,"INTO #s35b
+FROM students_'+ @extract +'
+WHERE s_banner_id not like ''[a-Z]%''
+AND s_instance = @instance
+and s_inst in (Select distinct I_ID From Reference.dbo.Inst)
+and s_inst = @inst
+Order by s_banner_id",banner.spriden_id,spriden_activity_date,student_term_level.student_id
+invalid alpha in student id,USHE,Failure,,"S35, G21, SC13","S35c, G21c, SC13c","Student, Graduation, Student Course","s_banner_id, g_banner_id, sc_banner_id",Wrong Alpha in Banner IDs. There should be a valid institutionally assigned ID for all records.,"INTO #s35c
+FROM students_'+ @extract +'
+WHERE s_inst in (Select distinct I_ID From Reference.dbo.Inst)
+and left(s_banner_id,1) not in (Select distinct I_Banner From Reference.dbo.Inst where i_id = @inst and Inactive <> ''Y'')
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.spriden_id,n/a,student_term_level.student_id
+invalid act test score format,Database,Failure,,"S36, S38, 38, 39, 40, 41","S36a, S38a, S39a, S40a, S41a",Student,"s_act, s_act_eng, s_act_math, s_act_read, s_act_sci",S_ACT wrong format,"Into #s36a
+From students_'+ @extract +'
+Where (cast(s_act as float) = ''''
+or len(s_act) > ''2''
+or cast(s_act as float) > ''36''
+or cast(s_act as float) < ''0''
+or s_act like ''%[^.0-9]%''
+or cast(s_act as float) in (''00'', ''0''))
+and s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.sortest_test_score,sortest_activity_date,"student.act_composite_score, student.act_english_score, student.act_math_score, student.act_read_score, student.act_science_score"
+missing HS graduation date,Database,Failure,,S42,S42a,Student,s_hs_grad_date,High School Grad Date required where s_reg_status = FH,"INTO #s42a
+FROM students_'+ @extract +'
+WHERE (len(S_HS_GRAD_DATE) != 8
+OR s_hs_grad_date is null
+or isdate(s_hs_grad_date)!=1)
+and s_reg_status = ''FH''
+AND s_state_origin = ''UT''
+AND s_instance = @instance
+AND s_inst = @inst
+and s_inst <> ''63''
+Order by s_banner_id",banner.sorhsch_graduation_date,sorhsch_activity_date,student.high_school_graduation_date
+cumulative gpa matches term gpa based on certain student types,USHE,Warning,,S43,S43c,Student,"s_term_gpa, s_cum_gpa_ugrad",S_CUM_GPA_UGRAD = S_TERM_GPA,"INTO #s43C
+from students_'+ @extract +'
+where s_inst = @inst
+AND s_instance = @instance
+and S_CUM_GPA_UGRAD not in (''0'',''4'')
+AND S_CUM_GPA_UGRAD = S_TERM_GPA
+and S_LEVEL != ''fr''
+and S_REG_STATUS not in (''ff'',''fh'',''tu'',''tg'')
+and s_extract = ''e''
+Order by s_banner_id",round(sum(shrtgpa_quality_points) / sum(shrtgpa_gpa_hours),n/a,"student_term_level.institutional_gpa, student_term_level.institutional_cumulative_gpa"
+invalid pell awarded to highschool students,Database,Failure,,S44,S44c,Student,s_pell,HS students should not have pell,"INTO #s44c
+FROM students_'+ @extract +'
+WHERE s_pell is not null
+AND s_reg_status = ''HS''
+AND s_instance = @instance
+AND s_inst = @inst
+Order by s_banner_id",banner.rpratrm_offer_amt,rpratrm_activity_date,"""student_term_level.is_pell_eligible
+student_term_level.is_pell_awarded"""
+invalid pell value,USHE,Failure,,S44,S44d,Student,s_pell,Wrong values for Pell,"Into #s44d
+From students_'+ @extract +'
+Where s_pell is not null
+and s_pell not in (''E'',''R'')
+and s_extract = ''e''
+and s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.rpratrm_offer_amt,n/a,"""student_term_level.is_pell_eligible
+student_term_level.is_pell_awarded"""
+invalid bia code,USHE,Failure,,S45,S45c,Student,s_bia,Wrong value fo s_bia,"Into #s45c
+From students_'+ @extract +'
+Where s_bia is not null
+and s_bia <> ''B''
+and s_extract = ''e''
+and s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.tbraccd,n/a,student_term_level.is_bia
+missing college,Database,Failure,,"S46, C45","S46a, C45","Student, Course","s_college, c_college",There should be a college for every record.,"INTO #s46a
+FROM students_'+ @extract +'
+WHERE (s_college is null or s_college = '''')
+and s_inst != ''63''
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.sgbstdn_coll_code_1,sgbstdn_activity_date,student_term_level.primary_major_college_id
+invalid college due to non-alpha characters,Database,Failure,,"S46, S48","S46b, S48a, C45a","Student, Course","s_college, s_college2, c_college",S_College with Non-Alpha characters,"into #s46b
+from students_'+ @extract +'
+where (s_college is not null or s_college <> '''')
+and s_college like ''%[^ -`a-Z]%''
+and s_college not like ''%''''%'' -- this allows an apostrophe to be in the string
+and s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id","banner.sgbstdn_coll_code_1, banner.sgbstdn_coll_code_2",sgbstdn_activity_date,"student_term_level.primary_major_college_id, student_term_level.secondary_major_college_id"
+missing major,Database,Failure,,S47,S47a,Student,s_major,There should be a major for every record.,"INTO #s47a
+FROM students_'+ @extract +'
+WHERE (s_major is null or s_major = '''')
+AND s_instance = @instance
+and s_inst = @inst
+and s_inst != ''63''
+Order by s_banner_id",banner.sgbstdn_majr_code_1,sgbstdn_activity_date,"student_term_level.primary_major_code, student_term_level.primary_major_desc"
+duplicate major,Database,Failure,,S47,S47b,Student,s_major,There should be a unique major for every record.,"INTO #s47b
+FROM students_'+ @extract +'
+WHERE s_major = s_major2
+AND s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.sgbstdn_majr_code_2,sgbstdn_activity_date,"student_term_level.primary_major_code, student_term_level.second_major_code"
+invalid major due to non-alpha characters,Database,Failure,,"S47, S49","S47c, S49b",Student,"s_major, s_major2",S_Major with Non-Alpha characters,"into #s47c
+from students_'+ @extract +'
+where (s_major is not null or s_major <> '''')
+and s_major like ''%[^ -`a-Z]%''
+and s_major not like ''%''''%'' -- this allows an apostrophe to be in the string
+and s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id","banner.sgbstdn_majr_code_1, banner.sgbstdn_majr_code_2",sgbstdn_activity_date,student_term_level.primary_major_desc
+missing second major with second cip code,Database,Failure,,S49,S49a,Student,s_major2,Missing Second CIP or Major,"INTO #s49a
+FROM students_'+ @extract +'
+WHERE (((s_major2 is null or s_major2= '''') and ((s_curr_cip2 is not null and s_curr_cip2 !='''') or (s_college2 is not null and s_college2!='''')))
+or ((s_curr_cip2 is null or s_curr_cip2= '''') and ((s_major2 is not null and s_major2 !='''') or (s_college2 is not null and s_college2!='''')))
+or ((s_college2 is null or s_college2= '''') and ((s_major2 is not null and s_major2 !='''') or (s_curr_cip2 is not null and s_curr_cip2!=''''))) )
+AND s_instance = @instance
+and s_inst = @inst
+and s_inst != ''63''
+Order by s_banner_id",banner.sgbstdn_majr_code_2,sgbstdn_activity_date,"student_term_level.secondary_major_desc, student_term_level.secondary_major_cip_code"
+"duplicate combination of course subject, number, and section",Database,Failure,,C00,C00,Course,"c_crs_sbj, c_crs_num, c_crs_sec",FTL Duplicate Courses,"select count(c_inst) as [C00 FTL Duplicate Count], c_inst, c_crs_sbj, c_crs_num, c_crs_sec
+INTO #c00
+from courses_' + @extract + '
+where c_instance = @instance
+and c_inst = @inst
+group by c_inst, c_crs_sbj, c_crs_num, c_crs_sec
+having count(c_inst) >1","banner.ssbsect_subj_code, banner.ssbsect_crse_numb, banner.ssbsect_seq_numb",ssbsect_activity_date,"student_section.subject_code, student_section.course_number, student_section.section_number"
+invalid course number length of characters,Database,Failure,,C04,C04a,Course,c_crs_num,the Course Number should have four digits,"INTO #C04a
+FROM courses_' + @extract + '
+WHERE c_instance = @instance
+AND c_inst = @inst
+AND (LEN(C_CRS_NUM) = 3 or LEN(C_CRS_NUM) = 2 or LEN(C_CRS_NUM) = 1)
+Order by c_crs_sbj, c_crs_num, c_crs_sec",banner.ssbsect_crse_numb,ssbsect_activity_date,student_section.course_number
+invalid course number format (course numbers cannot start with an 8 or 9),Database,Failure,,C04,C04c,Course,c_crs_num,the Course Number Invalid first character,"INTO #C04c
+FROM courses_' + @extract + '
+WHERE c_instance = @instance
+AND c_inst = @inst
+AND C_CRS_NUM like ''[8-9]__[a-z]''
+Order by c_crs_sbj, c_crs_num, c_crs_sec",banner.ssbsect_crse_numb,ssbsect_activity_date,student_section.course_number
+invalid course number format due to alpha in first 4 characters,Database,Failure,,C04,C04d,Course,c_crs_num,CRS_NUM has Alpha in 1st 4 Char,"INTO #C04d
+FROM courses_' + @extract + '
+WHERE left(c_crs_num,4) like ''%[A-Z]%''
+and c_instance = @instance
+AND c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec",banner.ssbsect_crse_numb,ssbsect_activity_date,student_section.course_number
+invalid course min or max credits,Database,Failure,,"C06, C07","C06a, C07a",Course,"c_min_credit, c_max_credit","C_MIN_Credits Invalid, C_MAX_Credits Invalid","Into #c06a
+FROM courses_' + @extract + '
+Where (cast(C_MIN_CREDIT as float) = ''''
+or len(C_MIN_CREDIT) > ''4''
+or cast(C_MIN_CREDIT as float) > ''99.9''
+or cast(C_MIN_CREDIT as float) < ''0''
+or C_MIN_CREDIT like ''%[^.0-9]%'' )
+and C_MIN_CREDIT <> ''0''
+and c_min_credit <> ''0.0''
+and c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec","banner.scbcrse_credit_hr_low, banner.scbcrse_credit_hr_high",scbcrse_activity_date,"course.course_min_credits, courses.course_max_credits"
+max credits less than min credits,Database,Failure,,C07,C07b,Course,c_max_credit,C_MAX_Credits less than C_MIN_Credits,"Into #c07b
+FROM courses_' + @extract + '
+Where isnull(cast(c_max_credit as float),''0'') < isnull(cast(c_min_credit as float),''0'')
+and c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec","banner.scbcrse_credit_hr_low, banner.scbcrse_credit_hr_high",scbcrse_activity_date,"course.course_min_credits, courses.course_max_credits"
+invalid line item values,USHE,Failure,,C09,C09,Course,c_line_item,Checking for valid values in c_line_item.,"INTO #C09
+FROM courses_' + @extract + '
+WHERE (c_line_item not IN (''a'',''b'',''c'',''d'',''e'',''f'',''g'',''h'',''i'',''p'',''q'',''r'',''s'',''t'',''x'')
+OR c_line_item is null OR c_line_item = '''')
+AND c_instance = @instance
+and c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec",N/A,n/a,N/A
+missing site type,Database,Failure,,C10,C10,Course,c_site_type,Checking for valid values IN c_site_type,"INTO #c10
+FROM courses_' + @extract + '
+WHERE (c_site_type not IN (select s_type_code from reference.dbo.site_type) or c_site_type is null OR c_site_type = '''')
+and c_extract = ''3''
+AND c_instance = @instance
+and c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec",banner.ssbsect_camp_code,ssbsect_activity_date,student_section.campus_id
+invalid site type,Database,Failure,,C10,C10a,Course,c_site_type,Checking for valid values IN c_site_type.,"INTO #c10a
+FROM courses_' + @extract + '
+WHERE (c_site_type not IN (select s_type_code from reference.dbo.site_type) or c_site_type is null OR c_site_type = '''')
+and c_extract = ''E''
+AND c_instance = @instance
+and c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec",banner.ssbsect_camp_code,ssbsect_activity_date,student_section.campus_id
+missing budget code,Database,Failure,,C11,C11,Course,c_budget_code,Checking to ensure that budget codes are not blank or NULL,"INTO #c11
+FROM courses_' + @extract + '
+WHERE (c_budget_code IS NULL OR c_budget_code = '''')
+AND c_instance = @instance
+and c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec",banner.ssrsccd_sccd_code,ssrsccd_activity_date,student_section.budget_code
+budget code does not align with course and subject on concurrent enrolled master list from USHE,Database,Failure,,C11,C11b,Course,c_budget_code,Not on CEML,"INTO #c11b
+FROM courses_' + @extract + '
+WHERE c_crs_sbj+c_crs_num NOT IN
+(select sbj+num
+FROM ccenroll.dbo.cc_master_list
+where inst = @inst and year = LEFT(@instance,4))
+and c_budget_code in (''BC'', ''SF'')
+and c_instance = @instance
+and c_inst = @inst
+AND c_extract = ''3''
+Order by c_crs_sbj, c_crs_num, c_crs_sec",banner.ssrsccd_sccd_code,ssrsccd_activity_date,student_section.budget_code
+invalid delivery method,Database,Failure,,C12,C12,Course,c_delivery_method,Checking for valid values IN c_delivery_method.,"INTO #c12
+FROM courses_' + @extract + '
+WHERE c_delivery_method not in (Select distinct d_method_code From Reference.dbo.Delivery_Method where Inactive <> ''Y'')
+and c_extract = ''3''
+AND c_instance = @instance
+and c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec",banner.ssbsect_insm_code,ssbsect_activity_date,student_section.instruction_method_code
+invalid program type and missing program type,Database,Failure,,C13,C13,Course,c_program_type,Checking for invalid program types.,"INTO #c13
+FROM courses_' + @extract + '
+WHERE (c_program_type NOT IN (Select distinct Program_type_code from Reference.dbo.Program_Type where Inactive <> ''Y'') OR c_program_type is null OR c_program_type = '''')
+AND c_instance = @instance
+and c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec",banner.scbsupp_occs_code,n/a,course.program_type
+invalid program type against perkins list,USHE,Failure,,C13,C13a,Course,c_program_type,checks validity of c_program_type against perkins list.,"INTO #c13a
+FROM courses_' + @extract + '
+WHERE c_crs_sbj+c_crs_num NOT IN (select p_crs_sbj+p_crs_num FROM perkins..PERKINS_COURSES_2015_forward where p_inst = @inst and p_year = LEFT(@instance,4) and p_term = left(right(@instance,2),1) and Inactive != ''Y'')
+and c_instance = @instance
+and c_inst = @inst
+AND c_program_type in (''V'', ''P'')
+AND c_extract = ''3''
+AND c_inst not in (''3676'', ''3677'')
+Order by c_crs_sbj, c_crs_num, c_crs_sec",banner.scbsupp_occs_code,n/a,course.program_type
+invalid budget code again perkins list,USHE,Failure,,C13,C13c,Course,c_program_type,"checks for courses allowed on perkins list, but not currently coded to vocational","INTO #c13c
+FROM courses_' + @extract + '
+WHERE c_crs_sbj+c_crs_num IN (select p_crs_sbj+p_crs_num from perkins..PERKINS_COURSES_2015_forward where p_inst = @inst and p_year = LEFT(@instance,4) and p_term = left(right(@instance,2),1) and Inactive != ''Y'')
+and c_instance = @instance
+and c_inst = @inst
+AND c_program_type NOT IN (''P'',''V'')
+AND c_inst not in (''3676'', ''3677'')
+Order by c_crs_sbj, c_crs_num, c_crs_sec",banner.scbsupp_occs_code,n/a,course.program_type
+invalid credit indicator,USHE,Failure,,C14,C14a,Course,c_credit_ind,Checking for valid values for c_credit_ind.,"INTO #c14a
+FROM courses_' + @extract + '
+WHERE (c_credit_ind NOT IN (''C'',''N'') OR c_credit_ind is null)
+AND c_instance = @instance
+and c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec",banner.scrlevl_levl_code = 'NC',n/a,course.course_level_id
+credit indicator and section format type do not align,Database,Failure,,C14,C14b,Course,"c_credit_ind, c_instruct_type",NON-CREDIT COURSES IN 3RD WEEK,"INTO #c14b
+FROM COURSES_' + @extract + '
+WHERE C_CREDIT_IND = ''N''
+AND c_extract = ''3''
+AND c_instruct_type != ''LAB''
+AND c_instance = @instance
+and c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec","banner.ssbsect_schd_code, banner.scrlevl_levl_code = 'NC'",ssbsect_activity_date,"course.course_level_id, student_section.section_format_type_code"
+invalid non-credit class based on program type and budget code,Database,Failure,,C14,C14c,Course,"c_credit_ind, c_instruct_type, c_program_type",Only Labs and Vocational non-credit classes can be submitted,"INTO #c14c
+FROM COURSES_' + @extract + '
+WHERE C_CREDIT_IND = ''N''
+AND c_extract = ''E''
+AND c_instruct_type != ''LAB''
+AND c_program_type not in (''P'',''V'')
+AND c_budget_code not in (''BV'',''SQ'') --added 11/07/19 by Mike Palica to exclude STIT/Custom Fit courses from triggering this error
+AND c_crs_sbj +'' ''+ c_crs_num not in (Select distinct ETPL_CIP_USHE from Reference.dbo.ETPL where ETPL_Inst_Code = @inst and Inactive = ''N'')
+AND c_instance = @instance
+AND c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec","banner.scbsupp_occs_code, banner.scrlevl_levl_code = 'NC', banner.ssbsect_schd_code",scbsupp_activity_date,"course.program_type, course.course_level_id, student_section.section_format_type_code"
+missing start time,Database,Failure,,"C15, C23, C31","C15a, C23a, C31a",Course,"c_start_time, c_start_time2, c_start_time3",Courses Start Time conditionally required,"INTO #c15a
+FROM courses_' + @extract + '
+WHERE (c_start_time is NULL or c_start_time = '''')
+and c_delivery_method not in (''C'',''I'',''V'',''Y'')
+and c_instruct_type in (''LEC'',''LEL'',''LAB'')
+and c_budget_code <> ''SF''
+and c_site_type in (Select s_type_code from Reference.dbo.Site_Type where s_type_space_utilize = ''Y'' and Inactive = ''N'')
+and c_extract = ''3''
+and c_instance = @instance
+and c_inst = @inst
+Order by c_bldg_num, c_room_num, c_crs_sbj, c_crs_num, c_crs_sec",banner.ssrmeet_begin_time,ssrmeet_activity_date,section_schedule.meet_start_time
+missing end time,Database,Failure,,"C16, C24, C32","C16a, C24a, C32a",Course,"c_stop_time, c_stop_time2, c_stop_time3",Courses Stop Time conditionally required,"INTO #c16a
+FROM courses_' + @extract + '
+WHERE (c_stop_time is NULL or c_stop_time = '''')
+and c_delivery_method not in (''C'',''I'',''V'',''Y'')
+and c_instruct_type in (''LEC'',''LEL'',''LAB'')
+and c_budget_code <> ''SF''
+and c_site_type in (Select s_type_code from Reference.dbo.Site_Type where s_type_space_utilize = ''Y'' and Inactive = ''N'')
+and c_extract = ''3''
+and c_instance = @instance
+and c_inst = @inst
+Order by c_bldg_num, c_room_num, c_crs_sbj, c_crs_num, c_crs_sec",banner.ssrmeet_end_time,ssrmeet_activity_date,section_schedule.meet_end_time
+missing course meeting days,USHE,Failure,,"C17, C25, C33","C17a, C25a, C33a",Course,"c_days, c_days2, c_days3",Courses Days conditionally required,"INTO #c17a
+FROM courses_' + @extract + '
+WHERE (c_days is NULL or c_days = '''')
+and c_delivery_method not in (''C'',''I'',''V'',''Y'')
+and c_instruct_type in (''LEC'',''LEL'',''LAB'')
+and c_budget_code <> ''SF''
+and c_site_type in (Select s_type_code from Reference.dbo.Site_Type where s_type_space_utilize = ''Y'' and Inactive = ''N'')
+and c_extract = ''3''
+and c_instance = @instance
+and c_inst = @inst
+Order by c_bldg_num, c_room_num, c_crs_sbj, c_crs_num, c_crs_sec","banner.ssrmeet_sun_day, etc...",n/a,section_schedule.is_meets_sunday etc...
+building name and number are the same,Database,Failure,,"C18, C26, C34","C18, C26, C34",Course,"c_bldg_sname, s_bldg_num, c_bldg_sname2, c_bldg_sname3",BLDG Name and number are the same,"INTO #c18
+FROM courses_' + @extract + '
+WHERE c_instance = @instance
+and c_inst = @inst
+and c_bldg_sname = c_bldg_num
+and c_bldg_num is not null
+Order by c_crs_sbj, c_crs_num, c_crs_sec","banner.ssrmeet_bldg_code, space_utlz.building_detail.bldg_number",ssrmeet_activity_date,"section_schedule.meeting_building_id, section_schedule.building_number"
+missing building name,Database,Failure,,"C18, C26, C34","C18a, C26a, C34a",Course,"c_bldg_sname, c_bldg_sname2, c_bldg_sname3",BLDG SName conditionally Required,"INTO #c18a
+FROM courses_' + @extract + '
+WHERE (c_bldg_sname is NULL or c_bldg_sname = '''')
+and c_delivery_method not in (''C'',''I'',''V'',''Y'')
+and c_instruct_type in (''LEC'',''LEL'',''LAB'')
+and c_budget_code <> ''SF''
+and c_site_type in (Select s_type_code from Reference.dbo.Site_Type where s_type_space_utilize = ''Y'' and Inactive = ''N'')
+and c_extract = ''3''
+and c_instance = @instance
+and c_inst = @inst
+Order by c_bldg_num, c_crs_sbj, c_crs_num, c_crs_sec",banner.ssrmeet_bldg_code,ssrmeet_activity_date,section_schedule.meeting_building_id
+missing building number,Database,Failure,,"C19, C27, C35","C19a, C27a, C35a",Course,"c_bldg_num, c_bldg_num2, c_bldg_num3",BLDG NUM conditionally required,"INTO #c19a
+FROM courses_' + @extract + '
+WHERE (c_bldg_num is NULL or c_bldg_num = '''')
+and c_delivery_method not in (''C'',''I'',''V'',''Y'')
+and c_instruct_type in (''LEC'',''LEL'',''LAB'')
+and c_budget_code <> ''SF''
+and c_site_type in (Select s_type_code from Reference.dbo.Site_Type where s_type_space_utilize = ''Y'' and Inactive = ''N'')
+and c_extract = ''3''
+and c_instance = @instance
+and c_inst = @inst
+Order by c_bldg_sname, c_crs_sbj, c_crs_num, c_crs_sec",space_utlz.building_detail.bldg_number,bldg_activity_date,section_schedule.building_number
+building number not in building table,Database,Failure,,"C19, C27, C35","C19c, C27c, C35c",Course,"c_bldg_num, c_bldg_num2, c_bldg_num23",BLDG NUM not in Building Inventory,"Into #b_nbr_c19c
+From Loads.dbo.Buildings_ext2020
+Where b_inst = @inst
+Group by b_inst, b_number
+Order by b_inst, b_number",space_utlz.building_detail.bldg_number,bldg_activity_date,section_schedule.building_number
+building number not in rooms inventory,Database,Failure,,"C19, C27, C35","C19d, C27d, C35d",Course,"c_bldg_num, c_bldg_num2, c_bldg_num23",BLDG NUM not in Rooms Inventory,"INTO #c19d
+FROM courses_' + @extract + ' c
+left join #r_nbr_c19d r on (c.c_inst = r.r_inst and c.c_bldg_num = r.r_build_number)
+Where r.r_build_number is null
+and c_bldg_num is not null
+and c_instance = @instance
+and c_inst = @inst
+Order by c_bldg_sname, c_crs_sbj, c_crs_num, c_crs_sec",space_utlz.building_detail.bldg_number,bldg_activity_date,section_schedule.building_number
+building room is missing,Database,Failure,,"C20, C28, C36","C20a, C28a, C36a",Course,"c_room_num, c_room_num2, c_room_num3",BLDG Room conditionally required,"INTO #c20a
+FROM courses_' + @extract + '
+WHERE (c_room_num is NULL or c_room_num = '''')
+and c_delivery_method not in (''C'',''I'',''V'',''Y'')
+and c_instruct_type in (''LEC'',''LEL'',''LAB'')
+and c_budget_code <> ''SF''
+and c_site_type in (Select s_type_code from Reference.dbo.Site_Type where s_type_space_utilize = ''Y'' and Inactive = ''N'')
+and c_extract = ''3''
+and c_instance = @instance
+and c_inst = @inst
+Order by c_bldg_num, c_crs_sbj, c_crs_num, c_crs_sec",banner.ssrmeet_room_code,ssrmeet_activity_date,section_schedule.meet_room_number
+invalid room max,Database,Failure,,"C21, C29, C37","C21a, C29a, C37a",Course,"c_room_max, c_room_max2, c_room_max3",C_Room_Max Invalid,"Into #c21a
+FROM courses_' + @extract + '
+Where (cast(C_ROOM_MAX as float) = ''''
+or len(C_ROOM_MAX) > ''4''
+or cast(C_ROOM_MAX as float) > ''9999''
+or cast(C_ROOM_MAX as float) < ''0''
+or C_ROOM_MAX like ''%[^0-9]%'' )
+and C_ROOM_MAX <> ''0''
+and c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec",banner.ssbsect_max_enrl,ssbsect_activity_date,maximum_room_occupancy.student_section
+invalid room use type,Database,Failure,,"C22, C30, C38","C22a, C30a, C38a",Course,"r_room_type, c_room_type2, c_room_type3",Checking for valid values for c_room_type3,"INTO #c22a
+FROM courses_' + @extract + '
+WHERE c_room_type not in (Select distinct r_use_code From Reference.dbo.rooms_use_code where Inactive <> ''Y'')
+and (c_room_type IS NOT NULL OR c_room_type <> '''')
+and c_instance = @instance
+and c_inst = @inst
+Order by c_room_type, c_bldg_num, c_room_num, c_crs_sbj, c_crs_num, c_crs_sec",space_utlz.rooms_detail.room_use_code,room_activity_date,section_schedule.room_use_code
+missing room use type,Database,Failure,,"C22, C30, C38","C22b, C30b, C38b",Course,"r_room_type, c_room_type2, c_room_type3",C_Room_type3 Missing,"INTO #c22B
+FROM courses_' + @extract + '
+WHERE (c_room_type is NULL or c_room_type = '''')
+and c_delivery_method not in (''C'',''I'',''V'',''Y'')
+and c_instruct_type in (''LEC'',''LEL'',''LAB'')
+and c_site_type in (Select s_type_code from Reference.dbo.Site_Type where s_type_space_utilize = ''Y'' and Inactive = ''N'')
+and c_extract = ''3''
+and c_instance = @instance
+and c_inst = @inst
+Order by c_room_type, c_bldg_num, c_room_num, c_crs_sbj, c_crs_num, c_crs_sec",space_utlz.rooms_detail.room_use_code,room_activity_date,section_schedule.room_use_code
+valid start date and end date format (Summer),Database,Failure,,"C39, C40","C39a, C40a",Course,"c_start_date, c_end_date",Checking for valid format for c_start_date,"INTO #c39a
+FROM courses_' + @extract + '
+WHERE (((left(c_start_date,4) != left('+ @instance +',4)-1))
+OR left(right(c_start_date,4),2) NOT IN (''05'',''06'',''07'',''08'')
+OR cast(right(c_start_date,2) AS INT) > 31
+OR c_start_date IN (null,'''',''0''))
+AND c_term =1
+and c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec","banner.ssbsect_ptrm_start_date, banner.ssbsect_ptrm_end_date",ssbsect_activity_date,"section_schedule.meet_start_date, section_schedule_meet_end_date"
+valid start date and end date format (Fall),Database,Failure,,"C39, C40","C39b, C40b",Course,"c_start_date, c_end_date",Checking for valid format for c_start_date.,"INTO #c39a
+FROM courses_' + @extract + '
+WHERE (((left(c_start_date,4) != left('+ @instance +',4)-1))
+OR left(right(c_start_date,4),2) NOT IN (''05'',''06'',''07'',''08'')
+OR cast(right(c_start_date,2) AS INT) > 31
+OR c_start_date IN (null,'''',''0''))
+AND c_term =1
+and c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec","banner.ssbsect_ptrm_start_date, banner.ssbsect_ptrm_end_date",ssbsect_activity_date,"section_schedule.meet_start_date, section_schedule_meet_end_date"
+valid start date and end date format (Spring),Database,Failure,,"C39, C40","C39c, C40c",Course,"c_start_date, c_end_date",Checking for valid format for c_start_date.,"INTO #c39c
+FROM courses_' + @extract + '
+WHERE ((left(c_start_date,4) != left('+ @instance +',4))
+OR left(right(c_start_date,4),2) not IN (''01'',''02'',''03'',''04'',''05'')
+OR cast(right(c_start_date,2) AS INT) > 31
+OR c_start_date IN (null,'''',''0''))
+AND c_term =3
+and c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec","banner.ssbsect_ptrm_start_date, banner.ssbsect_ptrm_end_date",ssbsect_activity_date,"section_schedule.meet_start_date, section_schedule_meet_end_date"
+missing course title,Database,Failure,,C41,C41a,Course,c_title,C_Title is null or missing,"Into #c41a
+FROM courses_' + @extract + '
+Where (c_title is null or c_title = '''')
+and c_inst <> ''63'' --USHE builds the file
+and c_instance = @instance
+and c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec",banner.scbcrse_title,scbcrse_activity_date,course.title
+invalid title format,USHE,Failure,,C41,C41b,Course,c_title,C_Title needs a minimum of 2 alpha characters together,"Into #c41b
+FROM courses_' + @extract + '
+Where (c_title is not null or c_title <>'''')
+and c_title not like ''%[a-Z][a-Z]%''
+and c_extract = ''3''
+and c_instance = @instance
+and c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec",banner.scbcrse_title,n/a,course.title
+invalid title format,USHE,Failure,,C41,C41d,Course,c_title,C_Title special charaters not allowed,"Into #c41d
+FROM courses_' + @extract + '
+Where (c_title is not null or c_title <>'''')
+and c_title like ''%[^a-Z0-9 /&()+:.-]%''
+and c_title not like ''%''''%'' -- this allows an apostrophe to be in the string
+--and c_extract = ''3''
+and c_instance = @instance
+and c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec",banner.scbcrse_title,n/a,course.title
+missing instructor,Database,Failure,,C42,C42a,Course,c_instruct_id,C_Instruct_ID is null or missing,"Into #c42a
+FROM courses_' + @extract + '
+Where (c_instruct_id is null or c_instruct_id = '''')
+and c_inst <> ''63'' --USHE builds the file
+and c_instance = @instance
+and c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec, c_instruct_name",banner.spriden_id,spriden_activity_date,section_instructor_assignment.instructor_employee_id
+invalid instructor id format,Database,Failure,,C42,C42b,Course,c_instruct_id,"C_Instruct_ID is 9 Characters, so should be using an Alpha character to start, this makes sure it is not Instructors SSN","Into #c42B
+FROM courses_' + @extract + '
+Where (c_instruct_id is not null or c_instruct_id <> '''')
+and len(c_instruct_id) = ''9''
+and c_instruct_id not like ''[a-Z]%''
+and c_instance = @instance
+and c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec, c_instruct_name",banner.spriden_id,spriden_activity_date,section_instructor_assignment.instructor_employee_id
+invalid instructor id format,USHE,Failure,,C42,C42c,Course,c_instruct_id,C_Instruct_ID is using the wrong institutional assigned alpha characters,"Into #c42c
+FROM courses_' + @extract + '
+Where (c_instruct_id is not null or c_instruct_id <> '''')
+and c_instruct_id like ''[a-Z]%''
+and left(c_instruct_id,1) not in (Select distinct I_Banner From Reference.dbo.Inst where i_id = @inst and Inactive <> ''Y'' and i_banner is not NULL)
+and c_instance = @instance
+and c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec, c_instruct_name",banner.spriden_id,n/a,section_instructor_assignment.instructor_employee_id
+missing instructor name,Database,Failure,,C43,C43a,Course,c_instruct_name,C_Instruct_Name is null or missing,"Into #c43a
+FROM courses_' + @extract + '
+Where (c_instruct_name is null or c_instruct_name = '''')
+and c_inst <> ''63'' --USHE builds the file
+--and c_extract = ''3''
+and c_instance = @instance
+and c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec, c_instruct_name",banner.spriden_first_name,spriden_activity_date,employee.first_name
+invalid instroctor name format,USHE,Failure,,C43,C43c,Course,c_instruct_name,C_Instruct_Name no special characters,"Into #c43c
+FROM courses_' + @extract + '
+Where (c_instruct_name is not null or c_instruct_name <>'''')
+and c_instruct_name like ''%[^ -`a-Z]%''
+and c_instruct_name not like ''%''''%'' -- this allows an apostrophe to be in the string
+and c_extract = ''3''
+and c_instance = @instance
+and c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec, c_instruct_name",banner.spriden_first_name,n/a,employee.first_name
+missing instruction type,Database,Failure,,C44,C44,Course,c_instruct_type,C_instruct_type cannot be blank or NULL,"INTO #c44
+FROM courses_' + @extract + '
+WHERE(c_instruct_type IS NULL OR c_instruct_type = '''')
+AND c_instance = @instance
+and c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec",banner.ssbsect_schd_code,ssbsect_activity_date,student_section.section_format_type_code
+invalid instruction type format,Database,Failure,,C44,C44a,Course,c_instruct_type,Checking for valid values for c_instruct_type.,"INTO #c44a
+FROM courses_' + @extract + '
+WHERE c_instruct_type not in (Select distinct Instruct_Type_Code From Reference.dbo.Instruct_Type where Inactive <> ''Y'')
+and (c_instruct_type IS NOT NULL OR c_instruct_type <> '''')
+AND c_instance = @instance
+and c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec",banner.ssbsect_schd_code,ssbsect_activity_date,student_section.section_format_type_code
+missing department code,Database,Failure,,C46,C46,Course,c_dept,Department exists,"INTO #c46
+FROM courses_' + @extract + '
+WHERE c_inst = @inst
+AND c_instance = @instance
+and c_inst <> ''63'' --we populate it, they do not send it to us
+and (C_dept is null or c_dept= '''')
+GROUP BY c_inst, c_crs_sbj, c_crs_num, c_crs_sec, c_dept
+Order by c_crs_sbj, c_crs_num, c_crs_sec",banner.scbcrse_dept_code,scbcrse_activity_date,student_section.academic_department_id
+invalid department due to non-alpha characters,Database,Failure,,C46,C46a,Course,c_dept,C_Dept Should only contain Alpha,"Into #c46a
+FROM courses_' + @extract + '
+Where (c_dept is not null or c_dept <>'''')
+and c_dept like ''%[^a-Z]%''
+--c_extract = ''3''
+and c_instance = @instance
+and c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec, c_college",banner.scbcrse_dept_code,scbcrse_activity_date,student_section.academic_department_id
+invalid gen ed format,USHE,Failure,,C47,C47b,Course,c_gen_ed,Check for valid c_gen_ed values,"INTO #c47b
+FROM courses_' + @extract + '
+WHERE c_gen_ed not IN (select distinct general_ed_code from Reference.dbo.General_ED where Inactive <> ''Y'')
+AND c_instance = @instance
+and c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec",banner.ssrattr_attr_code,n/a,student_section.attribute_code
+missing destination type,USHE,Failure,,C48,C48a,Course,c_dest_site,"C_Dest_Site if not null or blank, make sure it is in Reference.dbo.Highschools","Into #c48a
+FROM courses_' + @extract + '
+Where (c_dest_site is not null or c_dest_site <>'''')
+and c_dest_site not in (select distinct hs_act_code from reference.dbo.highschools)
+and c_instance = @instance
+and c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec, c_budget_code","banner.ssrsccd_sccd_code, banner.ssbsect_schd_code, banner.ssbsect_insm_code",n/a,"student_section.section_format_type_code, student_section.instruction_method_code, missing budget code"
+missing class size,Database,Failure,,C49,C49a,Course,c_class_size,C49A FTL Missing Class Size,"INTO #c49a
+FROM courses_' + @extract + '
+WHERE (C_CLASS_SIZE is null or c_class_size = ''0'')
+AND c_instance = @instance
+and c_inst = @inst
+and c_inst != ''63''
+Order by c_crs_sbj, c_crs_num, c_crs_sec",banner.ssbsect_enrl,ssbsect_activity_date,student_section.class_size
+invalid class size,Database,Failure,,C49,C49b,Course,c_class_size,C_Class_Size Invalid,"Into #c49b
+FROM courses_' + @extract + '
+Where (cast(C_CLASS_SIZE as float) = ''''
+or len(C_CLASS_SIZE) > ''4''
+or cast(C_CLASS_SIZE as float) > ''9999''
+or cast(C_CLASS_SIZE as float) < ''0''
+or C_CLASS_SIZE like ''%[^0-9]%'' )
+and C_CLASS_SIZE <> ''0''
+and c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec",banner.ssbsect_enrl,ssbsect_activity_date,student_section.class_size
+class size and enrolled students don't align,USHE,Failure,,C49,C49c,Course,c_class_size,C_CLASS_SIZE Number of Students Enrolled,"INTO #c49c
+FROM courses_' + @extract + ', student_courses_' + @extract + '
+WHERE c_inst = @inst
+AND c_instance = @instance
+and c_key = sc_c_key
+group by c_inst, c_year, c_term, c_extract, c_crs_sbj, c_crs_num, c_crs_sec, c_class_size
+Having count(sc_id) <> c_class_size
+Order by c_crs_sbj, c_crs_num, c_crs_sec",banner.ssbsect_enrl,n/a,student_section.class_size
+invalid class level or missing class level,USHE,Failure,,C51,C51a,Course,c_level,C_LEVEL classes,"INTO #c51a
+FROM courses_' + @extract + '
+WHERE (c_level NOT IN (''R'',''U'',''G'')
+or c_level is null or c_level='''')
+AND c_instance = @instance
+AND c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec",banner.scrlevl_levl_code,n/a,"student_section.course_number, student_section.subject_code"
+invalid remedial level,USHE,Failure,,C51,C51b,Course,c_level,C_LEVEL remedial,"NTO #c51b
+FROM courses_' + @extract + '
+WHERE c_level=''R''
+AND (c_crs_sbj NOT IN (''MATH'',''MAT'',''ENGL'',''RDG'',''WRTG'',''ESL'')
+AND (concat(c_crs_sbj,c_crs_num,c_inst) not in (''ENGH08904027'', ''SPED01003677'')) --added 20190124 EH
+AND (concat(c_crs_sbj,c_inst) not in (''IEP3678'', ''FESL3678''))) --added 20190124 EH
+AND c_inst = @inst
+AND c_instance = @instance
+GROUP BY c_inst, c_year, c_term, c_extract, c_crs_sbj, c_crs_num, c_crs_sec, c_level
+Order by c_crs_sbj, c_crs_num, c_crs_sec",banner.scrlevl_levl_code,n/a,"student_section.course_number, student_section.subject_code"
+missing course reference number,Database,Failure,,C52,C52a,Course,c_crn,Missing Course Reference Number,"INTO #c52a
+FROM courses_' + @extract + '
+WHERE (c_crn IS NULL OR c_crn = '''')
+and c_inst <> ''63'' -- USHE generates the file for them
+and c_instance = @instance
+and c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec, c_dept",banner.ssbsect_crn,ssbsect_activity_date,student_section.course_reference_number
+invalid course reference number,Database,Failure,,C52,C52b,Course,c_crn,Invalid Course Reference Number,"INTO #c52b
+FROM courses_' + @extract + '
+Where (cast(c_crn as float) = ''''
+or len(c_crn) > ''5''
+or cast(c_crn as float) > ''99999''
+or cast(c_crn as float) < ''0''
+or c_crn like ''%[^0-9]%'' )
+and c_instance = @instance
+and c_inst = @inst
+Order by c_crs_sbj, c_crs_num, c_crs_sec, c_dept",banner.ssbsect_crn,ssbsect_activity_date,student_section.course_reference_number
+duplicate course reference number,Database,Failure,,C52,C52c,Course,c_crn,Invalid Course Reference Number,"INTO #c52c
+FROM courses_' + @extract + '
+WHERE c_inst <> ''3675'' --Exclude UU as they use PeopleSoft and not Banner
+and c_inst <> ''63'' --Exclude USUE, because USHE generates their file
+and c_instance = @instance
+and c_inst = @inst
+Group by c_inst, c_crn
+Having Count (*) > ''1''
+Order by c_crn",banner.ssbsect_crn,ssbsect_activity_date,student_section.course_reference_number
+graduation id is not in students table,Database,Failure,,"G02, G21","G02b, G21e",Graduation,"g_id, g_banner_id",ID from graduation file is not in students file,"Into #g02b
+From graduation_ext'+@year+' g
+left join Production.dbo.Students s on (g.g_inst = s.s_inst and g.g_id = s.s_id and s.s_first = g.g_first and s.s_last = g.g_last)
+Where s.s_extract = ''e''
+and (s.s_id is null or s.s_first is null or s.s_last is null)
+and g_inst = @ginst","banner.spbpers_ssn, banner.spriden_id","spbpers_activity_date, spriden_activity_date","student.student_id, student.ssn"
+first name too long,USHE,Failure,,G03,G03e,Graduation,g_first,G_First name too long,"into #g03e
+from graduation_ext'+@year+'
+where len(g_first) > ''15''
+and g_inst = @ginst
+Order by g_banner_id",banner.spriden_first_name,spriden_activity_date,student.first_name
+middle name too long,USHE,Failure,,G03,G03g,Graduation,g_middle,G_Middle too long,"into #g03g
+from graduation_ext'+@year+'
+where len(g_middle) > ''15''
+and g_inst = @ginst
+Order by g_banner_id",banner.spriden_mi,spriden_activity_date,student.middle_name
+suffix too long,USHE,Failure,,G03,G03i,Graduation,g_suffix,G_Suffix name too long,"into #g03i
+from graduation_ext'+@year+'
+where len(g_suffix) > ''4''
+and g_inst = @ginst
+Order by g_banner_id",banner.spbpers_name_suffix,spbpers_activity_date,student.name_suffix
+graudation date is out of range,Database,Failure,,G08,G08b,Graduation,g_date,G_Date out of IPEDS range,"into #g08b
+from graduation_ext'+@year+'
+where (g_date > ''20''+right(g_fis_year,2)+''0630''
+or g_date < ''20''+left(g_fis_year,2)+''0701'')
+and g_inst = @ginst
+Order by g_banner_id",banner.shrdgmr_grad_date,shrdgmr_activity_date,degrees_awarded.graduation_date
+invalid CIP,Database,Failure,,G09,G09a,Graduation,g_cip,G_CIP Invalid,"into #g09a
+from graduation_ext'+@year+'
+where g_cip not in (select distinct cip_code from reference.dbo.cip where cip_code is not null and Inactive <> ''Y'')
+and g_inst = @ginst
+Order by g_banner_id",banner.stvmajr_cipc_code,stvmajr_activity_date,major.cip_code
+missing degree type,Database,Failure,,G10,G10a,Graduation,g_deg_type,G_Deg_Type Missing,"into #g10a
+from graduation_ext'+@year+'
+where (g_deg_type is null or g_deg_type = '''')
+and g_inst = @ginst
+Order by g_banner_id",banner.shrdgmr_degc_code,shrdgmr_activity_date,"degrees_awarded.degree_id, degree_status_code = 'AW'"
+invalid degree type,Database,Failure,,"G10, G16","G10b, G16a",Graduation,"g_deg_type, g_prev_deg_type",DEG_Type Invalid,"into #g10b
+from graduation_ext'+@year+'
+--where NOT EXISTS (SELECT INST,CIP,DEG_TYPE from reference.dbo.program_of_study)
+where g_deg_type NOT IN (Select distinct g_deg_type from Reference.dbo.Degree_Type where Inactive = ''N'')
+and g_inst = @ginst
+Order by g_banner_id",banner.shrdgmr_degc_code,shrdgmr_activity_date,"degrees_awarded.degree_id, degree_status_code = 'AW'"
+Transfer hours over 300 credits,USHE,Failure,,G12,G12b,Graduation,g_trans_total,G_Trans_Total seems excessive when over 300.0,"Into #g12b
+From graduation_ext'+@year+'
+Where cast(g_trans_total as float) > ''300.0''
+and g_inst = @ginst
+Order by g_banner_id",sum(shrtgpa_hours_earned),shrtgpa_activity_date,"""Add transfer_cumulative_ap_credits_earned to student_term_level,
+Add transfer_cumulative_clep_credits_earned to student_term_level"""
+Graduation hours 1.5 times required hours,USHE,Warning,,"G13, G14","G13b, G14b",Graduation,"g_grad_hrs, g_hrs_other",G_Grad_HRS seems excessive when over 1.5 * g_req_hrs_deg,"Into #g13b
+From graduation_ext'+@year+'
+Where (cast(g_req_hrs_deg as float) * 1.5) < cast(g_grad_hrs as float)
+and g_inst = @ginst
+Order by g_banner_id",(sum(shrtgpa_hours_earned),shrtgpa_activity_date,"Add overall_cumulative_credits_earned to student_term_level = institutional_cumulative_credits_earned + transfer_cumulative_credits_earned
+Add remedial_cumulative_earned_credits to student_term_level"
+Remedial hours over 60,USHE,Warning,,G15,G15b,Graduation,g_remedial_hrs,G_Remedial_HRS seems excessive when over 60,"Into #g15b
+From graduation_ext'+@year+'
+Where cast(g_remedial_hrs as float) > ''60.0''
+and g_inst = @ginst
+Order by g_banner_id","banner.ssbsect_crse_numb, (sum(shrtckg_credit_hours)",ssbsect_activity_date,See Above: Add transfer_cumulative_credits_attempted_other_sources to student_degree_program_application
+Invalid Required hours for a degree,Database,Failure,,G18,G18a,Graduation,g_req_hrs_deg,Req HRS Deg Invalid,"Into #g18a
+From graduation_ext'+@year+'
+Where (g_req_hrs_deg = ''''
+or len(g_req_hrs_deg) > ''3''
+or g_req_hrs_deg like ''%.%''
+or cast(g_req_hrs_deg as float) < ''0''
+or g_req_hrs_deg like ''%[^0-9]%'' )
+and g_remedial_hrs <> ''0''
+and g_inst = @ginst
+Order by g_banner_id",gorsdav_value,gorsdav_activity_date,academic_programs.required_credits
+Missing HS code when county origin is in Utah,Database,Failure,,G19,G19a,Graduation,g_high_school,Invalid UT HS ACT Code,"into #g19a
+FROM graduation_ext'+@year+'
+WHERE (g_high_school IS NULL OR g_high_school NOT IN (SELECT distinct hs_act_code FROM reference.dbo.highschools))
+and g_county_origin not in(''UT030'',''UT097'',''UT099'')
+and g_ipeds in (''3'',''5'')
+and g_inst = @ginst
+Order by g_banner_id",,n/a,
+duplicate graduation records,Database,Failure,,G21,G21d,Graduation,"g_banner_id, g_date, g_cip, g_deg_type, g_ipeds, g_major",check for duplicate graduation records.,"SELECT count(g_banner_id) as records, g_inst, g_id, g_banner_id, g_date, g_cip, g_deg_type, g_ipeds, g_major
+into #g21check
+FROM graduation_ext'+@year+'
+WHERE g_fis_year = '+@year+'
+and g_inst = @ginst
+GROUP BY g_inst, g_id, g_banner_id, g_date, g_cip, g_deg_type, g_ipeds, g_major
+HAVING count(g_banner_id)>1
+order by g_banner_id, G_CIP",,n/a,"degrees_awarded.student_id, degrees_awarded.graduation_date, major.cip, degrees_awarded.degree_id, academic_programs.ipeds_award_level_code, degrees_awarded.primary_major_id"
+Missing or incorrect year,Database,Failure,,G24,G24a,Graduation,g_fis_year,,"into #g24a
+from graduation_ext'+@year+'
+WHERE (G_FIS_YEAR IS NULL or g_fis_year != '+@year+')
+and g_inst = @ginst",shrdgmr_acyr_code,shrdgmr_activity_date,"Add graduated_academic_year_code to quad.student_degree_program_application
+Add graduated_academic_year_desc to student_degree_program_application"
+invalid term,Database,Failure,,G25,G25a,Graduation,g_term,G_Term Invalid,"into #g25a
+from graduation_ext'+@year+'
+WHERE (G_term IS NULL or g_term not in (''1'',''2'',''3''))
+and g_inst = @ginst
+Order by g_banner_id",shrdgmr_term_code_grad,shrdgmr_activity_date,term.season
+missing degree type name,Database,Failure,,G28,G28a,Graduation,g_deg_type_name,g_deg_type_name not found,"into #g28a
+from graduation_ext'+@year+'
+where (g_deg_type_name is null or g_deg_type_name in ('''',''0''))
+and g_inst = @ginst
+Order by g_banner_id","banner.stvdegc_desc, banner.shrdgmr_degc_code","stvdegc_acitivity_date, shrdgmr_activity_date",degrees_awarded.degree_desc
+Missing course subject (prefix),Database,Failure,,SC04,SC04a,Student Course,sc_crs_sbj,Missing Course Subject,"INTO #sc04a
+FROM student_courses_' + @extract + '
+WHERE sc_instance = @instance
+AND sc_inst = @inst
+AND (sc_crs_sbj is null or sc_crs_sbj = '''')
+Order by sc_crs_num, sc_crs_sec",banner.ssbsect_subj_code,ssbsect_activity_date,student_section.subject_code
+missing course number,Database,Failure,,SC05,SC05a,Student Course,sc_crs_num,Missing Course Number,"INTO #sc05a
+FROM student_courses_' + @extract + '
+WHERE sc_instance = @instance
+AND sc_inst = @inst
+AND(sc_crs_num is null or sc_crs_num = '''')
+Order by sc_crs_sbj, sc_crs_sec",banner.ssbsesct_crse_numb,ssbsect_activity_date,student_section.course_number
+missing course section,Database,Failure,,SC06,SC0ca,Student Course,sc_crs_sec,Missing Course Section,"INTO #sc06a
+FROM student_courses_' + @extract + '
+WHERE sc_instance = @instance
+AND sc_inst = @inst
+AND (sc_crs_sec is null or sc_crs_sec = '''')
+Order by sc_crs_sbj, sc_crs_num",banner.ssbsesct_seq_numb,ssbsect_activity_date,student_section.section_number
+invalid earned credit hours based on grade,Database,Failure,,SC08,SC08b,Student Course,sc_earned_cr,Earned Credit. These grade types should not have any earned credit.,"INTO #sc08b
+FROM student_courses_' + @extract + '
+WHERE sc_grade IN (''CW'',''L'',''NG'',''E'',''F'',''UW'',''I'', ''IP'',''NC'',''AU'',''W'')
+AND cast(sc_earned_cr as float) > 0
+AND sc_instance = @instance
+and sc_inst = @inst
+Order by sc_banner_id",banner.shrtckg_credit_hours,shrtckg_activity_date,student_section.earned_credits
+"earned credit hours is missing, but have a grade",Database,Failure,,SC08,SC08c,Student Course,sc_earned_cr,Earned Credit. Checking to see those who have grades but earned credit is null,"INTO #sc08c
+FROM student_courses_' + @extract + '
+WHERE sc_earned_cr IS NULL
+and sc_grade not in (NULL, ''IP'')
+AND sc_instance = @instance
+and sc_inst = @inst
+Order by sc_banner_id",banner.shrtckg_credit_hours,shrtckg_activity_date,student_section.earned_credits
+"At end of term, earned credit hours should match attempted credit hours (when a passing grade)",Database,Failure,,SC08,SC08d,Student Course,sc_earned_cr,Earned Credit. Earned Credits should match sc_att_cr,"INTO #sc08d
+FROM student_courses_' + @extract + '
+WHERE SC_GRADE IN (''A'',''A-'',''B+'',''B'',''B-'',''C+'',''C'',''C-'',''D+'',''D'',''D-'',''CR'',''SP'',''P'',''NG'',''T'')
+and sc_extract = ''e''
+and cast(sc_earned_cr as float) <> cast(sc_att_cr as float)
+AND sc_instance = @instance
+and sc_inst = @inst
+Order by sc_banner_id",banner.shrtckg_credit_hours,shrtckg_activity_date,student_section.earned_credits
+invalid grade,Database,Failure,,SC10,SC10a,Student Course,sc_grade,Course Grade. Checking for invalid values in sc_grade where credit is given with an invalid/no grade. Do you have a grade for these courses?,"INTO #sc10a
+FROM student_courses_' + @extract + ', courses_' + @extract + '
+WHERE sc_grade NOT IN (SELECT DISTINCT grade_code
+FROM reference.dbo.grade
+WHERE grade_code IS NOT NULL and Inactive =''N'')
+AND sc_c_key = c_key
+--AND ((right(c_end_date,4)>700 AND right(c_end_date,4)<1232 AND c_term<=2)
+-- OR (right(c_end_date,4)<600 AND c_term=3))
+AND sc_instance = @instance
+and sc_inst = @inst
+GROUP BY SC_GRADE, sc_banner_id, SC_INST, sc_crs_sbj, sc_crs_num, sc_crs_sec, c_budget_code, c_end_date
+HAVING sum(cast(sc_att_cr as float)) != 0
+Order by sc_banner_id",banner.shrtckg_grde_code_final,shrtckg_activity_date,student_section.final_grade
+missing concurrent enrollment grades,USHE,Failure,,SC10,SC10b,Student Course,sc_grade,Missing Conc Enroll Grade,"into #sc10b
+FROM student_courses_' + @extract + ', courses_' + @extract + '
+WHERE sc_instance = @instance
+and sc_inst = @inst
+AND sc_student_type in (''CC'',''DC'')
+AND (sc_grade is null or sc_grade in ('''',''IP'',''I''))
+AND sc_extract = ''E''
+Order by sc_banner_id",banner.shrtckg_grde_code_final,shrtckg_activity_date,student_section.final_grade
+invalid concurrent enrollment grade,USHE,Failure,,SC10,SC10c,Student Course,sc_grade,Invalid Conc Enroll Grade,"into #sc10C
+FROM student_courses_' + @extract + ', courses_' + @extract + '
+WHERE sc_instance = @instance
+and sc_inst = @inst
+AND sc_student_type in (''CC'',''DC'')
+AND (sc_grade is null or sc_grade in ('''',''IP'',''I''))
+AND ((right(c_end_date,4)>700 AND right(c_end_date,4)<1232 AND c_term<=2)
+OR (right(c_end_date,4)<600 AND c_term=3))
+AND sc_extract = ''E''
+Order by sc_banner_id",banner.shrtckg_grde_code_final,shrtckg_activity_date,student_section.final_grade
+Invaild student type codes (concurrent enrollment),USHE,Failure,,SC12,SC12a,Student Course,sc_student_type,Student Type. Checks for valid student type codes.,"INTO #sc12a
+FROM student_courses_' + @extract + '
+WHERE SC_STUDENT_TYPE NOT IN (''UC'',''CC'',''EC'',''DC'','''',NULL)
+AND sc_instance = @instance
+and sc_inst = @inst
+Order by sc_banner_id","sgbstdn_styp_code, sorhsch_sgbi_code, ssrsccd_sccd_code, Concurrent course Master list","sgbstdn_activity_date, sorhsch_activity_date, ssrsccd_activity_date","student.latest_student_type_code,
+student_section.section_number
+student_section.subject_code
+student_section.course_number
+term.season
+add latest_high_school_code to quad.student
+add budget_code to quad.course"
+Student type and HS code alignment (concurrent students only in Utah High schools),USHE,Failure,,SC12,SC12b,Student Course,sc_student_type,"Student Type. These students are listed as concurrent enrollment, but they attend a non-qualifying high school. Either an out-of-state OR adult high school, OR they are home schooled.","INTO #sc12b
+FROM students_' + @extract + ', student_courses_' + @extract + ', courses_' + @extract + '
+WHERE s_key = sc_s_key
+AND sc_c_key = c_key
+AND s_high_school in
+(''459050'',''459100'',''459150'',''459200'',''459300'',''459400'',''459500'',''459000'')
+AND sc_student_type = ''CC''
+AND s_instance = @instance
+and sc_inst = @inst
+Order by s_banner_id","sgbstdn_styp_code, sorhsch_sgbi_code, ssrsccd_sccd_code, Concurrent course Master list","sgbstdn_activity_date, sorhsch_activity_date, ssrsccd_activity_date","student.latest_student_type_code,
+student_section.section_number
+student_section.subject_code
+student_section.course_number
+term.season
+add latest_high_school_code to quad.student
+add budget_code to quad.course"
+Budget code and student type alignment (concurrent classes has concurrent students),USHE,Failure,,SC12,SC12c,Student Course,sc_student_type,"Student Type. These students took concurrent enrollment courses, but the student is not coded CC.","INTO #sc12c
+FROM student_courses_' + @extract + ', courses_' + @extract + '
+WHERE sc_c_key = c_key
+AND sc_instance = @instance
+AND sc_student_type <> ''CC''
+AND c_budget_code IN (''BC'',''SF'')
+and sc_inst = @inst
+Order by sc_banner_id","sgbstdn_styp_code, sorhsch_sgbi_code, ssrsccd_sccd_code, Concurrent course Master list","sgbstdn_activity_date, sorhsch_activity_date, ssrsccd_activity_date","student.latest_student_type_code,
+student_section.section_number
+student_section.subject_code
+student_section.course_number
+term.season
+add latest_high_school_code to quad.student
+add budget_code to quad.course"
+"Budget code, student type and entry action alignment",USHE,Failure,,SC12,SC12d,Student Course,sc_student_type,Checks for concurrent students not coded as high school in students file,"INTO #sc12d
+FROM student_courses_' + @extract + ', students_' + @extract + '
+WHERE sc_instance = @instance
+AND s_key = sc_s_key
+AND sc_student_type in (''CC'', ''DC'')
+AND s_reg_status != ''HS''
+and sc_inst = @inst
+Order by sc_banner_id","sgbstdn_styp_code, sorhsch_sgbi_code, ssrsccd_sccd_code, Concurrent course Master list","sgbstdn_activity_date, sorhsch_activity_date, ssrsccd_activity_date","student.latest_student_type_code,
+student_section.section_number
+student_section.subject_code
+student_section.course_number
+term.season
+add latest_high_school_code to quad.student
+add budget_code to quad.course"
+Budget code and student type alignment (concurrent students in concurrent classes),USHE,Failure,,SC12,SC12e,Student Course,sc_student_type,Student Type. Budget code is for CC students only,"INTO #sc12e
+FROM student_courses_' + @extract + ', courses_' + @extract + '
+WHERE sc_c_key = c_key
+AND sc_student_type = ''CC''
+AND c_budget_code NOT IN (''BC'',''SF'')
+and sc_inst = @inst
+AND sc_instance = @instance
+Order by sc_banner_id","sgbstdn_styp_code, sorhsch_sgbi_code, ssrsccd_sccd_code, Concurrent course Master list","sgbstdn_activity_date, sorhsch_activity_date, ssrsccd_activity_date","student.latest_student_type_code,
+student_section.section_number
+student_section.subject_code
+student_section.course_number
+term.season
+add latest_high_school_code to quad.student
+add budget_code to quad.course"
+Budget code and student type alignement (concurrent students in concurrent classes in out-of state high schools),USHE,Failure,,SC12,SC12f,Student Course,sc_student_type,Wrong budget code for student courses outside of UT,"Into #sc12f
+FROM courses_' + @extract + ', student_courses_' + @extract + ', students_' + @extract + '
+Where (c_budget_code in (''BC'', ''SF'')
+or sc_student_type = ''CC'')
+and c_key=sc_c_key
+and sc_s_key=s_key
+and s_high_school not in (select distinct hs_act_code from reference.dbo.highschools where hs_state = ''UT'')
+and sc_inst = @inst
+and sc_instance = @instance
+Order by sc_banner_id","sgbstdn_styp_code, sorhsch_sgbi_code, ssrsccd_sccd_code, Concurrent course Master list","sgbstdn_activity_date, sorhsch_activity_date, ssrsccd_activity_date","student.latest_student_type_code,
+student_section.section_number
+student_section.subject_code
+student_section.course_number
+term.season
+add latest_high_school_code to quad.student
+add budget_code to quad.course"
+Invalid CRN,Database,Failure,,SC14,SC14a,Student Course,sc_crn,SC_CRN Invalid,"Into #sc14a
+From student_courses_' + @extract + '
+Where (cast(sc_crn as float) = ''''
+or len(sc_crn) > ''5''
+or cast(sc_crn as float) < ''0.0''
+or sc_crn like ''%[^.0-9]%''
+or cast(sc_crn as float) In (''00000'', ''0000'',''000'',''00'', ''0''))
+and sc_instance = @instance
+and sc_inst = @inst
+Order by sc_crs_sbj, sc_crs_num, sc_crs_sec",banner.ssbsesct_crn,ssbsect_activity_date,student_section.course_reference_number
+Missing CRN,Database,Failure,,SC14,SC14b,Student Course,sc_crn,Missing Courses Reference Number,"INTO #sc14b
+FROM student_courses_' + @extract + '
+WHERE sc_instance = @instance
+AND sc_inst = @inst
+AND(sc_crn is null or sc_crn = '''')
+Order by sc_crs_sbj, sc_crs_num, sc_crs_sec",banner.ssbsesct_crn,ssbsect_activity_date,student_section.course_reference_number
+"Course type, program type and course level alignement (Invalid U)",Database,Failure,,SC15,SC15b,Student Course,sc_cr_type,SC_CR_Type = U Invalid,"Into #sc15b
+From student_courses_' + @extract + ' sc
+join courses_' + @extract + ' c on (sc.sc_c_key = c.c_key)
+Where sc_cr_type = ''U''
+and c_level not in (''R'',''U'')
+and sc_instance = @instance
+and sc_instance = @inst
+Order by sc_crs_sbj, sc_crs_num, sc_crs_sec",scrlevl_levl_code,scrlevl_acitivy_date,student_section.course_level_id
+"Course type, program type and course level alignement (Invalid G)",Database,Failure,,SC15,SC15c,Student Course,sc_cr_type,SC_CR_Type = G Invalid,"Into #sc15c
+From student_courses_' + @extract + ' sc
+join courses_' + @extract + ' c on (sc.sc_c_key = c.c_key)
+Where (sc_inst in (''3679'', ''5220'', ''5221'')
+or c_level <> ''G'')
+and sc_cr_type = ''G''
+and sc_instance = @instance
+and sc_instance = @inst
+Order by sc_crs_sbj, sc_crs_num, sc_crs_sec",scrlevl_levl_code,scrlevl_acitivy_date,student_section.course_level_id
+Missing Location,Database,Failure,,B02,B02a,Buildings,b_location,B_Location Missing,"Into #b02a
+From buildings_ext'+@year+'
+Where (b_location is null or b_location = '''')
+and b_inst = @binst
+Order by b_location, b_number",space_utlz.building_detail.bldg_loc_code,space_utlz.building_detail. bldg_activity_date,"Add building_location_code, building_location_desc to quad.buildings"
+Invalid Location,Database,Failure,,B02,B02b,Buildings,b_location,B_Location_Invalid,"Into #b02b
+From buildings_ext'+@year+'
+Where b_location not in (select distinct b_loc_code from reference.dbo.buildings_loc where inactive <> ''Y'')
+and not b_location is null and not b_location = ''''
+and b_inst = @binst
+Order by b_location, b_number",space_utlz.building_detail.bldg_loc_code,space_utlz.building_detail. bldg_activity_date,"Add building_location_code, building_location_desc to quad.buildings"
+Missing Ownership,Database,Failure,,B03,B03a,Buildings,b_ownership,B_Ownership Missing,"Into #b03A
+From buildings_ext'+@year+'
+Where (b_ownership is null or b_ownership = '''')
+and b_inst = @binst
+Order by b_ownership, b_number",space_utlz.building_detail.bldg_own_code,space_utlz.building_detail. bldg_activity_date,Add building_ownership_code to quad.buildings
+Invalid Ownership,Database,Failure,,B03,B03b,Buildings,b_ownership,B_Ownership_Invalid,"Into #b03b
+From buildings_ext'+@year+'
+Where b_ownership not in (select distinct b_own_code from reference.dbo.buildings_own where inactive <> ''Y'')
+and not b_ownership is null and not b_ownership = ''''
+and b_inst = @binst
+Order by b_ownership, b_number",space_utlz.building_detail.bldg_own_code,space_utlz.building_detail. bldg_activity_date,Add building_ownership_code to quad.buildings
+Missing Year,Database,Failure,,"B04, R02","B04a, R02a",Buildings,"b_year, r_year",B_Year missing,"Into #b04a
+From buildings_ext'+@year+'
+Where (b_year is null or b_year = '''')
+and b_inst = @binst
+Order by b_location, b_number","TO_CHAR(SYSDATE, 'YYYY')",n/a,
+Missing Name,Database,Failure,,B05,B05a,Buildings,b_name,B_Name Missing,"Into #b05a
+From buildings_ext'+@year+'
+Where (b_name is null or b_name = '''')
+and b_inst = @binst
+Order by b_location, b_number",space_utlz.building_detail.bldg_name,space_utlz.building_detail. bldg_activity_date,Add building_name to quad.buildings
+Missing Number,Database,Failure,,"B06, R03","B06a, R03a",Buildings,"b_number, r_build_number",B_Number missing,"Into #b06a
+From buildings_ext'+@year+'
+Where b_number is null
+--or b_number = '''' { Data type numeric will not accept blank by design}
+and b_inst = @binst
+Order by b_location, b_name",space_utlz.building_detail.bldg_number,space_utlz.building_detail. bldg_activity_date,Add building_name to quad.buildings
+Duplicate Number,Database,Failure,,B06,B06b,Buildings,b_number,B_Number duplicates,"Into #b06B
+From buildings_ext'+@year+'
+Where b_inst = @binst
+Group by b_inst, b_number
+Having Count (*) > 1
+Order by b_number",space_utlz.building_detail.bldg_number,space_utlz.building_detail. bldg_activity_date,Add building_name to quad.buildings
+Missing Building Abbrv,Database,Failure,,B07,B07b,Buildings,b_sname,B_SName missing,"Into #b07a
+From buildings_ext'+@year+'
+Where (b_sname is null or b_sname = '''')
+and b_inst = @binst
+Order by b_location, b_number",space_utlz.building_detail.bldg_abbrv,space_utlz.building_detail. bldg_activity_date,Add building_abbrv to quad.buildings
+Missing Year of Construction when replacement costs are greater than 3.5 million,Database,Failure,,B08,B08a,Buildings,b_year_cons,B_Year_Cons Missing for buildings greater than 3.5 million in replacement cost,"Into #b08a
+From buildings_ext'+@year+'
+Where (b_year_cons is null or b_year_cons = '''')
+and b_ownership = ''O''
+and isnull(b_replace_cost,0) > ''3500000''
+and b_inst = @binst
+Order by b_location, b_number",space_utlz.building_detail.bldg_const_year,space_utlz.building_detail. bldg_activity_date,Add building_construction_year to quad.buildings
+Missing Year of Construction when replacement costs are less than 3.5 million,Database,Warning,,B08,B08b,Buildings,b_year_cons,B_Year_Cons Missing for buildings less than 3.5 million in replacement cost,"Into #b08b
+From buildings_ext'+@year+'
+Where (b_year_cons is null or b_year_cons = '''')
+and b_ownership = ''O''
+and isnull(b_replace_cost,0) <= ''3500000''
+and b_inst = @binst
+Order by b_location, b_number",space_utlz.building_detail.bldg_const_year,space_utlz.building_detail. bldg_activity_date,Add building_construction_year to quad.buildings
+Missing Replacement Cost,Database,Failure,,B10,B10a,Buildings,b_replace_cost,"B_Replace_Cost is NULL or blank, replacement costs are required","Into #b10a
+From buildings_ext'+@year+'
+Where b_replace_cost is null
+-- or b_replace_cost = '''' { Data type numeric will not accept blank by design}
+and b_ownership = ''O''
+and b_aux = ''N''
+and b_inst = @binst
+Order by b_location, b_number",space_utlz.building_detail.bldg_cost_replacement,space_utlz.building_detail. bldg_activity_date,Add building_cost_replacement to quad.buildings
+Missing building condition when replacement costs are greater than 3.5 million,Database,Failure,,B11,B11a,Buildings,b_condition,Condition Miss Greater 3.5Mil,"Into #b11a
+From buildings_ext'+@year+'
+Where (b_condition is null or b_condition = '''')
+and b_ownership = ''O''
+and isnull(b_replace_cost,0) > ''3500000.00''
+and b_aux = ''N''
+and b_inst = @binst
+Order by b_location, b_number",space_utlz.building_detail.bldg_condition_code,space_utlz.building_detail. bldg_activity_date,"Add building_condition_code, building_condition_desc to quad.buildings"
+Invalid building condition,Database,Failure,,B11,B11b,Buildings,b_condition,B_Condition_Invalid,"Into #b11B
+From buildings_ext'+@year+'
+Where b_condition not in (select distinct b_cond_code from reference.dbo.buildings_cond where inactive <> ''Y'')
+and not b_condition is null and not b_condition = ''''
+and b_inst = @binst
+Order by b_condition, b_number",space_utlz.building_detail.bldg_condition_code,space_utlz.building_detail. bldg_activity_date,"Add building_condition_code, building_condition_desc to quad.buildings"
+Missing building condition when replacement costs are less than 3.5 mill,Database,Warning,,B11,B11c,Buildings,b_condition,B_Condition Missing where replacement cost is less than or equal to 3.5 million,"Into #b11c
+From buildings_ext'+@year+'
+Where (b_condition is null or b_condition = '''')
+and b_ownership = ''O''
+and isnull(b_replace_cost,0) <= ''3500000.00''
+and b_aux = ''N''
+and b_inst = @binst
+Order by b_location, b_number",space_utlz.building_detail.bldg_condition_code,space_utlz.building_detail. bldg_activity_date,"Add building_condition_code, building_condition_desc to quad.buildings"
+Missing gross area,Database,Failure,,B12,B12a,Buildings,b_gross,B_Gross Missing,"Into #b12a
+From buildings_ext'+@year+'
+Where b_gross is null
+--or b_gross = '''' { Data type numeric will not accept blank by design}
+and b_ownership = ''O''
+and b_aux = ''N''
+and b_inst = @binst
+Order by b_location, b_number",space_utlz.building_detail.bldg_area_gross,space_utlz.building_detail. bldg_activity_date,Add building_area_gross to quad.buildings
+Invalid gross area,Database,Failure,,B12,B12b,Buildings,b_gross,B_Gross Invalid,"Into #b12B
+From buildings_ext'+@year+'
+Where b_gross = ''0''
+and b_ownership = ''O''
+and b_aux = ''N''
+and b_inst = @binst
+Order by b_location, b_number",space_utlz.building_detail.bldg_area_gross,space_utlz.building_detail. bldg_activity_date,Add building_area_gross to quad.buildings
+Gross area less than sum of rooms in building,Database,Failure,,B12,B12c,Buildings,b_gross,B_Gross less than Sum of all the rooms area in the building,"Into #B12C
+From Buildings_ext'+@year+' b
+left join #Pro p on (b.b_inst = p.r_inst and b.b_year = p.r_year and b.b_number = p.r_build_Number)
+left join #area a on (b.b_inst = a.r_inst and b.b_year = a.r_year and b.B_number = a.r_build_Number)
+where (isnull(p.sum_prorated,0) + isnull(a.sum_nonpro,0)) > isnull(b.b_gross,0)
+and b_ownership = ''O''
+and b.b_inst = @binst
+Order by b.b_number",space_utlz.building_detail.bldg_area_gross,space_utlz.building_detail. bldg_activity_date,Add building_area_gross to quad.buildings
+Missing risk number when replacement costs are greater than 3.5 million,Database,Failure,,B14,B14a,Buildings,b_rsknbr,B_RSKNBR required (Fatal) for owned buildings greater than 3.5 million dollars replacement cost,"Into #b14a
+From buildings_ext'+@year+'
+Where (b_rsknbr = '''' or b_rsknbr is null)
+and b_ownership = ''O''
+and b_aux = ''N''
+and isnull(b_replace_cost,0) > ''3500000''
+and b_inst = @binst",space_utlz.building_detail.bldg_number,space_utlz.building_detail. bldg_activity_date,Add building_name to quad.buildings
+Missing risk number when replacement costs are less than 3.5 million,Database,Warning,,B14,B14b,Buildings,b_rsknbr,B_RSKNBR required for owned buildings less than or equal to 3.5 million dollars replacement cost,"Into #b14b
+From buildings_ext'+@year+'
+Where (b_rsknbr = '''' or b_rsknbr is null)
+and b_ownership = ''O''
+and isnull(b_replace_cost,0) <= ''3500000''
+and b_aux = ''N''
+and b_inst = @binst
+Order by b_inst, b_location, b_number",space_utlz.building_detail.bldg_number,space_utlz.building_detail. bldg_activity_date,Add building_name to quad.buildings
+Missing Auxiliary,Database,Failure,,B15,B15a,Buildings,b_aux,B_AUX values missing,"Into #b15a
+From buildings_ext'+@year+'
+Where (b_aux = '''' or b_aux is null)
+and b_ownership = ''O''
+and b_inst = @binst",space_utlz.building_detail.bldg_aux,space_utlz.building_detail. bldg_activity_date,Add building_auxiliary to quad.buildings
+Invalid Auxiliary,Database,Failure,,B15,B15a,Buildings,b_aux,B_AUX contain wrong values,"Into #b15b
+From Loads.dbo.Buildings_ext2021
+Where (b_aux <> '''' or b_aux is not null)
+and b_aux not in (''A'',''N'')
+and b_inst = @binst",space_utlz.building_detail.bldg_aux,space_utlz.building_detail. bldg_activity_date,Add building_auxiliary to quad.buildings
+Duplicate records,USHE,Failure,,,B99a,Buildings,"concat(b_inst,b_year,b_number)",Looking for duplicate b_keys,"Select ''''[B99A FTL Duplicate B_Key], b_inst, b_year, b_number, concat(b_inst,b_year,b_number) as [B_Key], Count(*) as [Duplicates]
+Into #b99a
+From buildings_ext'+@year+'
+Where b_inst = @binst
+Group by b_inst, b_year, b_number, [B_Key]
+Having Count(*) > ''1''
+Order by b_number",,space_utlz.building_detail. bldg_activity_date,
+Building must have rooms,USHE,Failure,,,B99b,Buildings,,Buildings must have rooms,"Into #b99b
+From buildings_ext'+@year+' b
+join rooms_ext'+@year+' r on (b.b_inst = r.r_inst and b.b_year = r.r_year and b.b_number = r.r_build_number)
+where (r.r_number is null or r.r_number = '''')
+and b_inst = @binst",,space_utlz.building_detail. bldg_activity_date,
+Room building not in building file,USHE,Failure,,R03,R03b,Rooms,r_build_number,Rooms_Build_Number not in Buildings,"Into #R03B
+From Rooms_ext'+@year+' r
+left join Buildings_ext'+@year+' b on (r.r_inst = b.b_inst and r.r_build_number = b.b_number)
+Where r_build_number is not null
+--or r_build_number = '''' {numeric type columns can not be blank}
+and b.b_number is null
+and r_inst = @rinst
+Order by r_inst, r_year, r_build_number, r_number",space_utlz.rooms_detail.rooms_detail.bldg_abbrv,space_utlz.room_activity_date,Add building_id to quad.rooms
+Missing room number,Database,Failure,,R04,R04a,Rooms,r_number,Rooms missing Room Numbers,"Into #R04A
+From Rooms_ext'+@year+'
+Where (r_number is null or r_number = '''')
+and r_inst = @rinst
+Order by r_build_number, r_year",space_utlz.rooms_detail.rooms_detail.bldg_abbrv,space_utlz.room_activity_date,Add room_number to quad.rooms
+Missing Room group,Database,Failure,,R06,R06a,Rooms,r_group1,R_Group1 missing,"Into #R06A
+From Rooms_ext'+@year+'
+Where (r_group1 is null or r_group1 = '''')
+and r_inst = @rinst
+Order by r_build_number, r_number",space_utlz.rooms_detail.room_group1_desc,space_utlz.room_activity_date,Add room_group1_code and room_group1_desc to quad.rooms
+Invalid room group,Database,Failure,,R06,R06b,Rooms,r_group1,R_Group1 not in Reference table,"Into #R06B
+From Rooms_ext'+@year+'
+Where r_group1 not in (select distinct r_group1_code from Reference.dbo.rooms_group1 where Inactive <> ''Y'')
+and not r_group1 is null and not r_group1 = ''''
+and r_inst = @rinst
+Order by r_build_number, r_number, r_group1",space_utlz.rooms_detail.room_group1_desc,space_utlz.room_activity_date,Add room_group1_code and room_group1_desc to quad.rooms
+Missing room use category when r_group1 not Z,Database,Failure,,R07,R07a,Rooms,r_use_category,R_Use_Category missing,"Into #R07A
+From Rooms_ext'+@year+'
+Where (r_use_category is null or r_use_category = '''')
+and r_group1 <> ''Z''
+and r_inst = @rinst
+Order by r_build_number, r_number",space_utlz.rooms_detail.room_use_code_group,space_utlz.room_activity_date,Add room_use_code_group to quad.rooms
+Invalid room use category,Database,Failure,,R07,R07b,Rooms,r_use_category,R_Use_Category not in Reference table,"Into #R07B
+From Rooms_ext'+@year+'
+Where r_use_category not in (select distinct r_use_cat_code from Reference.dbo.rooms_use_cat where Inactive <> ''Y'')
+and not r_use_category is null and not r_use_category = ''''
+and r_inst = @rinst
+Order by r_build_number, r_number, r_use_category",space_utlz.rooms_detail.room_use_code_group,space_utlz.room_activity_date,Add room_use_code_group to quad.rooms
+Missing room use category when r_group1 = Z,Database,Failure,,R07,R07c,Rooms,r_use_category,R_Use_Category missing,"Into #R07C
+From Rooms_ext'+@year+'
+Where (r_use_category is null or r_use_category = '''')
+and r_group1 = ''Z''
+and r_inst = @rinst
+Order by r_build_number, r_number",space_utlz.rooms_detail.room_use_code_group,space_utlz.room_activity_date,Add room_use_code_group to quad.rooms
+Missing room use code,Database,Failure,,R08,R08a,Rooms,r_use_code,R_Use_Code missing,"Into #R08A
+From Rooms_ext'+@year+'
+Where (r_use_code is null or r_use_code = '''')
+and r_group1 <> ''Z''
+and r_inst = @rinst
+Order by r_build_number, r_number",space_utlz.rooms_detail.room_use_code,space_utlz.room_activity_date,Add room_use_code to quad.rooms
+Invalid room use code,Database,Failure,,R08,R08b,Rooms,r_use_code,R_Use_Code Unknown not in Reference table,"Into #R08B
+From Rooms_ext'+@year+'
+Where r_use_code not in (select distinct r_use_code from Reference.dbo.rooms_use_code where Inactive <> ''Y'')
+and not r_use_code is null
+and not r_use_code = ''''
+and r_inst = @rinst
+Order by r_build_number, r_number, r_use_code",space_utlz.rooms_detail.room_use_code,space_utlz.room_activity_date,Add room_use_code to quad.rooms
+Invalid Room use code,Database,Failure,,R08,R08d,Rooms,r_use_code,Room Use Code 250 and 255 only for UU and USU,"Select ''''[R08D Use_Code_250 & 255], r_inst, r_build_number, r_number, r_use_code,
+(Case
+when r_inst in (''3675'', ''3677'') then ''Allowed''
+else ''Not Allowed''
+end) as Use_Code_Error
+Into #R08D
+From Rooms_ext'+@year+'
+Where r_use_code in(''250'',''255'')
+and r_inst = @rinst
+Order by r_build_number, r_number, r_use_code",space_utlz.rooms_detail.room_use_code,space_utlz.room_activity_date,Add room_use_code to quad.rooms
+Missing room name,Database,Failure,,R09,R09a,Rooms,r_name,R_Name missing,"Into #R09A
+From Rooms_ext'+@year+'
+Where (r_name is null or r_name = '''')
+and r_inst = @rinst
+Order by r_build_number, r_number",space_utlz.rooms_detail.room_name,space_utlz.room_activity_date,Add room_name to quad.rooms
+"Missing room stations when r_use_code 110, 210, 230",Database,Failure,,R10,R10a,Rooms,r_stations,"R_Stations missing for R_Use_Code 110, 210, 230","Into #R10A
+From Rooms_ext'+@year+'
+Where r_use_code in (''110'',''210'', ''230'')
+and r_stations is null
+and r_group1 <>''Z'' --Leasing to someone else
+and r_use_category <> ''000''
+--or r_stations = '''' { Data type numeric will not accept blank by design}
+and r_inst = @rinst
+Order by r_build_number, r_number",space_utlz.rooms_detail.room_stations,space_utlz.room_activity_date,Add room_stations to quad.rooms
+"Invalid room stations when r_use_code 110, 210, 230",Database,Failure,,R10,R10b,Rooms,r_stations,"R_Stations Invalid for R_Use_Code 110, 210, 230","Into #R10b
+From Rooms_ext'+@year+'
+Where r_use_code in (''110'',''210'', ''230'')
+and r_stations = ''0''
+and r_group1 <> ''Z'' --Leasing to someone else
+and r_use_category <> ''000''
+and r_inst = @rinst
+Order by r_build_number, r_number",space_utlz.rooms_detail.room_stations,space_utlz.room_activity_date,Add room_stations to quad.rooms
+Stations out of range when r_use_code 110,Database,Warning,,R10,R10c,Rooms,r_stations,R_Stations out of range where r_use_code = 110,"Select ''''[R10C Use_Code_110 out of Range], r_inst, r_build_number, r_use_code, r_suffix, r_area, r_stations,
+''7 to 16'' as ''Accept Range'', Cast(Round(r_area/r_stations, 0) as Int) as ''Calc Range''
+Into #R10C
+From Rooms_ext'+@year+'
+Where r_use_code = ''110''
+and Cast(Round(r_area/r_stations, 0) as Int) not between ''7'' and ''16''
+and r_group1 <> ''Z''
+and r_use_category <> ''000''
+and r_inst = @rinst
+Order by r_build_number, r_number",space_utlz.rooms_detail.room_stations,space_utlz.room_activity_date,Add room_stations to quad.rooms
+Stations out of range when r_use_code 210,Database,Warning,,R10,R10d,Rooms,r_stations,R_Stations out of range where r_use_code = 210,"Select ''''[R10D Use_Code_210 out of Range], r_inst, r_build_number, r_use_code, r_suffix, r_area, r_stations,
+''8 to 19'' as ''Accept Range'', Cast(Round(r_area/r_stations, 0) as Int) as ''Calc Range''
+Into #R10D
+From Rooms_ext'+@year+'
+Where r_use_code = ''210''
+and Cast(Round(r_area/r_stations, 0) as Int) not between ''8'' and ''19''
+and r_group1 <> ''Z''
+and r_use_category <> ''000''
+and r_inst = @rinst
+Order by r_build_number, r_number",space_utlz.rooms_detail.room_stations,space_utlz.room_activity_date,Add room_stations to quad.rooms
+Missing room area,Database,Failure,,R11,R11a,Rooms,r_area,R_Area missing,"Into #R11A
+From Rooms_ext'+@year+'
+Where r_area is null
+--or r_area = '''' {Data type numeric will not accept blank by design}
+and r_inst = @rinst
+Order by r_build_number, r_number",space_utlz.rooms_detail.room_area,space_utlz.room_activity_date,Add room_area to quad.rooms
+Invalid room area,Database,Failure,,R11,R11b,Rooms,r_area,R_Area Invalid,"Into #R11B
+From Rooms_ext'+@year+'
+Where r_area = ''0''
+and r_inst = @rinst
+Order by r_build_number, r_number",space_utlz.rooms_detail.room_area,space_utlz.room_activity_date,Add room_area to quad.rooms
+Invalid proration,Database,Failure,,R13,R13a,Rooms,r_proration,R_Proration Not Y or N,"Into #R13A
+From Rooms_ext'+@year+'
+Where r_proration not in( ''Y'',''N'')
+and r_inst = @rinst
+Order by r_build_number, r_number",space_utlz.room_prorated,space_utlz.room_activity_date,Add room_prorated to quad.rooms
+Missing proration,Database,Failure,,R13,R13b,Rooms,r_proration,R_Proration missing,"Into #R13B
+From Rooms_ext'+@year+'
+Where (r_proration is null or r_proration = '''')
+and r_inst = @rinst
+Order by r_build_number, r_number",space_utlz.room_prorated,space_utlz.room_activity_date,Add room_prorated to quad.rooms
+Prorated room area and prorated area equals zero,Database,Failure,,R13,R13c,Rooms,r_proration,"R_Proration = Y, R_Area and R_Prorated_area = 0","Into #R13C
+From Rooms_ext'+@year+'
+Where r_proration = ''Y''
+and r_area = ''0'' and r_prorated_area = ''0''
+and r_inst = @rinst
+Order by r_build_number, r_number",space_utlz.room_prorated,space_utlz.room_activity_date,Add room_prorated to quad.rooms
+"Prorated room area does not equal zero, but room area equals zero",Database,Failure,,R13,R13d,Rooms,r_proration,"R_Proration = Y, R_Area = 0 and R_Prorated_area <> 0","Into #R13D
+From Rooms_ext'+@year+'
+Where r_proration = ''Y''
+and r_area = ''0'' and r_prorated_area <> ''0''
+and r_inst = @rinst
+Order by r_build_number, r_number",space_utlz.room_prorated,space_utlz.room_activity_date,Add room_prorated to quad.rooms
+"Prorated room area equals zero, but room area does not equal zero",Database,Failure,,R13,R13e,Rooms,r_proration,"R_Proration = Y, R_Area <> 0 and R_Prorated_area = 0","Into #R13E
+From Rooms_ext'+@year+'
+Where r_proration = ''Y''
+and r_area <> ''0'' and r_prorated_area = ''0''
+and r_inst = @rinst
+Order by r_build_number, r_number",space_utlz.room_prorated,space_utlz.room_activity_date,Add room_prorated to quad.rooms
+"Proration equals N, but prorated area does not equal zero",Database,Failure,,R13,R13f,Rooms,r_proration,"R_Proration = N, R_Prorated_area <> 0","Into #R13F
+From Rooms_ext'+@year+'
+Where r_proration = ''N''
+and r_prorated_area <> ''0''
+and r_inst = @rinst
+Order by r_build_number, r_numbe",space_utlz.room_prorated,space_utlz.room_activity_date,Add room_prorated to quad.rooms
+Missing prorated area,Database,Failure,,R14,R14a,Rooms,r_prorated_area,R_Prorated_Area can not be null,"Into #R14A
+From Rooms_ext'+@year+'
+Where r_prorated_area is null
+--or r_prorated_area = '''' {Data type numeric will not accept blank by design}
+and r_inst = @rinst
+Order by r_build_number, r_number",space_utlz.room_prorated_area,space_utlz.room_activity_date,Add room_prorated_area to quad.rooms
+Sum of prorated area is not equal to room area,Database,Failure,,R14,R14b,Rooms,r_prorated_area,R_Prorated_Area Not Equal R_Area,"Into #R14B
+From Rooms_ext'+@year+' r
+join #Pro p on (r.r_inst = p.r_inst and r.r_year = p.r_year and r.r_build_number = p.r_build_Number and r.r_number = p.r_number)
+where r.r_proration = ''Y''
+and isnull(r.r_area,0) <> isnull(p.sum_prorated,0)
+and r.r_inst = @rinst
+Order by r.r_build_number, r.r_number",space_utlz.room_prorated_area,space_utlz.room_activity_date,Add room_prorated_area to quad.rooms
+Invalid Date Format,Database,Failure,,R15,R15a,Rooms,r_update_date,R_Update_Date wrong format,"Into #R15a
+From Rooms_ext'+@year+'
+Where (len(r_update_date) <> ''8'' or substring(r_update_date,1,8) like ''%[a-z]%''
+or r_update_date like ''%[/]%'')
+and r_update_date <> ''''
+and r_inst = @rinst
+Order by r_build_number, r_number",space_utlz.room_activity_date,space_utlz.room_activity_date,Add room_activity_date to quad.rooms
+Missing activity date,Database,Failure,,R15,R15b,Rooms,r_update_date,R_Update_Date blank list,"Into #R15b
+From Rooms_ext'+@year+'
+Where r_update_date = ''''
+and r_inst = @rinst
+Order by r_build_number, r_number",space_utlz.room_activity_date,space_utlz.room_activity_date,Add room_activity_date to quad.rooms
+Update date is in the future,Database,Failure,,R15,R15b,Rooms,r_update_date,R_Update_Date is in the future,"Into #R15C
+From Rooms_ext'+@year+'
+where Convert(varchar(10), cast(r_update_date as date),101) > GETDATE()
+and r_inst = @rinst
+Order by r_build_number, r_number",space_utlz.room_activity_date,space_utlz.room_activity_date,Add room_activity_date to quad.rooms
+Duplicate records,USHE,Failure,,,R99a,Rooms,,Looking for duplicate r_keys,"Select ''''[R99A FTL Duplicate R_Key], r_inst, r_year, r_build_number, r_number, r_suffix, r_group1, r_use_code,
+concat(r_inst, r_year, r_build_number, r_number, r_suffix, r_group1, r_use_code) as [R_Key], Count(*) as [Duplicates]
+Into #r99a
+From Rooms_ext'+@year+'
+Where r_inst = @rinst
+Group by r_inst, r_year, r_build_number, r_number, r_suffix, r_group1, r_use_code, [R_Key]
+Having Count(*) > ''1''
+Order by r_number",,space_utlz.room_activity_date,

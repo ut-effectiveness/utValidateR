@@ -1,0 +1,190 @@
+---
+title: "Package Design Proposal"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+date: '2022-07-12'
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+opts_chunk$set(echo = TRUE)
+opts_knit$set(root.dir = here::here())
+
+library(tidyverse)
+```
+
+### Introduction
+
+This document lays out my idea for how to implement a couple hundred relatively simple rule-checks in as efficient a manner as possible. The task, as I understand it, is:
+
+- For a given dataset (like the fake_student_df)
+- Apply a well-specified set of rules, corresponding to ushe rules in Data Inventory
+- Each rule will create up to 3 new columns to append to the dataset:
+    - (all rules) a character vector indicating "Pass" or "Failure"/"Warning"
+    - (rules with a specified activity_date column): Date vector specifying the activity date
+    - (activity_date rules): numeric "age" vector given the time since activity_date
+
+The goal is to apply these rules with relatively minimal specification. For example, I don't want to export a top-level function for each rule. 
+
+### Specifying rules as anonymous functions in a tibble
+
+Since the activity_date and age columns are created from existing columns in the dataset, these can be created programmatically using information in the Data Inventory spreadsheet. Whether each rule generates a "Failure" or a "Warning" is also specified in Data Inventory, meaning I can focus on writing a simple function for each rule that simply returns TRUE when the rule is obeyed and FALSE when it is broken. Some of these functions might be complex enough to warrant a standalone exported function with its own roxygen documentation, but the majority should work as anonymous functions, possibly calling a more flexible generic function if none exist in imported packages. There are many ways I could do this, but for now I'm using a tibble, specified rowwise via `tribble()`--this to facilitate joining to metadata from the Data Inventory. For the purposes of illustration I selected a small number of rules to implement in this way:
+
+```{r}
+rule_spec <- tribble(
+  ~rule,  ~checker,
+  "S00a", function(x) {!is_duplicated(x$student_id)},
+  "S00b", function(x) {!is_duplicated(x$ssn)},
+  "S03a", function(x) {!is.na(x$student_id) & !is.na(x$ssn)},
+  "S03b", function(x) {!is.na(x$ssn)},
+  "S03c", function(x) {(x$us_citizenship_code != 1) | !is.na(x$ssn)},
+  "S04b", function(x) {str_detect(ssn_regex, x$ssn)},
+  "S06a", function(x) {!is.na(x$last_name)},
+  "S06b", function(x) {!has_nonalpha(x$last_name)},
+  "S06c", function(x) {!is.na(x$first_name)},
+  "S06d", function(x) {!has_nonalpha(x$first_name)},
+  "S06e", function(x) {!has_nonalpha(x$middle_name)},
+  "S07a", function(x) {!has_nonalpha(x$previous_last_name)},
+  "S07b", function(x) {!has_nonalpha(x$previous_first_name)},
+  "S08a", function(x) {!is.na(x$local_address_zip_code)},
+  "S09a", function(x) {!is.na(x$us_citizenship_code)},
+  "S10a", function(x) {!is.na(x$first_admit_country_code)}
+)
+```
+
+The full list of rules would be similarly specified, and included in the package as a data object. These are not final; for example some of them currently return NA, and I have some ideas to abstract the syntax so as to avoid having to call `function()` as well as provide some useful assertions. But the above gets the job done and illustrates the general approach of specifying rules as simple anonymous functions. 
+
+Some of the anonymous functions call other functions that I do plan to export. I haven't decided whether I want to *only* call exported functions here--that would allow me to standardize syntax but also would be highly redundant (e.g. I could write an `is_missing()` function that would not be much more than a call to `is.na()`). Anyway, here are the functions and objects used above:
+
+```{r}
+#' Regex to check ssn, from:
+#' https://www.geeksforgeeks.org/how-to-validate-ssn-social-security-number-using-regular-expression
+ssn_regex <- "^(?!666|000|9\\d{2})\\d{3}-(?!00)\\d{2}-(?!0{4})\\d{4}$"
+
+#' Returns TRUE for duplicated elements of x; FALSE otherwise
+#' 
+#' @param x a vector
+#' @export
+is_duplicated <- function(x) {
+  duplicated(x) | duplicated(x, fromLast = TRUE)
+}
+
+#' Returns TRUE for elements of x with non-alphabet characters; FALSE otherwise
+#' 
+#' @param x a character vector
+#' @export
+has_nonalpha <- function(x) {
+  alpha_regex <- "[^[:alpha:]]+$"
+  out <- stringr::str_detect(x, alpha_regex)
+  out
+}
+```
+
+### Rule info from Data Inventory
+
+Next I need functions to grab information from the Data Inventory, or more specifically the "validation rules" sheet, which I'm including in simplified form as a csv. 
+
+```{r}
+
+# dataframe with rule info from Data Inventory
+all_rules <- read.csv("sandbox/full-rules-rename.csv") %>% 
+  mutate(ushe_rule = map(ushe_rule, ~unlist(str_split(., pattern = ", ")))) %>% 
+  unnest(cols = ushe_rule) %>%
+  mutate(activity_date = ifelse(activity_date == "n/a", NA_character_, activity_date)) %>% 
+  select(rule = ushe_rule, description, status, activity_date) %>% 
+  glimpse()
+
+# Rule info joined to anonymous-function tibble
+checklist <- all_rules %>% 
+  inner_join(rule_spec, by = "rule") %>% 
+  glimpse()
+
+```
+
+### High-level `do_checks()` function
+
+The final high-level function for applying the checks is as follows:
+
+```{r}
+
+#' Apply all rules in checklist to a dataframe
+#' 
+#' Returns df_tocheck with additional columns for each rule in checklist
+#' 
+#' @param df_tocheck a data.frame to check, like fake_student_df
+#' @param checklist a tibble containing rule functions in `checker` column, as
+#'  well as `rule` and `activity_date` columns
+#'  
+#' @importFrom purrr map map2 map2_dfc
+#' @importFrom dplyr bind_cols all_of select
+#' @export
+do_checks <- function(df_tocheck, checklist) {
+  # For each row in checklist, apply the checker function to df_tocheck
+  result_names <- paste0(checklist$rule, "_status")
+  check_results <- map(checklist$checker, ~.(df_tocheck)) %>% 
+    setNames(result_names) %>% 
+    bind_cols()
+  
+  check_statuses <- map2_dfc(check_results, checklist$status, 
+                             ~ifelse(.x, "Pass", .y)) 
+  
+  # dataframe with activity_date and error_age columns for relevant rules
+  actdate_dfs <- map2_dfc(checklist$activity_date, checklist$rule, 
+                          ~get_actdates(df_tocheck, datecol = .x, rule = .y))
+  
+  # result, date, and age, sorted by name
+  # TODO: fix ordering. _status should be first, then _activity_date, then _error_age
+  df_tojoin <- bind_cols(check_statuses, actdate_dfs) %>% 
+    select(all_of(sort(names(.))))
+  
+  out <- bind_cols(df_tocheck, df_tojoin)
+  out
+}
+
+#' Returns number of days since each date in x
+#'
+#' @param x a Date vector or similar
+get_age <- function(x) {
+  lubridate::interval(x, Sys.Date()) %/% lubridate::days(x=1)
+}
+
+#' Returns a dataframe with columns <rule>_activity_date, <rule>_error_age
+#' 
+#' @param df the dataframe to check
+#' @param datecol Name of the relevant activity_date column
+#' @param rule Name of the rule, e.g "S03b"
+#' 
+#' @importFrom tibble tibble
+#' @importFrom dplyr mutate
+#' @importFrom stats setNames
+#' @export
+get_actdates <- function(df, datecol, rule) {
+  
+  if (!exists(datecol, where = df)) {
+    warning(sprintf("Could not find column %s", datecol))
+    return(NULL)
+  }
+  
+  out <- tibble(activity_date = df[[datecol]]) %>% 
+    mutate(error_age = get_age(activity_date)) %>% 
+    setNames(paste(rule, names(.), sep = "_"))
+  out
+}
+
+```
+
+### Final Result
+
+With all that out of the way, I can now complete the demo.
+
+```{r}
+data("fake_student_df")
+resultdf <- do_checks(fake_student_df, checklist)
+
+glimpse(resultdf)
+```
+
+And that's where things currently stand! Obvious next steps include expanding the rule set, refining functions, testing, etc. But before I go too far with this approach I want to see whether this design strategy makes sense and gather any feedback from the team in Utah. 
+

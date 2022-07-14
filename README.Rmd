@@ -39,3 +39,16 @@ devtools::install_github("dsu-effectiveness/utValidateR")
 library(DT)
 View(head(fake_student_df))
 ```
+
+## Using
+
+```{r}
+library(utValidateR)
+library(dplyr)
+data("fake_student_df")
+data("checklist")
+
+check_result <- do_checks(fake_student_df, checklist)
+glimpse(check_result)
+```
+

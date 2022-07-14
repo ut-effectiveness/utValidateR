@@ -64,3 +64,21 @@
 #' }
 #' @source The script for creating this data set is in the dev folder
 "fake_student_df"
+
+
+
+#' Rule specification using R expressions
+#'
+#' TODO: fill out documentation
+#'
+#' @format a tibble with ?? columns and ?? variables:
+#' \describe{
+#'   \item{rule}{Rule name, e.g. S01a}
+#'   \item{description}{Short description of rule}
+#'   \item{status}{Whether breaking the rule is a Failure or a Warning}
+#'   \item{activity_date}{Name of the relevant activity-date variable}
+#'   \item{checker}{Expression defining the rule}
+#' }
+#' @source Defined in data-raw/checklist.R
+"checklist"
+

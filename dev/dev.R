@@ -16,3 +16,5 @@ usethis::use_data_raw(name = "fake_student_df", open = FALSE)
 
 usethis::use_data_raw(name = 'fake_student_course_validation', open = FALSE)
 
+usethis::use_data_raw(name = 'fake_graduation_validation', open = FALSE)
+

@@ -9,7 +9,7 @@
 make_checker <- function(expr) {
   # expr <- enexpr(expr)
   expr_chr <- deparse(expr)
-  print(expr_chr)
+  # print(expr_chr)
   outfun <- function(df) {
     out2 <- eval_tidy(expr, df)
 

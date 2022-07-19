@@ -46,7 +46,7 @@ rule_spec <- tribble(
   "S12", expr(!is.na(birth_date)),
   "S12a", expr(date_before_present_year(birth_date)),
   "S12b", expr(is.na(birth_date) | is.Date(birth_date)), # TODO: check since rule references date string
-  "S12c", expr(years_since(birth_date) > 100),
+  "S12c", expr(age_in_range(birth_date, 0, 100)),
   "S13", expr(is_valid_gender(gender_code)),
   # "S13a", TODO: how to track change over time? Do we compare different dataframes?
   # "S13b", TODO: how to track change over time? Do we compare different dataframes?

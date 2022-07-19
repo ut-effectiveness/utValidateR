@@ -1,69 +1,38 @@
 
-#' Returns number of days since each date in x
+
+#' Checks whether an object is Date class
 #'
-#' @param x a Date vector or similar
+#' @param x object to check
+is.Date <- function(x) inherits(x, "Date")
+
+#' Computes age for birthdate and returns a logical vector indicating whether
+#'  the age is between lwr and upr years
+#'
+#' @param birthdate Date-valued vector
+#' @param lwr lower bound on age in years
+#' @param upr upper bound on age in years
+#'
 #' @export
-get_age <- function(x) {
-  lubridate::interval(x, Sys.Date()) %/% lubridate::days(x=1)
-}
-
-age_years <- function(birthdate) {
-  lubridate::interval(birthdate, Sys.Date()) / lubridate::years(x=1)
-}
-
+#'
 age_in_range <- function(birthdate, lwr, upr) {
-  age <- age_years(birthdate)
+  stopifnot(is.Date(birthdate))
+  age <- lubridate::interval(birthdate, Sys.Date()) / lubridate::years(x=1)
   age > lwr & age < upr
 }
 
-#' Number of years since the specified date
-years_since <- function(date, from = lubridate::today()) {
-  lubridate::interval(date, from) / lubridate::years(1)
-}
-
+#' Checks whether a given date falls befor the present year
+#'
+#' Used in S12a, G05a
+#'
+#' @param date Date-valued vector to check
+#' @param year defaults to the present year (as of `Sys.Date()`)
+#' @export
 date_before_present_year <- function(date, year = format(Sys.Date(), "%Y")) {
   # TODO: what desired missingness behavior? Assuming NA OK
   out <- date < lubridate::ymd(paste0(year), "-01-01")
-  out | is.na(date)
+  out | is.na(date) # Does not flag missing dates (that's for another check)
 }
 
-#' Returns a dataframe with columns <rule>_activity_date, <rule>_error_age
-#'
-#' @param df the dataframe to check
-#' @param datecol Name of the relevant activity_date column
-#' @param rule Name of the rule, e.g "S03b"
-#'
-#' @importFrom tibble tibble
-#' @importFrom dplyr mutate
-#' @importFrom stats setNames
-#' @export
-get_activity_dates <- function(df, datecol, rule) {
-
-  if (!exists(datecol, where = df)) {
-    warning(sprintf("Could not find column %s", datecol))
-    return(NULL)
-  }
-
-  out <- tibble(activity_date = df[[datecol]]) %>%
-    mutate(error_age = get_age(.data$activity_date)) %>%
-    setNames(paste(rule, names(.), sep = "_"))
-  out
-}
-
-#' Regex to check ssn, from:
-#' https://www.geeksforgeeks.org/how-to-validate-ssn-social-security-number-using-regular-expression
-is_valid_ssn <- function(ssn) {
-  ssn_regex <- "^(?!666|000|9\\d{2})\\d{3}-(?!00)\\d{2}-(?!0{4})\\d{4}$"
-  matches_regex(ssn, ssn_regex)
-}
-
-#' Regex to check zip code, from:
-#' https://regexlib.com/Search.aspx?k=us+zip+code&c=-1&m=-1&ps=20&AspxAutoDetectCookieSupport=1
-#' TODO: Add/audit rules to match data inventory
-is_valid_zip_code <- function(zipcode) {
-  zipcode_regex <- "^\\d{5}(-\\d{4})?$"
-  matches_regex(zipcode, zipcode_regex)
-}
 
 #' Returns TRUE for duplicated elements of x; FALSE otherwise
 #'
@@ -73,135 +42,148 @@ is_duplicated <- function(x) {
   duplicated(x) | duplicated(x, fromLast = TRUE)
 }
 
-#' Wrapper around stringr::str_detect()
+#' Validity checks on various values
 #'
-#' @param string passed to str_detect()
-#' @param pattern passed to str_detect()
-#' @export
-matches_regex <- function(string, pattern) {
-  stringr::str_detect(string, pattern)
-}
-
-#' Returns TRUE for elements of x with non-alphabet characters; FALSE otherwise
 #'
-#' @param x a character vector
+#' @param x Vector to check
 #' @export
-has_nonalpha <- function(x) {
-  alpha_regex <- "[^[:alpha:]]+$"
-  out <- stringr::str_detect(x, alpha_regex)
-  out
-}
-
-
-
-
-# Unclear where to put this
-valid_student_type_codes <- c('N','2','R','C','T','3','P','H','0','5','1','F','S')
-
-
-
 is_valid_act_score <- function(x) {
   # TODO: How to treat NAs? Valid or no? Saying not valid for now
   !is.na(x) & is.numeric(x) & x >= 0 & x <= 36
 }
 
-is_valid_act_scores <- function() {
-  is_valid_act_score(act_composite_score) &
-    is_valid_act_score(act_english_score) &
-    is_valid_act_score(act_math_score) &
-    is_valid_act_score(act_reading_score) &
-    is_valid_act_score(act_science_score)
+
+#' @describeIn is_valid_act_score ssn
+#' @export
+is_valid_ssn <- function(x) {
+
+  # Regex to check ssn, from:
+  # https://www.geeksforgeeks.org/how-to-validate-ssn-social-security-number-using-regular-expression
+  ssn_regex <- "^(?!666|000|9\\d{2})\\d{3}-(?!00)\\d{2}-(?!0{4})\\d{4}$"
+  stringr::str_detect(x, ssn_regex)
 }
 
-is_valid_class_level <- function(class_level_id) {
+
+#' @describeIn is_valid_act_score zip_code
+#' @export
+is_valid_zip_code <- function(x) {
+
+  # TODO: Add/audit rules to match data inventory
+
+  # Regex to check zip code, from:
+  # https://regexlib.com/Search.aspx?k=us+zip+code
+  zipcode_regex <- "^\\d{5}(-\\d{4})?$"
+  stringr::str_detect(x, zipcode_regex)
+}
+
+#' @describeIn is_valid_act_score level_class_id
+#' @export
+is_valid_class_level <- function(x) {
   valid_ids <- c('JR','SR','FR','GG','SO') # TODO: verify these are the correct ids
-  class_level_id %in% valid_ids
+  x %in% valid_ids
 }
 
-# TODO: find out what makes a previous id valid. (S05a)
-is_valid_previous_id <- function(previous_id) {
-  !is.na(previous_id) & !matches_regex(previous_id, "^0*$")
-}
-
-# get_iso_country_codes <- function() {
-#
-# }
-
-is_valid_country_code <- function(country_code) {
-  # iso_country_codes <- get_iso_country_codes() # TODO: get valid ISO country code list
-  valid_iso_country_codes <- setdiff(iso_countries$iso_alpha2, "")
-  country_code %in% valid_iso_country_codes
-}
-
-is_valid_student_id <- function(student_id) {
+#' @describeIn is_valid_act_score student_id
+#' @export
+is_valid_student_id <- function(x) {
   # TODO: what makes a student_id valid?
-  !is.na(student_id)
+  !is.na(x)
 }
 
-is_valid_credits <- function(credits) {
-  is.numeric(credits) & !is.na(credits) & credits >= 0 & credits < 10000
+#' @describeIn is_valid_act_score previous_student_id
+#' @export
+is_valid_previous_id <- function(x) {
+  # TODO: find out what makes a previous id valid. (S05a)
+  !is.na(x) & !stringr::str_detect(x, "^0*$")
 }
 
-is_valid_gpa <- function(gpa) {
-  !is.na(gpa) & is.numeric(gpa) & gpa >= 0 & gpa <= 5
+#' @describeIn is_valid_act_score first_admit_country_code
+#' @export
+is_valid_country_code <- function(x) {
+  valid_iso_country_codes <- setdiff(iso_countries$iso_alpha2, "")
+  x %in% valid_iso_country_codes
 }
 
-#' Used in rule S13 and G06a
-is_valid_gender <- function(gender) {
-  toupper(gender) %in% c("M", "F")
+
+#' @describeIn is_valid_act_score credits_earned
+#' @export
+is_valid_credits <- function(x) {
+  is.numeric(x) & !is.na(x) & x >= 0 & x < 10000
 }
 
-is_valid_student_type <- function(student_type) {
+#' @describeIn is_valid_act_score gpa
+#' @export
+is_valid_gpa <- function(x) {
+  !is.na(x) & is.numeric(x) & x >= 0 & x <= 5
+}
+
+
+#' @describeIn is_valid_act_score gender_code, Used in rule S13 and G06a
+#' @export
+is_valid_gender <- function(x) {
+  toupper(x) %in% c("M", "F") # based on sql code
+}
+
+#' @describeIn is_valid_act_score student_type_code
+#' @export
+is_valid_student_type <- function(x) {
   # TODO: verify valid codes (these are the ones used in fake_student_df)
   valid_student_type_codes <- c('N','2','R','C','T','3','P','H','0','5','1','F','S')
-  student_type %in% valid_student_type_codes
+  x %in% valid_student_type_codes
 }
 
+
+#' Helper functions for student_type  and level_class_id categories
+#'
+#' @param student_type vector of student_type_code values
 is_freshmen_type <- function(student_type) {
   # TODO: verify freshmen type code. Also, sql references both FF and FH. Do I need to tell these apart?
   student_type == "F" # Guessing for now.
 }
 
+#' @describeIn is_freshmen_type returns TRUE for high-school student_types
 is_hs_type <- function(student_type) {
   # TODO: verify highschool type code
   student_type %in% "H" # Guessing for now
 }
 
+#' @describeIn is_freshmen_type returns TRUE for undergrad student_types
 is_undergrad_type <- function(student_type) {
   # TODO: find out how student_type is coded
   undergrad_types <- c() # Fill this in!
   student_type %in% undergrad_types
 }
 
+#' @describeIn is_freshmen_type returns TRUE for grad-school student_types
 is_grad_type <- function(student_type) {
   # TODO: find out how student_type is coded
   grad_types <- c() # Fill this in!
   student_type %in% grad_types
 }
 
-is_grad_level <- function(level) {
-  level == "GG" # TODO: verify
-}
-
+#' @describeIn is_freshmen_type returns TRUE for undergrad level_class_ids
 is_undergrad_level <- function(level) {
   level %in% c('JR','SR','FR','SO') # TODO: verify
 }
 
-
-is_missing_chr <- function(name) {
-  # Per sql code, name is missing if null (NA) or empty string.
-  out <- is.na(name) | name == ""
-  out
+#' @describeIn is_freshmen_type returns TRUE for grad-school level_class_ids
+#' @param level vector of primary_level_class_id values
+is_grad_level <- function(level) {
+  level == "GG" # TODO: verify
 }
 
 
-# Checks that a character vector is alpha-only (plus apostrophe)
-is_alpha_chr <- function(name, missing_ok = TRUE) {
-  stopifnot(is.character(name))
-  missingvec <- is_missing_chr(name)
+
+#' Checks that a character vector is alpha-only (plus apostrophe)
+#'
+#' @param x Character vector
+#' @param missing_ok if TRUE (default), do not flag `NA` or `""` values
+is_alpha_chr <- function(x, missing_ok = TRUE) {
+  stopifnot(is.character(x))
+  missingvec <- is_missing_chr(x)
 
   alpha_regex <- "^[a-zA-Z']*$" # Allows apostrophe per sql code
-  alphavec <- stringr::str_detect(name, alpha_regex)
+  alphavec <- stringr::str_detect(x, alpha_regex)
 
   if (missing_ok) {
     out <- missingvec | alphavec
@@ -212,12 +194,34 @@ is_alpha_chr <- function(name, missing_ok = TRUE) {
   out
 }
 
+
+#' Checker for missing character values
+#'
+#' @describeIn is_alpha_chr returns TRUE for NA or empty-string values
+is_missing_chr <- function(x) {
+  # Per sql code, x is missing if null (NA) or empty string.
+  out <- is.na(x) | x == ""
+  out
+}
+
+
 #' Checks whether a county is in Utah.
+#'
+#' @param county_code Vector of first_admit_county_code values
 is_utah_county <- function(county_code) {
   # TODO: how are counties encoded? For now using same logic as sql--97 and 99 are out-of-state
   !(as.numeric(county_code) %in% c(97, 99))
 }
 
+#' @describeIn is_utah_county Checks whether a county is in USA
+is_us_county <- function(county_code) {
+  # TODO: how are counties encoded? For now matching the logic in the sql code
+  !(county_code %in% 97)
+}
+
+#' @describeIn is_utah_county Checks whether a state code is in USA
+#'
+#' @param state first_admit_state_code
 is_us_state <- function(state) {
   us_states <- c("AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL",
                  "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
@@ -227,7 +231,3 @@ is_us_state <- function(state) {
   state %in% us_states
 }
 
-is_us_county <- function(county) {
-  # TODO: how are counties encoded? For now matching the logic in the sql code
-  !(county %in% 97)
-}

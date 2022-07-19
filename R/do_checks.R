@@ -37,3 +37,34 @@ do_checks <- function(df_tocheck, checklist) {
   out <- bind_cols(df_tocheck, df_tojoin)
   out
 }
+
+
+#' Returns number of days since each date in x
+#'
+#' @param x a Date vector or similar
+get_age <- function(x) {
+  lubridate::interval(x, Sys.Date()) %/% lubridate::days(x=1)
+}
+
+#' Returns a dataframe with columns (rule)_activity_date, (rule)_error_age
+#'
+#' @param df the dataframe to check
+#' @param datecol Name of the relevant activity_date column
+#' @param rule Name of the rule, e.g "S03b"
+#'
+#' @importFrom tibble tibble
+#' @importFrom dplyr mutate
+#' @importFrom stats setNames
+#' @export
+get_activity_dates <- function(df, datecol, rule) {
+  if (is.na(datecol)) return(NULL) # Some rules have no relevant date
+  if (!exists(datecol, where = df)) {
+    warning(sprintf("Could not find column %s", datecol))
+    return(NULL)
+  }
+
+  out <- tibble(activity_date = df[[datecol]]) %>%
+    mutate(error_age = get_age(.data$activity_date)) %>%
+    setNames(paste(rule, names(.), sep = "_"))
+  out
+}

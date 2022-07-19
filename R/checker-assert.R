@@ -9,7 +9,6 @@
 assert_no_missing <- function(vec, expr_chr) {
   expr_chr <- paste(expr_chr, collapse = "")
   msg <- sprintf("Missing values found when evaluating %s", expr_chr)
-  print(msg)
   assert_that(noNA(vec), msg = msg)
 }
 

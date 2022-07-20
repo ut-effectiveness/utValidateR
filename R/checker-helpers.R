@@ -1,5 +1,14 @@
 
 
+#' NA-imputing double-equals replacement
+#'
+#' @param x,y logical vectors
+#' @export
+equivalent <- function(x, y) {
+  out <- x == y | (is.na(x) & is.na(y))
+  out[is.na(out)] <- FALSE
+}
+
 #' Checks whether an object is Date class
 #'
 #' @param x object to check

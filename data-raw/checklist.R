@@ -39,7 +39,7 @@ rule_spec <- tribble(
   "S08b", expr(is_valid_zip_code(local_address_zip_code) &
                  is_valid_zip_code(mailing_address_zip_code)),
   "S09a", expr(!is.na(us_citizenship_code)),
-  # "S09b", expr(!(us_citizenship_code == 2 & ), # TODO sort out tricky boolean logic
+  "S09b", expr(equivalent(is_international, us_citizenship_code == 2)),
   "S10a", expr(!is.na(first_admit_county_code)), # TODO verify I don't need to check code validity
   "S11a", expr(is_utah_county(first_admit_county_code) | # TODO: verify assumptions of county encoding
                  !(first_admit_state_code == "UT")),

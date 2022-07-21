@@ -188,17 +188,35 @@ rule_spec <- tribble(
   "C52c", expr(!is_duplicated(course_reference_number)),
 )
 
+
+# Helper to get the ushe file type from the ushe element
+get_ushe_file <- function(ushe_element) {
+  out <- case_when(
+    grepl("^SC", ushe_element) ~ "Student Course",
+    grepl("^S[0-9]", ushe_element) ~ "Student",
+    grepl("^C", ushe_element) ~ "Course",
+    grepl("^G", ushe_element) ~ "Graduation",
+    grepl("^B", ushe_element) ~ "Buildings",
+    grepl("^R", ushe_element) ~ "Rooms",
+    TRUE ~ NA_character_
+    )
+  out
+}
+
 # dataframe with rule info from Data Inventory
 all_rules <- read.csv("sandbox/full-rules-rename.csv") %>%
-  mutate(ushe_rule = map(ushe_rule, ~unlist(str_split(., pattern = ", ")))) %>%
+  mutate(ushe_rule = map(ushe_rule, ~unlist(str_split(., pattern = ", "))),
+         ref_rule = map_chr(ushe_rule, ~`[`(., 1))) %>%
   unnest(cols = ushe_rule) %>%
   mutate(activity_date = ifelse(activity_date == "n/a", NA_character_, activity_date)) %>%
-  select(rule = ushe_rule, description, status, activity_date) %>%
+  select(rule = ushe_rule, ref_rule, description, status,
+         type, activity_date) %>%
   glimpse()
 
 # Rule info joined to anonymous-function tibble
 checklist <- all_rules %>%
-  inner_join(rule_spec, by = "rule") %>%
+  inner_join(rule_spec, by = c(ref_rule = "rule")) %>%
+  mutate(file = get_ushe_file(rule)) %>%
   glimpse()
 
 

@@ -120,6 +120,21 @@ is_valid_credits <- function(x) {
   is.numeric(x) & !is.na(x) & x >= 0 & x < 10000
 }
 
+#' @describeIn is_valid_act_score character-valued credits (min_credits and max_credits)
+#' @export
+is_valid_credits_chr <- function(x) {
+  # Invalid if: empty string, length > 4, credits > 99.9, credits < 0, non-numeric, AND (not 0, not 0.0)
+  x_num <- as.numeric(x)
+  passes <- x != "" &
+    nchar(x) <= 4 &
+    x_num <= 99.9 &
+    x_num >= 0 &
+    !is.na(x_num)
+
+  out <- passes
+  out
+}
+
 #' @describeIn is_valid_act_score gpa
 #' @export
 is_valid_gpa <- function(x) {
@@ -141,6 +156,35 @@ is_valid_student_type <- function(x) {
   x %in% valid_student_type_codes
 }
 
+
+is_valid_occupancy <- function(x) {
+  # Checks: empty string, length > 4, value > 9999, value < 0, non-number, AND not 0
+  x_num <- as.numeric(x)
+  passes <- (x != "") &
+    (nchar(x) > 4) &
+    (x_num <= 9999) &
+    (x_num >= 0) &
+    !is.na(x_num)
+
+  out <- x_num == 0 | passes
+  out
+}
+
+#' @param valid_values vector of valid values x can take
+is_valid_section_format <- function(x, valid_values) {
+  is_missing_chr(x) | x %in% valid_values
+}
+
+is_valid_course_reference_number <- function(x) {
+  # Invalid if: empty string, length > 5, value > 99999, value < 0, non-numeric.
+  x_num <- as.numeric(x)
+  passes <- nchar(x) <= 5 &
+    x_num >= 0 &
+    x_num <= 99999 &
+    !is.na(x_num)
+
+  out <- is_missing_chr(x) | passes # Another rule checks missingness.
+}
 
 #' Helper functions for student_type  and level_class_id categories
 #'
@@ -199,7 +243,6 @@ is_alpha_chr <- function(x, missing_ok = TRUE) {
   } else {
     out <- !missingvec & alphavec
   }
-
   out
 }
 

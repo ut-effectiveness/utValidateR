@@ -10,5 +10,5 @@ equivalent(x, y)
 \item{x, y}{logical vectors}
 }
 \description{
-NA-imputing double-equals replacement
+Returns TRUE if x and y are equal OR both are missing, otherwise FALSE
 }

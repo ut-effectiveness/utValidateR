@@ -2,11 +2,14 @@
 
 #' NA-imputing double-equals replacement
 #'
+#' Returns TRUE if x and y are equal OR both are missing, otherwise FALSE
+#'
 #' @param x,y logical vectors
 #' @export
 equivalent <- function(x, y) {
-  out <- x == y | (is.na(x) & is.na(y))
+  out <- (x == y) | (is.na(x) & is.na(y))
   out[is.na(out)] <- FALSE
+  out
 }
 
 #' Checks whether an object is Date class
@@ -156,7 +159,8 @@ is_valid_student_type <- function(x) {
   x %in% valid_student_type_codes
 }
 
-
+#' @describeIn is_valid_act_score room occupancy
+#' @export
 is_valid_occupancy <- function(x) {
   # Checks: empty string, length > 4, value > 9999, value < 0, non-number, AND not 0
   x_num <- as.numeric(x)
@@ -170,11 +174,19 @@ is_valid_occupancy <- function(x) {
   out
 }
 
+#' @describeIn is_valid_act_score matching a vector of values
 #' @param valid_values vector of valid values x can take
-is_valid_section_format <- function(x, valid_values) {
-  is_missing_chr(x) | x %in% valid_values
+#' @param missing_ok if TRUE (default), do not flag `NA` or `""` values
+#' @export
+is_valid_values <- function(x, valid_values, missing_ok = TRUE) {
+  passes <- x %in% valid_values
+  if (missing_ok) {
+    passes <- is_missing_chr(x) | passes
+  }
 }
 
+#' @describeIn is_valid_act_score course referenc number
+#' @export
 is_valid_course_reference_number <- function(x) {
   # Invalid if: empty string, length > 5, value > 99999, value < 0, non-numeric.
   x_num <- as.numeric(x)
@@ -189,18 +201,21 @@ is_valid_course_reference_number <- function(x) {
 #' Helper functions for student_type  and level_class_id categories
 #'
 #' @param student_type vector of student_type_code values
+#' @export
 is_freshmen_type <- function(student_type) {
   # TODO: verify freshmen type code. Also, sql references both FF and FH. Do I need to tell these apart?
   student_type == "F" # Guessing for now.
 }
 
 #' @describeIn is_freshmen_type returns TRUE for high-school student_types
+#' @export
 is_hs_type <- function(student_type) {
   # TODO: verify highschool type code
   student_type %in% "H" # Guessing for now
 }
 
 #' @describeIn is_freshmen_type returns TRUE for undergrad student_types
+#' @export
 is_undergrad_type <- function(student_type) {
   # TODO: find out how student_type is coded
   undergrad_types <- c() # Fill this in!
@@ -208,6 +223,7 @@ is_undergrad_type <- function(student_type) {
 }
 
 #' @describeIn is_freshmen_type returns TRUE for grad-school student_types
+#' @export
 is_grad_type <- function(student_type) {
   # TODO: find out how student_type is coded
   grad_types <- c() # Fill this in!
@@ -215,12 +231,14 @@ is_grad_type <- function(student_type) {
 }
 
 #' @describeIn is_freshmen_type returns TRUE for undergrad level_class_ids
+#' @export
 is_undergrad_level <- function(level) {
   level %in% c('JR','SR','FR','SO') # TODO: verify
 }
 
 #' @describeIn is_freshmen_type returns TRUE for grad-school level_class_ids
 #' @param level vector of primary_level_class_id values
+#' @export
 is_grad_level <- function(level) {
   level == "GG" # TODO: verify
 }
@@ -231,6 +249,7 @@ is_grad_level <- function(level) {
 #'
 #' @param x Character vector
 #' @param missing_ok if TRUE (default), do not flag `NA` or `""` values
+#' @export
 is_alpha_chr <- function(x, missing_ok = TRUE) {
   stopifnot(is.character(x))
   missingvec <- is_missing_chr(x)
@@ -250,6 +269,7 @@ is_alpha_chr <- function(x, missing_ok = TRUE) {
 #' Checker for missing character values
 #'
 #' @describeIn is_alpha_chr returns TRUE for NA or empty-string values
+#' @export
 is_missing_chr <- function(x) {
   # Per sql code, x is missing if null (NA) or empty string.
   out <- is.na(x) | x == ""
@@ -260,12 +280,14 @@ is_missing_chr <- function(x) {
 #' Checks whether a county is in Utah.
 #'
 #' @param county_code Vector of first_admit_county_code values
+#' @export
 is_utah_county <- function(county_code) {
   # TODO: how are counties encoded? For now using same logic as sql--97 and 99 are out-of-state
   !(as.numeric(county_code) %in% c(97, 99))
 }
 
 #' @describeIn is_utah_county Checks whether a county is in USA
+#' @export
 is_us_county <- function(county_code) {
   # TODO: how are counties encoded? For now matching the logic in the sql code
   !(county_code %in% 97)
@@ -274,6 +296,7 @@ is_us_county <- function(county_code) {
 #' @describeIn is_utah_county Checks whether a state code is in USA
 #'
 #' @param state first_admit_state_code
+#' @export
 is_us_state <- function(state) {
   us_states <- c("AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL",
                  "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",

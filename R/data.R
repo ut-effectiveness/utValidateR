@@ -1,3 +1,111 @@
+#' Fake course validation file
+#'
+#' A dataset containing simulated data for the course validation process
+#' with USHE. This dataset would be pulled from the data warehouse, and then fed into
+#' the validation scripts in the utValidateR package.
+#'
+#' @format A data frame with 5,132 rows and 49 variables:
+#' \describe{
+#'    \item{academic_department_id}{}
+#'    \item{budget_code}{}
+#'    \item{building_number_1}{}
+#'    \item{building_number_2}{}
+#'    \item{building_number_3}{}
+#'    \item{campus_id}{}
+#'    \item{class_size}{}
+#'    \item{college_id}{}
+#'    \item{contact_hours}{}
+#'    \item{course_max_credits}{}
+#'    \item{course_min_credits}{}
+#'    \item{course_number}{}
+#'    \item{course_reference_number}{}
+#'    \item{course_title}{}
+#'    \item{instruction_method_code}{}
+#'    \item{instructor_employee_id}{}
+#'    \item{instructor_name}{}
+#'    \item{meet_building_id_1}{}
+#'    \item{meet_building_id_2}{}
+#'    \item{meet_building_id_3}{}
+#'    \item{meet_days_1}{}
+#'    \item{meet_days_2}{}
+#'    \item{meet_days_3}{}
+#'    \item{meet_end_date}{}
+#'    \item{meet_end_time_1}{}
+#'    \item{meet_end_time_2}{}
+#'    \item{meet_end_time_3}{}
+#'    \item{meet_room_number_1}{}
+#'    \item{meet_room_number_2}{}
+#'    \item{meet_room_number_3}{}
+#'    \item{meet_start_time_1}{}
+#'    \item{meet_start_time_2}{}
+#'    \item{meet_start_time_3}{}
+#'    \item{program_type}{}
+#'    \item{room_max_occupancy_1}{}
+#'    \item{room_max_occupancy_2}{}
+#'    \item{room_max_occupancy_3}{}
+#'    \item{room_use_code_1}{}
+#'    \item{room_use_code_2}{}
+#'    \item{room_use_code_3}{}
+#'    \item{scbcrse_activity_date}{}
+#'    \item{section_format_type_code}{}
+#'    \item{section_number}{}
+#'    \item{sirasgn_activity_date}{}
+#'    \item{spriden_activity_date}{}
+#'    \item{ssbsect_activity_date}{}
+#'    \item{ssrmeet_activity_date}{}
+#'    \item{subject_code}{}
+#'    \item{term_id}{}
+#' }
+#' @source The script for creating this data set is in the dev folder
+'fake_course_validation'
+
+#' Fake rooms validation file
+#'
+#' A dataset containing simulated data for the rooms validation process
+#' with USHE. This dataset would be pulled from the data warehouse, and then fed into
+#' the validation scripts in the utValidateR package.
+#'
+#' @format A data frame with 7,102 rows and 10 variables:
+#' \describe{
+#'    \item{room_acitivity_date}{}
+#'    \item{room_area}{}
+#'    \item{room_disabled_access}{}
+#'    \item{room_name}{}
+#'    \item{room_number}{}
+#'    \item{room_prorated}{}
+#'    \item{room_prorated_area}{}
+#'    \item{room_stations}{}
+#'    \item{room_use_code}{}
+#'    \item{rooms_id}{}
+#' }
+#' @source The script for creating this data set is in the dev folder
+'fake_rooms_validation'
+
+#' Fake buildings validation file
+#'
+#' A dataset containing simulated data for the buildings validation process
+#' with USHE. This dataset would be pulled from the data warehouse, and then fed into
+#' the validation scripts in the utValidateR package.
+#'
+#' @format A data frame with 112 rows and 13 variables:
+#' \describe{
+#'    \item{building_activity_date}{}
+#'    \item{building_area_gross}{}
+#'    \item{building_auxiliary}{}
+#'    \item{building_auxiliary_12}{}
+#'    \item{building_condition_code}{}
+#'    \item{building_condition_desc}{}
+#'    \item{building_construction_year}{}
+#'    \item{building_cost_myr}{}
+#'    \item{building_cost_replacement}{}
+#'    \item{building_location_code}{}
+#'    \item{building_location_desc}{}
+#'    \item{building_number}{}
+#'    \item{building_remodel_year}{}
+#' }
+#' @source The script for creating this data set is in the dev folder
+'fake_buildings_validation'
+
 #' Fake graduation validation file
 #'
 #' A dataset containing simulated data for the graduation validation process
@@ -60,7 +168,7 @@
 #' with USHE. This dataset would be pulled from the data warehouse, and then fed into
 #' the validation scripts in the utValidateR package.
 #'
-#' @format A data frame with 9,1570 rows and 18 variables:
+#' @format A data frame with 91,570 rows and 18 variables:
 #' \describe{
 #'    \item{attempted_credits}{}
 #'    \item{attribute_code}{}

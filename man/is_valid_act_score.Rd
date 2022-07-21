@@ -9,9 +9,13 @@
 \alias{is_valid_previous_id}
 \alias{is_valid_country_code}
 \alias{is_valid_credits}
+\alias{is_valid_credits_chr}
 \alias{is_valid_gpa}
 \alias{is_valid_gender}
 \alias{is_valid_student_type}
+\alias{is_valid_occupancy}
+\alias{is_valid_values}
+\alias{is_valid_course_reference_number}
 \title{Validity checks on various values}
 \usage{
 is_valid_act_score(x)
@@ -30,14 +34,26 @@ is_valid_country_code(x)
 
 is_valid_credits(x)
 
+is_valid_credits_chr(x)
+
 is_valid_gpa(x)
 
 is_valid_gender(x)
 
 is_valid_student_type(x)
+
+is_valid_occupancy(x)
+
+is_valid_values(x, valid_values, missing_ok = TRUE)
+
+is_valid_course_reference_number(x)
 }
 \arguments{
 \item{x}{Vector to check}
+
+\item{valid_values}{vector of valid values x can take}
+
+\item{missing_ok}{if TRUE (default), do not flag \code{NA} or \code{""} values}
 }
 \description{
 Validity checks on various values
@@ -58,10 +74,18 @@ Validity checks on various values
 
 \item \code{is_valid_credits}: credits_earned
 
+\item \code{is_valid_credits_chr}: character-valued credits (min_credits and max_credits)
+
 \item \code{is_valid_gpa}: gpa
 
 \item \code{is_valid_gender}: gender_code, Used in rule S13 and G06a
 
 \item \code{is_valid_student_type}: student_type_code
+
+\item \code{is_valid_occupancy}: room occupancy
+
+\item \code{is_valid_values}: matching a vector of values
+
+\item \code{is_valid_course_reference_number}: course referenc number
 }}
 

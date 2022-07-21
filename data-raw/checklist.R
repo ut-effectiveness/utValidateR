@@ -126,21 +126,97 @@ rule_spec <- tribble(
   "S48a", expr(is_alpha_chr(secondary_major_college_id)), # TODO: verify my separation of excel line into multiple rules (same line as S46b)
   # "S49a", expr(!is_missing_chr(secondary_major_cip_code) & !is_missing_chr(secondary_major_desc)), # TODO: no secondary_major_desc in data
   # "S49b", expr(is_alpha_chr(secondary_major_desc)), # TODO: No secondary_major_desc in data
-
-
+  "C00",  expr(!is_duplicated(cbind(subject_code, course_number, section_number))),
+  "C04a", expr(nchar(course_number) == 4),
+  "C04c", expr(!stringr::str_detect(course_number, "^[89]")),
+  "C04d", expr(!stringr::str_detect(substring(course_number, 1, 4), "[a-zA-Z]")),
+  "C06a", expr(is_valid_credits_chr(course_min_credits)),
+  "C07a", expr(is_valid_credits_chr(course_max_credits)),
+  "C07b", expr(max_credits >= min_credits),
+  "C09", expr(tolower(c_line_item) %in% c("a","b","c","d","e","f","g","h","i","p","q","r","s","t","x")),
+  "C10", expr(!is_missing_chr(campus_id)),
+  "C11", expr(!is_missing_chr(budget_code)),
+  # "C11b", expr(!(budget_code %in% c("BC", "SF")) | !(in_concurrent_master_list(course, subject))), # TODO: concurrent enrollment list
+  "C12", expr(is_valid_instruction_method(instruction_method_code)), # TODO!
+  "C13", expr(is_valid_program_type(program_type)), # TODO!
+  # "C13a", USHE check on perkins program types
+  # "C13c", USHE check on perkins budget codes
+  "C14a", expr(c_credit_ind %in% c("C", "N")), # USHE check
+  "C14b", expr(!(course_level_id == "N" & section_format_type_code != "LAB")),
+  # "C14c", TODO: complicated logic, waiting for dummy data
+  "C15a", expr(!is_missing_chr(meet_start_time)),
+  "C16a", expr(!is_missing_chr(meet_end_time)),
+  # "C17a", USHE rule for missing course meeting days
+  "C18", expr(is.na(meeting_building_id) | !equivalent(meeting_building_id, building_number)),
+  "C18a", expr(!is_missing_chr(meeting_building_id)),
+  "C19a", expr(!is_missing_chr(building_number)),
+  "C19c", expr(building_number %in% building_inventory), # TODO: how to get building inventory?
+  "C19d", expr(building_number %in% rooms_inventory), # TODO: how to get rooms inventory?
+  "C20a", expr(!is_missing_chr(meet_room_number)), # TODO: conditionality required?
+  "C21a", expr(is_valid_occupancy(room_max_occupancy)),
+  "C22a", expr(room_use_code %in% room_use_codes), # TODO: need valid room use codes
+  "C22b", expr(!is_missing_chr(room_use_code)),
+  "C39a", expr(is.Date(meet_start_date) & !is.na(meet_start_date)), # Summer TODO: how to distinguish?
+  "C39b", expr(is.Date(meet_start_date) & !is.na(meet_start_date)), # Fall
+  "C39c", expr(is.Date(meet_start_date) & !is.na(meet_start_date)), # Spring
+  "C40a", expr(is.Date(meet_end_date) & !is.na(meet_end_date)), # Summer
+  "C40b", expr(is.Date(meet_end_date) & !is.na(meet_end_date)), # Fall
+  "C40c", expr(is.Date(meet_end_date) & !is.na(meet_end_date)), # Spring
+  "C41a", expr(!is_missing_chr(title)),
+  # "C41b", USHE rule for course title validity
+  # "C41d", USHE rule for course title validity
+  "C42a", expr(!is_missing_chr(istructor_employee_id)),
+  "C42b", expr(is_missing_chr(instructor_employee_id) |
+                 (nchar(instructor_employee_id) == 9L &
+                    grepl("^[[a-zA-Z]]", instructor_employee_id))),
+  # "C42c" USHE rule for instructor ID
+  "C43a", expr(!is.missing_chr(first_name)),
+  # "C43c", expr(is_alpha_chr(c_instruct_name)), USHE rule
+  "C44", expr(!is_missing_chr(section_format_type_code)),
+  "C44a", expr(is_valid_section_format(section_format_type_code, valid_sections)),
+  "C46", expr(!is_missing_chr(academic_department_id)),
+  "C46a", expr(is_alpha_chr(academic_department_id, missing_ok = TRUE)),
+  # "C47b", expr(c_gen_ed %in% valid_gened_codes), # USHE rule
+  # "C48a", expr(is_missing_chr(c_dest_site) | c_dest_site %in% reference_highschools), #USHE rule
+  "C49a", expr(!is.na(class_size) & class_size != 0),
+  "C49b", expr(is.na(class_size) | class_size >= 0 & class_size <= 9999),
+  # "C49c", USHE rule comparing enrolled students to class size (involving COUNT)
+  "C51a", expr(c_level %in% c("R", "U", "G")), # USHE check
+  # "C51b" USHE rule for invalid remedial level (somewhat complex)
+  "C52a", expr(!is_missing_chr(course_reference_number)),
+  "C52b", expr(is_valid_course_reference_number(course_reference_number)),
+  "C52c", expr(!is_duplicated(course_reference_number)),
 )
+
+
+# Helper to get the ushe file type from the ushe element
+get_ushe_file <- function(ushe_element) {
+  out <- case_when(
+    grepl("^SC", ushe_element) ~ "Student Course",
+    grepl("^S[0-9]", ushe_element) ~ "Student",
+    grepl("^C", ushe_element) ~ "Course",
+    grepl("^G", ushe_element) ~ "Graduation",
+    grepl("^B", ushe_element) ~ "Buildings",
+    grepl("^R", ushe_element) ~ "Rooms",
+    TRUE ~ NA_character_
+    )
+  out
+}
 
 # dataframe with rule info from Data Inventory
 all_rules <- read.csv("sandbox/full-rules-rename.csv") %>%
-  mutate(ushe_rule = map(ushe_rule, ~unlist(str_split(., pattern = ", ")))) %>%
+  mutate(ushe_rule = map(ushe_rule, ~unlist(str_split(., pattern = ", "))),
+         ref_rule = map_chr(ushe_rule, ~`[`(., 1))) %>%
   unnest(cols = ushe_rule) %>%
   mutate(activity_date = ifelse(activity_date == "n/a", NA_character_, activity_date)) %>%
-  select(rule = ushe_rule, description, status, activity_date) %>%
+  select(rule = ushe_rule, ref_rule, description, status,
+         type, activity_date) %>%
   glimpse()
 
 # Rule info joined to anonymous-function tibble
 checklist <- all_rules %>%
-  inner_join(rule_spec, by = "rule") %>%
+  inner_join(rule_spec, by = c(ref_rule = "rule")) %>%
+  mutate(file = get_ushe_file(rule)) %>%
   glimpse()
 
 

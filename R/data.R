@@ -1,3 +1,25 @@
+#' Fake rooms validation file
+#'
+#' A dataset containing simulated data for the rooms validation process
+#' with USHE. This dataset would be pulled from the data warehouse, and then fed into
+#' the validation scripts in the utValidateR package.
+#'
+#' @format A data frame with 9,1570 rows and 18 variables:
+#' \describe{
+#'    \item{room_acitivity_date}{}
+#'    \item{room_area}{}
+#'    \item{room_disabled_access}{}
+#'    \item{room_name}{}
+#'    \item{room_number}{}
+#'    \item{room_prorated}{}
+#'    \item{room_prorated_area}{}
+#'    \item{room_stations}{}
+#'    \item{room_use_code}{}
+#'    \item{rooms_id}{}
+#' }
+#' @source The script for creating this data set is in the dev folder
+'fake_rooms_validation'
+
 #' Fake buildings validation file
 #'
 #' A dataset containing simulated data for the buildings validation process

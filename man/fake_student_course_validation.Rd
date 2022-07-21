@@ -5,7 +5,7 @@
 \alias{fake_student_course_validation}
 \title{Fake student-courses validation file}
 \format{
-A data frame with 9,1570 rows and 18 variables:
+A data frame with 91,570 rows and 18 variables:
 \describe{
 \item{attempted_credits}{}
 \item{attribute_code}{}

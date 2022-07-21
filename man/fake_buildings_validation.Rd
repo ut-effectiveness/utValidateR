@@ -5,7 +5,7 @@
 \alias{fake_buildings_validation}
 \title{Fake buildings validation file}
 \format{
-A data frame with 9,1570 rows and 18 variables:
+A data frame with 112 rows and 13 variables:
 \describe{
 \item{building_activity_date}{}
 \item{building_area_gross}{}

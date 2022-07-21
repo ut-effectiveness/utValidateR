@@ -5,7 +5,7 @@
 \alias{fake_rooms_validation}
 \title{Fake rooms validation file}
 \format{
-A data frame with 9,1570 rows and 18 variables:
+A data frame with 7,102 rows and 10 variables:
 \describe{
 \item{room_acitivity_date}{}
 \item{room_area}{}

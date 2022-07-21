@@ -4,7 +4,7 @@
 #' with USHE. This dataset would be pulled from the data warehouse, and then fed into
 #' the validation scripts in the utValidateR package.
 #'
-#' @format A data frame with 9,1570 rows and 18 variables:
+#' @format A data frame with 7,102 rows and 10 variables:
 #' \describe{
 #'    \item{room_acitivity_date}{}
 #'    \item{room_area}{}
@@ -26,7 +26,7 @@
 #' with USHE. This dataset would be pulled from the data warehouse, and then fed into
 #' the validation scripts in the utValidateR package.
 #'
-#' @format A data frame with 9,1570 rows and 18 variables:
+#' @format A data frame with 112 rows and 13 variables:
 #' \describe{
 #'    \item{building_activity_date}{}
 #'    \item{building_area_gross}{}
@@ -107,7 +107,7 @@
 #' with USHE. This dataset would be pulled from the data warehouse, and then fed into
 #' the validation scripts in the utValidateR package.
 #'
-#' @format A data frame with 9,1570 rows and 18 variables:
+#' @format A data frame with 91,570 rows and 18 variables:
 #' \describe{
 #'    \item{attempted_credits}{}
 #'    \item{attribute_code}{}

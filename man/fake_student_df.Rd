@@ -3,7 +3,7 @@
 \docType{data}
 \name{fake_student_df}
 \alias{fake_student_df}
-\title{Fake student file containing 10,000 rows}
+\title{Fake student validation file}
 \format{
 A data frame with 10,000 rows and 54 variables:
 \describe{
@@ -61,7 +61,7 @@ A data frame with 10,000 rows and 54 variables:
 \item{term_id}{}
 \item{transfer_cumulative_credits_earned}{}
 \item{us_citizenship_code}{}
-...
+
 }
 }
 \source{
@@ -71,8 +71,8 @@ The script for creating this data set is in the dev folder
 fake_student_df
 }
 \description{
-A dataset containing a simulated file from the student file submission process
-with USHE. This file would be pulled from the data warehouse, and then fed into
-the validation and shaping scripts in the utValidateR package.
+A dataset containing simulated data for the student-courses validation process
+with USHE. This dataset would be pulled from the data warehouse, and then fed into
+the validation scripts in the utValidateR package.
 }
 \keyword{datasets}

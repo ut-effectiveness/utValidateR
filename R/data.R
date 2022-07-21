@@ -1,8 +1,94 @@
-#' Fake student file containing 10,000 rows
+#' Fake graduation validation file
 #'
-#' A dataset containing a simulated file from the student file submission process
-#' with USHE. This file would be pulled from the data warehouse, and then fed into
-#' the validation and shaping scripts in the utValidateR package.
+#' A dataset containing simulated data for the graduation validation process
+#' with USHE. This dataset would be pulled from the data warehouse, and then fed into
+#' the validation scripts in the utValidateR package.
+#'
+#' @format A data frame with 13,866 rows and 44 variables:
+#' \describe{
+#'    \item{birth_date}{}
+#'    \item{cumulative_graduation_gpa}{}
+#'    \item{degree_desc}{}
+#'    \item{degree_id}{}
+#'    \item{ethnicity_code}{}
+#'    \item{ethnicity_desc}{}
+#'    \item{first_admit_county_code}{}
+#'    \item{first_name}{}
+#'    \item{gender_code}{}
+#'    \item{gorsdav_activity_date}{}
+#'    \item{graduated_academic_year_code}{}
+#'    \item{graduated_term_id}{}
+#'    \item{graduation_date}{}
+#'    \item{high_school_code}{}
+#'    \item{ipeds_award_level_code}{}
+#'    \item{ipeds_race_ethnicity}{}
+#'    \item{is_american_indian_alaskan}{}
+#'    \item{is_asian}{}
+#'    \item{is_black}{}
+#'    \item{is_hawaiian_pacific_islander}{}
+#'    \item{is_hispanic_latino_ethnicity}{}
+#'    \item{is_international}{}
+#'    \item{is_other_race}{}
+#'    \item{is_white}{}
+#'    \item{last_name}{}
+#'    \item{middle_name}{}
+#'    \item{name_suffix}{}
+#'    \item{overall_cumulative_credits_earned}{}
+#'    \item{previous_degree_type}{}
+#'    \item{primary_major_cip_code}{}
+#'    \item{primary_major_college_desc}{}
+#'    \item{primary_major_desc}{}
+#'    \item{required_credits}{}
+#'    \item{season}{}
+#'    \item{shrdgmr_activity_date}{}
+#'    \item{shrtgpa_activity_date}{}
+#'    \item{sis_student_id}{}
+#'    \item{sis_system_id}{}
+#'    \item{ssn}{}
+#'    \item{total_cumulative_ap_credits_earned}{}
+#'    \item{total_cumulative_clep_credits_earned}{}
+#'    \item{total_cumulative_credits_attempted_other_sources}{}
+#'    \item{total_remedial_hours}{}
+#'    \item{transfer_cumulative_credits_earned}{}
+#' }
+#' @source The script for creating this data set is in the dev folder
+'fake_graduation_validation'
+
+#' Fake student-courses validation file
+#'
+#' A dataset containing simulated data for the student-courses validation process
+#' with USHE. This dataset would be pulled from the data warehouse, and then fed into
+#' the validation scripts in the utValidateR package.
+#'
+#' @format A data frame with 9,1570 rows and 18 variables:
+#' \describe{
+#'    \item{attempted_credits}{}
+#'    \item{attribute_code}{}
+#'    \item{budget_code}{}
+#'    \item{contact_hours}{}
+#'    \item{course_level_id}{}
+#'    \item{course_number}{}
+#'    \item{course_reference_number}{}
+#'    \item{earned_credits}{}
+#'    \item{final_grade}{}
+#'    \item{latest_high_school_code}{}
+#'    \item{part_term_weeks}{}
+#'    \item{section_number}{}
+#'    \item{sis_student_id}{}
+#'    \item{sis_system_id}{}
+#'    \item{ssbsect_activity_date}{}
+#'    \item{ssn}{}
+#'    \item{subject_code}{}
+#'    \item{term_id}{}
+#' }
+#' @source The script for creating this data set is in the dev folder
+'fake_student_course_validation'
+
+#' Fake student validation file
+#'
+#' A dataset containing simulated data for the student-courses validation process
+#' with USHE. This dataset would be pulled from the data warehouse, and then fed into
+#' the validation scripts in the utValidateR package.
 #'
 #' @format A data frame with 10,000 rows and 54 variables:
 #' \describe{
@@ -60,7 +146,7 @@
 #'    \item{term_id}{}
 #'    \item{transfer_cumulative_credits_earned}{}
 #'    \item{us_citizenship_code}{}
-#'   ...
+#'
 #' }
 #' @source The script for creating this data set is in the dev folder
 "fake_student_df"

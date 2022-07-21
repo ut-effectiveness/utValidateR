@@ -1,4 +1,4 @@
-## code to prepare `fake_student_df` dataset goes here
+## code to prepare `fake_student_df` data set goes here
 
 library(tidyverse)
 library(charlatan)
@@ -7,23 +7,23 @@ library(charlatan)
 sample_size <- 10000
 
 first_admit_county_code_list <- c(039,011,033,053,0009,043,029,005,013,030,007,
-                                  00097,031,045,057,001,009,027,055,047,041,023,003,037,035,049,015,017,019,
-                                  021,051,025, rep(NA, 10)) %>%
+  00097,031,045,057,001,009,027,055,047,041,023,003,037,035,049,015,017,019,
+  021,051,025, rep(NA, 10)) %>%
   as.character()
 
 first_admit_state_code_list <- c('KS','NV','OH','NY','BC','WV','AR','CT','YT',
-                                 'LA','WY','MT','MI','DE','AA','NH','AB','OR','DC','WI','RI','AP','TN','WA',
-                                 'MA','AL','ON','CO','AS','VA','AZ','ND','GU','AE','HI','IN','NE','FL','ME',
-                                 'UN','SD','NJ','MP','UT','SC','VI','CA','TX','PR','FR','KY','MB','NM','MS',
-                                 'MO','NC','OK','GA','ID','MN','PA','MD','AK','IL','IA','VT',
-                                 rep('WY', 10), rep('UT', 1000), rep('ID', 20))
+  'LA','WY','MT','MI','DE','AA','NH','AB','OR','DC','WI','RI','AP','TN','WA',
+  'MA','AL','ON','CO','AS','VA','AZ','ND','GU','AE','HI','IN','NE','FL','ME',
+  'UN','SD','NJ','MP','UT','SC','VI','CA','TX','PR','FR','KY','MB','NM','MS',
+  'MO','NC','OK','GA','ID','MN','PA','MD','AK','IL','IA','VT',
+  rep('WY', 10), rep('UT', 1000), rep('ID', 20))
 
 first_admit_country_code_list <- c('RQ','KS','DA','CQ','NS','VM','BM','MZ','NI',
-                                   'HO','BR','RW','BY','YM','CJ','UK','RS','EC','SP','AQ','ES','SF','AJ','CO',
-                                   'AS','SW','CB','PE','US','KE','UG','LY','VQ','CF','HA','IN','GM','GH','CH',
-                                   'PK','TW','CA','ML','FR','MX','CS','MO','RP','CG','SU','ID','WZ','AF','JA',
-                                   'JO','IS','CM',
-                                   rep('US', 1000), rep(NA, 100) )
+  'HO','BR','RW','BY','YM','CJ','UK','RS','EC','SP','AQ','ES','SF','AJ','CO',
+  'AS','SW','CB','PE','US','KE','UG','LY','VQ','CF','HA','IN','GM','GH','CH',
+  'PK','TW','CA','ML','FR','MX','CS','MO','RP','CG','SU','ID','WZ','AF','JA',
+  'JO','IS','CM',
+  rep('US', 1000), rep(NA, 100) )
 
 gender_code_list <- c(rep('M', 100), rep('F', 100), 'N', rep(NA, 25))
 

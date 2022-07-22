@@ -198,6 +198,13 @@ is_valid_course_reference_number <- function(x) {
   out <- is_missing_chr(x) | passes # Another rule checks missingness.
 }
 
+#' @importFrom lubridate month day days
+is_valid_graduation_date <- function(x) {
+  # Between 6/30 and 7/1 -- although I find this suspicious
+  # TODO: add check on year if data allow it
+  month(graduation_date + days(1)) == 7 & day(graduation_date + days(1)) <= 2
+}
+
 #' Helper functions for student_type  and level_class_id categories
 #'
 #' @param student_type vector of student_type_code values

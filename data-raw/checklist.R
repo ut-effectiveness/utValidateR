@@ -186,6 +186,30 @@ rule_spec <- tribble(
   "C52a", expr(!is_missing_chr(course_reference_number)),
   "C52b", expr(is_valid_course_reference_number(course_reference_number)),
   "C52c", expr(!is_duplicated(course_reference_number)),
+  "G02b", expr(student_id %in% student_file$student_id), # TODO: how to get student file?
+  "G21e", expr(ssn %in% student_file$ssn), # TODO: how to get student file?
+  # "G03e", expr(nchar(first_name) <= 15), # USHE rule, might need to rename
+  # "G03g", expr(nchar(middle_name) <= 15), # USHE rule
+  # "G03i", expr(nchar(name_suffix) <= 4), # USHE rule
+  "G08b", expr(is_valid_graduation_date(gradutation_date)),
+  "G09a", expr(is_valid_values(cip_code, valid_cip_codes, missing_ok = TRUE)),
+  "G10a", expr(degree_status_code != "AW" | !is_missing_chr(degree_type)), # TODO: check assumed names and values
+  # "G12b", USHE rule for Transfer hours over 300 credits
+  # "G13b", USHE rule for Graduation hours 1.5 times required hours
+  # "G14b", USHE rule for Other hours 1.5 times required hours
+  # "G15b", USHE rule for Remedial hours over 60
+  "G18a", expr(is.numeric(required_credits) &
+                 !is.na(required_credits) &
+                 required_credits >= 0 ),
+  "G19a", expr(!is_utah_county(county_code) | !is_missing_chr(high_school_code)),
+  "G21d", expr(!is_duplicated(cbind(sis_student_id, # TODO: check "sis_student_id" vs "student_id"
+                                    graduation_date, primary_major_cip_code, degree_id,
+                                    ipeds_award_level_code, primary_major_id))),
+  "G24a", expr(graduated_academic_year_code %in% reference_year), # TODO: how to get reference year?
+  "G25a", expr(is_valid_values(season, c("1", "2", "3"))), # TODO: check values
+  "G28a", expr(!is_missing_chr(degree_desc)),
+
+
 )
 
 

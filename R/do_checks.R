@@ -14,12 +14,15 @@ do_checks <- function(df_tocheck, checklist) {
   # For each row in checklist, apply the checker function to df_tocheck
   result_names <- paste0(checklist$rule, "_status")
 
+  # make_checker() returns a function (of a dataframe)
   checkfuns <- map(checklist$checker, ~make_checker(.))
 
+  # Append checkfuns output to df_tocheck
   check_results <- map(checkfuns, ~.(df_tocheck)) %>%
     setNames(result_names) %>%
     bind_cols()
 
+  # dataframe for whether each check induces a warning or failure
   check_statuses <- map2_dfc(check_results, checklist$status,
                              ~ifelse(.x, "Pass", .y))
 

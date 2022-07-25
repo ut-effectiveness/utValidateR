@@ -132,40 +132,65 @@ rule_spec <- tribble(
   "C04d", expr(!stringr::str_detect(substring(course_number, 1, 4), "[a-zA-Z]")),
   "C06a", expr(is_valid_credits_chr(course_min_credits)),
   "C07a", expr(is_valid_credits_chr(course_max_credits)),
-  "C07b", expr(max_credits >= min_credits),
+  "C07b", expr(course_max_credits >= course_min_credits),
+  "C08a", expr(is_valid_credit_format(contact_hours)),
   "C09", expr(tolower(c_line_item) %in% c("a","b","c","d","e","f","g","h","i","p","q","r","s","t","x")),
   "C10", expr(!is_missing_chr(campus_id)),
   "C11", expr(!is_missing_chr(budget_code)),
   # "C11b", expr(!(budget_code %in% c("BC", "SF")) | !(in_concurrent_master_list(course, subject))), # TODO: concurrent enrollment list
-  "C12", expr(is_valid_instruction_method(instruction_method_code)), # TODO!
-  "C13", expr(is_valid_program_type(program_type)), # TODO!
+  "C12", expr(is_valid_values(instruction_method_code,
+                              valid_instruction_method_codes,
+                              missing_ok = TRUE)), # TODO: is missing OK?
+  "C13", expr(is_valid_values(program_type, valid_program_types, missing_ok = TRUE)),
   # "C13a", USHE check on perkins program types
   # "C13c", USHE check on perkins budget codes
   "C14a", expr(c_credit_ind %in% c("C", "N")), # USHE check
   "C14b", expr(!(course_level_id == "N" & section_format_type_code != "LAB")),
   # "C14c", TODO: complicated logic, waiting for dummy data
-  "C15a", expr(!is_missing_chr(meet_start_time)),
-  "C16a", expr(!is_missing_chr(meet_end_time)),
+  "C15a", expr(!is_missing_chr(meet_start_time_1)),
+  "C23a", expr(!is_missing_chr(meet_start_time_2)),
+  "C31a", expr(!is_missing_chr(meet_start_time_3)),
+  "C16a", expr(!is_missing_chr(meet_end_time_1)),
+  "C24a", expr(!is_missing_chr(meet_end_time_2)),
+  "C32a", expr(!is_missing_chr(meet_end_time_3)),
   # "C17a", USHE rule for missing course meeting days
-  "C18", expr(is.na(meeting_building_id) | !equivalent(meeting_building_id, building_number)),
-  "C18a", expr(!is_missing_chr(meeting_building_id)),
-  "C19a", expr(!is_missing_chr(building_number)),
-  "C19c", expr(building_number %in% building_inventory), # TODO: how to get building inventory?
-  "C19d", expr(building_number %in% rooms_inventory), # TODO: how to get rooms inventory?
-  "C20a", expr(!is_missing_chr(meet_room_number)), # TODO: conditionality required?
-  "C21a", expr(is_valid_occupancy(room_max_occupancy)),
-  "C22a", expr(room_use_code %in% room_use_codes), # TODO: need valid room use codes
-  "C22b", expr(!is_missing_chr(room_use_code)),
+  "C18", expr(is.na(meet_building_id_1) | !equivalent(meet_building_id_1, building_number_1)),
+  "C26", expr(is.na(meet_building_id_2) | !equivalent(meet_building_id_2, building_number_2)),
+  "C34", expr(is.na(meet_building_id_3) | !equivalent(meet_building_id_3, building_number_3)),
+  "C18a", expr(!is_missing_chr(meet_building_id_1)),
+  "C26a", expr(!is_missing_chr(meet_building_id_2)),
+  "C34a", expr(!is_missing_chr(meet_building_id_3)),
+  "C19a", expr(!is_missing_chr(building_number_1)),
+  "C27a", expr(!is_missing_chr(building_number_2)),
+  "C35a", expr(!is_missing_chr(building_number_3)),
+  "C19c", expr(building_number_1 %in% building_inventory),
+  "C27c", expr(building_number_2 %in% building_inventory),
+  "C35c", expr(building_number_3 %in% building_inventory),
+  "C19d", expr(building_number_1 %in% rooms_inventory),
+  "C27d", expr(building_number_2 %in% rooms_inventory),
+  "C35d", expr(building_number_3 %in% rooms_inventory),
+  "C20a", expr(!is_missing_chr(meet_room_number_1)), # TODO: conditionality required?
+  "C28a", expr(!is_missing_chr(meet_room_number_2)), # TODO: conditionality required?
+  "C36a", expr(!is_missing_chr(meet_room_number_3)), # TODO: conditionality required?
+  "C21a", expr(is_valid_occupancy(room_max_occupancy_1)),
+  "C29a", expr(is_valid_occupancy(room_max_occupancy_2)),
+  "C37a", expr(is_valid_occupancy(room_max_occupancy_3)),
+  "C22a", expr(room_use_code_1 %in% valid_room_use_codes), # TODO: need valid room use codes
+  "C30a", expr(room_use_code_2 %in% valid_room_use_codes), # TODO: need valid room use codes
+  "C38a", expr(room_use_code_3 %in% valid_room_use_codes), # TODO: need valid room use codes
+  "C22b", expr(!is_missing_chr(room_use_code_1)),
+  "C30b", expr(!is_missing_chr(room_use_code_2)),
+  "C38b", expr(!is_missing_chr(room_use_code_3)),
   "C39a", expr(is.Date(meet_start_date) & !is.na(meet_start_date)), # Summer TODO: how to distinguish?
   "C39b", expr(is.Date(meet_start_date) & !is.na(meet_start_date)), # Fall
   "C39c", expr(is.Date(meet_start_date) & !is.na(meet_start_date)), # Spring
   "C40a", expr(is.Date(meet_end_date) & !is.na(meet_end_date)), # Summer
   "C40b", expr(is.Date(meet_end_date) & !is.na(meet_end_date)), # Fall
   "C40c", expr(is.Date(meet_end_date) & !is.na(meet_end_date)), # Spring
-  "C41a", expr(!is_missing_chr(title)),
+  "C41a", expr(!is_missing_chr(course_title)),
   # "C41b", USHE rule for course title validity
   # "C41d", USHE rule for course title validity
-  "C42a", expr(!is_missing_chr(istructor_employee_id)),
+  "C42a", expr(!is_missing_chr(instructor_employee_id)),
   "C42b", expr(is_missing_chr(instructor_employee_id) |
                  (nchar(instructor_employee_id) == 9L &
                     grepl("^[[a-zA-Z]]", instructor_employee_id))),
@@ -173,7 +198,11 @@ rule_spec <- tribble(
   "C43a", expr(!is.missing_chr(first_name)),
   # "C43c", expr(is_alpha_chr(c_instruct_name)), USHE rule
   "C44", expr(!is_missing_chr(section_format_type_code)),
-  "C44a", expr(is_valid_section_format(section_format_type_code, valid_sections)),
+  "C44a", expr(is_valid_values(section_format_type_code,
+                               valid_section_format_type_codes,
+                               missing_ok = TRUE)), # Is missing OK here? Other conditionality?
+  "C45", expr(!is_missing_chr(college_id)),
+  "C45a", expr(is_alpha_chr(college_id)),
   "C46", expr(!is_missing_chr(academic_department_id)),
   "C46a", expr(is_alpha_chr(academic_department_id, missing_ok = TRUE)),
   # "C47b", expr(c_gen_ed %in% valid_gened_codes), # USHE rule

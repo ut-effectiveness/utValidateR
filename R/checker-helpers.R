@@ -170,7 +170,7 @@ is_valid_occupancy <- function(x) {
     (x_num >= 0) &
     !is.na(x_num)
 
-  out <- x_num == 0 | passes
+  out <- (x_num %in% 0) | passes
   out
 }
 
@@ -279,6 +279,7 @@ is_alpha_chr <- function(x, missing_ok = TRUE) {
 #' @export
 is_missing_chr <- function(x) {
   # Per sql code, x is missing if null (NA) or empty string.
+  stopifnot(is.character(x))
   out <- is.na(x) | x == ""
   out
 }

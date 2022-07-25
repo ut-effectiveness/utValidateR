@@ -1624,24 +1624,24 @@ Missing Location,Database,Failure,,B02,B02a,Buildings,b_location,B_Location Miss
 From buildings_ext'+@year+'
 Where (b_location is null or b_location = '''')
 and b_inst = @binst
-Order by b_location, b_number",space_utlz.building_detail.bldg_loc_code,space_utlz.building_detail. bldg_activity_date,"Add building_location_code, building_location_desc to quad.buildings"
+Order by b_location, b_number",space_utlz.building_detail.bldg_loc_code,building_activity_date,"Add building_location_code, building_location_desc to quad.buildings"
 Invalid Location,Database,Failure,,B02,B02b,Buildings,b_location,B_Location_Invalid,"Into #b02b
 From buildings_ext'+@year+'
 Where b_location not in (select distinct b_loc_code from reference.dbo.buildings_loc where inactive <> ''Y'')
 and not b_location is null and not b_location = ''''
 and b_inst = @binst
-Order by b_location, b_number",space_utlz.building_detail.bldg_loc_code,space_utlz.building_detail. bldg_activity_date,"Add building_location_code, building_location_desc to quad.buildings"
+Order by b_location, b_number",space_utlz.building_detail.bldg_loc_code,building_activity_date,"Add building_location_code, building_location_desc to quad.buildings"
 Missing Ownership,Database,Failure,,B03,B03a,Buildings,b_ownership,B_Ownership Missing,"Into #b03A
 From buildings_ext'+@year+'
 Where (b_ownership is null or b_ownership = '''')
 and b_inst = @binst
-Order by b_ownership, b_number",space_utlz.building_detail.bldg_own_code,space_utlz.building_detail. bldg_activity_date,Add building_ownership_code to quad.buildings
+Order by b_ownership, b_number",space_utlz.building_detail.bldg_own_code,building_activity_date,Add building_ownership_code to quad.buildings
 Invalid Ownership,Database,Failure,,B03,B03b,Buildings,b_ownership,B_Ownership_Invalid,"Into #b03b
 From buildings_ext'+@year+'
 Where b_ownership not in (select distinct b_own_code from reference.dbo.buildings_own where inactive <> ''Y'')
 and not b_ownership is null and not b_ownership = ''''
 and b_inst = @binst
-Order by b_ownership, b_number",space_utlz.building_detail.bldg_own_code,space_utlz.building_detail. bldg_activity_date,Add building_ownership_code to quad.buildings
+Order by b_ownership, b_number",space_utlz.building_detail.bldg_own_code,building_activity_date,Add building_ownership_code to quad.buildings
 Missing Year,Database,Failure,,"B04, R02","B04a, R02a",Buildings,"b_year, r_year",B_Year missing,"Into #b04a
 From buildings_ext'+@year+'
 Where (b_year is null or b_year = '''')
@@ -1651,38 +1651,38 @@ Missing Name,Database,Failure,,B05,B05a,Buildings,b_name,B_Name Missing,"Into #b
 From buildings_ext'+@year+'
 Where (b_name is null or b_name = '''')
 and b_inst = @binst
-Order by b_location, b_number",space_utlz.building_detail.bldg_name,space_utlz.building_detail. bldg_activity_date,Add building_name to quad.buildings
+Order by b_location, b_number",space_utlz.building_detail.bldg_name,building_activity_date,Add building_name to quad.buildings
 Missing Number,Database,Failure,,"B06, R03","B06a, R03a",Buildings,"b_number, r_build_number",B_Number missing,"Into #b06a
 From buildings_ext'+@year+'
 Where b_number is null
 --or b_number = '''' { Data type numeric will not accept blank by design}
 and b_inst = @binst
-Order by b_location, b_name",space_utlz.building_detail.bldg_number,space_utlz.building_detail. bldg_activity_date,Add building_name to quad.buildings
+Order by b_location, b_name",space_utlz.building_detail.bldg_number,building_activity_date,Add building_name to quad.buildings
 Duplicate Number,Database,Failure,,B06,B06b,Buildings,b_number,B_Number duplicates,"Into #b06B
 From buildings_ext'+@year+'
 Where b_inst = @binst
 Group by b_inst, b_number
 Having Count (*) > 1
-Order by b_number",space_utlz.building_detail.bldg_number,space_utlz.building_detail. bldg_activity_date,Add building_name to quad.buildings
+Order by b_number",space_utlz.building_detail.bldg_number,building_activity_date,Add building_name to quad.buildings
 Missing Building Abbrv,Database,Failure,,B07,B07b,Buildings,b_sname,B_SName missing,"Into #b07a
 From buildings_ext'+@year+'
 Where (b_sname is null or b_sname = '''')
 and b_inst = @binst
-Order by b_location, b_number",space_utlz.building_detail.bldg_abbrv,space_utlz.building_detail. bldg_activity_date,Add building_abbrv to quad.buildings
+Order by b_location, b_number",space_utlz.building_detail.bldg_abbrv,building_activity_date,Add building_abbrv to quad.buildings
 Missing Year of Construction when replacement costs are greater than 3.5 million,Database,Failure,,B08,B08a,Buildings,b_year_cons,B_Year_Cons Missing for buildings greater than 3.5 million in replacement cost,"Into #b08a
 From buildings_ext'+@year+'
 Where (b_year_cons is null or b_year_cons = '''')
 and b_ownership = ''O''
 and isnull(b_replace_cost,0) > ''3500000''
 and b_inst = @binst
-Order by b_location, b_number",space_utlz.building_detail.bldg_const_year,space_utlz.building_detail. bldg_activity_date,Add building_construction_year to quad.buildings
+Order by b_location, b_number",space_utlz.building_detail.bldg_const_year,building_activity_date,Add building_construction_year to quad.buildings
 Missing Year of Construction when replacement costs are less than 3.5 million,Database,Warning,,B08,B08b,Buildings,b_year_cons,B_Year_Cons Missing for buildings less than 3.5 million in replacement cost,"Into #b08b
 From buildings_ext'+@year+'
 Where (b_year_cons is null or b_year_cons = '''')
 and b_ownership = ''O''
 and isnull(b_replace_cost,0) <= ''3500000''
 and b_inst = @binst
-Order by b_location, b_number",space_utlz.building_detail.bldg_const_year,space_utlz.building_detail. bldg_activity_date,Add building_construction_year to quad.buildings
+Order by b_location, b_number",space_utlz.building_detail.bldg_const_year,building_activity_date,Add building_construction_year to quad.buildings
 Missing Replacement Cost,Database,Failure,,B10,B10a,Buildings,b_replace_cost,"B_Replace_Cost is NULL or blank, replacement costs are required","Into #b10a
 From buildings_ext'+@year+'
 Where b_replace_cost is null
@@ -1690,7 +1690,7 @@ Where b_replace_cost is null
 and b_ownership = ''O''
 and b_aux = ''N''
 and b_inst = @binst
-Order by b_location, b_number",space_utlz.building_detail.bldg_cost_replacement,space_utlz.building_detail. bldg_activity_date,Add building_cost_replacement to quad.buildings
+Order by b_location, b_number",space_utlz.building_detail.bldg_cost_replacement,building_activity_date,Add building_cost_replacement to quad.buildings
 Missing building condition when replacement costs are greater than 3.5 million,Database,Failure,,B11,B11a,Buildings,b_condition,Condition Miss Greater 3.5Mil,"Into #b11a
 From buildings_ext'+@year+'
 Where (b_condition is null or b_condition = '''')
@@ -1698,13 +1698,13 @@ and b_ownership = ''O''
 and isnull(b_replace_cost,0) > ''3500000.00''
 and b_aux = ''N''
 and b_inst = @binst
-Order by b_location, b_number",space_utlz.building_detail.bldg_condition_code,space_utlz.building_detail. bldg_activity_date,"Add building_condition_code, building_condition_desc to quad.buildings"
+Order by b_location, b_number",space_utlz.building_detail.bldg_condition_code,building_activity_date,"Add building_condition_code, building_condition_desc to quad.buildings"
 Invalid building condition,Database,Failure,,B11,B11b,Buildings,b_condition,B_Condition_Invalid,"Into #b11B
 From buildings_ext'+@year+'
 Where b_condition not in (select distinct b_cond_code from reference.dbo.buildings_cond where inactive <> ''Y'')
 and not b_condition is null and not b_condition = ''''
 and b_inst = @binst
-Order by b_condition, b_number",space_utlz.building_detail.bldg_condition_code,space_utlz.building_detail. bldg_activity_date,"Add building_condition_code, building_condition_desc to quad.buildings"
+Order by b_condition, b_number",space_utlz.building_detail.bldg_condition_code,building_activity_date,"Add building_condition_code, building_condition_desc to quad.buildings"
 Missing building condition when replacement costs are less than 3.5 mill,Database,Warning,,B11,B11c,Buildings,b_condition,B_Condition Missing where replacement cost is less than or equal to 3.5 million,"Into #b11c
 From buildings_ext'+@year+'
 Where (b_condition is null or b_condition = '''')
@@ -1712,7 +1712,7 @@ and b_ownership = ''O''
 and isnull(b_replace_cost,0) <= ''3500000.00''
 and b_aux = ''N''
 and b_inst = @binst
-Order by b_location, b_number",space_utlz.building_detail.bldg_condition_code,space_utlz.building_detail. bldg_activity_date,"Add building_condition_code, building_condition_desc to quad.buildings"
+Order by b_location, b_number",space_utlz.building_detail.bldg_condition_code,building_activity_date,"Add building_condition_code, building_condition_desc to quad.buildings"
 Missing gross area,Database,Failure,,B12,B12a,Buildings,b_gross,B_Gross Missing,"Into #b12a
 From buildings_ext'+@year+'
 Where b_gross is null
@@ -1720,14 +1720,14 @@ Where b_gross is null
 and b_ownership = ''O''
 and b_aux = ''N''
 and b_inst = @binst
-Order by b_location, b_number",space_utlz.building_detail.bldg_area_gross,space_utlz.building_detail. bldg_activity_date,Add building_area_gross to quad.buildings
+Order by b_location, b_number",space_utlz.building_detail.bldg_area_gross,building_activity_date,Add building_area_gross to quad.buildings
 Invalid gross area,Database,Failure,,B12,B12b,Buildings,b_gross,B_Gross Invalid,"Into #b12B
 From buildings_ext'+@year+'
 Where b_gross = ''0''
 and b_ownership = ''O''
 and b_aux = ''N''
 and b_inst = @binst
-Order by b_location, b_number",space_utlz.building_detail.bldg_area_gross,space_utlz.building_detail. bldg_activity_date,Add building_area_gross to quad.buildings
+Order by b_location, b_number",space_utlz.building_detail.bldg_area_gross,building_activity_date,Add building_area_gross to quad.buildings
 Gross area less than sum of rooms in building,Database,Failure,,B12,B12c,Buildings,b_gross,B_Gross less than Sum of all the rooms area in the building,"Into #B12C
 From Buildings_ext'+@year+' b
 left join #Pro p on (b.b_inst = p.r_inst and b.b_year = p.r_year and b.b_number = p.r_build_Number)
@@ -1735,14 +1735,14 @@ left join #area a on (b.b_inst = a.r_inst and b.b_year = a.r_year and b.B_number
 where (isnull(p.sum_prorated,0) + isnull(a.sum_nonpro,0)) > isnull(b.b_gross,0)
 and b_ownership = ''O''
 and b.b_inst = @binst
-Order by b.b_number",space_utlz.building_detail.bldg_area_gross,space_utlz.building_detail. bldg_activity_date,Add building_area_gross to quad.buildings
+Order by b.b_number",space_utlz.building_detail.bldg_area_gross,building_activity_date,Add building_area_gross to quad.buildings
 Missing risk number when replacement costs are greater than 3.5 million,Database,Failure,,B14,B14a,Buildings,b_rsknbr,B_RSKNBR required (Fatal) for owned buildings greater than 3.5 million dollars replacement cost,"Into #b14a
 From buildings_ext'+@year+'
 Where (b_rsknbr = '''' or b_rsknbr is null)
 and b_ownership = ''O''
 and b_aux = ''N''
 and isnull(b_replace_cost,0) > ''3500000''
-and b_inst = @binst",space_utlz.building_detail.bldg_number,space_utlz.building_detail. bldg_activity_date,Add building_name to quad.buildings
+and b_inst = @binst",space_utlz.building_detail.bldg_number,building_activity_date,Add building_name to quad.buildings
 Missing risk number when replacement costs are less than 3.5 million,Database,Warning,,B14,B14b,Buildings,b_rsknbr,B_RSKNBR required for owned buildings less than or equal to 3.5 million dollars replacement cost,"Into #b14b
 From buildings_ext'+@year+'
 Where (b_rsknbr = '''' or b_rsknbr is null)
@@ -1750,29 +1750,29 @@ and b_ownership = ''O''
 and isnull(b_replace_cost,0) <= ''3500000''
 and b_aux = ''N''
 and b_inst = @binst
-Order by b_inst, b_location, b_number",space_utlz.building_detail.bldg_number,space_utlz.building_detail. bldg_activity_date,Add building_name to quad.buildings
+Order by b_inst, b_location, b_number",space_utlz.building_detail.bldg_number,building_activity_date,Add building_name to quad.buildings
 Missing Auxiliary,Database,Failure,,B15,B15a,Buildings,b_aux,B_AUX values missing,"Into #b15a
 From buildings_ext'+@year+'
 Where (b_aux = '''' or b_aux is null)
 and b_ownership = ''O''
-and b_inst = @binst",space_utlz.building_detail.bldg_aux,space_utlz.building_detail. bldg_activity_date,Add building_auxiliary to quad.buildings
+and b_inst = @binst",space_utlz.building_detail.bldg_aux,building_activity_date,Add building_auxiliary to quad.buildings
 Invalid Auxiliary,Database,Failure,,B15,B15a,Buildings,b_aux,B_AUX contain wrong values,"Into #b15b
 From Loads.dbo.Buildings_ext2021
 Where (b_aux <> '''' or b_aux is not null)
 and b_aux not in (''A'',''N'')
-and b_inst = @binst",space_utlz.building_detail.bldg_aux,space_utlz.building_detail. bldg_activity_date,Add building_auxiliary to quad.buildings
+and b_inst = @binst",space_utlz.building_detail.bldg_aux,building_activity_date,Add building_auxiliary to quad.buildings
 Duplicate records,USHE,Failure,,,B99a,Buildings,"concat(b_inst,b_year,b_number)",Looking for duplicate b_keys,"Select ''''[B99A FTL Duplicate B_Key], b_inst, b_year, b_number, concat(b_inst,b_year,b_number) as [B_Key], Count(*) as [Duplicates]
 Into #b99a
 From buildings_ext'+@year+'
 Where b_inst = @binst
 Group by b_inst, b_year, b_number, [B_Key]
 Having Count(*) > ''1''
-Order by b_number",,space_utlz.building_detail. bldg_activity_date,
+Order by b_number",,building_activity_date,
 Building must have rooms,USHE,Failure,,,B99b,Buildings,,Buildings must have rooms,"Into #b99b
 From buildings_ext'+@year+' b
 join rooms_ext'+@year+' r on (b.b_inst = r.r_inst and b.b_year = r.r_year and b.b_number = r.r_build_number)
 where (r.r_number is null or r.r_number = '''')
-and b_inst = @binst",,space_utlz.building_detail. bldg_activity_date,
+and b_inst = @binst",,building_activity_date,
 Room building not in building file,USHE,Failure,,R03,R03b,Rooms,r_build_number,Rooms_Build_Number not in Buildings,"Into #R03B
 From Rooms_ext'+@year+' r
 left join Buildings_ext'+@year+' b on (r.r_inst = b.b_inst and r.r_build_number = b.b_number)
@@ -1780,54 +1780,54 @@ Where r_build_number is not null
 --or r_build_number = '''' {numeric type columns can not be blank}
 and b.b_number is null
 and r_inst = @rinst
-Order by r_inst, r_year, r_build_number, r_number",space_utlz.rooms_detail.rooms_detail.bldg_abbrv,space_utlz.room_activity_date,Add building_id to quad.rooms
+Order by r_inst, r_year, r_build_number, r_number",space_utlz.rooms_detail.rooms_detail.bldg_abbrv,room_activity_date,Add building_id to quad.rooms
 Missing room number,Database,Failure,,R04,R04a,Rooms,r_number,Rooms missing Room Numbers,"Into #R04A
 From Rooms_ext'+@year+'
 Where (r_number is null or r_number = '''')
 and r_inst = @rinst
-Order by r_build_number, r_year",space_utlz.rooms_detail.rooms_detail.bldg_abbrv,space_utlz.room_activity_date,Add room_number to quad.rooms
+Order by r_build_number, r_year",space_utlz.rooms_detail.rooms_detail.bldg_abbrv,room_activity_date,Add room_number to quad.rooms
 Missing Room group,Database,Failure,,R06,R06a,Rooms,r_group1,R_Group1 missing,"Into #R06A
 From Rooms_ext'+@year+'
 Where (r_group1 is null or r_group1 = '''')
 and r_inst = @rinst
-Order by r_build_number, r_number",space_utlz.rooms_detail.room_group1_desc,space_utlz.room_activity_date,Add room_group1_code and room_group1_desc to quad.rooms
+Order by r_build_number, r_number",space_utlz.rooms_detail.room_group1_desc,room_activity_date,Add room_group1_code and room_group1_desc to quad.rooms
 Invalid room group,Database,Failure,,R06,R06b,Rooms,r_group1,R_Group1 not in Reference table,"Into #R06B
 From Rooms_ext'+@year+'
 Where r_group1 not in (select distinct r_group1_code from Reference.dbo.rooms_group1 where Inactive <> ''Y'')
 and not r_group1 is null and not r_group1 = ''''
 and r_inst = @rinst
-Order by r_build_number, r_number, r_group1",space_utlz.rooms_detail.room_group1_desc,space_utlz.room_activity_date,Add room_group1_code and room_group1_desc to quad.rooms
+Order by r_build_number, r_number, r_group1",space_utlz.rooms_detail.room_group1_desc,room_activity_date,Add room_group1_code and room_group1_desc to quad.rooms
 Missing room use category when r_group1 not Z,Database,Failure,,R07,R07a,Rooms,r_use_category,R_Use_Category missing,"Into #R07A
 From Rooms_ext'+@year+'
 Where (r_use_category is null or r_use_category = '''')
 and r_group1 <> ''Z''
 and r_inst = @rinst
-Order by r_build_number, r_number",space_utlz.rooms_detail.room_use_code_group,space_utlz.room_activity_date,Add room_use_code_group to quad.rooms
+Order by r_build_number, r_number",space_utlz.rooms_detail.room_use_code_group,room_activity_date,Add room_use_code_group to quad.rooms
 Invalid room use category,Database,Failure,,R07,R07b,Rooms,r_use_category,R_Use_Category not in Reference table,"Into #R07B
 From Rooms_ext'+@year+'
 Where r_use_category not in (select distinct r_use_cat_code from Reference.dbo.rooms_use_cat where Inactive <> ''Y'')
 and not r_use_category is null and not r_use_category = ''''
 and r_inst = @rinst
-Order by r_build_number, r_number, r_use_category",space_utlz.rooms_detail.room_use_code_group,space_utlz.room_activity_date,Add room_use_code_group to quad.rooms
+Order by r_build_number, r_number, r_use_category",space_utlz.rooms_detail.room_use_code_group,room_activity_date,Add room_use_code_group to quad.rooms
 Missing room use category when r_group1 = Z,Database,Failure,,R07,R07c,Rooms,r_use_category,R_Use_Category missing,"Into #R07C
 From Rooms_ext'+@year+'
 Where (r_use_category is null or r_use_category = '''')
 and r_group1 = ''Z''
 and r_inst = @rinst
-Order by r_build_number, r_number",space_utlz.rooms_detail.room_use_code_group,space_utlz.room_activity_date,Add room_use_code_group to quad.rooms
+Order by r_build_number, r_number",space_utlz.rooms_detail.room_use_code_group,room_activity_date,Add room_use_code_group to quad.rooms
 Missing room use code,Database,Failure,,R08,R08a,Rooms,r_use_code,R_Use_Code missing,"Into #R08A
 From Rooms_ext'+@year+'
 Where (r_use_code is null or r_use_code = '''')
 and r_group1 <> ''Z''
 and r_inst = @rinst
-Order by r_build_number, r_number",space_utlz.rooms_detail.room_use_code,space_utlz.room_activity_date,Add room_use_code to quad.rooms
+Order by r_build_number, r_number",space_utlz.rooms_detail.room_use_code,room_activity_date,Add room_use_code to quad.rooms
 Invalid room use code,Database,Failure,,R08,R08b,Rooms,r_use_code,R_Use_Code Unknown not in Reference table,"Into #R08B
 From Rooms_ext'+@year+'
 Where r_use_code not in (select distinct r_use_code from Reference.dbo.rooms_use_code where Inactive <> ''Y'')
 and not r_use_code is null
 and not r_use_code = ''''
 and r_inst = @rinst
-Order by r_build_number, r_number, r_use_code",space_utlz.rooms_detail.room_use_code,space_utlz.room_activity_date,Add room_use_code to quad.rooms
+Order by r_build_number, r_number, r_use_code",space_utlz.rooms_detail.room_use_code,room_activity_date,Add room_use_code to quad.rooms
 Invalid Room use code,Database,Failure,,R08,R08d,Rooms,r_use_code,Room Use Code 250 and 255 only for UU and USU,"Select ''''[R08D Use_Code_250 & 255], r_inst, r_build_number, r_number, r_use_code,
 (Case
 when r_inst in (''3675'', ''3677'') then ''Allowed''
@@ -1837,12 +1837,12 @@ Into #R08D
 From Rooms_ext'+@year+'
 Where r_use_code in(''250'',''255'')
 and r_inst = @rinst
-Order by r_build_number, r_number, r_use_code",space_utlz.rooms_detail.room_use_code,space_utlz.room_activity_date,Add room_use_code to quad.rooms
+Order by r_build_number, r_number, r_use_code",space_utlz.rooms_detail.room_use_code,room_activity_date,Add room_use_code to quad.rooms
 Missing room name,Database,Failure,,R09,R09a,Rooms,r_name,R_Name missing,"Into #R09A
 From Rooms_ext'+@year+'
 Where (r_name is null or r_name = '''')
 and r_inst = @rinst
-Order by r_build_number, r_number",space_utlz.rooms_detail.room_name,space_utlz.room_activity_date,Add room_name to quad.rooms
+Order by r_build_number, r_number",space_utlz.rooms_detail.room_name,room_activity_date,Add room_name to quad.rooms
 "Missing room stations when r_use_code 110, 210, 230",Database,Failure,,R10,R10a,Rooms,r_stations,"R_Stations missing for R_Use_Code 110, 210, 230","Into #R10A
 From Rooms_ext'+@year+'
 Where r_use_code in (''110'',''210'', ''230'')
@@ -1851,7 +1851,7 @@ and r_group1 <>''Z'' --Leasing to someone else
 and r_use_category <> ''000''
 --or r_stations = '''' { Data type numeric will not accept blank by design}
 and r_inst = @rinst
-Order by r_build_number, r_number",space_utlz.rooms_detail.room_stations,space_utlz.room_activity_date,Add room_stations to quad.rooms
+Order by r_build_number, r_number",space_utlz.rooms_detail.room_stations,room_activity_date,Add room_stations to quad.rooms
 "Invalid room stations when r_use_code 110, 210, 230",Database,Failure,,R10,R10b,Rooms,r_stations,"R_Stations Invalid for R_Use_Code 110, 210, 230","Into #R10b
 From Rooms_ext'+@year+'
 Where r_use_code in (''110'',''210'', ''230'')
@@ -1859,7 +1859,7 @@ and r_stations = ''0''
 and r_group1 <> ''Z'' --Leasing to someone else
 and r_use_category <> ''000''
 and r_inst = @rinst
-Order by r_build_number, r_number",space_utlz.rooms_detail.room_stations,space_utlz.room_activity_date,Add room_stations to quad.rooms
+Order by r_build_number, r_number",space_utlz.rooms_detail.room_stations,room_activity_date,Add room_stations to quad.rooms
 Stations out of range when r_use_code 110,Database,Warning,,R10,R10c,Rooms,r_stations,R_Stations out of range where r_use_code = 110,"Select ''''[R10C Use_Code_110 out of Range], r_inst, r_build_number, r_use_code, r_suffix, r_area, r_stations,
 ''7 to 16'' as ''Accept Range'', Cast(Round(r_area/r_stations, 0) as Int) as ''Calc Range''
 Into #R10C
@@ -1869,7 +1869,7 @@ and Cast(Round(r_area/r_stations, 0) as Int) not between ''7'' and ''16''
 and r_group1 <> ''Z''
 and r_use_category <> ''000''
 and r_inst = @rinst
-Order by r_build_number, r_number",space_utlz.rooms_detail.room_stations,space_utlz.room_activity_date,Add room_stations to quad.rooms
+Order by r_build_number, r_number",space_utlz.rooms_detail.room_stations,room_activity_date,Add room_stations to quad.rooms
 Stations out of range when r_use_code 210,Database,Warning,,R10,R10d,Rooms,r_stations,R_Stations out of range where r_use_code = 210,"Select ''''[R10D Use_Code_210 out of Range], r_inst, r_build_number, r_use_code, r_suffix, r_area, r_stations,
 ''8 to 19'' as ''Accept Range'', Cast(Round(r_area/r_stations, 0) as Int) as ''Calc Range''
 Into #R10D
@@ -1879,82 +1879,82 @@ and Cast(Round(r_area/r_stations, 0) as Int) not between ''8'' and ''19''
 and r_group1 <> ''Z''
 and r_use_category <> ''000''
 and r_inst = @rinst
-Order by r_build_number, r_number",space_utlz.rooms_detail.room_stations,space_utlz.room_activity_date,Add room_stations to quad.rooms
+Order by r_build_number, r_number",space_utlz.rooms_detail.room_stations,room_activity_date,Add room_stations to quad.rooms
 Missing room area,Database,Failure,,R11,R11a,Rooms,r_area,R_Area missing,"Into #R11A
 From Rooms_ext'+@year+'
 Where r_area is null
 --or r_area = '''' {Data type numeric will not accept blank by design}
 and r_inst = @rinst
-Order by r_build_number, r_number",space_utlz.rooms_detail.room_area,space_utlz.room_activity_date,Add room_area to quad.rooms
+Order by r_build_number, r_number",space_utlz.rooms_detail.room_area,room_activity_date,Add room_area to quad.rooms
 Invalid room area,Database,Failure,,R11,R11b,Rooms,r_area,R_Area Invalid,"Into #R11B
 From Rooms_ext'+@year+'
 Where r_area = ''0''
 and r_inst = @rinst
-Order by r_build_number, r_number",space_utlz.rooms_detail.room_area,space_utlz.room_activity_date,Add room_area to quad.rooms
+Order by r_build_number, r_number",space_utlz.rooms_detail.room_area,room_activity_date,Add room_area to quad.rooms
 Invalid proration,Database,Failure,,R13,R13a,Rooms,r_proration,R_Proration Not Y or N,"Into #R13A
 From Rooms_ext'+@year+'
 Where r_proration not in( ''Y'',''N'')
 and r_inst = @rinst
-Order by r_build_number, r_number",space_utlz.room_prorated,space_utlz.room_activity_date,Add room_prorated to quad.rooms
+Order by r_build_number, r_number",space_utlz.room_prorated,room_activity_date,Add room_prorated to quad.rooms
 Missing proration,Database,Failure,,R13,R13b,Rooms,r_proration,R_Proration missing,"Into #R13B
 From Rooms_ext'+@year+'
 Where (r_proration is null or r_proration = '''')
 and r_inst = @rinst
-Order by r_build_number, r_number",space_utlz.room_prorated,space_utlz.room_activity_date,Add room_prorated to quad.rooms
+Order by r_build_number, r_number",space_utlz.room_prorated,room_activity_date,Add room_prorated to quad.rooms
 Prorated room area and prorated area equals zero,Database,Failure,,R13,R13c,Rooms,r_proration,"R_Proration = Y, R_Area and R_Prorated_area = 0","Into #R13C
 From Rooms_ext'+@year+'
 Where r_proration = ''Y''
 and r_area = ''0'' and r_prorated_area = ''0''
 and r_inst = @rinst
-Order by r_build_number, r_number",space_utlz.room_prorated,space_utlz.room_activity_date,Add room_prorated to quad.rooms
+Order by r_build_number, r_number",space_utlz.room_prorated,room_activity_date,Add room_prorated to quad.rooms
 "Prorated room area does not equal zero, but room area equals zero",Database,Failure,,R13,R13d,Rooms,r_proration,"R_Proration = Y, R_Area = 0 and R_Prorated_area <> 0","Into #R13D
 From Rooms_ext'+@year+'
 Where r_proration = ''Y''
 and r_area = ''0'' and r_prorated_area <> ''0''
 and r_inst = @rinst
-Order by r_build_number, r_number",space_utlz.room_prorated,space_utlz.room_activity_date,Add room_prorated to quad.rooms
+Order by r_build_number, r_number",space_utlz.room_prorated,room_activity_date,Add room_prorated to quad.rooms
 "Prorated room area equals zero, but room area does not equal zero",Database,Failure,,R13,R13e,Rooms,r_proration,"R_Proration = Y, R_Area <> 0 and R_Prorated_area = 0","Into #R13E
 From Rooms_ext'+@year+'
 Where r_proration = ''Y''
 and r_area <> ''0'' and r_prorated_area = ''0''
 and r_inst = @rinst
-Order by r_build_number, r_number",space_utlz.room_prorated,space_utlz.room_activity_date,Add room_prorated to quad.rooms
+Order by r_build_number, r_number",space_utlz.room_prorated,room_activity_date,Add room_prorated to quad.rooms
 "Proration equals N, but prorated area does not equal zero",Database,Failure,,R13,R13f,Rooms,r_proration,"R_Proration = N, R_Prorated_area <> 0","Into #R13F
 From Rooms_ext'+@year+'
 Where r_proration = ''N''
 and r_prorated_area <> ''0''
 and r_inst = @rinst
-Order by r_build_number, r_numbe",space_utlz.room_prorated,space_utlz.room_activity_date,Add room_prorated to quad.rooms
+Order by r_build_number, r_numbe",space_utlz.room_prorated,room_activity_date,Add room_prorated to quad.rooms
 Missing prorated area,Database,Failure,,R14,R14a,Rooms,r_prorated_area,R_Prorated_Area can not be null,"Into #R14A
 From Rooms_ext'+@year+'
 Where r_prorated_area is null
 --or r_prorated_area = '''' {Data type numeric will not accept blank by design}
 and r_inst = @rinst
-Order by r_build_number, r_number",space_utlz.room_prorated_area,space_utlz.room_activity_date,Add room_prorated_area to quad.rooms
+Order by r_build_number, r_number",space_utlz.room_prorated_area,room_activity_date,Add room_prorated_area to quad.rooms
 Sum of prorated area is not equal to room area,Database,Failure,,R14,R14b,Rooms,r_prorated_area,R_Prorated_Area Not Equal R_Area,"Into #R14B
 From Rooms_ext'+@year+' r
 join #Pro p on (r.r_inst = p.r_inst and r.r_year = p.r_year and r.r_build_number = p.r_build_Number and r.r_number = p.r_number)
 where r.r_proration = ''Y''
 and isnull(r.r_area,0) <> isnull(p.sum_prorated,0)
 and r.r_inst = @rinst
-Order by r.r_build_number, r.r_number",space_utlz.room_prorated_area,space_utlz.room_activity_date,Add room_prorated_area to quad.rooms
+Order by r.r_build_number, r.r_number",space_utlz.room_prorated_area,room_activity_date,Add room_prorated_area to quad.rooms
 Invalid Date Format,Database,Failure,,R15,R15a,Rooms,r_update_date,R_Update_Date wrong format,"Into #R15a
 From Rooms_ext'+@year+'
 Where (len(r_update_date) <> ''8'' or substring(r_update_date,1,8) like ''%[a-z]%''
 or r_update_date like ''%[/]%'')
 and r_update_date <> ''''
 and r_inst = @rinst
-Order by r_build_number, r_number",space_utlz.room_activity_date,space_utlz.room_activity_date,Add room_activity_date to quad.rooms
+Order by r_build_number, r_number",room_activity_date,room_activity_date,Add room_activity_date to quad.rooms
 Missing activity date,Database,Failure,,R15,R15b,Rooms,r_update_date,R_Update_Date blank list,"Into #R15b
 From Rooms_ext'+@year+'
 Where r_update_date = ''''
 and r_inst = @rinst
-Order by r_build_number, r_number",space_utlz.room_activity_date,space_utlz.room_activity_date,Add room_activity_date to quad.rooms
+Order by r_build_number, r_number",room_activity_date,room_activity_date,Add room_activity_date to quad.rooms
 Update date is in the future,Database,Failure,,R15,R15b,Rooms,r_update_date,R_Update_Date is in the future,"Into #R15C
 From Rooms_ext'+@year+'
 where Convert(varchar(10), cast(r_update_date as date),101) > GETDATE()
 and r_inst = @rinst
-Order by r_build_number, r_number",space_utlz.room_activity_date,space_utlz.room_activity_date,Add room_activity_date to quad.rooms
+Order by r_build_number, r_number",room_activity_date,room_activity_date,Add room_activity_date to quad.rooms
 Duplicate records,USHE,Failure,,,R99a,Rooms,,Looking for duplicate r_keys,"Select ''''[R99A FTL Duplicate R_Key], r_inst, r_year, r_build_number, r_number, r_suffix, r_group1, r_use_code,
 concat(r_inst, r_year, r_build_number, r_number, r_suffix, r_group1, r_use_code) as [R_Key], Count(*) as [Duplicates]
 Into #r99a
@@ -1962,4 +1962,4 @@ From Rooms_ext'+@year+'
 Where r_inst = @rinst
 Group by r_inst, r_year, r_build_number, r_number, r_suffix, r_group1, r_use_code, [R_Key]
 Having Count(*) > ''1''
-Order by r_number",,space_utlz.room_activity_date,
+Order by r_number",,room_activity_date,

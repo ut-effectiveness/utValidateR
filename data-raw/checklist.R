@@ -237,19 +237,26 @@ rule_spec <- tribble(
   "B06a", expr(!is_missing_chr(building_number)),
   "B06b", expr(!is_duplicated(building_number)),
   "B07b", expr(!is_missing_chr(building_abbrv)),
-  "B08a", expr(building_cost_replacement <= 3.5e6 | !is_missing_chr(building_construction_year)),
-  "B08b", expr(building_cost_replacement > 3.5e6 | !is_missing_chr(building_construction_year)),
+  "B08a", expr(is.na(building_cost_replacement) |
+                 building_cost_replacement <= 3.5e6 |
+                 !is_missing_chr(building_construction_year)),
+  "B08b", expr((!is.na(building_cost_replacement) & building_cost_replacement > 3.5e6) |
+                 !is_missing_chr(building_construction_year)),
   "B10a", expr(!is_missing_chr(building_cost_replacement)),
-  "B11a", expr(building_cost_replacement <= 3.5e6 | !is_missing_chr(building_condition)),
+  "B11a", expr(is.na(building_cost_replacement) |
+                 building_cost_replacement <= 3.5e6 |
+                 !is_missing_chr(building_condition_code)),
   "B11b", expr(is_valid_values(building_condition_code, valid_building_condition_codes)),
-  "B11c", expr(building_cost_replacement > 3.5e6 | !is_missing_chr(building_condition)),
+  "B11c", expr((!is.na(building_cost_replacement) & building_cost_replacement > 3.5e6) |
+                 !is_missing_chr(building_condition_code)),
   "B12a", expr(!is_missing_chr(building_area_gross)),
   "B12b", expr(!is.na(as.numeric(building_area_gross)) &
                  as.numeric(building_area_gross) > 0), # TODO: condition on ownership and aux?
   # "B12c", TODO: this one needs a summary of rooms data - "Gross area less than sum of rooms in building"
-  "B14a", expr(building_cost_replacement <= 3.5e6 |
-                 !is_missing_chr(building_risk_number)), # Risk number not currently in buildings table
-  "B14b", expr(building_cost_replacement > 3.5e6 |
+  "B14a", expr(is.na(building_cost_replacement) |
+                 building_cost_replacement <= 3.5e6 | !
+                 is_missing_chr(building_risk_number)), # Risk number not currently in buildings table
+  "B14b", expr((!is.na(building_cost_replacement) & building_cost_replacement > 3.5e6) |
                  !is_missing_chr(building_risk_number)),
   "B15a", expr(!is_missing_chr(building_auxiliary)), # Do I need to condition on ownership?
   "B15a", expr(is_valid_values(building_auxiliary, c("A", "N"), missing_ok = TRUE)),

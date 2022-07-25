@@ -208,8 +208,82 @@ rule_spec <- tribble(
   "G24a", expr(graduated_academic_year_code %in% reference_year), # TODO: how to get reference year?
   "G25a", expr(is_valid_values(season, c("1", "2", "3"))), # TODO: check values
   "G28a", expr(!is_missing_chr(degree_desc)),
-
-
+  "SC04a", expr(!is_missing_chr(subject_code)),
+  "SC05a", expr(!is_missing_chr(course_number)),
+  "SC06a", expr(!is_missing_chr(section_number)),
+  # "SC08b", TODO: "invalid earned credit hours based on grade" but I see no grade type
+  # "SC08c", TODO: "earned credit hours is missing, but have a grade" but no grade present
+  # "SC08d", TODO: complex logic for "At end of term, earned credit hours should match attempted credit hours (when a passing grade)"
+  "SC10a", expr(is_valid_values(final_grade, valid_grades, missing_ok = TRUE) |
+                  is.na(attempted_credits) | attempted_credits == 0),
+  # "SC10b", USHE rule "missing concurrent enrollment grades"
+  # "SC10c", USHE rule "invalid concurrent enrollment grade"
+  # "SC12a", USHE rule "Invaild student type codes (concurrent enrollment)"
+  # "SC12b", USHE rule "Student type and HS code alignment (concurrent students only in Utah High schools)"
+  # "SC12c", USHE rule "Budget code and student type alignment (concurrent classes has concurrent students)"
+  # "SC12d", USHE rule "Budget code, student type and entry action alignment"
+  # "SC12e", USHE rule "Budget code and student type alignment (concurrent students in concurrent classes)"
+  # "SC12f", USHE rule "Budget code and student type alignement (concurrent students in concurrent classes in out-of state high schools)"
+  "SC14a", expr(is_valid_course_reference_number(course_reference_number)),
+  "SC14b", expr(!is_missing_chr(course_reference_number)),
+  # "SC15b", TODO: sort out what needs to be done with edify data
+  # "SC15c", TODO: sort out what needs to be done with edify data
+  "B02a", expr(!is_missing_chr(building_location_code) & !is_missing_chr(building_location_desc)),
+  "B02b", expr(is_valid_values(building_location_code, valid_building_location_codes)),
+  "B03a", expr(!is_missing_chr(building_ownership_code)),
+  "B03b", expr(is_valid_values(building_ownership_code, valid_ownership_codes)),
+  "B04a", expr(!is_missing_chr(building_construction_year)), # TODO: Should this be a different year (b_year in ushe)?
+  "B05a", expr(!is_missing_chr(building_name)),
+  "B06a", expr(!is_missing_chr(building_number)),
+  "B06b", expr(!is_duplicated(building_number)),
+  "B07b", expr(!is_missing_chr(building_abbrv)),
+  "B08a", expr(building_cost_replacement <= 3.5e6 | !is_missing_chr(building_construction_year)),
+  "B08b", expr(building_cost_replacement > 3.5e6 | !is_missing_chr(building_construction_year)),
+  "B10a", expr(!is_missing_chr(building_cost_replacement)),
+  "B11a", expr(building_cost_replacement <= 3.5e6 | !is_missing_chr(building_condition)),
+  "B11b", expr(is_valid_values(building_condition_code, valid_building_condition_codes)),
+  "B11c", expr(building_cost_replacement > 3.5e6 | !is_missing_chr(building_condition)),
+  "B12a", expr(!is_missing_chr(building_area_gross)),
+  "B12b", expr(!is.na(as.numeric(building_area_gross)) &
+                 as.numeric(building_area_gross) > 0), # TODO: condition on ownership and aux?
+  # "B12c", TODO: this one needs a summary of rooms data - "Gross area less than sum of rooms in building"
+  "B14a", expr(building_cost_replacement <= 3.5e6 |
+                 !is_missing_chr(building_risk_number)), # Risk number not currently in buildings table
+  "B14b", expr(building_cost_replacement > 3.5e6 |
+                 !is_missing_chr(building_risk_number)),
+  "B15a", expr(!is_missing_chr(building_auxiliary)), # Do I need to condition on ownership?
+  "B15a", expr(is_valid_values(building_auxiliary, c("A", "N"), missing_ok = TRUE)),
+  "B99a", expr(!is_duplicated(cbind(b_inst,b_year,b_number))), # USHE rule
+  # "B99b", TODO: USHE rule for "buildings must have rooms", requires join to rooms data
+  # R03b
+  # R04a
+  # R06a
+  # R06b
+  # R07a
+  # R07b
+  # R07c
+  # R08a
+  # R08b
+  # R08d
+  # R09a
+  # R10a
+  # R10b
+  # R10c
+  # R10d
+  # R11a
+  # R11b
+  # R13a
+  # R13b
+  # R13c
+  # R13d
+  # R13e
+  # R13f
+  # R14a
+  # R14b
+  # R15a
+  # R15b
+  # R15b
+  # R99a
 )
 
 

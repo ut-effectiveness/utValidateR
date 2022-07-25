@@ -98,8 +98,7 @@ is_valid_class_level <- function(x) {
 #' @describeIn is_valid_act_score student_id
 #' @export
 is_valid_student_id <- function(x) {
-  # TODO: what makes a student_id valid?
-  !is.na(x)
+  !is_missing_chr(x) # & nchar(x) == 9 # TODO: verify no need to check length or anything else
 }
 
 #' @describeIn is_valid_act_score previous_student_id
@@ -185,7 +184,7 @@ is_valid_values <- function(x, valid_values, missing_ok = TRUE) {
   }
 }
 
-#' @describeIn is_valid_act_score course referenc number
+#' @describeIn is_valid_act_score course reference number
 #' @export
 is_valid_course_reference_number <- function(x) {
   # Invalid if: empty string, length > 5, value > 99999, value < 0, non-numeric.
@@ -198,11 +197,12 @@ is_valid_course_reference_number <- function(x) {
   out <- is_missing_chr(x) | passes # Another rule checks missingness.
 }
 
+#' @describeIn is_valid_act_score graduation date
 #' @importFrom lubridate month day days
 is_valid_graduation_date <- function(x) {
   # Between 6/30 and 7/1 -- although I find this suspicious
   # TODO: add check on year if data allow it
-  month(graduation_date + days(1)) == 7 & day(graduation_date + days(1)) <= 2
+  month(x + days(1)) == 7 & day(x + days(1)) <= 2
 }
 
 #' Helper functions for student_type  and level_class_id categories

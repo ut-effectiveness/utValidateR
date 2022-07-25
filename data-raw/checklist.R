@@ -248,13 +248,18 @@ rule_spec <- tribble(
   "G24a", expr(graduated_academic_year_code %in% reference_year), # TODO: how to get reference year?
   "G25a", expr(is_valid_values(season, c("1", "2", "3"))), # TODO: check values
   "G28a", expr(!is_missing_chr(degree_desc)),
+  "SC03", expr(!is.na(sis_student_id) & !is.na(ssn)),
   "SC04a", expr(!is_missing_chr(subject_code)),
   "SC05a", expr(!is_missing_chr(course_number)),
   "SC06a", expr(!is_missing_chr(section_number)),
+  "SC07a", expr(is_valid_credits(attempted_credits)), # TODO: check mapping of rules to fields (through 11a)
+  "SC08a", expr(is_valid_credits(earned_credits)),
+  "SC09a", expr(is_valid_credits(contact_hours)),
+  "SC11a", expr(is_valid_credits(membership_hours)),
   # "SC08b", TODO: "invalid earned credit hours based on grade" but I see no grade type
   # "SC08c", TODO: "earned credit hours is missing, but have a grade" but no grade present
   # "SC08d", TODO: complex logic for "At end of term, earned credit hours should match attempted credit hours (when a passing grade)"
-  "SC10a", expr(is_valid_values(final_grade, valid_grades, missing_ok = TRUE) |
+  "SC10a", expr(is_valid_values(final_grade, valid_final_grades, missing_ok = TRUE) |
                   is.na(attempted_credits) | attempted_credits == 0),
   # "SC10b", USHE rule "missing concurrent enrollment grades"
   # "SC10c", USHE rule "invalid concurrent enrollment grade"
@@ -264,6 +269,8 @@ rule_spec <- tribble(
   # "SC12d", USHE rule "Budget code, student type and entry action alignment"
   # "SC12e", USHE rule "Budget code and student type alignment (concurrent students in concurrent classes)"
   # "SC12f", USHE rule "Budget code and student type alignement (concurrent students in concurrent classes in out-of state high schools)"
+  "SC13a", expr(is_valid_student_id(sis_student_id)),
+  "SC13b", expr(is_valid_student_id(sis_student_id)), # Redundant unless I can assume banner_id format
   "SC14a", expr(is_valid_course_reference_number(course_reference_number)),
   "SC14b", expr(!is_missing_chr(course_reference_number)),
   # "SC15b", TODO: sort out what needs to be done with edify data

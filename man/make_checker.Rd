@@ -4,9 +4,11 @@
 \alias{make_checker}
 \title{Function factory for generating checker functions}
 \usage{
-make_checker(expr)
+make_checker(rule, expr)
 }
 \arguments{
+\item{rule}{Name of the rule being applied, e.g. "S03b"}
+
 \item{expr}{Expression that generates a logical vector when applied to a dataframe}
 }
 \description{

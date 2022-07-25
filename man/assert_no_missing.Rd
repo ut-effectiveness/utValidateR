@@ -4,7 +4,7 @@
 \alias{assert_no_missing}
 \title{Assertion for non-missing values}
 \usage{
-assert_no_missing(vec, expr_chr)
+assert_no_missing(vec)
 }
 \arguments{
 \item{vec}{vector to check}

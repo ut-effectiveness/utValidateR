@@ -4,14 +4,12 @@
 \alias{assert_length}
 \title{Assertion for correct vector length}
 \usage{
-assert_length(vec, df, expr_chr)
+assert_length(vec, df)
 }
 \arguments{
 \item{vec}{vector to check}
 
 \item{df}{dataframe being checked}
-
-\item{expr_chr}{Character representation of generating expression, for messaging}
 }
 \description{
 Assertion for correct vector length

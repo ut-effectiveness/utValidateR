@@ -4,12 +4,10 @@
 \alias{assert_logical}
 \title{Assertion for logical type}
 \usage{
-assert_logical(vec, expr_chr)
+assert_logical(vec)
 }
 \arguments{
 \item{vec}{vector to check}
-
-\item{expr_chr}{Character representation of generating expression, for messaging}
 }
 \description{
 Assertion for logical type

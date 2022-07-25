@@ -16,6 +16,7 @@
 \alias{is_valid_occupancy}
 \alias{is_valid_values}
 \alias{is_valid_course_reference_number}
+\alias{is_valid_graduation_date}
 \title{Validity checks on various values}
 \usage{
 is_valid_act_score(x)
@@ -47,6 +48,8 @@ is_valid_occupancy(x)
 is_valid_values(x, valid_values, missing_ok = TRUE)
 
 is_valid_course_reference_number(x)
+
+is_valid_graduation_date(x)
 }
 \arguments{
 \item{x}{Vector to check}
@@ -86,6 +89,8 @@ Validity checks on various values
 
 \item \code{is_valid_values}: matching a vector of values
 
-\item \code{is_valid_course_reference_number}: course referenc number
+\item \code{is_valid_course_reference_number}: course reference number
+
+\item \code{is_valid_graduation_date}: graduation date
 }}
 

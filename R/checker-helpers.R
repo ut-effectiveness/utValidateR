@@ -98,8 +98,7 @@ is_valid_class_level <- function(x) {
 #' @describeIn is_valid_act_score student_id
 #' @export
 is_valid_student_id <- function(x) {
-  # TODO: what makes a student_id valid?
-  !is.na(x)
+  !is_missing_chr(x) # & nchar(x) == 9 # TODO: verify no need to check length or anything else
 }
 
 #' @describeIn is_valid_act_score previous_student_id

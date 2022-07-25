@@ -195,7 +195,7 @@ rule_spec <- tribble(
                  (nchar(instructor_employee_id) == 9L &
                     grepl("^[[a-zA-Z]]", instructor_employee_id))),
   # "C42c" USHE rule for instructor ID
-  "C43a", expr(!is_missing_chr(first_name)),
+  "C43a", expr(!is_missing_chr(instructor_name)),
   # "C43c", expr(is_alpha_chr(c_instruct_name)), USHE rule
   "C44", expr(!is_missing_chr(section_format_type_code)),
   "C44a", expr(is_valid_values(section_format_type_code,
@@ -215,14 +215,23 @@ rule_spec <- tribble(
   "C52a", expr(!is_missing_chr(course_reference_number)),
   "C52b", expr(is_valid_course_reference_number(course_reference_number)),
   "C52c", expr(!is_duplicated(course_reference_number)),
-  "G02b", expr(student_id %in% student_file$student_id), # TODO: how to get student file?
+  "G02a", expr(!is_missing_chr(sis_student_id) & !is_missing_chr(ssn)),
+  "G02b", expr(sis_student_id %in% student_file$student_id), # TODO: how to get student file?
+  "G12a", expr(is_valid_credits(overall_cumulative_credits_earned)), # TODO: verify mapping of rules to fields
+  "G13a", expr(is_valid_credits(required_credits)),
+  "G14a", expr(is_valid_credits(total_cumulative_ap_credits_earned)),
+  "G15a", expr(is_valid_credits(total_cumulative_clep_credits_earned)),
+  "G22a", expr(is_valid_credits(total_cumulative_credits_attempted_other_sources)),
+  "G23a", expr(is_valid_credits(transfer_cumulative_credits_earned)),
+  "G17a", expr(!is_missing_chr(degree_id)),
   "G21e", expr(ssn %in% student_file$ssn), # TODO: how to get student file?
   # "G03e", expr(nchar(first_name) <= 15), # USHE rule, might need to rename
   # "G03g", expr(nchar(middle_name) <= 15), # USHE rule
   # "G03i", expr(nchar(name_suffix) <= 4), # USHE rule
-  "G08b", expr(is_valid_graduation_date(gradutation_date)),
-  "G09a", expr(is_valid_values(cip_code, valid_cip_codes, missing_ok = TRUE)),
+  "G08b", expr(is_valid_graduation_date(graduation_date)),
+  "G09a", expr(is_valid_values(primary_major_cip_code, valid_cip_codes, missing_ok = TRUE)),
   "G10a", expr(degree_status_code != "AW" | !is_missing_chr(degree_type)), # TODO: check assumed names and values
+  "G11a", expr(is_valid_gpa(cumulative_graduation_gpa)),
   # "G12b", USHE rule for Transfer hours over 300 credits
   # "G13b", USHE rule for Graduation hours 1.5 times required hours
   # "G14b", USHE rule for Other hours 1.5 times required hours
@@ -230,7 +239,9 @@ rule_spec <- tribble(
   "G18a", expr(is.numeric(required_credits) &
                  !is.na(required_credits) &
                  required_credits >= 0 ),
-  "G19a", expr(!is_utah_county(county_code) | !is_missing_chr(high_school_code)),
+  "G19a", expr(!is_utah_county(first_admit_county_code) | !is_missing_chr(high_school_code)),
+  "G21a", expr(is_valid_student_id(sis_student_id)),
+  "G21b", expr(is_valid_student_id(sis_student_id)), # Redundant unless I can assume banner_id format
   "G21d", expr(!is_duplicated(cbind(sis_student_id, # TODO: check "sis_student_id" vs "student_id"
                                     graduation_date, primary_major_cip_code, degree_id,
                                     ipeds_award_level_code, primary_major_id))),

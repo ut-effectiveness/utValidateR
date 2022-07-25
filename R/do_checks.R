@@ -15,7 +15,7 @@ do_checks <- function(df_tocheck, checklist) {
   result_names <- paste0(checklist$rule, "_status")
 
   # make_checker() returns a function (of a dataframe)
-  checkfuns <- map(checklist$checker, ~make_checker(.))
+  checkfuns <- map2(checklist$rule, checklist$checker, ~make_checker(.x, .y))
 
   # Append checkfuns output to df_tocheck
   check_results <- map(checkfuns, ~.(df_tocheck)) %>%

@@ -195,7 +195,7 @@ rule_spec <- tribble(
                  (nchar(instructor_employee_id) == 9L &
                     grepl("^[[a-zA-Z]]", instructor_employee_id))),
   # "C42c" USHE rule for instructor ID
-  "C43a", expr(!is.missing_chr(first_name)),
+  "C43a", expr(!is_missing_chr(first_name)),
   # "C43c", expr(is_alpha_chr(c_instruct_name)), USHE rule
   "C44", expr(!is_missing_chr(section_format_type_code)),
   "C44a", expr(is_valid_values(section_format_type_code,
@@ -357,7 +357,12 @@ all_rules <- read.csv("sandbox/full-rules-rename.csv") %>%
   mutate(activity_date = ifelse(activity_date == "n/a", NA_character_, activity_date)) %>%
   select(rule = ushe_rule, ref_rule, description, status,
          type, activity_date) %>%
+
+  # Where a rule exists in rule_spec, force it to be its own ref_rule.
+  # I've determined these need their own specification (can't use another rule's spec)
+  mutate(ref_rule = ifelse(rule %in% rule_spec$rule, rule, ref_rule)) %>%
   glimpse()
+
 
 # Rule info joined to anonymous-function tibble
 checklist <- all_rules %>%

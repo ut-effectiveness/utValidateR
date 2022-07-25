@@ -255,35 +255,47 @@ rule_spec <- tribble(
   "B15a", expr(is_valid_values(building_auxiliary, c("A", "N"), missing_ok = TRUE)),
   "B99a", expr(!is_duplicated(cbind(b_inst,b_year,b_number))), # USHE rule
   # "B99b", TODO: USHE rule for "buildings must have rooms", requires join to rooms data
-  # R03b
-  # R04a
-  # R06a
-  # R06b
-  # R07a
-  # R07b
-  # R07c
-  # R08a
-  # R08b
-  # R08d
-  # R09a
-  # R10a
-  # R10b
-  # R10c
-  # R10d
-  # R11a
-  # R11b
-  # R13a
-  # R13b
-  # R13c
-  # R13d
-  # R13e
-  # R13f
-  # R14a
-  # R14b
-  # R15a
-  # R15b
-  # R15b
-  # R99a
+  # "R03b", TODO USHE rule for "Room building not in building file", requires join to buildings data
+  "R04a", expr(!is_missing_chr(room_number)),
+  "R06a", expr(!is_missing_chr(room_group1_code)),
+  "R06b", expr(is_valid_values(room_group1_code, valid_room_group1_codes, missing_ok = TRUE)),
+  "R07a", expr((room_group1_code %in% "Z") | !is_missing_chr(room_use_code_group)),
+  "R07b", expr(is_valid_values(room_use_code_group, valid_room_use_code_groups, missing_ok = TRUE)),
+  "R07c", expr(!(room_group1_code %in% "Z") | !is_missing_chr(room_use_code_group)),
+  "R08a", expr(!is_missing_chr(room_use_code)),
+  "R08b", expr(is_valid_values(room_use_code, valid_room_use_codes, missing_ok = TRUE)),
+  "R08d", expr(!(room_use_code %in% c("250", "255"))),
+  "R09a", expr(!is_missing_chr(room_name)),
+  "R10a", expr(!(room_use_code %in% c("110", "210", "230")) | !is_missing_chr(room_stations)),
+  "R10b", expr(!(room_use_code %in% c("110", "210", "230") &
+                   room_stations == "0" &
+                   room_group1_code != "Z" &
+                   room_use_code_group != "000")),
+  "R10c", expr(!(room_use_code %in% "110") |
+                 room_group1_code %in% "Z" |
+                 room_use_code_group %in% "000" |
+                 in_range(room_area / room_stations, 7, 16)),
+  "R10d", expr(!(room_use_code %in% "210") |
+                 room_group1_code %in% "Z" |
+                 room_use_code_group %in% "000" |
+                 in_range(room_area / room_stations, 8, 19)),
+  "R11a", expr(!is_missing_chr(room_area)),
+  "R11b", expr(!(room_area %in% "0")),
+  "R13a", expr(room_prorated %in% c("Y", "N")),
+  "R13b", expr(!is_missing_chr(room_prorated)),
+  "R13c", expr(!(room_prorated %in% "Y" &
+                   room_prorated_area %in% "0" &
+                   room_area %in% "0")),
+  "R13d", expr(!(room_area %in% "0") | room_prorated_area %in% "0"),
+  "R13e", expr(!(room_prorated_area %in% "0") | room_area %in% "0"),
+  "R13f", expr(room_prorated_area %in% "0" | !(room_prorated %in% "N")),
+  "R14a", expr(!is_missing_chr(room_prorated_area)),
+  # "R14b" TODO: Needs a join of proration info to room info. How to get sum of prorated area?
+  "R15a", expr(is.Date(room_activity_date) & !is.na(room_activity_date)),
+  "R15b", expr(!is.na(room_activity_date)),
+  "R15b", expr(age_in_range(room_activity_date, 0, Inf)),
+  "R99a", expr(!is_duplicated(cbind(r_inst, r_year, r_build_number, r_number,
+                                    r_suffix, r_group1, r_use_code)))
 )
 
 

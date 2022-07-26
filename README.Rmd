@@ -27,7 +27,7 @@ You can install the development version of utValidateR from [GitHub](https://git
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("dsu-effectiveness/utValidateR")
+devtools::install_github("dsu-effectiveness/utValidateR", ref = "develop")
 ```
 
 ## Fake data set
@@ -47,12 +47,13 @@ library(utValidateR)
 library(dplyr)
 data("fake_student_df")
 data("checklist")
+data("aux_info")
 
 student_df <- fake_student_df
 student_checks <- filter(checklist, file == "Student", type == "Database") %>% 
   glimpse()
 
-student_check_result <- do_checks(student_df, student_checks) %>% 
+student_check_result <- do_checks(student_df, student_checks, aux_info) %>% 
   glimpse()
 ```
 

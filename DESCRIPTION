@@ -30,3 +30,7 @@ Imports:
     magrittr
 Remotes: 
     dsu-effectiveness/utValidateR
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

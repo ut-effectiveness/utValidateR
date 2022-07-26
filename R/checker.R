@@ -33,7 +33,7 @@ make_checker <- function(rule, expr, env = rlang::caller_env()) {
       message("Check attempt failed for rule ", rule, ":\n",
               expr_chr, "\n",
               "With the following error:\n",
-              cond, "\n")
+              cond, "\n\n")
       return(rep(FALSE, nrow(df)))
     })
 

@@ -1,0 +1,103 @@
+---
+title: "database-checks"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{database-checks}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(utValidateR)
+library(dplyr)
+
+data("checklist")
+data("aux_info")
+data("fake_buildings_validation")
+data("fake_course_validation")
+data("fake_graduation_validation")
+data("fake_rooms_validation")
+data("fake_student_course_validation")
+data("fake_student_df")
+
+db_checks <- checklist %>% 
+  filter(type == "Database") %>% 
+  glimpse()
+```
+
+### Student
+
+```{r}
+student_checks <- db_checks %>% 
+  filter(file == "Student") %>% 
+  glimpse()
+
+student_res <- do_checks(fake_student_df, student_checks, aux_info = aux_info)
+```
+
+### Course
+
+
+```{r}
+course_checks <- db_checks %>% 
+  filter(file == "Course") %>% 
+  glimpse()
+
+course_res <- do_checks(fake_course_validation, course_checks, aux_info = aux_info)
+```
+
+### Graduation
+
+```{r}
+graduation_checks <- db_checks %>% 
+  filter(file == "Graduation") %>% 
+  glimpse()
+
+graduation_res <- do_checks(fake_graduation_validation, graduation_checks, aux_info = aux_info)
+```
+
+
+### Student Course
+
+
+```{r}
+student_course_checks <- db_checks %>% 
+  filter(file == "Student Course") %>% 
+  glimpse()
+
+student_course_res <- do_checks(fake_student_course_validation, 
+                                student_course_checks, 
+                                aux_info = aux_info)
+```
+
+### Buildings
+
+
+```{r}
+buildings_checks <- db_checks %>% 
+  filter(file == "Buildings") %>% 
+  glimpse()
+
+buildings_res <- do_checks(fake_buildings_validation, 
+                                buildings_checks, 
+                                aux_info = aux_info)
+```
+
+### Rooms
+
+```{r}
+rooms_checks <- db_checks %>% 
+  filter(file == "Buildings") %>% 
+  glimpse()
+
+rooms_res <- do_checks(fake_rooms_validation, 
+                                rooms_checks, 
+                                aux_info = aux_info)
+```

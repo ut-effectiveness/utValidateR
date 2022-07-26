@@ -4,12 +4,14 @@
 \alias{make_checker}
 \title{Function factory for generating checker functions}
 \usage{
-make_checker(rule, expr)
+make_checker(rule, expr, env = rlang::caller_env())
 }
 \arguments{
 \item{rule}{Name of the rule being applied, e.g. "S03b"}
 
 \item{expr}{Expression that generates a logical vector when applied to a dataframe}
+
+\item{env}{environment for evaluating checkers, passed to}
 }
 \description{
 Result is a function with a single dataframe argument

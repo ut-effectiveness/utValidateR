@@ -4,13 +4,15 @@
 \alias{do_checks}
 \title{Apply all rules in checklist to a dataframe}
 \usage{
-do_checks(df_tocheck, checklist)
+do_checks(df_tocheck, checklist, aux_info = list())
 }
 \arguments{
 \item{df_tocheck}{a data.frame to check, like fake_student_df}
 
 \item{checklist}{a tibble containing rule functions in \code{checker} column, as
 well as \code{rule} and \code{activity_date} columns}
+
+\item{aux_info}{list (or environment) with additional objects used by the checkers}
 }
 \description{
 Returns df_tocheck with additional columns for each rule in checklist

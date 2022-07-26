@@ -6,16 +6,24 @@
 #' @param df_tocheck a data.frame to check, like fake_student_df
 #' @param checklist a tibble containing rule functions in `checker` column, as
 #'  well as `rule` and `activity_date` columns
+#' @param aux_info list (or environment) with additional objects used by the checkers
 #'
 #' @importFrom purrr map map2 map2_dfc
 #' @importFrom dplyr bind_cols all_of select
+#' @importFrom rlang new_environment caller_env
 #' @export
-do_checks <- function(df_tocheck, checklist) {
+do_checks <- function(df_tocheck, checklist, aux_info = list()) {
+
+  if (is.list(aux_info))
+    aux_info <- new_environment(data = aux_info,
+                                parent = caller_env()) # Is this the right parent? Does it matter?
+
   # For each row in checklist, apply the checker function to df_tocheck
   result_names <- paste0(checklist$rule, "_status")
 
   # make_checker() returns a function (of a dataframe)
-  checkfuns <- map2(checklist$rule, checklist$checker, ~make_checker(.x, .y))
+  checkfuns <- map2(checklist$rule, checklist$checker,
+                    ~make_checker(.x, .y, env = aux_info))
 
   # Append checkfuns output to df_tocheck
   check_results <- map(checkfuns, ~.(df_tocheck)) %>%

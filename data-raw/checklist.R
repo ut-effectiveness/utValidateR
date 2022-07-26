@@ -145,8 +145,8 @@ rule_spec <- tribble(
   "C06a", expr(is_valid_credits_chr(course_min_credits)),
   "C07a", expr(is_valid_credits_chr(course_max_credits)),
   "C07b", expr(course_max_credits >= course_min_credits),
-  "C08a", expr(is_valid_credit_format(contact_hours)),
-  "C09", expr(tolower(c_line_item) %in% c("a","b","c","d","e","f","g","h","i","p","q","r","s","t","x")),
+  "C08a", expr(is_valid_credits(contact_hours)),
+  "C09", expr(is_valid_values(tolower(c_line_item), valid_c_line_items, missing_ok = TRUE)), # USHE rule
   "C10", expr(!is_missing_chr(campus_id)),
   "C11", expr(!is_missing_chr(budget_code)),
   # "C11b", expr(!(budget_code %in% c("BC", "SF")) | !(in_concurrent_master_list(course, subject))), # TODO: concurrent enrollment list
@@ -187,9 +187,9 @@ rule_spec <- tribble(
   "C21a", expr(is_valid_occupancy(room_max_occupancy_1)),
   "C29a", expr(is_valid_occupancy(room_max_occupancy_2)),
   "C37a", expr(is_valid_occupancy(room_max_occupancy_3)),
-  "C22a", expr(room_use_code_1 %in% valid_room_use_codes), # TODO: need valid room use codes
-  "C30a", expr(room_use_code_2 %in% valid_room_use_codes), # TODO: need valid room use codes
-  "C38a", expr(room_use_code_3 %in% valid_room_use_codes), # TODO: need valid room use codes
+  "C22a", expr(room_use_code_1 %in% valid_room_use_codes),
+  "C30a", expr(room_use_code_2 %in% valid_room_use_codes),
+  "C38a", expr(room_use_code_3 %in% valid_room_use_codes),
   "C22b", expr(!is_missing_chr(room_use_code_1)),
   "C30b", expr(!is_missing_chr(room_use_code_2)),
   "C38b", expr(!is_missing_chr(room_use_code_3)),
@@ -258,7 +258,7 @@ rule_spec <- tribble(
                                     graduation_date, primary_major_cip_code, degree_id,
                                     ipeds_award_level_code, primary_major_id))),
   "G24a", expr(graduated_academic_year_code %in% reference_year), # TODO: how to get reference year?
-  "G25a", expr(is_valid_values(season, c("1", "2", "3"))), # TODO: check values
+  "G25a", expr(is_valid_values(season, valid_seasons)), # TODO: check values
   "G28a", expr(!is_missing_chr(degree_desc)),
   "SC03", expr(!is.na(sis_student_id) & !is.na(ssn)),
   "SC04a", expr(!is_missing_chr(subject_code)),

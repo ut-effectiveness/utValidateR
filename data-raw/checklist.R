@@ -14,118 +14,130 @@ rule_spec <- tribble(
   ~rule,  ~checker,
   "S00a", expr(!is_duplicated(student_id)),
   "S00b", expr(!is_duplicated(ssn)),
-  # "S02a", expr(!is_duplicated(ushe_academic_year) &
-  #                !is_duplicated(version_id) &
-  #                !is_duplicated(season)), # TODO: check once we have dummy data
+  "S02a", expr(!is.na(s_year) & !is.na(s_term) & !is.na(s_extract)), # USHE check
   "S03a", expr(!is.na(student_id) & !is.na(ssn)),
-  "S03b", expr(!is.na(ssn)),
+  "S03b", expr(!is.na(s_ssn)), # USHE rule
   "S03c", expr((us_citizenship_code != 1) | !is.na(ssn)),
-  # "S04a", TODO: what is the "id flag" that every student should have?
+  "S04a", expr(s_id_flag %in% c("S", "I")), # USHE rule
   "S04b", expr(is_valid_ssn(ssn)),
-  # "S04c", TODO: sort out id flag for rule logic
-  # "S04d", TODO: sort out id flag for rule logic
+  "S04c", expr(!(s_id_flag %in% "S") | (s_id == s_banner_id)), # USHE rule
+  "S04d", expr(!(s_id_flag %in% "I") | (s_id != s_banner_id)), # USHE rule
   "S05a", expr(is_valid_previous_id(previous_student_id)),
-  "S06a", expr(!is.na(last_name)),
+  "S06a", expr(!is_missing_chr(last_name)),
   "S06b", expr(is_alpha_chr(last_name)),
-  "S06c", expr(!is.na(first_name)),
+  "S06c", expr(!is_missing_chr(first_name)),
   "S06d", expr(is_alpha_chr(first_name)),
   "S06e", expr(is_alpha_chr(middle_name)),
-  # "S06f", expr(is_alpha_chr(name_suffix)), # Not currently in dummy data
+  "S06f", expr(is_alpha_chr(name_suffix)),
   "S07a", expr(is_alpha_chr(previous_last_name)),
   "S07b", expr(is_alpha_chr(previous_first_name)),
-  # "S07c", expr(is_alpha_chr(previous_middle_name)), # Not currently in dummy data
-  # "S07d", expr(is_alpha_chr(previous_name_suffix)), # Not currently in dummy data
-  "S08a", expr(!is.na(local_address_zip_code)),
+  "S07c", expr(is_alpha_chr(previous_middle_name)),
+  "S07d", expr(is_alpha_chr(previous_name_suffix)),
+  "S08a", expr(!is_missing_chr(local_address_zip_code) &
+                 !is_missing_chr(mailing_address_zip_code)),
   "S08b", expr(is_valid_zip_code(local_address_zip_code) &
                  is_valid_zip_code(mailing_address_zip_code)),
-  "S09a", expr(!is.na(us_citizenship_code)),
-  "S09b", expr(equivalent(is_international, us_citizenship_code == 2)),
-  "S10a", expr(!is.na(first_admit_county_code)), # TODO verify I don't need to check code validity
+  "S09a", expr(!is_missing_chr(us_citizenship_code)),
+  "S09b", expr(equivalent(is_international, us_citizenship_code == 2)), # TODO: check logic
+  "S10a", expr(!is_missing_chr(first_admit_county_code)), # TODO verify I don't need to check code validity
   "S11a", expr(is_utah_county(first_admit_county_code) | # TODO: verify assumptions of county encoding
-                 !(first_admit_state_code == "UT")),
+                 !(first_admit_state_code %in% "UT")),
   "S12", expr(!is.na(birth_date)),
   "S12a", expr(date_before_present_year(birth_date)),
-  "S12b", expr(is.na(birth_date) | is.Date(birth_date)), # TODO: check since rule references date string
+  "S12b", expr(is.na(s_birth_dt) | !is.Date(s_birth_dt)), # USHE rule
   "S12c", expr(age_in_range(birth_date, 0, 100)),
-  "S13", expr(is_valid_gender(gender_code)),
-  # "S13a", TODO: how to track change over time? Do we compare different dataframes?
-  # "S13b", TODO: how to track change over time? Do we compare different dataframes?
-  "S14a", expr(is_asian %in% c(TRUE, FALSE)),
-  "S14b", expr(is_black %in% c(TRUE, FALSE)),
-  "S14h", expr(is_hispanic_latino_ethnicity %in% c(TRUE, FALSE)),
-  "S14i", expr(is_american_indian_alaskan %in% c(TRUE, FALSE)),
-  # "S14m", TODO: is the check on multiple ethnicities relevant here? Edify column says "n/a"
-  "S14n", expr(is_international %in% c(TRUE, FALSE)),
-  "S14p", expr(is_hawaiian_pacific_islander %in% c(TRUE, FALSE)),
-  "S14u", expr(is_other_race %in% c(TRUE, FALSE)), # TODO: resolve multiple "S14u" descriptions
-  "S14w", expr(is_white %in% c(TRUE, FALSE)),
-  # "S15a", expr(!is.na(residency_code)), # Not currently in dummy data
+  "S13", expr(toupper(gender_code) %in% c("M", "F")),
+  # "S13a", TODO: USHE rule for "gender change after census"
+  # "S13b", TODO: USHE rule for "gender change after previous term"
+  #
+  ## S14 rules are USHE and need to be redone
+  # "S14a", expr(is_asian %in% c(TRUE, FALSE)),
+  # "S14b", expr(is_black %in% c(TRUE, FALSE)),
+  # "S14h", expr(is_hispanic_latino_ethnicity %in% c(TRUE, FALSE)),
+  # "S14i", expr(is_american_indian_alaskan %in% c(TRUE, FALSE)),
+  # # "S14m", TODO: is the check on multiple ethnicities relevant here? Edify column says "n/a"
+  # "S14n", expr(is_international %in% c(TRUE, FALSE)),
+  # "S14p", expr(is_hawaiian_pacific_islander %in% c(TRUE, FALSE)),
+  # "S14u", expr(is_other_race %in% c(TRUE, FALSE)), # TODO: resolve multiple "S14u" descriptions
+  # "S14w", expr(is_white %in% c(TRUE, FALSE)),
+  #
+  "S15a", expr(!is_missing_chr(residency_code)), # TODO: sufficient to verify non-missing? (sql checks values)
   "S16a", expr(!is.na(primary_major_cip_code)), # TODO: sufficient to verify non-missing? (sql checks values)
-  "S17a", expr(is_valid_student_type(student_type_code)),
-  "S17b", expr(!(is_grad_level(primary_level_class_id) &
+  "S17a", expr(is_valid_values(s_reg_status, valid_s_reg_statuses, missing_ok = FALSE)), # USHE check
+  "S17b", expr(!(is_grad_level(primary_level_class_id) & # TODO: these functions need verifying
                    is_undergrad_type(student_type_code))),
   # "S17c", TODO: How to compare to previous student data? Multiple dataframes? (similar to S13a)
-  # "S17d", TODOO: same question as S17c
-  "S17e", expr(!is_hs_type(student_type_code) | age_in_range(birth_date, 10, 20)),
-  "S17f", expr(!is_freshmen_type(student_type_code) | age_in_range(birth_date, 18, Inf)),
-  "S17g", expr(!is_freshmen_type(student_type_code) | age_in_range(birth_date, 0, 21)),
-  # "S17h", TODO: How to determine "invalid student type enrolled in concurrent classes"?
-  # "S17i", TODO: Same rule as S17h?
-  # "S17j", TODO: Tracking changes--same question as S13a
-  "S17k", expr(!is_freshmen_type(student_type_code) | age_in_range(birth_date, 16, Inf)),
-  "S18a", expr(is_valid_class_level(primary_level_class_id)),
+  # "S17d", TODOO: same question as S17c. These are database checks
+  #
+  # # Remainder of S17 rules are USHE and will need to be redone
+  # "S17e", expr(!is_hs_type(student_type_code) | age_in_range(birth_date, 10, 20)),
+  # "S17f", expr(!is_freshmen_type(student_type_code) | age_in_range(birth_date, 18, Inf)),
+  # "S17g", expr(!is_freshmen_type(student_type_code) | age_in_range(birth_date, 0, 21)),
+  # # "S17h", TODO: How to determine "invalid student type enrolled in concurrent classes"?
+  # # "S17i", TODO: Same rule as S17h?
+  # # "S17j", TODO: Tracking changes--same question as S13a
+  # "S17k", expr(!is_freshmen_type(student_type_code) | age_in_range(birth_date, 16, Inf)),
+  "S18a", expr(is_valid_values(primary_level_class_id, c('JR','SR','FR','GG','SO'),
+                               missing_ok = FALSE)),
   "S18b", expr(!(is_grad_level(primary_level_class_id) & is_undergrad_type(student_type_code)) &
                  !(is_undergrad_level(primary_level_class_id) & is_grad_type(student_type_code))),
-  "S19a", expr(is.na(primary_degree_id)),
+  "S19a", expr(!is_missing_chr(primary_degree_id)),
   "S20a", expr(is_valid_credits(institutional_cumulative_credits_earned)),
-  "S24a", expr(is_valid_credits(transfer_cumulative_credits_earned)), # TODO: sort out excel sheet ambiguity
+  "S24a", expr(is_valid_credits(transfer_cumulative_credits_earned)),
   "S21",  expr(!is.na(institutional_cumulative_gpa)), # TODO: do I need to do more than check missing? (sql does...)
   "S21a", expr(is_valid_gpa(institutional_cumulative_gpa)),
   # "S21b", TODO: ambiguous specification. Need to parse through sql
   # "S22b", TODO: duplicate of S21b? Same line in excel document
-  # "S23a", TODO: how to check whether undergrad students have grad hours or grad gpa?
+  # "S23a", USHE rule for "UG students have hours and gpa in GR hours or GPA"
   # "S23d", TODO: duplicate of S21b? Same line in excel document
   "S25a", expr(toupper(full_time_part_time_code) %in% c("P", "F")),
-  "S26a", expr(age_in_range(birth_date, 0, 125)), # See notes on rule relevance in excel sheet
-  # "S26b", Not relevant to compare age to birthdate since we only have birthdate
-  "S27a", expr(first_admit_country_code %in% "US" | !is_us_state(first_admit_state_code)),
+  # "S26a", USHE rule for "invalid age format"
+  # "S26b", TODO: Not relevant to compare age to birthdate since we only have birthdate?
+  "S27a", expr((first_admit_country_code %in% "US") | !is_us_state(first_admit_state_code)),
   "S27b", expr(!(first_admit_country_code %in% "US" &
                    (!is_us_county(first_admit_county_code) | !is_us_state(first_admit_state_code)))),
   "S27c", expr(is_valid_country_code(first_admit_country_code)),
   # "S28a", TODO: No high school code present
-  # "S29a", TODO: No waiver code present
-  # "S29b", TODO: No waiver code present
-  "S30a", expr(!is.na(secondary_major_cip_code)), # TODO: verify this only applies to secondary major
-  # "S31a", membership hours--noted as n/a in excel sheet
-  # "S32a", expr(is_valid_clep(transfer_cumulative_clep_earned)), # TODO: missing this info. I'll need to understand what makes clep valid
-  # "S33a", expr(is_valid_clep(transfer_cumulative_ap_earned)), # TODO: missing this info. From sql, looks like same logic as clep
-  # "S34a", expr(is_valid_ssid(ssid)), # TODO: missing this info. I'll need to understand what makes ssid valid
-  # "S34b", expr(is_valid_ssid(ssid) | !(is_hs_type(student_type_code) & first_admit_state_code == "UT")), # TODO: No ssid present
-  # "S34c", expr(!(is.na(ssid) & first_admit_state_code == "UT" & is_hs_type(student_type_code))), # TODO: no ssid present
-  # "S34d", expr(!is.na(ssid) | !is_concurrent(budget_code)) # TODO: no ssid, no budget code present
-  # "S34e", expr(!is.na(ssid) | (!is_hs_type(student_type_code) & !is_freshmen_type(student_type_code))), # TODO: no ssid present
+  # "S29a", USHE rule for "invalid UT high school code"
+  # "S29b", USHE rule for "invalid UT high school format"
+  "S30a", expr(!is_missing_chr(secondary_major_cip_code)), # TODO: verify this only applies to secondary major
+  # "S31a", USHE rule for "Membership hours should be 0"
+  "S32a", expr(is_valid_clep(transfer_cumulative_clep_earned)), # TODO: missing this info. I'll need to understand what makes clep valid
+  "S33a", expr(is_valid_clep(transfer_cumulative_ap_earned)), # TODO: missing this info. From sql, looks like same logic as clep
+  "S34a", expr(is_valid_ssid(ssid)), # TODO: missing this info. I'll need to understand what makes ssid valid
+  "S34b", expr(is_valid_ssid(ssid) |
+                 !(is_hs_type(student_type_code) & first_admit_state_code == "UT")), # TODO: No ssid present
+  "S34c", expr(!(is.na(ssid) &
+                   first_admit_state_code == "UT" &
+                   is_hs_type(student_type_code))), # TODO: no ssid present
+  "S34d", expr(!is.na(ssid) | !is_concurrent(budget_code)), # TODO: no ssid, no budget code present
+  "S34e", expr(!is.na(ssid) |
+                 (!is_hs_type(student_type_code) &
+                    !is_freshmen_type(student_type_code))), # TODO: no ssid present
   "S35a", expr(is_valid_student_id(student_id)),
   "S35b", expr(is_valid_student_id(student_id)), # TODO: redundant with S35a? Seems to be relevant for banner IDs only
-  "S36a", expr(is_valid_act_score(act_composite_score)), # TODO: verify I'm correctly matching rule to act score category (composite, english, etc.)
+  # "S35c", USHE rule for "invalid alpha in student id"
+  "S36a", expr(is_valid_act_score(act_composite_score)),
   "S38a", expr(is_valid_act_score(act_english_score)),
   "S39a", expr(is_valid_act_score(act_math_score)),
   "S40a", expr(is_valid_act_score(act_reading_score)),
   "S41a", expr(is_valid_act_score(act_science_score)),
   "S42a", expr(!is.na(high_school_graduation_date) | !is_freshmen_type(student_type_code)),
-  # "S43c", expr((institutional_gpa == institutional_cumulative_gpa) |  # TODO: no institutional_gpa present, just cumulative gpa
-  #              !(student_type_code %in% matching_gpa_student_types)), # TODO: verify which student types must have matching gpa
+  "S43c", expr((s_term_gpa == s_cum_gpa_ugrad) |
+               (s_reg_status %in% c("FF", "FH", "TU", "TG")) |
+               (s_level == "FR")), # USHE rule
   "S44c", expr(!(is_pell_awarded %in% TRUE &
                    (!(is_pell_eligible %in% TRUE) | is_hs_type(student_type_code)))), # pell_eligible might already account for student type
-  "S44d", expr((is_pell_eligible %in% c(TRUE, FALSE)) & (is_pell_awarded %in% c(TRUE, FALSE))), # Somewhat different from rule description but pell variables are now logical, not character
-  "S45c", expr(is_bia %in% c(TRUE, FALSE)),
-  "S46a", expr(!is.na(primary_major_college_id) & primary_major_college_id != ""),
-  "S46b", expr(is_alpha_chr(primary_major_college_id)), # Same checks as name validity
-  "S47a", expr(!is.na(primary_major_cip_code) & primary_major_cip_code != ""),
+  # "S44d", USHE rule for "invalid pell value"
+  # "S45c", USHE rule for "invalid bia code"
+  "S46a", expr(!is_missing_chr(primary_major_college_id)),
+  "S46b", expr(is_alpha_chr(primary_major_college_id)),
+  "S47a", expr(!is_missing_chr(primary_major_cip_code)),
   "S47b", expr(primary_major_cip_code != secondary_major_cip_code),
-  # "S47c", expr(is_alpha_chr(primary_major_desc)), # TODO: No primary_major_desc in data
+  "S47c", expr(is_alpha_chr(primary_major_desc)), # TODO: No primary_major_desc in data--use cip code instead?
   "S48a", expr(is_alpha_chr(secondary_major_college_id)), # TODO: verify my separation of excel line into multiple rules (same line as S46b)
-  # "S49a", expr(!is_missing_chr(secondary_major_cip_code) & !is_missing_chr(secondary_major_desc)), # TODO: no secondary_major_desc in data
-  # "S49b", expr(is_alpha_chr(secondary_major_desc)), # TODO: No secondary_major_desc in data
+  "S49a", expr(!is_missing_chr(secondary_major_cip_code) & !is_missing_chr(secondary_major_desc)), # TODO: no secondary_major_desc in data
+  "S49b", expr(is_alpha_chr(secondary_major_desc)), # TODO: No primary_major_desc in data--use cip code instead?
   "C00",  expr(!is_duplicated(cbind(subject_code, course_number, section_number))),
   "C04a", expr(nchar(course_number) == 4),
   "C04c", expr(!stringr::str_detect(course_number, "^[89]")),

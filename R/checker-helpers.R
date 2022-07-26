@@ -80,8 +80,6 @@ is_valid_ssn <- function(x) {
 #' @export
 is_valid_zip_code <- function(x) {
 
-  # TODO: Add/audit rules to match data inventory
-
   # Regex to check zip code, from:
   # https://regexlib.com/Search.aspx?k=us+zip+code
   zipcode_regex <- "^\\d{5}(-\\d{4})?$"
@@ -104,8 +102,10 @@ is_valid_student_id <- function(x) {
 #' @describeIn is_valid_act_score previous_student_id
 #' @export
 is_valid_previous_id <- function(x) {
-  # TODO: find out what makes a previous id valid. (S05a)
-  !is.na(x) & !stringr::str_detect(x, "^0*$")
+  # TODO: learn what constitutes a valid previous id. For now I'm assuming it's
+  # any string of all 0's, since that's what the sql indicates. Missing should
+  # be OK though, right?
+  is_missing_chr(x) | !stringr::str_detect(x, "^0+$")
 }
 
 #' @describeIn is_valid_act_score first_admit_country_code
@@ -143,13 +143,6 @@ is_valid_gpa <- function(x) {
   !is.na(x) & is.numeric(x) & x >= 0 & x <= 5
 }
 
-
-#' @describeIn is_valid_act_score gender_code, Used in rule S13 and G06a
-#' @export
-is_valid_gender <- function(x) {
-  toupper(x) %in% c("M", "F") # based on sql code
-}
-
 #' @describeIn is_valid_act_score student_type_code
 #' @export
 is_valid_student_type <- function(x) {
@@ -182,6 +175,7 @@ is_valid_values <- function(x, valid_values, missing_ok = TRUE) {
   if (missing_ok) {
     passes <- is_missing_chr(x) | passes
   }
+  passes
 }
 
 #' @describeIn is_valid_act_score course reference number

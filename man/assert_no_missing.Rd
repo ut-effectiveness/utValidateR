@@ -8,8 +8,6 @@ assert_no_missing(vec)
 }
 \arguments{
 \item{vec}{vector to check}
-
-\item{expr_chr}{Character representation of generating expression, for messaging}
 }
 \description{
 Assertion for non-missing values

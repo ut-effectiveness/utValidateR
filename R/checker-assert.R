@@ -4,7 +4,6 @@
 #' Assertion for non-missing values
 #'
 #' @param vec vector to check
-#' @param expr_chr Character representation of generating expression, for messaging
 #' @importFrom assertthat assert_that noNA
 assert_no_missing <- function(vec) {
   msg <- sprintf("Missing values generated when evaluating rule")

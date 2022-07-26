@@ -11,7 +11,6 @@
 \alias{is_valid_credits}
 \alias{is_valid_credits_chr}
 \alias{is_valid_gpa}
-\alias{is_valid_gender}
 \alias{is_valid_student_type}
 \alias{is_valid_occupancy}
 \alias{is_valid_values}
@@ -38,8 +37,6 @@ is_valid_credits(x)
 is_valid_credits_chr(x)
 
 is_valid_gpa(x)
-
-is_valid_gender(x)
 
 is_valid_student_type(x)
 
@@ -80,8 +77,6 @@ Validity checks on various values
 \item \code{is_valid_credits_chr}: character-valued credits (min_credits and max_credits)
 
 \item \code{is_valid_gpa}: gpa
-
-\item \code{is_valid_gender}: gender_code, Used in rule S13 and G06a
 
 \item \code{is_valid_student_type}: student_type_code
 

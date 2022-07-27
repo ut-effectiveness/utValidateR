@@ -38,9 +38,9 @@ rule_spec <- tribble(
   "S08b", expr(is_valid_zip_code(local_address_zip_code) &
                  is_valid_zip_code(mailing_address_zip_code)),
   "S09a", expr(!is_missing_chr(us_citizenship_code)),
-  "S09b", expr(equivalent(is_international, us_citizenship_code == 2)), # TODO: check logic
+  "S09b", expr(equivalent(is_international, us_citizenship_code == 2)),
   "S10a", expr(!is_missing_chr(first_admit_county_code)), # TODO verify I don't need to check code validity
-  "S11a", expr(is_utah_county(first_admit_county_code) | # TODO: verify assumptions of county encoding
+  "S11a", expr(is_utah_county(first_admit_county_code) |
                  !(first_admit_state_code %in% "UT")),
   "S12", expr(!is.na(birth_date)),
   "S12a", expr(date_before_present_year(birth_date)),
@@ -61,8 +61,8 @@ rule_spec <- tribble(
   # "S14u", expr(is_other_race %in% c(TRUE, FALSE)), # TODO: resolve multiple "S14u" descriptions
   # "S14w", expr(is_white %in% c(TRUE, FALSE)),
   #
-  "S15a", expr(!is_missing_chr(residency_code)), # TODO: sufficient to verify non-missing? (sql checks values)
-  "S16a", expr(!is.na(primary_major_cip_code)), # TODO: sufficient to verify non-missing? (sql checks values)
+  "S15a", expr(is_valid_values(residency_code, c("R", "N", "A", "M"))),
+  "S16a", expr(is_valid_values(primary_major_cip_code, valid_cip_codes)),
   "S17a", expr(is_valid_values(s_reg_status, valid_s_reg_statuses, missing_ok = FALSE)), # USHE check
   "S17b", expr(!((s_reg_status %in% c("CS","HS","FF","FH","TU")) &
                    (s_level %in% c("GN","GG")))),
@@ -81,7 +81,7 @@ rule_spec <- tribble(
                                missing_ok = FALSE)),
   "S18b", expr(!(s_reg_status %in% c("HS", "FH", "FF", "TU", "CS", "RS") & s_level %in% c("GN","GG")) |
                  (s_reg_status %in% c("NG","TG","CG","RG") & s_level %in% c("FR", "SO", "JR", "SR", "UG"))),
-  "S19a", expr(!is_missing_chr(primary_degree_id)),
+  "S19a", expr(is_valid_values(primary_degree_id, valid_degree_ids)),
   "S20a", expr(is_valid_credits(institutional_cumulative_credits_earned)),
   "S24a", expr(is_valid_credits(transfer_cumulative_credits_earned)),
   "S21",  expr(!is.na(institutional_cumulative_gpa)), # TODO: do I need to do more than check missing? (sql does...)
@@ -101,7 +101,7 @@ rule_spec <- tribble(
   # "S28a", TODO: No high school code present
   # "S29a", USHE rule for "invalid UT high school code"
   # "S29b", USHE rule for "invalid UT high school format"
-  "S30a", expr(!is_missing_chr(secondary_major_cip_code)), # TODO: verify this only applies to secondary major
+  "S30a", expr(is_valid_values(secondary_major_cip_code, valid_cip_codes)), # TODO: verify this only applies to secondary major
   # "S31a", USHE rule for "Membership hours should be 0"
   "S32a", expr(is_valid_credits(transfer_cumulative_clep_earned)),
   "S33a", expr(is_valid_credits(transfer_cumulative_ap_earned)),
@@ -119,6 +119,7 @@ rule_spec <- tribble(
   "S35b", expr(is_valid_student_id(student_id)), # TODO: redundant with S35a? Seems to be relevant for banner IDs only
   # "S35c", USHE rule for "invalid alpha in student id"
   "S36a", expr(is_valid_act_score(act_composite_score)),
+  "S37a", expr(is_valid_values(primary_major_cip_code, valid_cip_codes)),
   "S38a", expr(is_valid_act_score(act_english_score)),
   "S39a", expr(is_valid_act_score(act_math_score)),
   "S40a", expr(is_valid_act_score(act_reading_score)),
@@ -135,10 +136,10 @@ rule_spec <- tribble(
   "S46b", expr(is_alpha_chr(primary_major_college_id)),
   "S47a", expr(!is_missing_chr(primary_major_cip_code)),
   "S47b", expr(primary_major_cip_code != secondary_major_cip_code),
-  "S47c", expr(is_alpha_chr(primary_major_desc)), # TODO: No primary_major_desc in data--use cip code instead?
-  "S48a", expr(is_alpha_chr(secondary_major_college_id)), # TODO: verify my separation of excel line into multiple rules (same line as S46b)
+  "S47c", expr(is_alpha_chr(primary_major_desc)), # TODO: No primary_major_desc in data
+  "S48a", expr(is_alpha_chr(secondary_major_college_id)),
   "S49a", expr(!is_missing_chr(secondary_major_cip_code) & !is_missing_chr(secondary_major_desc)), # TODO: no secondary_major_desc in data
-  "S49b", expr(is_alpha_chr(secondary_major_desc)), # TODO: No primary_major_desc in data--use cip code instead?
+  "S49b", expr(is_alpha_chr(secondary_major_desc)), # TODO: No primary_major_desc in data
   "C00",  expr(!is_duplicated(cbind(subject_code, course_number, section_number))),
   "C04a", expr(nchar(course_number) == 4),
   "C04c", expr(!stringr::str_detect(course_number, "^[89]")),
@@ -211,9 +212,7 @@ rule_spec <- tribble(
   "C43a", expr(!is_missing_chr(instructor_name)),
   # "C43c", expr(is_alpha_chr(c_instruct_name)), USHE rule
   "C44", expr(!is_missing_chr(section_format_type_code)),
-  "C44a", expr(is_valid_values(section_format_type_code,
-                               valid_section_format_type_codes,
-                               missing_ok = TRUE)), # Is missing OK here? Other conditionality?
+  "C44a", expr(is_valid_values(c_instruct_type, valid_instruct_types, missing_ok = TRUE)),
   "C45", expr(!is_missing_chr(college_id)),
   "C45a", expr(is_alpha_chr(college_id)),
   "C46", expr(!is_missing_chr(academic_department_id)),
@@ -236,7 +235,7 @@ rule_spec <- tribble(
   "G15a", expr(is_valid_credits(total_cumulative_clep_credits_earned)),
   "G22a", expr(is_valid_credits(total_cumulative_credits_attempted_other_sources)),
   "G23a", expr(is_valid_credits(transfer_cumulative_credits_earned)),
-  "G17a", expr(!is_missing_chr(degree_id)),
+  "G17a", expr(is_valid_values(degree_id, valid_degree_ids)),
   # "G21e", expr(ssn %in% student_file$ssn), # TODO: how to get student file?
   # "G03e", expr(nchar(first_name) <= 15), # USHE rule, might need to rename
   # "G03g", expr(nchar(middle_name) <= 15), # USHE rule

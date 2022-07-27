@@ -1226,7 +1226,7 @@ WHERE(c_instruct_type IS NULL OR c_instruct_type = '''')
 AND c_instance = @instance
 and c_inst = @inst
 Order by c_crs_sbj, c_crs_num, c_crs_sec",banner.ssbsect_schd_code,ssbsect_activity_date,student_section.section_format_type_code
-invalid instruction type format,Database,Failure,,C44,C44a,Course,c_instruct_type,Checking for valid values for c_instruct_type.,"INTO #c44a
+invalid instruction type format,USHE,Failure,,C44,C44a,Course,c_instruct_type,Checking for valid values for c_instruct_type.,"INTO #c44a
 FROM courses_' + @extract + '
 WHERE c_instruct_type not in (Select distinct Instruct_Type_Code From Reference.dbo.Instruct_Type where Inactive <> ''Y'')
 and (c_instruct_type IS NOT NULL OR c_instruct_type <> '''')

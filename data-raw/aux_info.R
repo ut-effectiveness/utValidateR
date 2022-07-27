@@ -7,6 +7,10 @@ cipdf <- read.csv("sandbox/CIPCode2020.csv")
 cip_codes <- cipdf %>%
   mutate(cip_chr = sprintf(fmt = "%06g", CIPCode * 1e4)) # Need a 6-digit string with no decimals
 
+# Degree types from csv
+degree_types <- read.csv("sandbox/degree-types.csv")
+
+
 room_use_codes <- c(
   "100", "110", "115", "200", "210", "215", "220", "225", "230", "235", "255",
   "310", "315", "350", "355", "400", "410", "420", "430", "440", "455", "500",
@@ -19,7 +23,6 @@ room_use_codes <- c(
   "900", "910", "919", "920", "935", "950", "955", "970", "0", "50", "60", "70",
   "NON", "WWW", "W01", "W02", "W03", "W04", "W05", "W06", "W07", "XXX", "X01",
   "X02", "X03", "X04", "X05", "YYY", "Y01", "Y02", "Y03", "Y04", "ZZZ")
-
 
 s_levels <- c("FR", "SO", "JR", "SR", "UG", "GG", "GN") # AKA primary_level_class_id
 s_reg_statuses <- c("HS", "FH", "FF", "TU", "NG", "TG", "CS", "RS", "CG",
@@ -39,9 +42,11 @@ aux_info <- list(
 
   valid_program_types = c("A", "V", "P", "C"), # C13
 
-  valid_section_format_type_codes = c(), #C44a
+  valid_instruct_types = c("LEC", "LEL", "LAB", "SUP", "INV", "THE", "DIS", "CON", "OTH"), #C44a
 
   valid_cip_codes = cip_codes$cip_chr, #G09a
+
+  valid_degree_ids = degree_types$degree_type, #S19a
 
   valid_level_class_ids = s_levels, #S18a
 

@@ -1,0 +1,191 @@
+﻿degree_type,degree_type_description,degree_level,inactive
+150,COP150 - Certificate of Proficiency,UCAT,N
+300,COP300 - Certificate of Proficiency,UCAT,N
+450,COP450 - Certificate of Proficiency,UCAT,N
+600,COP600 - Certificate of Proficiency,UCAT,N
+AA,Associate of Arts,Associates,N
+AAS,Associate of Applied Science,Associates,N
+AAT,Associate of Applied Technology,Associates,N
+AC,Associate of Science in Criminal Justice,Associates,N
+AE,Associate of Engineering Tech,Associates,N
+AFA,Associates of Fine Arts,Associates,N
+APE,Associate of Pre-Engineering,Associates,N
+AS,Associate of Science,Associates,N
+ASB,Associate of Science in Business,Associates,N
+ASN,Associate of Science in Nursing,Associates,N
+AUD,Doctor of Audiology,Professional,N
+AWD,Award - less than one year certificate,Certificate,N
+BA,Bachelor of Arts,Bachelors,N
+BAS,Bachelors of Applied Science,Bachelors,N
+BAT,Bachelor of Applied Technology,Bachelors,N
+BBA,Bachelor of Business Administration,Bachelors,N
+BBE,Bachelor of Business and Economics,Bachelors,N
+BCE,Bachelor of Science in Computer Engineering,Bachelors,N
+BCH,Bachelor of Science in Chemical Engineering,Bachelors,N
+BCS,Bachelor of Science in Computer Science,Bachelors,N
+BCV,Bachelor of Science in Civil Engineering,Bachelors,N
+BE,Bachelor of Engineering,Bachelors,N
+BEA,Bachelor of Science in Earth Science Comp Tchg,Bachelors,N
+BED,Bachelor of Education,Bachelors,N
+BEE,Bachelor of Science in Electrical Engineering,Bachelors,N
+BES,Bachelor of Science in Environmental Earth Science,Bachelors,N
+BFA,Bachelor of Fine Arts,Bachelors,N
+BFE,Bachelor of Science in Fuels Engineering,Bachelors,N
+BFL,Bachelor of Foreign Language,Bachelors,N
+BGE,Bachelor of Science in Geological Engineering,Bachelors,N
+BGL,Bachelor of Science in Geology,Bachelors,N
+BGP,Bachelor of Science in Geophysics,Bachelors,N
+BID,Bachelors of Interior Design,Bachelors,N
+BIE,Bachelor of Science in Industrial Engineering,Bachelors,N
+BIO,Bachelor of Science Biomedical Engineering,Bachelors,N
+BIS,Bachelors of Integrated Studies,Bachelors,N
+BLA,Bachelor of Landscape Architecture,Bachelors,N
+BM,Bachelor of Music,Bachelors,N
+BMA,Bachelor of Science in Material Sci and Engineer,Bachelors,N
+BMD,Bachelor of Science in Medical Technology,Bachelors,N
+BME,Bachelor of Science in Mechanical Engineering,Bachelors,N
+BMG,Bachelor of Science in Mining Engineering,Bachelors,N
+BML,Bachelor of Science in Metallurgical Engineering,Bachelors,N
+BMN,Bachelor of Science in Mineralogy,Bachelors,N
+BMT,Bachelor of Science in Meteorology,Bachelors,N
+BMU,Bachelor of Music,Bachelors,N
+BPH,Bachelor of Science in Pharmacy,Bachelors,N
+BS,Bachelor of Science,Bachelors,N
+BSD,Bachelor of Science in Elementary Education,Bachelors,N
+BSG,Bachelor of Science in Geoscience,Bachelors,N
+BSN,Bachelor of Science in Nursing,Bachelors,N
+BSW,Bachelor of Social Work,Bachelors,N
+BUS,Bachelor of University Studies,Bachelors,N
+C1Y,Certificate - One Year,Certificate,Y
+CE,Civil Engineer,Bachelors,N
+CEC,Continuing ED Completion,Completion,N
+CER,Certificate,Certificate,N
+CER0,Certificate of Proficiency,Certificate,N
+CER1,Certificate of Completion,Certificate,N
+CNA,Certified Nurse Assistant,Certificate,N
+COC,Certification of Completion,UCAT,N
+COF,COPF - Certificate of Proficiency,UCAT,N
+COM,COPM - Certificate of Profieiency,UCAT,N
+COP,Competency,UCAT,N
+COS,Certificate of Technical Competency -Single,UCAT,N
+COT,COTC - Certificate of Technical Competence,UCAT,N
+CR,Credit,Certificate,N
+CRTG,Graduate Certificate,Post Masters,N
+DDS,Doctor of Dental Surgery,Professional,N
+DIP,Diploma,Certificate,N
+DMA,Doctorate of Music,Doctorate,N
+DNP,Doctorate of Nurse Practice,Professional,N
+DOT,Doctor of Occupational Therapy,Professional,N
+DPH,Doctor of Pharmacy,Professional,N
+DPT,Doctor of Physical Therapy,Professional,N
+DVM,Veterinary Medicine - DMV,Professional,N
+DX,Previous Doctorate Degree,Doctorate,N
+EDD,Doctor of Education,Doctorate,N
+EDD,Doctor of Education,Professional,N
+EDS,Education Specialist,Masters,N
+EE,Masters of Engineering,Masters,N
+FD,Foreign Degree,Foreign Degree,N
+GCR,Graduate Level Certificate,Post Bachelor,N
+HAT,Honors BS in Atmospheric Sciences,Bachelors,N
+HBA,Honors Bachelor of Arts,Bachelors,N
+HBF,Honors Bachelors of Fine Arts,Bachelors,N
+HBM,Honors Bachelors of Music,Bachelors,N
+HBO,Honors BS in Biomedical Engineering,Bachelors,N
+HBS,Honors Bachelor of Science,Bachelors,N
+HBU,Honors Degree of Bachelor of U,Bachelors,N
+HCE,Honors BS in Computer Engineering,Bachelors,N
+HCH,Honors BS in Chemical Engineering,Bachelors,N
+HCS,Honors BS in Computer Science,Bachelors,N
+HCV,Honrs BS in Civil Engineering,Bachelors,N
+HEE,Honors BS in Electrical Engineering,Bachelors,N
+HEV,Honors BS in Environmental Earth Science,Bachelors,N
+HFE,Honrs BS in Fuels Engineering,Bachelors,N
+HGE,Honors BS in Geological Engineering,Bachelors,N
+HGL,Honors BS in Geology,Bachelors,N
+HGP,Honors BS in Geophysics,Bachelors,N
+HIE,Honors BS in Industrial Engineering,Bachelors,N
+HME,Honors Degree of Bachelor of S,Bachelors,N
+HMN,Honors BS in Mining Engineering,Bachelors,N
+HMO,Honors BS in Metrology,Bachelors,N
+HMS,Honors Degree of Bachelor of S,Bachelors,N
+HMT,Honors BS in Metallugical Engineering,Bachelors,N
+HNU,Honors Degree of Bachelor of S,Bachelors,N
+HPH,Honors Degree of Bachelor of S,Bachelors,N
+HSG,Honors BS in Geoscience,Bachelors,N
+HSW,Honors BS in Social Work,Bachelors,N
+IC,Industry Certification,UCAT,N
+IE,Bachelors of Irrigation Engineer,Bachelors,N
+JD,Juris Doctor,Professional,N
+LIC,Licensure,UCAT,N
+LLB,Bachelor of Laws,Bachelors,N
+LLM,Master of Laws,Masters,N
+MA,Master of Arts,Masters,N
+MAC,Master of Accounting,Masters,N
+MAE,Master of Entertainment Arts and Engineering,Masters,N
+MAG,Master of Agriculture,Masters,N
+MAI,Master of Agriculture Industries,Masters,N
+MAR,Master of Architecture,Masters,N
+MAT,Master of Arts Teaching,Masters,N
+MBA,Master of Business Administrat,Masters,N
+MBC,Master of Business Creation,Masters,N
+MCE,Master of Community Economic Development,Masters,N
+MCP,Masters of City and Metro Planning,Masters,N
+MCS,Master of Computer Science,Masters,N
+MD,Doctor of Medicine,Professional,N
+MDA,Master of Dietetics Administration,Masters,N
+ME,Master of Engineerinng,Masters,N
+MEA,Master of Engineering Administration,Masters,N
+MED,Master of Education,Masters,N
+MEN,Master of Engineering,Masters,N
+MES,Master of Engineering Science,Masters,N
+MF,Master of Forestry,Masters,N
+MFA,Master of Fine Arts,Masters,N
+MFH,Master of Family and Human Development,Masters,N
+MFM,Master of Food Microbiology and Safety,Masters,N
+MFP,Fitness Promotion - MFP,Masters,N
+MFS,Masters of Food Safety & Quality,Masters,N
+MHA,Master of Healthcare Administration,Masters,N
+MHDFS,Masters in Human Develpment and Family Studies,Masters,N
+MHP,Master of Health Promotion,Masters,N
+MHR,Master of Human Resource Management,Masters,N
+MIE,Master of Industrial Education,Masters,N
+MIS,Master of Interdisciplinary Studies,Masters,N
+MLA,Master of Landscape Architecture,Masters,N
+MLS,Master of Library Science,Masters,N
+MMA,Master of Mathematics,Masters,N
+MMATH,Masters in Mathmatics,Masters,N
+MME,Master of Music Education,Masters,N
+MMF,Master of Marriage Family Therapy,Masters,N
+MMU,Master of Music,Masters,N
+MNR,Master of Natural Resources,Masters,N
+MNS,Master of Natural Science,Masters,N
+MOH,Masters of Occupational Health,Masters,N
+MOT,Master of Occupational Therapy,Masters,N
+MPA,Master of Public Administration,Masters,N
+MPC,Master of Prof Communication,Masters,N
+MPH,Master of Public Health,Masters,N
+MPL,Master of Philosophy,Masters,N
+MPP,Master of Public Policy,Masters,N
+MPR,Master of Professional Account,Masters,N
+MPS,Master of Physician Assistant,Masters,N
+MPSH,Master of Prof. Studies in Horticulture (USU),Masters,N
+MPT,Master of Physical Therapy,Masters,N
+MRC,Master of Rehabilitation Counseling,Masters,N
+MRD,Master of Real Estate Development,Masters,N
+MRS,Master of Radiolgical Sciences,Masters,N
+MS,Master of Science,Masters,N
+MSD,Master of Software Development,Masters,N
+MSE,Master of Science Education,Masters,N
+MSL,Master of Second Language Teaching,Masters,N
+MSM,Sports_Management - MSM,Masters,N
+MSN,Master of Nursing,Masters,N
+MSS,Master of Social Science,Masters,N
+MST,Master of Statistics,Masters,N
+MSW,Master of Social Work,Masters,N
+MTA,Master of Taxation,Masters,N
+MTR,Master of Athletic Training,Masters,N
+MUP,Masters of Urban Planning,Masters,N
+MX,Previous Master Degree,Masters,N
+PHD,Doctor of Philosophy,Doctorate,N
+PSM,Master of Science and Technology,Masters,N
+UCE,UCET - Certificate of Completion,UCAT,N

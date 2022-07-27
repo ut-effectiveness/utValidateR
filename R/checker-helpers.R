@@ -60,7 +60,7 @@ is_duplicated <- function(x) {
 #' @param x Vector to check
 #' @export
 is_valid_act_score <- function(x) {
-  # TODO: How to treat NAs? Valid or no? Saying not valid for now
+  # Sql indicates missing is not OK
   !is.na(x) & is.numeric(x) & x >= 0 & x <= 36
 }
 
@@ -101,13 +101,6 @@ is_valid_year <- function(x) {
   pass1 <- grepl("^20\\d{2}$", x) # valid if 2000-2099
 }
 
-
-#' @describeIn is_valid_act_score level_class_id
-#' @export
-is_valid_class_level <- function(x) {
-  valid_ids <- c('JR','SR','FR','GG','SO') # TODO: verify these are the correct ids
-  x %in% valid_ids
-}
 
 #' @describeIn is_valid_act_score student_id
 #' @export
@@ -301,14 +294,14 @@ is_missing_chr <- function(x) {
 #' @export
 is_utah_county <- function(county_code) {
   # Per USHE logic: 99 is US but not UT, 97 is non-US
-  !(as.numeric(county_code) %in% c(97, 99))
+  nchar(county_code) == 2 & !(county_code %in% c("97", "99"))
 }
 
 #' @describeIn is_utah_county Checks whether a county is in USA
 #' @export
 is_us_county <- function(county_code) {
   # Per USHE logic: 99 is US but not UT, 97 is non-US
-  !(county_code %in% 97)
+  nchar(county_code) == 2 & !(county_code %in% "97")
 }
 
 #' @describeIn is_utah_county Checks whether a state code is in USA

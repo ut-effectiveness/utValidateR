@@ -300,14 +300,14 @@ is_missing_chr <- function(x) {
 #' @param county_code Vector of first_admit_county_code values
 #' @export
 is_utah_county <- function(county_code) {
-  # TODO: how are counties encoded? For now using same logic as sql--97 and 99 are out-of-state
+  # Per USHE logic: 99 is US but not UT, 97 is non-US
   !(as.numeric(county_code) %in% c(97, 99))
 }
 
 #' @describeIn is_utah_county Checks whether a county is in USA
 #' @export
 is_us_county <- function(county_code) {
-  # TODO: how are counties encoded? For now matching the logic in the sql code
+  # Per USHE logic: 99 is US but not UT, 97 is non-US
   !(county_code %in% 97)
 }
 
@@ -322,5 +322,14 @@ is_us_state <- function(state) {
                  "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN",
                  "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY")
   state %in% us_states
+}
+
+#' @describeIn is_utah_county Checks whether a state code is not in USA
+#'
+#' @param state first_admit_state_code
+#' @export
+is_nonus_state <- function(state) {
+  # Only return TRUE if a state code is specified (a 2-digit code) but not one of the US states
+  (nchar(state) == 2) & !is_us_state(state)
 }
 

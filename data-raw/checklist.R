@@ -95,7 +95,8 @@ rule_spec <- tribble(
   # "S26b", TODO: Not relevant to compare age to birthdate since we only have birthdate?
   "S27a", expr((first_admit_country_code %in% "US") | !is_us_state(first_admit_state_code)),
   "S27b", expr(!(first_admit_country_code %in% "US" &
-                   (!is_us_county(first_admit_county_code) | !is_us_state(first_admit_state_code)))),
+                   (first_admit_county_code %in% "97" |
+                      is_nonus_state(first_admit_state_code)))),
   "S27c", expr(is_valid_country_code(first_admit_country_code)),
   # "S28a", TODO: No high school code present
   # "S29a", USHE rule for "invalid UT high school code"

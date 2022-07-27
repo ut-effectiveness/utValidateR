@@ -228,7 +228,7 @@ rule_spec <- tribble(
   "C52b", expr(is_valid_course_reference_number(course_reference_number)),
   "C52c", expr(!is_duplicated(course_reference_number)),
   "G02a", expr(!is_missing_chr(sis_student_id) & !is_missing_chr(ssn)),
-  "G02b", expr(sis_student_id %in% student_file$student_id), # TODO: how to get student file?
+  # "G02b", expr(sis_student_id %in% student_file$student_id), # TODO: how to get student file?
   "G12a", expr(is_valid_credits(overall_cumulative_credits_earned)), # TODO: verify mapping of rules to fields
   "G13a", expr(is_valid_credits(required_credits)),
   "G14a", expr(is_valid_credits(total_cumulative_ap_credits_earned)),
@@ -236,7 +236,7 @@ rule_spec <- tribble(
   "G22a", expr(is_valid_credits(total_cumulative_credits_attempted_other_sources)),
   "G23a", expr(is_valid_credits(transfer_cumulative_credits_earned)),
   "G17a", expr(!is_missing_chr(degree_id)),
-  "G21e", expr(ssn %in% student_file$ssn), # TODO: how to get student file?
+  # "G21e", expr(ssn %in% student_file$ssn), # TODO: how to get student file?
   # "G03e", expr(nchar(first_name) <= 15), # USHE rule, might need to rename
   # "G03g", expr(nchar(middle_name) <= 15), # USHE rule
   # "G03i", expr(nchar(name_suffix) <= 4), # USHE rule
@@ -257,14 +257,14 @@ rule_spec <- tribble(
   "G21d", expr(!is_duplicated(cbind(sis_student_id, # TODO: check "sis_student_id" vs "student_id"
                                     graduation_date, primary_major_cip_code, degree_id,
                                     ipeds_award_level_code, primary_major_id))),
-  "G24a", expr(graduated_academic_year_code %in% reference_year), # TODO: how to get reference year?
+  "G24a", expr(is_valid_year(graduated_academic_year_code)), # TODO: should verify matching some reference year
   "G25a", expr(is_valid_values(season, valid_seasons)), # TODO: check values
   "G28a", expr(!is_missing_chr(degree_desc)),
   "SC03", expr(!is.na(sis_student_id) & !is.na(ssn)),
   "SC04a", expr(!is_missing_chr(subject_code)),
   "SC05a", expr(!is_missing_chr(course_number)),
   "SC06a", expr(!is_missing_chr(section_number)),
-  "SC07a", expr(is_valid_credits(attempted_credits)), # TODO: check mapping of rules to fields (through 11a)
+  "SC07a", expr(is_valid_credits(attempted_credits)),
   "SC08a", expr(is_valid_credits(earned_credits)),
   "SC09a", expr(is_valid_credits(contact_hours)),
   "SC11a", expr(is_valid_credits(membership_hours)),

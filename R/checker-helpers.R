@@ -94,6 +94,14 @@ is_valid_ssid <- function(x) {
   passes
 }
 
+#' @describeIn is_valid_act_score 4-digit year in 2000-2099 as character string
+#' @export
+is_valid_year <- function(x) {
+  pass0 <- !is_missing_chr(x)
+  pass1 <- grepl("^20\\d{2}$", x) # valid if 2000-2099
+}
+
+
 #' @describeIn is_valid_act_score level_class_id
 #' @export
 is_valid_class_level <- function(x) {

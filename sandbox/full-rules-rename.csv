@@ -1429,7 +1429,7 @@ missing degree type name,Database,Failure,,G28,G28a,Graduation,g_deg_type_name,g
 from graduation_ext'+@year+'
 where (g_deg_type_name is null or g_deg_type_name in ('''',''0''))
 and g_inst = @ginst
-Order by g_banner_id","banner.stvdegc_desc, banner.shrdgmr_degc_code","stvdegc_acitivity_date, shrdgmr_activity_date",degrees_awarded.degree_desc
+Order by g_banner_id","banner.stvdegc_desc, banner.shrdgmr_degc_code",shrdgmr_activity_date,degrees_awarded.degree_desc
 Missing course subject (prefix),Database,Failure,,SC04,SC04a,Student Course,sc_crs_sbj,Missing Course Subject,"INTO #sc04a
 FROM student_courses_' + @extract + '
 WHERE sc_instance = @instance

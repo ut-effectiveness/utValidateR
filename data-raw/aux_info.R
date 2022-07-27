@@ -21,12 +21,16 @@ room_use_codes <- c(
   "X02", "X03", "X04", "X05", "YYY", "Y01", "Y02", "Y03", "Y04", "ZZZ")
 
 
+s_levels <- c("FR", "SO", "JR", "SR", "UG", "GG", "GN") # AKA primary_level_class_id
+s_reg_statuses <- c("HS", "FH", "FF", "TU", "NG", "TG", "CS", "RS", "CG",
+                    "RG", "NM", "CE", "NC")
+undergrad_student_type_codes <- c('P', 'T', 'R', 'C', 'F', 'H')
+grad_student_type_codes <- c('1', '5', '2', '4')
 
 aux_info <- list(
 
   # Valid values
-  valid_s_reg_statuses = c("HS", "FH", "FF", "TU", "NG", "TG", "CS", "RS", "CG",
-                           "RG", "NM", "CE", "NC"), #S17a
+  valid_s_reg_statuses = s_reg_statuses, #S17a
 
   valid_c_line_items = c("a","b","c","d","e","f","g","h","i","p","q","r","s","t","x"), #C09
 
@@ -37,6 +41,8 @@ aux_info <- list(
   valid_section_format_type_codes = c(), #C44a
 
   valid_cip_codes = cip_codes$cip_chr, #G09a
+
+  valid_level_class_ids = s_levels, #S18a
 
   valid_seasons = c("1", "2", "3"), #G25a
 

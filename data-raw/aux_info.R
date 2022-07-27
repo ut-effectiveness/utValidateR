@@ -1,5 +1,14 @@
 ## code to prepare `aux_info` dataset goes here
 
+
+# CIP codes from csv
+cipdf <- read.csv("sandbox/CIPCode2020.csv")
+
+cip_codes <- cipdf %>%
+  mutate(cip_chr = sprintf(fmt = "%06g", CIPCode * 1e4)) # Need a 6-digit string with no decimals
+
+
+
 aux_info <- list(
 
   # Valid values
@@ -8,7 +17,7 @@ aux_info <- list(
   valid_instruction_method_codes = c(), #C12
   valid_program_types = c(), # C13
   valid_section_format_type_codes = c(), #C44a
-  valid_cip_codes = c(), #G09a
+  valid_cip_codes = cip_codes$cip_chr, #G09a
   valid_seasons = c("1", "2", "3"), #G25a
   valid_final_grades = c(), #SC10a
   valid_building_location_codes = c(), #B02b

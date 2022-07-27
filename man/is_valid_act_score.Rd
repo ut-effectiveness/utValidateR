@@ -4,6 +4,7 @@
 \alias{is_valid_act_score}
 \alias{is_valid_ssn}
 \alias{is_valid_zip_code}
+\alias{is_valid_ssid}
 \alias{is_valid_class_level}
 \alias{is_valid_student_id}
 \alias{is_valid_previous_id}
@@ -23,6 +24,8 @@ is_valid_act_score(x)
 is_valid_ssn(x)
 
 is_valid_zip_code(x)
+
+is_valid_ssid(x)
 
 is_valid_class_level(x)
 
@@ -63,6 +66,8 @@ Validity checks on various values
 \item \code{is_valid_ssn}: ssn
 
 \item \code{is_valid_zip_code}: zip_code
+
+\item \code{is_valid_ssid}: SSID
 
 \item \code{is_valid_class_level}: level_class_id
 

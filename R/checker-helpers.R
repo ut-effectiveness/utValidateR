@@ -86,6 +86,14 @@ is_valid_zip_code <- function(x) {
   stringr::str_detect(x, zipcode_regex)
 }
 
+#' @describeIn is_valid_act_score SSID
+#' @export
+is_valid_ssid <- function(x) {
+  stopifnot(is.character(x))
+  passes <- is.na(x) | (nchar(x) == 7) & (substring(x, 1, 1) %in% c("1", "2"))
+  passes
+}
+
 #' @describeIn is_valid_act_score level_class_id
 #' @export
 is_valid_class_level <- function(x) {

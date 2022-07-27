@@ -102,8 +102,8 @@ rule_spec <- tribble(
   # "S29b", USHE rule for "invalid UT high school format"
   "S30a", expr(!is_missing_chr(secondary_major_cip_code)), # TODO: verify this only applies to secondary major
   # "S31a", USHE rule for "Membership hours should be 0"
-  "S32a", expr(is_valid_clep(transfer_cumulative_clep_earned)), # TODO: missing this info. I'll need to understand what makes clep valid
-  "S33a", expr(is_valid_clep(transfer_cumulative_ap_earned)), # TODO: missing this info. From sql, looks like same logic as clep
+  "S32a", expr(is_valid_credits(transfer_cumulative_clep_earned)),
+  "S33a", expr(is_valid_credits(transfer_cumulative_ap_earned)),
   "S34a", expr(is_valid_ssid(ssid)), # TODO: missing this info. I'll need to understand what makes ssid valid
   "S34b", expr(is_valid_ssid(ssid) |
                  !(is_hs_type(student_type_code) & first_admit_state_code == "UT")), # TODO: No ssid present

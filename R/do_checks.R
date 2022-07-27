@@ -70,7 +70,7 @@ get_age <- function(x) {
 get_activity_dates <- function(df, datecol, rule) {
   if (is.na(datecol)) return(NULL) # Some rules have no relevant date
   if (!exists(datecol, where = df)) {
-    warning(sprintf("Could not find column %s", datecol))
+    warning(sprintf("Could not find column %s\n", datecol))
     return(NULL)
   }
 

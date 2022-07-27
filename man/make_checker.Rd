@@ -11,7 +11,7 @@ make_checker(rule, expr, env = rlang::caller_env())
 
 \item{expr}{Expression that generates a logical vector when applied to a dataframe}
 
-\item{env}{environment for evaluating checkers, passed to}
+\item{env}{environment for evaluating checkers, passed to \code{rlang::eval_tidy()}}
 }
 \description{
 Result is a function with a single dataframe argument

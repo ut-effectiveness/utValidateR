@@ -32,7 +32,8 @@ aux_info <- list(
   # Valid values
   valid_s_reg_statuses = s_reg_statuses, #S17a
 
-  valid_c_line_items = c("a","b","c","d","e","f","g","h","i","p","q","r","s","t","x"), #C09
+  valid_c_line_items = c("A", "B", "C", "D", "E", "F", "G", "H", "I", "K", "L",
+                         "M", "N", "P", "Q", "R", "S", "T", "X"), #C09
 
   valid_instruction_method_codes = c("P", "H", "T", "R", "I", "B", "C", "O", "V", "Y"), #C12
 
@@ -69,5 +70,6 @@ aux_info <- list(
 
   rooms_inventory = c() #C19d and others
 )
+
 
 usethis::use_data(aux_info, overwrite = TRUE)

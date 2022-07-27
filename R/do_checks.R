@@ -14,14 +14,18 @@
 #' @export
 do_checks <- function(df_tocheck, checklist, aux_info = list()) {
 
+  # must be an environment to be passed to the env argument in rlang::eval_tidy()
   if (is.list(aux_info))
     aux_info <- new_environment(data = aux_info,
                                 parent = caller_env()) # Is this the right parent? Does it matter?
 
+  # Activity dates are not relevant for USHE checks
+  checklist$activity_date[checklist$type == "USHE"] <- NA
+
   # For each row in checklist, apply the checker function to df_tocheck
   result_names <- paste0(checklist$rule, "_status")
 
-  # make_checker() returns a function (of a dataframe)
+  # make_checker() returns a function with a single `df` argument
   checkfuns <- map2(checklist$rule, checklist$checker,
                     ~make_checker(.x, .y, env = aux_info))
 

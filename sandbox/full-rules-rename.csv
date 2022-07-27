@@ -381,7 +381,7 @@ WHERE s_reg_status not IN (select distinct code from reference.dbo.reg_status)
 and s_instance = @instance
 and s_inst = @inst
 Order by s_banner_id",banner.sgbstdn_styp_code,n/a,student_term_level.student_type_code
-graduate class level coded with an undergraduate student type,Database,Failure,,S17,S17b,Student,s_reg_status,Graduates as entering Undergrads,"INTO #s17b
+graduate class level coded with an undergraduate student type,USHE,Failure,,S17,S17b,Student,s_reg_status,Graduates as entering Undergrads,"INTO #s17b
 FROM students_'+ @extract +'
 WHERE s_reg_status IN (''CS'',''HS'',''FF'',''FH'',''TU'')
 AND s_level IN (''GN'',''GG'')
@@ -482,7 +482,7 @@ WHERE s_level not IN (select distinct code from reference.dbo.S_LEVEL where Inac
 AND s_instance = @instance
 and s_inst = @inst
 Order by s_banner_id",class function in banner,n/a,student_term_level.primary_level_class_id
-UG student types cannot be graduate class levels,Database,Failure,,S18,S18b,Student,s_level,"Class Level vs. Registration Status a student registered as Undgergrad cannot be grad class level
+UG student types cannot be graduate class levels,USHE,Failure,,S18,S18b,Student,s_level,"Class Level vs. Registration Status a student registered as Undgergrad cannot be grad class level
 --or a student registered as grad connot be an undergrad class level","INTO #s18b
 FROM students_'+ @extract +'
 WHERE s_instance = @instance

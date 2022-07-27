@@ -64,8 +64,8 @@ rule_spec <- tribble(
   "S15a", expr(!is_missing_chr(residency_code)), # TODO: sufficient to verify non-missing? (sql checks values)
   "S16a", expr(!is.na(primary_major_cip_code)), # TODO: sufficient to verify non-missing? (sql checks values)
   "S17a", expr(is_valid_values(s_reg_status, valid_s_reg_statuses, missing_ok = FALSE)), # USHE check
-  "S17b", expr(!(is_grad_level(primary_level_class_id) & # TODO: these functions need verifying
-                   is_undergrad_type(student_type_code))),
+  "S17b", expr(!((s_reg_status %in% c("CS","HS","FF","FH","TU")) &
+                   (s_level %in% c("GN","GG")))),
   # "S17c", TODO: How to compare to previous student data? Multiple dataframes? (similar to S13a)
   # "S17d", TODOO: same question as S17c. These are database checks
   #
@@ -77,10 +77,10 @@ rule_spec <- tribble(
   # # "S17i", TODO: Same rule as S17h?
   # # "S17j", TODO: Tracking changes--same question as S13a
   # "S17k", expr(!is_freshmen_type(student_type_code) | age_in_range(birth_date, 16, Inf)),
-  "S18a", expr(is_valid_values(primary_level_class_id, c('JR','SR','FR','GG','SO'),
+  "S18a", expr(is_valid_values(primary_level_class_id, valid_level_class_ids,
                                missing_ok = FALSE)),
-  "S18b", expr(!(is_grad_level(primary_level_class_id) & is_undergrad_type(student_type_code)) &
-                 !(is_undergrad_level(primary_level_class_id) & is_grad_type(student_type_code))),
+  "S18b", expr(!(s_reg_status %in% c("HS", "FH", "FF", "TU", "CS", "RS") & s_level %in% c("GN","GG")) |
+                 (s_reg_status %in% c("NG","TG","CG","RG") & s_level %in% c("FR", "SO", "JR", "SR", "UG"))),
   "S19a", expr(!is_missing_chr(primary_degree_id)),
   "S20a", expr(is_valid_credits(institutional_cumulative_credits_earned)),
   "S24a", expr(is_valid_credits(transfer_cumulative_credits_earned)),

@@ -34,9 +34,15 @@ do_checks <- function(df_tocheck, checklist, aux_info = list()) {
     setNames(result_names) %>%
     bind_cols()
 
+  # Function to write error messages to result instead of pass/fail
+  get_status_chr <- function(resultvec, status) {
+    if (is.character(resultvec)) return(resultvec)
+    ifelse(resultvec, "Pass", status)
+  }
+
   # dataframe for whether each check induces a warning or failure
   check_statuses <- map2_dfc(check_results, checklist$status,
-                             ~ifelse(.x, "Pass", .y))
+                             ~get_status_chr(.x, .y))
 
   # dataframe with activity_date and error_age columns for relevant rules
   actdate_dfs <- map2_dfc(checklist$activity_date, checklist$rule,

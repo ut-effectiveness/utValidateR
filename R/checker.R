@@ -34,7 +34,7 @@ make_checker <- function(rule, expr, env = rlang::caller_env()) {
               expr_chr, "\n",
               "With the following error:\n",
               cond, "\n\n")
-      return(rep(FALSE, nrow(df)))
+      return(rep(cond$message, nrow(df)))
     })
 
   }

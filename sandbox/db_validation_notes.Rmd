@@ -1,0 +1,45 @@
+---
+title: "Data Validation Documentation "
+author: "Institution Effectiveness"
+date: "7/2/2022"
+output: html_document
+theme: united
+new_session: yes
+---
+
+
+# Purpose
+
+The document shows examples and use cases of using the utValidateR package.
+See github repository: https://github.com/dsu-effectiveness/utValidateR
+
+
+
+```{r chunk-label, echo = FALSE, fig.cap = 'A figure caption.'}
+library(utHelpR)
+library(utValidateR)
+library(tidyverse)
+
+
+```
+
+# Buildings {.tabset}
+```{r}
+fake_buildings_df <- (utValidateR::fake_buildings_validation)
+real_buildings_df <-(utHelpR::get_data_from_sql_file("buildings_validation.sql", "edify", "project"))
+data("checklist")
+data("aux_info")
+#Run do_checks and product validation results
+building_validation_results <- do_checks(real_buildings_df, building_checks, aux_info)
+View(building_validation_results)
+
+View(filter(checklist, file == "Buildings"))
+
+results <- building_validation_results %>% 
+  select(ends_with("status")) %>% 
+  setNames(gsub("_status", "", names(.))) %>% 
+  summarize(across(.fns = function(x) mean(x == "Pass"))) %>% 
+  pivot_longer(cols = everything(), names_to = "rule", values_to = "pass_rate") %>% 
+  arrange(pass_rate) %>% 
+  left_join(checklist, by = "rule")
+```

@@ -6,7 +6,6 @@
 \alias{is_valid_zip_code}
 \alias{is_valid_ssid}
 \alias{is_valid_year}
-\alias{is_valid_class_level}
 \alias{is_valid_student_id}
 \alias{is_valid_previous_id}
 \alias{is_valid_country_code}
@@ -29,8 +28,6 @@ is_valid_zip_code(x)
 is_valid_ssid(x)
 
 is_valid_year(x)
-
-is_valid_class_level(x)
 
 is_valid_student_id(x)
 
@@ -73,8 +70,6 @@ Validity checks on various values
 \item \code{is_valid_ssid}: SSID
 
 \item \code{is_valid_year}: 4-digit year in 2000-2099 as character string
-
-\item \code{is_valid_class_level}: level_class_id
 
 \item \code{is_valid_student_id}: student_id
 

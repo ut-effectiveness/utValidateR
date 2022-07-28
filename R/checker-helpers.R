@@ -228,7 +228,7 @@ is_hs_type <- function(student_type) {
 #' @export
 is_undergrad_type <- function(student_type) {
   # TODO: find out how student_type is coded
-  undergrad_types <- c() # Fill this in!
+  undergrad_types <- c('P', 'T', 'R', 'C', 'F', 'H')
   student_type %in% undergrad_types
 }
 
@@ -236,7 +236,7 @@ is_undergrad_type <- function(student_type) {
 #' @export
 is_grad_type <- function(student_type) {
   # TODO: find out how student_type is coded
-  grad_types <- c() # Fill this in!
+  grad_types <- c('1', '5', '2', '4') # Fill this in!
   student_type %in% grad_types
 }
 

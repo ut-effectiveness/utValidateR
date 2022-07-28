@@ -10,6 +10,14 @@ cip_codes <- cipdf %>%
 # Degree types from csv
 degree_types <- read.csv("sandbox/degree-types.csv")
 
+previous_degree_types <- c("1", "1A", "1B", "2", "3", "4", "5", "6", "7", "8", "17",
+                           "18", "19", "DIP", "CER", "AX", "BX", "MX", "DX", "FP")
+
+
+final_grades <- c("A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-",
+  "E", "F", "UW", "I", "IP", "CR", "NC", "AU", "SP", "P", "W", "L", "NG", "T", "CW")
+passing_grades <- c("A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-",
+                    "CR", "SP", "P", "NG", "T")
 
 room_use_codes <- c(
   "100", "110", "115", "200", "210", "215", "220", "225", "230", "235", "255",
@@ -48,13 +56,15 @@ aux_info <- list(
 
   valid_degree_ids = degree_types$degree_type, #S19a
 
+  valid_previous_degree_types = previous_degree_types, #G16a
+
   valid_level_class_ids = s_levels, #S18a
 
   valid_seasons = c("1", "2", "3"), #G25a
 
-  valid_final_grades = c("A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-",
-                         "E", "F", "UW", "I", "IP", "CR", "NC", "AU", "SP", "P", "W",
-                         "L", "NG", "T", "CW"), #SC10a
+  valid_final_grades = final_grades, #SC10a
+
+  passing_grades = passing_grades, #SC08d
 
   valid_building_location_codes = c("MC", "RP", "BC", "IC", "OIS", "DEC", "SPC", "SPS"), #B02b
 

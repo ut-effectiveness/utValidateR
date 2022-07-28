@@ -98,20 +98,22 @@ rule_spec <- tribble(
                    (first_admit_county_code %in% "97" |
                       is_nonus_state(first_admit_state_code)))),
   "S27c", expr(is_valid_country_code(first_admit_country_code)),
-  # "S28a", TODO: No high school code present
+  "S28a", expr(!(first_admit_state_code %in% "UT") |
+                 !is_undergrad_type(student_type_code) |
+                 is_valid_values(latest_high_school_code, valid_hs_codes, missing_ok = FALSE)),
   # "S29a", USHE rule for "invalid UT high school code"
   # "S29b", USHE rule for "invalid UT high school format"
-  "S30a", expr(is_valid_values(secondary_major_cip_code, valid_cip_codes)), # TODO: verify this only applies to secondary major
+  "S30a", expr(is_valid_values(secondary_major_cip_code, valid_cip_codes)),
   # "S31a", USHE rule for "Membership hours should be 0"
   "S32a", expr(is_valid_credits(transfer_cumulative_clep_earned)),
   "S33a", expr(is_valid_credits(transfer_cumulative_ap_earned)),
-  "S34a", expr(is_valid_ssid(ssid)), # TODO: missing this info. I'll need to understand what makes ssid valid
+  "S34a", expr(is_valid_ssid(ssid)), # TODO: missing ssid
   "S34b", expr(is_valid_ssid(ssid) |
                  !(is_hs_type(student_type_code) & first_admit_state_code == "UT")), # TODO: No ssid present
   "S34c", expr(!(is.na(ssid) &
                    first_admit_state_code == "UT" &
                    is_hs_type(student_type_code))), # TODO: no ssid present
-  "S34d", expr(!is.na(ssid) | !is_concurrent(budget_code)), # TODO: no ssid, no budget code present
+  "S34d", expr(!is.na(ssid) | !(budget_code %in% c("BC", "SF"))), # TODO: no ssid, no budget code present
   "S34e", expr(!is.na(ssid) |
                  (!is_hs_type(student_type_code) &
                     !is_freshmen_type(student_type_code))), # TODO: no ssid present
@@ -159,8 +161,8 @@ rule_spec <- tribble(
   # "C13a", USHE check on perkins program types
   # "C13c", USHE check on perkins budget codes
   "C14a", expr(c_credit_ind %in% c("C", "N")), # USHE check
-  "C14b", expr(!(course_level_id == "N" & section_format_type_code != "LAB")),
-  # "C14c", TODO: complicated logic, waiting for dummy data
+  "C14b", expr(!(course_level_id == "N" & section_format_type_code != "LAB")), #USHE check now
+  # "C14c", TODO: complicated rule involving query
   "C15a", expr(!is_missing_chr(meet_start_time_1)),
   "C23a", expr(!is_missing_chr(meet_start_time_2)),
   "C31a", expr(!is_missing_chr(meet_start_time_3)),
@@ -195,7 +197,7 @@ rule_spec <- tribble(
   "C22b", expr(!is_missing_chr(room_use_code_1)),
   "C30b", expr(!is_missing_chr(room_use_code_2)),
   "C38b", expr(!is_missing_chr(room_use_code_3)),
-  "C39a", expr(is.Date(meet_start_date) & !is.na(meet_start_date)), # Summer TODO: how to distinguish?
+  "C39a", expr(is.Date(meet_start_date) & !is.na(meet_start_date)), # Summer TODO: how to distinguish? from fall, spring?
   "C39b", expr(is.Date(meet_start_date) & !is.na(meet_start_date)), # Fall
   "C39c", expr(is.Date(meet_start_date) & !is.na(meet_start_date)), # Spring
   "C40a", expr(is.Date(meet_end_date) & !is.na(meet_end_date)), # Summer
@@ -242,23 +244,25 @@ rule_spec <- tribble(
   # "G03i", expr(nchar(name_suffix) <= 4), # USHE rule
   "G08b", expr(is_valid_graduation_date(graduation_date)),
   "G09a", expr(is_valid_values(primary_major_cip_code, valid_cip_codes, missing_ok = TRUE)),
-  "G10a", expr(degree_status_code != "AW" | !is_missing_chr(degree_type)), # TODO: check assumed names and values
+  "G10a", expr(!is_missing_chr(degree_type)),
+  "G10b", expr(is_valid_values(degree_id, valid_degree_ids, missing_ok = FALSE)),
   "G11a", expr(is_valid_gpa(cumulative_graduation_gpa)),
   # "G12b", USHE rule for Transfer hours over 300 credits
   # "G13b", USHE rule for Graduation hours 1.5 times required hours
   # "G14b", USHE rule for Other hours 1.5 times required hours
   # "G15b", USHE rule for Remedial hours over 60
+  "G16a", expr(is_valid_values(previous_degree_type, valid_previous_degree_types)),
   "G18a", expr(is.numeric(required_credits) &
                  !is.na(required_credits) &
                  required_credits >= 0 ),
   "G19a", expr(!is_utah_county(first_admit_county_code) | !is_missing_chr(high_school_code)),
   "G21a", expr(is_valid_student_id(sis_student_id)),
   "G21b", expr(is_valid_student_id(sis_student_id)), # Redundant unless I can assume banner_id format
-  "G21d", expr(!is_duplicated(cbind(sis_student_id, # TODO: check "sis_student_id" vs "student_id"
+  "G21d", expr(!is_duplicated(cbind(sis_student_id,
                                     graduation_date, primary_major_cip_code, degree_id,
                                     ipeds_award_level_code, primary_major_id))),
   "G24a", expr(is_valid_year(graduated_academic_year_code)), # TODO: should verify matching some reference year
-  "G25a", expr(is_valid_values(season, valid_seasons)), # TODO: check values
+  "G25a", expr(is_valid_values(season, valid_seasons)),
   "G28a", expr(!is_missing_chr(degree_desc)),
   "SC03", expr(!is.na(sis_student_id) & !is.na(ssn)),
   "SC04a", expr(!is_missing_chr(subject_code)),
@@ -268,9 +272,11 @@ rule_spec <- tribble(
   "SC08a", expr(is_valid_credits(earned_credits)),
   "SC09a", expr(is_valid_credits(contact_hours)),
   "SC11a", expr(is_valid_credits(membership_hours)),
-  # "SC08b", TODO: "invalid earned credit hours based on grade" but I see no grade type
-  # "SC08c", TODO: "earned credit hours is missing, but have a grade" but no grade present
-  # "SC08d", TODO: complex logic for "At end of term, earned credit hours should match attempted credit hours (when a passing grade)"
+  "SC08b", expr(is.na(earned_credits) | earned_credits == 0 |
+                  !(final_grade %in% c('CW', 'L', 'NG', 'E', 'F', 'UW',
+                                       'I', 'IP', 'NC', 'AU', 'W'))),
+  "SC08c", expr(final_grade %in% c(NA, "IP") | !is.na(earned_credits)),
+  "SC08d", expr(!(final_grade %in% passing_grades) | (earned_credits == attempted_credits)), # TODO: this only applies to end of term--how to impose this condition?
   "SC10a", expr(is_valid_values(final_grade, valid_final_grades, missing_ok = TRUE) |
                   is.na(attempted_credits) | attempted_credits == 0),
   # "SC10b", USHE rule "missing concurrent enrollment grades"
@@ -280,7 +286,7 @@ rule_spec <- tribble(
   # "SC12c", USHE rule "Budget code and student type alignment (concurrent classes has concurrent students)"
   # "SC12d", USHE rule "Budget code, student type and entry action alignment"
   # "SC12e", USHE rule "Budget code and student type alignment (concurrent students in concurrent classes)"
-  # "SC12f", USHE rule "Budget code and student type alignement (concurrent students in concurrent classes in out-of state high schools)"
+  # "SC12f", USHE rule "Budget code and student type alignment (concurrent students in concurrent classes in out-of state high schools)"
   "SC13a", expr(is_valid_student_id(sis_student_id)),
   "SC13b", expr(is_valid_student_id(sis_student_id)), # Redundant unless I can assume banner_id format
   "SC14a", expr(is_valid_course_reference_number(course_reference_number)),
@@ -318,7 +324,7 @@ rule_spec <- tribble(
   "B14b", expr((!is.na(building_cost_replacement) & building_cost_replacement > 3.5e6) |
                  !is_missing_chr(building_risk_number)),
   "B15a", expr(!is_missing_chr(building_auxiliary)), # Do I need to condition on ownership?
-  "B15a", expr(is_valid_values(building_auxiliary, c("A", "N"), missing_ok = TRUE)),
+  "B15b", expr(is_valid_values(building_auxiliary, c("A", "N"), missing_ok = TRUE)),
   "B99a", expr(!is_duplicated(cbind(b_inst,b_year,b_number))), # USHE rule
   # "B99b", TODO: USHE rule for "buildings must have rooms", requires join to rooms data
   # "R03b", TODO USHE rule for "Room building not in building file", requires join to buildings data

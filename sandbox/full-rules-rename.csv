@@ -997,7 +997,7 @@ WHERE (c_credit_ind NOT IN (''C'',''N'') OR c_credit_ind is null)
 AND c_instance = @instance
 and c_inst = @inst
 Order by c_crs_sbj, c_crs_num, c_crs_sec",banner.scrlevl_levl_code = 'NC',n/a,course.course_level_id
-credit indicator and section format type do not align,Database,Failure,,C14,C14b,Course,"c_credit_ind, c_instruct_type",NON-CREDIT COURSES IN 3RD WEEK,"INTO #c14b
+credit indicator and section format type do not align,USHE,Failure,,C14,C14b,Course,"c_credit_ind, c_instruct_type",NON-CREDIT COURSES IN 3RD WEEK,"INTO #c14b
 FROM COURSES_' + @extract + '
 WHERE C_CREDIT_IND = ''N''
 AND c_extract = ''3''

@@ -14,6 +14,7 @@
                       b.latest_high_school_code,
                       a.budget_code,
                       a.attribute_code,
+                      a.attribute_desc,
                       a.course_reference_number,
                       a.course_level_id,
                -- TODO Add activity dates here
@@ -24,3 +25,4 @@
                   AND a.term_id >= (SELECT term_id FROM quad.term WHERE is_previous_term)
              ORDER BY a.student_id,
                       a.course_reference_number;
+

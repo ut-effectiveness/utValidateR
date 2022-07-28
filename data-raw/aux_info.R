@@ -1,5 +1,8 @@
 ## code to prepare `aux_info` dataset goes here
 
+# TODO: get these from a query, since they are subject to change
+concurrent_list <- read.csv("sandbox/analytics_quad_concurrent_courses.csv")
+building_list <- read.csv("sandbox/analytics_quad_buildings.csv")
 
 # CIP codes from csv
 cipdf <- read.csv("sandbox/CIPCode2020.csv")
@@ -65,6 +68,8 @@ aux_info <- list(
   non_concurrent_highschools = c("459050","459100","459150","459200","459300",
                                  "459400","459500","459000"), #SC12b
 
+  concurrent_course_ids = concurrent_list$course_id, #C11b
+
   ut_highschools = ut_highschools,
 
   valid_degree_ids = degree_types$degree_type, #S19a
@@ -94,8 +99,7 @@ aux_info <- list(
   valid_room_use_codes = c(room_use_codes), #R08b
 
   # Inventories
-  building_inventory = c(), #C19c and others
-
+  building_inventory = building_list$building_number, #C19c and others
   rooms_inventory = c() #C19d and others
 )
 

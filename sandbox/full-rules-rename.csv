@@ -550,7 +550,7 @@ and cast(s_cum_gpa_ugrad as float) <> ''0''
 and s_instance = @instance
 and s_inst = @inst
 Order by s_banner_id",banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa),shrlgpa_activity_date,"student_term_level.institutional_cumulative_gpa, student_term_level.level_id, student_term_level.institutional_gpa"
-missing GPA at end of term,Database,Failure,,"S21, S22, 23","S21b, S22b, 23d",Student,"s_cum_gpa_ugrad, s_cum_hrs_grad",UGrads without UGrad GPA,"Into #s21b
+missing GPA at end of term,USHE,Failure,,"S21, S22, 23","S21b, S22b, 23d",Student,"s_cum_gpa_ugrad, s_cum_hrs_grad",UGrads without UGrad GPA,"Into #s21b
 From students_'+ @extract +' s
 join student_courses_'+ @extract +' sc on (s.s_banner_id = sc.sc_banner_id and s.s_extract = sc.sc_extract and s.s_instance = sc.sc_instance)
 WHERE s_level not IN (''GN'',''GG'')

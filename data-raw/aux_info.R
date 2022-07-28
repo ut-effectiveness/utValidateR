@@ -10,6 +10,12 @@ cip_codes <- cipdf %>%
 # Degree types from csv
 degree_types <- read.csv("sandbox/degree-types.csv")
 
+# High schools from text file
+highschools <- read.csv("sandbox/highschools.txt", sep = "|")
+ut_highschools <- highschools %>%
+  filter(HS_State == "UT") %>%
+  pull(HS_ACT_Code)
+
 previous_degree_types <- c("1", "1A", "1B", "2", "3", "4", "5", "6", "7", "8", "17",
                            "18", "19", "DIP", "CER", "AX", "BX", "MX", "DX", "FP")
 
@@ -53,6 +59,13 @@ aux_info <- list(
   valid_instruct_types = c("LEC", "LEL", "LAB", "SUP", "INV", "THE", "DIS", "CON", "OTH"), #C44a
 
   valid_cip_codes = cip_codes$cip_chr, #G09a
+
+  valid_highschools = unique(highschools$HS_ACT_Code), #C48a
+
+  non_concurrent_highschools = c("459050","459100","459150","459200","459300",
+                                 "459400","459500","459000"), #SC12b
+
+  ut_highschools = ut_highschools,
 
   valid_degree_ids = degree_types$degree_type, #S19a
 

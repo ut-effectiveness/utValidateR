@@ -88,8 +88,7 @@ rule_spec <- tribble(
   "S17e", expr(!(s_reg_status %in% "HS") | (s_age >= 10 & s_age <= 20)),
   "S17f", expr(!(s_reg_status %in% "FF") | s_age >= 18),
   "S17g", expr(!(s_reg_status %in% "FH") | s_age <= 21), #ignoring conditioning on highschool hs_alternative
-  # "S17h", TODO: USHE rule for "invalid student type enrolled in concurrent classes"?
-  # "S17i", TODO: Same rule as S17h?
+  "S17h", expr(s_reg_status %in% "HS" | !(c_budget_code %in% c("BC", "SF"))), #USHE rule
   # "S17j", TODO: USHE rule for "REGISTRATION STATUS CHANGED BASED ON 3RD WEEK DATA"
   "S17k", expr(!(s_reg_status %in% "FH") | s_age >= 16),
   "S18a", expr(is_valid_values(primary_level_class_id, valid_level_class_ids,
@@ -99,11 +98,30 @@ rule_spec <- tribble(
   "S19a", expr(is_valid_values(primary_degree_id, valid_degree_ids)),
   "S20a", expr(is_valid_credits(institutional_cumulative_credits_earned)),
   "S24a", expr(is_valid_credits(transfer_cumulative_credits_earned)),
-  "S21",  expr(!is.na(institutional_cumulative_gpa)), # TODO: do I need to do more than check missing? (sql does...)
+  "S21",  expr(!is.na(institutional_cumulative_gpa)),
   "S21a", expr(is_valid_gpa(institutional_cumulative_gpa)),
-  # "S21b", TODO: ambiguous specification. Need to parse through sql
-  # "S22b", TODO: duplicate of S21b? Same line in excel document
-  # "S23d", TODO: duplicate of S21b? Same line in excel document
+  "S21b", expr(s_level %in% c("GN", "GG") |
+                 !(s_cum_gpa_ugrad %in% c(0, "", NA)) |
+                 sc_grade %in% c("CR", "NG", "P", "SP") |
+                 sc_earned_cr <= 0 |
+                 s_cum_hrs_ugrad <= 0 |
+                 sc_att_cr <= 0 |
+                 !(s_extract %in% "E")), # USHE rule
+  "S22b", expr(!(s_level %in% c("GN", "GG")) |
+                 !(s_cum_hrs_grad %in% c(0, "", NA)) |
+                 sc_grade %in% c("CR", "NG", "P", "SP") |
+                 sc_earned_cr <= 0 |
+                 s_cum_hrs_grad <= 0 |
+                 sc_att_cr <= 0 |
+                 !(s_extract %in% "E")), # USHE rule--unsure of logic since this is for grad and sql was for ugrad
+  "S23d", expr(!(s_level %in% c("GN", "GG")) |
+                 !(s_cum_gpa_grad %in% c(0, "", NA)) |
+                 sc_grade %in% c("CR", "NG", "P", "SP") |
+                 sc_earned_cr <= 0 |
+                 s_cum_hrs_grad <= 0 |
+                 sc_att_cr <= 0 |
+                 !(s_extract %in% "E")), # USHE rule--unsure of logic since this is for grad and sql was for ugrad
+
   "S23a", expr(s_level %in% c("GN", "GG") | as.numeric(s_cum_gpa_grad) %in% c(0, NA)),
   "S25a", expr(toupper(full_time_part_time_code) %in% c("P", "F")),
   "S26a", expr(!is.na(s_age) & s_age > 0 & s_age <= 125),
@@ -178,7 +196,9 @@ rule_spec <- tribble(
   # "C13a", USHE check on perkins program types
   # "C13c", USHE check on perkins budget codes
   "C14a", expr(c_credit_ind %in% c("C", "N")), # USHE check
-  "C14b", expr(!(course_level_id == "N" & section_format_type_code != "LAB")), #USHE check now
+  "C14b", expr(!(c_credit_ind %in% "N" &
+                   c_extract %in% "3" &
+                   !(c_instruct_type %in% "LAB"))), #USHE check now
   # "C14c", TODO: complicated rule involving query
   "C15a", expr(!is_missing_chr(meet_start_time_1)),
   "C23a", expr(!is_missing_chr(meet_start_time_2)),
@@ -186,7 +206,18 @@ rule_spec <- tribble(
   "C16a", expr(!is_missing_chr(meet_end_time_1)),
   "C24a", expr(!is_missing_chr(meet_end_time_2)),
   "C32a", expr(!is_missing_chr(meet_end_time_3)),
-  # "C17a", USHE rule for missing course meeting days
+  "C17a", expr(!is_missing_chr(c_days) |
+                 c_delivery_method %in% c("C", "I", "V", "Y") |
+                 c_budget_code %in% "SF" |
+                 !(c_extract %in% "3")) , # USHE check, TODO: add site-type (query) condition?
+  "C25a", expr(!is_missing_chr(c_days2) |
+                 c_delivery_method %in% c("C", "I", "V", "Y") |
+                 c_budget_code %in% "SF" |
+                 !(c_extract %in% "3")) , # USHE check, TODO: add site-type (query) condition?
+  "C33a", expr(!is_missing_chr(c_days3) |
+                 c_delivery_method %in% c("C", "I", "V", "Y") |
+                 c_budget_code %in% "SF" |
+                 !(c_extract %in% "3")) , # USHE check, TODO: add site-type (query) condition?
   "C18", expr(is.na(meet_building_id_1) | !equivalent(meet_building_id_1, building_number_1)),
   "C26", expr(is.na(meet_building_id_2) | !equivalent(meet_building_id_2, building_number_2)),
   "C34", expr(is.na(meet_building_id_3) | !equivalent(meet_building_id_3, building_number_3)),
@@ -221,28 +252,35 @@ rule_spec <- tribble(
   "C40b", expr(is.Date(meet_end_date) & !is.na(meet_end_date)), # Fall
   "C40c", expr(is.Date(meet_end_date) & !is.na(meet_end_date)), # Spring
   "C41a", expr(!is_missing_chr(course_title)),
-  # "C41b", USHE rule for course title validity
-  # "C41d", USHE rule for course title validity
+  "C41b", expr(is_missing_chr(c_title) |
+                 grepl("[a-zA-Z]{2}", c_title) |
+                 !(c_extract %in% "3")),
+  "C41d", expr(is_missing_chr(c_title) |
+                 !grepl("[^a-zA-Z0-9 /&()+:.-\\']", c_title) |
+                 !(c_extract %in% "3")),
   "C42a", expr(!is_missing_chr(instructor_employee_id)),
   "C42b", expr(is_missing_chr(instructor_employee_id) |
                  (nchar(instructor_employee_id) == 9L &
-                    grepl("^[[a-zA-Z]]", instructor_employee_id))),
-  # "C42c" USHE rule for instructor ID
+                    grepl("^[a-zA-Z]", instructor_employee_id))),
+  "C42c", expr(is_missing_chr(c_instruct_id) |
+                 !grepl("^[a-zA-Z\\']", c_instruct_id) |
+                 is_valid_values(substring(c_instruct_id, 1, 1), valid_i_banner)), # TODO: valid_i_banner needs a query
   "C43a", expr(!is_missing_chr(instructor_name)),
-  # "C43c", expr(is_alpha_chr(c_instruct_name)), USHE rule
+  "C43c", expr(is_alpha_chr(c_instruct_name) | !(c_extract %in% "3")),
   "C44", expr(!is_missing_chr(section_format_type_code)),
   "C44a", expr(is_valid_values(c_instruct_type, valid_instruct_types, missing_ok = TRUE)),
   "C45", expr(!is_missing_chr(college_id)),
   "C45a", expr(is_alpha_chr(college_id)),
   "C46", expr(!is_missing_chr(academic_department_id)),
   "C46a", expr(is_alpha_chr(academic_department_id, missing_ok = TRUE)),
-  # "C47b", expr(c_gen_ed %in% valid_gened_codes), # USHE rule
-  # "C48a", expr(is_missing_chr(c_dest_site) | c_dest_site %in% reference_highschools), #USHE rule
+  "C47b", expr(is_valid_values(c_gen_ed, valid_gened_codes, missing_ok = FALSE)), # USHE rule TODO: needs gened codes (query)
+  "C48a", expr(is_valid_values(c_dest_site, valid_highschools)), #USHE rule
   "C49a", expr(!is.na(class_size) & class_size != 0),
   "C49b", expr(is.na(class_size) | class_size >= 0 & class_size <= 9999),
-  # "C49c", USHE rule comparing enrolled students to class size (involving COUNT)
+  # "C49c", TODO: USHE rule comparing enrolled students to class size (involving group by/COUNT)
   "C51a", expr(c_level %in% c("R", "U", "G")), # USHE check
-  # "C51b" USHE rule for invalid remedial level (somewhat complex)
+  "C51b", expr(c_crs %in% c("MATH", "MAT", "ENGL", "RDG", "WRTG", "ESL") |
+                !(c_level %in% "R")), # Ignoring complex edge-case logic
   "C52a", expr(!is_missing_chr(course_reference_number)),
   "C52b", expr(is_valid_course_reference_number(course_reference_number)),
   "C52c", expr(!is_duplicated(course_reference_number)),
@@ -259,18 +297,18 @@ rule_spec <- tribble(
   "G23a", expr(is_valid_credits(transfer_cumulative_credits_earned)),
   "G17a", expr(is_valid_values(degree_id, valid_degree_ids)),
   # "G21e", expr(ssn %in% student_file$ssn), # TODO: how to get student file?
-  # "G03e", expr(nchar(first_name) <= 15), # USHE rule, might need to rename
-  # "G03g", expr(nchar(middle_name) <= 15), # USHE rule
-  # "G03i", expr(nchar(name_suffix) <= 4), # USHE rule
+  "G03e", expr(nchar(g_first) <= 15), # USHE rule, might need to rename
+  "G03g", expr(nchar(g_middle) <= 15), # USHE rule
+  "G03i", expr(nchar(g_suffix) <= 4), # USHE rule
   "G08b", expr(is_valid_graduation_date(graduation_date)),
   "G09a", expr(is_valid_values(primary_major_cip_code, valid_cip_codes, missing_ok = TRUE)),
   "G10a", expr(!is_missing_chr(degree_type)),
   "G10b", expr(is_valid_values(degree_id, valid_degree_ids, missing_ok = FALSE)),
   "G11a", expr(is_valid_gpa(cumulative_graduation_gpa)),
-  # "G12b", USHE rule for Transfer hours over 300 credits
-  # "G13b", USHE rule for Graduation hours 1.5 times required hours
-  # "G14b", USHE rule for Other hours 1.5 times required hours
-  # "G15b", USHE rule for Remedial hours over 60
+  "G12b", expr(is.na(g_trans_total) | g_trans_total <= 300), #USHE rule
+  "G13b", expr((g_req_hrs_deg * 1.5) >= g_grad_hrs), #USHE rule
+  "G14b", expr((g_req_hrs_deg * 1.5) >= g_other_hrs), #USHE rule
+  "G15b", expr(g_remedial_hrs <= 60), #USHE rule
   "G16a", expr(is_valid_values(previous_degree_type, valid_previous_degree_types)),
   "G18a", expr(is.numeric(required_credits) &
                  !is.na(required_credits) &
@@ -299,14 +337,23 @@ rule_spec <- tribble(
   "SC08d", expr(!(final_grade %in% passing_grades) | (earned_credits == attempted_credits)), # TODO: this only applies to end of term--how to impose this condition?
   "SC10a", expr(is_valid_values(final_grade, valid_final_grades, missing_ok = TRUE) |
                   is.na(attempted_credits) | attempted_credits == 0),
-  # "SC10b", USHE rule "missing concurrent enrollment grades"
-  # "SC10c", USHE rule "invalid concurrent enrollment grade"
-  # "SC12a", USHE rule "Invaild student type codes (concurrent enrollment)"
-  # "SC12b", USHE rule "Student type and HS code alignment (concurrent students only in Utah High schools)"
-  # "SC12c", USHE rule "Budget code and student type alignment (concurrent classes has concurrent students)"
-  # "SC12d", USHE rule "Budget code, student type and entry action alignment"
-  # "SC12e", USHE rule "Budget code and student type alignment (concurrent students in concurrent classes)"
-  # "SC12f", USHE rule "Budget code and student type alignment (concurrent students in concurrent classes in out-of state high schools)"
+  "SC10b", expr(!(sc_student_type %in% c("CC", "DC") &
+                  sc_grade %in% c(NA, "", "IP", "I") &
+                  sc_extract %in% "E")), #USHE rule
+  "SC10c", expr(!(sc_student_type %in% c("CC", "DC") &
+                    sc_grade %in% c(NA, "", "IP", "I") &
+                    sc_extract %in% "E")), #USHE rule
+  "SC12a", expr(is_valid_values(sc_student_type, c("UC", "CC", "EC", "DC"),
+                                missing_ok = TRUE)), #USHE rule
+  "SC12b", expr(!(sc_student_type %in% "CC") |
+                  !(s_high_school %in% non_concurrent_highschools)), #USHE rule
+  "SC12c", expr(sc_student_type %in% "CC" |
+                  !(c_budget_code %in% c("BC", "SF"))), # USHE rule
+  "SC12d", expr(s_reg_status %in% "HS" |
+                  !(sc_student_type %in% c('CC', 'DC'))), #USHE rule
+  "SC12e", expr(c_budget_code %in% c("BC", "SF") |
+                  !(sc_student_type %in% "CC")), #USHE rule
+  "SC12f", expr(s_high_school %in% ut_highschools | !(sc_student_type %in% "CC")), #USHE rule
   "SC13a", expr(is_valid_student_id(sis_student_id)),
   "SC13b", expr(is_valid_student_id(sis_student_id)), # Redundant unless I can assume banner_id format
   "SC14a", expr(is_valid_course_reference_number(course_reference_number)),

@@ -1756,7 +1756,7 @@ From buildings_ext'+@year+'
 Where (b_aux = '''' or b_aux is null)
 and b_ownership = ''O''
 and b_inst = @binst",space_utlz.building_detail.bldg_aux,building_activity_date,Add building_auxiliary to quad.buildings
-Invalid Auxiliary,Database,Failure,,B15,B15a,Buildings,b_aux,B_AUX contain wrong values,"Into #b15b
+Invalid Auxiliary,Database,Failure,,B15,B15b,Buildings,b_aux,B_AUX contain wrong values,"Into #b15b
 From Loads.dbo.Buildings_ext2021
 Where (b_aux <> '''' or b_aux is not null)
 and b_aux not in (''A'',''N'')

@@ -14,5 +14,5 @@ get_activity_dates(df, datecol, rule)
 \item{rule}{Name of the rule, e.g "S03b"}
 }
 \description{
-Returns a dataframe with columns (rule)_activity_date, (rule)_error_age
+Used internally by \code{do_checks()}
 }

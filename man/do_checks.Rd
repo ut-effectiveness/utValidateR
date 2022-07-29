@@ -4,7 +4,7 @@
 \alias{do_checks}
 \title{Apply all rules in checklist to a dataframe}
 \usage{
-do_checks(df_tocheck, checklist, aux_info = list())
+do_checks(df_tocheck, checklist, aux_info)
 }
 \arguments{
 \item{df_tocheck}{a data.frame to check, like fake_student_df}

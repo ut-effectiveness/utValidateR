@@ -12,7 +12,7 @@
 #' @importFrom dplyr bind_cols all_of select
 #' @importFrom rlang new_environment caller_env
 #' @export
-do_checks <- function(df_tocheck, checklist, aux_info = list()) {
+do_checks <- function(df_tocheck, checklist, aux_info) {
 
   # must be an environment to be passed to the env argument in rlang::eval_tidy()
   if (is.list(aux_info))

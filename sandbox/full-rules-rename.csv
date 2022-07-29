@@ -388,7 +388,7 @@ AND s_level IN (''GN'',''GG'')
 AND s_instance = @instance
 and s_inst = @inst
 Order by s_id","banner.sgbstdn_styp_code, class function in banner",sgbstdn_activity_date,"student_term_level.student_type_code, student_term_level.primary_level_class_id"
-first time freshman with prior enrollment record,Database,Failure,,S17,S17b,Student,s_reg_status,Shows students coded as first time students even though they have records in past semesters.,"SELECT distinct '''' [S17C Reg Status FF conflict],
+first time freshman with prior enrollment record,Database,Failure,,S17,S17c,Student,s_reg_status,Shows students coded as first time students even though they have records in past semesters.,"SELECT distinct '''' [S17C Reg Status FF conflict],
 s_id, s_banner_id, s_inst, s_year ""Previous Year"", s_term ""Previous Term"",
 s_extract ""Previous Extract"", s_reg_status ""Previous Reg Status"", ''FF'' ""Current Reg Status""
 INTO #s17c
@@ -407,7 +407,7 @@ WHERE s_instance = @instance
 AND s_reg_status = ''FF''
 AND s_inst = @inst)
 ORDER BY s_year, s_term, s_banner_id",banner.sgbstdn_styp_code,sgbstdn_activity_date,student_term_level.student_type_code
-first time freshman out of HS with prior enrollment record,Database,Failure,,S17,S17c,Student,s_reg_status,Shows students coded as first time students out of HS even though they have records in past semesters.,"SELECT distinct '''' [S17D Reg Status FH conflict], s_id,
+first time freshman out of HS with prior enrollment record,Database,Failure,,S17,S17d,Student,s_reg_status,Shows students coded as first time students out of HS even though they have records in past semesters.,"SELECT distinct '''' [S17D Reg Status FH conflict], s_id,
 s_banner_id, s_inst, s_year ""Previous Year"", s_term as [Previous Term],
 s_extract as [Previous Extract], s_reg_status as [Previous Reg Status], ''FH'' as [Current Reg Status]
 INTO #s17d

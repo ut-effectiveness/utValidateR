@@ -1,6 +1,6 @@
 Package: utValidateR
 Title: Validate Data Elements in Warehouse and Reporting Pipelines
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: c(
     person("Matt", "Nickodemus", , "mattnickodemus@gmail.com", role = c("aut", "cre")),
     person("LaVoy", "Canfield", , "brentenlavoy@gmail.com", role = c("aut")),

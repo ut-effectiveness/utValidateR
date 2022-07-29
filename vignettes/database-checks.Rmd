@@ -14,12 +14,65 @@ knitr::opts_chunk$set(
 )
 ```
 
+
 ```{r setup}
 library(utValidateR)
 library(dplyr)
+```
 
+## Introduction
+
+This vignette gives an overview of the utValidateR workflow for validating database and USHE files. The focus of this vignette is on using the package; a separate vignette documents the package design for purposes of contributing to the codebase.  
+
+## Workflow 
+
+The main use case of `utValidateR` is to apply a set of relevant validation rule checks to a dataframe of interest. `do_checks()` is the primary high-level function that is used to do this. But it cannot be used without two additional objects--the `checklist` tibble and the `aux_info` list, each of which is supplied as a data object in utValidateR. All 3 objects have their own documentation, which can be viewed via `?do_checks`, `?checklist`, and `?aux_info`. Each of these 3 components is described in further detail below.
+
+### `do_checks()` - the main function
+
+Calling `do_checks()` on a dataframe (provided as the `df_tocheck` arguement) performs the following tasks:
+
+- Creates a function for each row of the passed-in `checklist` argument, each of which takes `df_tocheck` as input and produces a logical vector along the rows of `df_tocheck` as output, indicating whether each row passes (`TRUE`) or fails (`FALSE`) the associated rule
+- Evaluates these functions and creates a dataframe with 1 (for USHE rules or database rules without an associated activity_date) or 3 (for database rules with an activity_date) columns describing the result of the rule check
+    - If the rule-check is not successful (i.e. if it errors), then the status column it produces will report the error (or TODO) message associated with the failure. Successfully applied rules instead report "Pass" vs "Fail/Warning" in the status column. 
+- Appends the new columns to the `df_tocheck` input dataframe and returns this object.
+
+### `checklist` tibble
+
+```{r}
 data("checklist")
+```
+
+The included `checklist` tibble contains information for (at last count) 338 rules, including the rule name, type ("Database" or "USHE"), file ("Student", "Course", etc.), and the R expression that computes the rule check. These expressions, in the `checker` column, are perhaps the most important part of the utValidateR package, as they evaluate to produce the result of applying each individual rule on the input data. 
+
+It is important to note that the `checklist` object should not be supplied directly to `do_checks()`, but should first be filtered to include only the rules relevant to a given `df_tocheck`. This is because each file (Student, Course, etc.) and each dataset type (Database vs USHE) requires its own set of checks, constituting a subset of the rows of `checklist`. An example of this would be to generate the checks relevant to a Database check on a Student Course file as follows:
+
+```{r}
+student_course_checklist <- dplyr::filter(checklist, type == "Database", file == "Student Course") %>% 
+  glimpse()
+```
+
+The full `checklist` object is created in the data-raw/checklist.R file. I recommend referring to that script for viewing the source code of each rule. 
+
+### `aux_info` list
+
+```{r}
 data("aux_info")
+```
+
+The included `aux_info` list is a vessel for supplying additional information needed for performing the rule checks, beyond what is in the `checklist$checker` and `df_tocheck` objects themselves. It is a list of objects that can be referenced in the `checker` expressions, primarily vectors enumerating valid values. For example, the valid values for the `program_type` field are specified as:
+
+```{r}
+aux_info$valid_program_types
+```
+
+More information about its elements, including where they were sourced from, can be found in the man page, `?aux_info`.
+
+## Demo on fake datasets
+
+This section demonstrates applying `do_checks()` with the relevant checklist subset to the different dummy files included in utValidateR. As these examples show, some checks do not yet run without issue, but the failure messages generated should provide some insight into their further needs.
+
+```{r}
 data("fake_buildings_validation")
 data("fake_course_validation")
 data("fake_graduation_validation")
@@ -27,27 +80,30 @@ data("fake_rooms_validation")
 data("fake_student_course_validation")
 data("fake_student_df")
 
-db_checks <- checklist %>% 
-  filter(type == "Database") %>% 
-  glimpse()
 ```
+
 
 ### Student
 
 ```{r}
-student_checks <- db_checks %>% 
-  filter(file == "Student") %>% 
+# Subset the full checklist to only the relevant checks
+student_checks <- checklist %>% 
+  filter(file == "Student", type == "Database") %>% 
   glimpse()
 
-student_res <- do_checks(fake_student_df, student_checks, aux_info = aux_info)
+student_res <- do_checks(df_tocheck = fake_student_df, 
+                         checklist = student_checks, 
+                         aux_info = aux_info)
+
+glimpse(student_res)
 ```
 
 ### Course
 
 
 ```{r}
-course_checks <- db_checks %>% 
-  filter(file == "Course") %>% 
+course_checks <- checklist %>% 
+  filter(file == "Course", type == "Database") %>% 
   glimpse()
 
 course_res <- do_checks(fake_course_validation, course_checks, aux_info = aux_info)
@@ -56,8 +112,8 @@ course_res <- do_checks(fake_course_validation, course_checks, aux_info = aux_in
 ### Graduation
 
 ```{r}
-graduation_checks <- db_checks %>% 
-  filter(file == "Graduation") %>% 
+graduation_checks <- checklist %>% 
+  filter(file == "Graduation", type == "Database") %>% 
   glimpse()
 
 graduation_res <- do_checks(fake_graduation_validation, graduation_checks, aux_info = aux_info)
@@ -68,8 +124,8 @@ graduation_res <- do_checks(fake_graduation_validation, graduation_checks, aux_i
 
 
 ```{r}
-student_course_checks <- db_checks %>% 
-  filter(file == "Student Course") %>% 
+student_course_checks <- checklist %>% 
+  filter(file == "Student Course", type == "Database") %>% 
   glimpse()
 
 student_course_res <- do_checks(fake_student_course_validation, 
@@ -81,8 +137,8 @@ student_course_res <- do_checks(fake_student_course_validation,
 
 
 ```{r}
-buildings_checks <- db_checks %>% 
-  filter(file == "Buildings") %>% 
+buildings_checks <- checklist %>% 
+  filter(file == "Buildings", type == "Database") %>% 
   glimpse()
 
 buildings_res <- do_checks(fake_buildings_validation, 
@@ -93,11 +149,11 @@ buildings_res <- do_checks(fake_buildings_validation,
 ### Rooms
 
 ```{r}
-rooms_checks <- db_checks %>% 
-  filter(file == "Buildings") %>% 
+rooms_checks <- checklist %>% 
+  filter(file == "Rooms", type == "Database") %>% 
   glimpse()
 
-rooms_res <- do_checks(fake_rooms_validation, 
-                                rooms_checks, 
-                                aux_info = aux_info)
+rooms_res <- fake_rooms_validation %>% 
+  rename(room_activity_date = room_acitivity_date) %>% # Typo in dummy data
+  do_checks(rooms_checks, aux_info = aux_info)
 ```

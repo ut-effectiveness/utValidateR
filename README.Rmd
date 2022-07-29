@@ -42,6 +42,8 @@ View(head(fake_student_df))
 
 ## Using
 
+The following is an example of applying `do_checks()` to the supplied `fake_student_df` dataset. Further examples and orientation are provided in vignettes/database-checks.Rmd, which (if installed with `build_vignettes = TRUE`) can be view via `vignette("database-checks")`.
+
 ```{r}
 library(utValidateR)
 library(dplyr)
@@ -49,11 +51,18 @@ data("fake_student_df")
 data("checklist")
 data("aux_info")
 
-student_df <- fake_student_df
 student_checks <- filter(checklist, file == "Student", type == "Database") %>% 
   glimpse()
 
-student_check_result <- do_checks(student_df, student_checks, aux_info) %>% 
-  glimpse()
+student_check_result <- suppressMessages(suppressWarnings( # suppressing rather verbose error descriptions
+  do_checks(df_tocheck = fake_student_df, 
+            checklist = student_checks, 
+            aux_info = aux_info)
+))
+
+glimpse(student_check_result)
 ```
+
+## Contributing
+
 

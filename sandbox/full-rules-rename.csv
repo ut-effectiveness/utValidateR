@@ -1005,7 +1005,7 @@ AND c_instruct_type != ''LAB''
 AND c_instance = @instance
 and c_inst = @inst
 Order by c_crs_sbj, c_crs_num, c_crs_sec","banner.ssbsect_schd_code, banner.scrlevl_levl_code = 'NC'",ssbsect_activity_date,"course.course_level_id, student_section.section_format_type_code"
-invalid non-credit class based on program type and budget code,Database,Failure,,C14,C14c,Course,"c_credit_ind, c_instruct_type, c_program_type",Only Labs and Vocational non-credit classes can be submitted,"INTO #c14c
+invalid non-credit class based on program type and budget code,USHE,Failure,,C14,C14c,Course,"c_credit_ind, c_instruct_type, c_program_type",Only Labs and Vocational non-credit classes can be submitted,"INTO #c14c
 FROM COURSES_' + @extract + '
 WHERE C_CREDIT_IND = ''N''
 AND c_extract = ''E''

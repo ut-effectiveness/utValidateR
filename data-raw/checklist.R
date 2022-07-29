@@ -49,8 +49,8 @@ rule_spec <- tribble(
   "S12b", expr(is.na(s_birth_dt) | is.Date(s_birth_dt)), # USHE rule
   "S12c", expr(age_in_range(birth_date, 0, 100)),
   "S13", expr(toupper(gender_code) %in% c("M", "F")),
-  # "S13a", TODO: USHE rule for "gender change after census"
-  # "S13b", TODO: USHE rule for "gender change after previous term"
+  "S13a", expr(TODO('USHE rule for "gender change after census"')),
+  "S13b", expr(TODO('USHE rule for "gender change after previous term"')),
   "S14a", expr(s_ethnic_a %in% "A" | is.na(s_ethnic_a)),
   "S14b", expr(s_ethnic_b %in% "B" | is.na(s_ethnic_b)),
   "S14h", expr(s_ethnic_h %in% "H" | is.na(s_ethnic_h)),
@@ -64,7 +64,6 @@ rule_spec <- tribble(
                    is.na(s_ethnic_i) & is.na(s_ethnic_p) & is.na(s_ethnic_w) &
                    is.na(s_ethnic_n))),
   "S14w", expr(s_ethnic_w %in% "W" | is.na(s_ethnic_w)),
-
   "G07a", expr(g_ethnic_a %in% "A" | is.na(g_ethnic_a)),
   "G07b", expr(g_ethnic_b %in% "B" | is.na(g_ethnic_b)),
   "G07c", expr(g_ethnic_h %in% "H" | is.na(g_ethnic_h)),
@@ -83,13 +82,14 @@ rule_spec <- tribble(
   "S17a", expr(is_valid_values(s_reg_status, valid_s_reg_statuses, missing_ok = FALSE)), # USHE check
   "S17b", expr(!((s_reg_status %in% c("CS","HS","FF","FH","TU")) &
                    (s_level %in% c("GN","GG")))),
-  "S17c", expr(TODO), # How to compare to previous student data? Multiple dataframes? (similar to S13a)),
-  "S17d", expr(TODO), # same question as S17c. These are database checks),
+  "S17c", expr(TODO("How to compare to previous student data? Multiple dataframes? (similar to S13a)")),
+  "S17d", expr(TODO("same question as S17c. These are database checks)")),
   "S17e", expr(!(s_reg_status %in% "HS") | (s_age >= 10 & s_age <= 20)),
   "S17f", expr(!(s_reg_status %in% "FF") | s_age >= 18),
   "S17g", expr(!(s_reg_status %in% "FH") | s_age <= 21), #ignoring conditioning on highschool hs_alternative
   "S17h", expr(s_reg_status %in% "HS" | !(c_budget_code %in% c("BC", "SF"))), #USHE rule
-  # "S17j", TODO: USHE rule for "REGISTRATION STATUS CHANGED BASED ON 3RD WEEK DATA"
+  "S17j", expr(TODO('USHE rule for "REGISTRATION STATUS CHANGED BASED ON 3RD WEEK DATA".
+                    How to compare to previous data?')),
   "S17k", expr(!(s_reg_status %in% "FH") | s_age >= 16),
   "S18a", expr(is_valid_values(primary_level_class_id, valid_level_class_ids,
                                missing_ok = FALSE)),
@@ -125,7 +125,7 @@ rule_spec <- tribble(
   "S23a", expr(s_level %in% c("GN", "GG") | as.numeric(s_cum_gpa_grad) %in% c(0, NA)),
   "S25a", expr(toupper(full_time_part_time_code) %in% c("P", "F")),
   "S26a", expr(!is.na(s_age) & s_age > 0 & s_age <= 125),
-  # "S26b", TODO: Not relevant to compare age to birthdate since we only have birthdate?
+  "S26b", expr(TODO("Not relevant to compare age to birthdate since we only have birthdate?")),
   "S27a", expr((first_admit_country_code %in% "US") | !is_us_state(first_admit_state_code)),
   "S27b", expr(!(first_admit_country_code %in% "US" &
                    (first_admit_county_code %in% "97" |
@@ -193,13 +193,13 @@ rule_spec <- tribble(
                               valid_instruction_method_codes,
                               missing_ok = TRUE)), # TODO: is missing OK?
   "C13", expr(is_valid_values(program_type, valid_program_types, missing_ok = TRUE)),
-  # "C13a", USHE check on perkins program types
-  # "C13c", USHE check on perkins budget codes
+  "C13a", expr(TODO("USHE check on perkins program types. Requires a query?")),
+  "C13c", expr(TODO("USHE check on perkins budget codes. Need query for perkins codes?")),
   "C14a", expr(c_credit_ind %in% c("C", "N")), # USHE check
   "C14b", expr(!(c_credit_ind %in% "N" &
                    c_extract %in% "3" &
                    !(c_instruct_type %in% "LAB"))), #USHE check now
-  # "C14c", TODO: complicated rule involving query
+  "C14c", expr(TODO("complicated rule involving query")),
   "C15a", expr(!is_missing_chr(meet_start_time_1)),
   "C23a", expr(!is_missing_chr(meet_start_time_2)),
   "C31a", expr(!is_missing_chr(meet_start_time_3)),

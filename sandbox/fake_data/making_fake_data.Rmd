@@ -1,0 +1,194 @@
+---
+title: "Making fake data"
+output: html_document
+date: '2022-07-10'
+---
+
+---
+title: "S_14"
+output: html_document
+date: '2022-06-17'
+---
+
+```{r set global chunks, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+### Markdown libraries
+
+Here we list all the libraries needed for this markdown document. The functions listed here are not dependent upon these libraries.
+
+```{r}
+library(DT)
+library(purrr)
+library(here)
+library(stringr)
+library(utValidateR)
+library(tidyverse)
+library(charlatan)
+library(rlang)
+```
+
+## Make a column of ids
+
+```{r}
+stringr::str_pad(sample(1:999, sample_size, replace = TRUE), 3, pad = '0')
+```
+
+```{r}
+fake_id <- function(id_length, col_length, unique) {
+  
+  # use in integer_list to generate list of integers to sample from
+  finish_num <- paste(rep(9, id_length), collapse = "")
+  # random selection of integers
+  integer_list <- sample(1:finish_num, col_length, replace = unique)
+  # format the integers
+  stringr::str_pad(integer_list, id_length, pad = '0')
+}
+```
+
+## True/False
+
+```{r}
+tf <- function(sample_size) {
+  sample(c(TRUE, FALSE), sample_size, replace = TRUE)
+}
+```
+
+## ACT
+
+```{r}
+act <- function(sample_size) {
+  sample(c(1:36, NA), sample_size, replace = TRUE)
+}
+```
+
+
+## add_na 
+
+```{r}
+add_na <- function(num_na, vec) {
+  c(vec, rep(NA, {{num_na}} )) %>% sample()
+}
+```
+
+
+# Tibble functions
+
+## SSN
+
+```{r}
+ssn <- function(sample_size) {
+  tibble(
+    first = stringr::str_pad(sample(1:999, sample_size, replace = TRUE), 3, pad = '0'),
+    second = stringr::str_pad(sample(1:99, sample_size, replace = TRUE), 2, pad = '0'),
+    third = stringr::str_pad(sample(1:9999, sample_size, replace = TRUE), 4, pad = '0')
+    ) %>%
+    unite(ssn, c('first', 'second', 'third'), sep = '-')
+  }
+```
+
+## Names
+
+```{r}
+names <- function(sample_size, extra) {
+  
+  tibble(
+    delete_name = charlatan::ch_name(extra, locale = 'en_US'),
+    middle_name = sample( c('Bob', 'Sue', rep(NA, 10)), extra, replace = TRUE),
+    previous_last_name = sample( c('Smith', 'Jones', rep(NA, 3)), extra, replace = TRUE ),
+    previous_first_name = sample( c('Danny', 'Erin', rep(NA, 5)), extra, replace = TRUE ),
+    preferred_first_name = sample( c('Joe', 'Deb', rep(NA, 2)), extra, replace = TRUE ),
+    preferred_middle_name = sample( c('Walter', rep(NA, 100)), extra, replace = TRUE )
+    ) %>%
+    separate(delete_name, into = c('first_name', 'last_name')) %>%
+    filter(nchar(first_name) >= 4) %>%
+    filter(nchar(last_name) >= 5) %>%
+    head(sample_size)
+}
+```
+
+## Address
+
+```{r}
+address <- function(sample_size) {
+  tibble(
+    zip_1 = stringr::str_pad(sample(1:99999, sample_size, replace = TRUE), 5, pad = '0'),
+    zip_2 = stringr::str_pad(sample(1:9999, sample_size, replace = TRUE), 4, pad = '0')
+  ) %>%
+    unite(local_address_zip_code, c('zip_1', 'zip_2'), sep = '-')
+}
+```
+
+
+## Course Validation
+
+```{r}
+order_cols <- function(data_df) {
+  data_df %>% 
+    select(order(colnames(data_df)))
+}
+```
+
+
+```{r}
+library(utHelpR)
+course_validation_pull <- get_data_from_sql_file(
+  # Will need to change the file location once Justin is back from vacation. Where 
+  # should we keep these?
+  here::here('sandbox', 'fake_data', 'sql', 'course_validation.sql'),
+  'edify',
+  # What context should this be? Do we need one?
+  'none')
+```
+
+```{r}
+employee_list <- course_validation_pull  %>% 
+  select(instructor_employee_id, instructor_name) %>% 
+  unique() 
+
+fake_employee_names <- names(nrow(employee_list), nrow(employee_list) + 1000) %>% 
+  select(first_name, last_name) %>% 
+  unite(col = fake_instructor_name, sep = " ")
+
+employee_cross_walk <- employee_list %>% 
+  mutate(fake_employee_id = fake_id(8, nrow(employee_list), TRUE)) %>% 
+  bind_cols(fake_employee_names)
+
+course_validation <- course_validation_pull %>% 
+  left_join(employee_cross_walk, by = c("instructor_employee_id", "instructor_name")) %>% 
+  select(-instructor_employee_id, -instructor_name) %>% 
+  rename(c('instructor_employee_id' = 'fake_employee_id', 'instructor_name' = 'fake_instructor_name')) %>% 
+  order_cols()
+```
+
+## Student Courses
+
+```{r}
+stir <- function(data_df, col) {
+  col_name <- ensym(col)
+  data_df %>% mutate( {{col_name}} := sample(data_df[[ col_name ]], nrow(data_df), replace = FALSE))
+}
+```
+
+
+```{r}
+student_course_validation_pull <- get_data_from_sql_file(
+  here::here('sandbox', 'fake_data', 'sql', 'student_course_validation.sql'),
+  'edify',
+  'none') %>% 
+  order_cols()
+
+student_course_validation <- student_course_validation_pull %>% 
+  select(-sis_system_id, -ssn, -student_id) %>% 
+  mutate(ssn = ssn(nrow(student_course_validation_pull))[['ssn']]) %>% 
+  mutate(sis_system_id = fake_id(8, nrow(student_course_validation_pull), TRUE)) %>% 
+  mutate(sis_student_id = fake_id(8, nrow(student_course_validation_pull), TRUE)) %>% 
+  stir(final_grade) %>% 
+  stir(latest_high_school_code) %>% 
+  stir(ssbsect_activity_date) %>% 
+  order_cols()
+```
+

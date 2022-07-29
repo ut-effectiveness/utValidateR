@@ -8,10 +8,12 @@
 a tibble with ?? columns and ?? variables:
 \describe{
 \item{rule}{Rule name, e.g. S01a}
+\item{ref_rule}{For multiple rules with the same definition, which rule contains the definition}
 \item{description}{Short description of rule}
-\item{status}{Whether breaking the rule is a Failure or a Warning}
+\item{status}{Whether breaking the rule is a "Failure" or a "Warning"}
 \item{activity_date}{Name of the relevant activity-date variable}
 \item{checker}{Expression defining the rule}
+\item{file}{The USHE file to which the rule applies}
 }
 }
 \source{
@@ -21,6 +23,8 @@ Defined in data-raw/checklist.R
 checklist
 }
 \description{
-TODO: fill out documentation
+This tibble is the container for all rules that can be applied to USHE or Database
+validations. The \code{checker} column in particular contains the code for performing
+each rule check, as an expression to be computed on the dataframe to check.
 }
 \keyword{datasets}

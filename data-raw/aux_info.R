@@ -6,7 +6,6 @@ building_list <- read.csv("sandbox/analytics_quad_buildings.csv")
 
 # CIP codes from csv
 cipdf <- read.csv("sandbox/CIPCode2020.csv")
-
 cip_codes <- cipdf %>%
   mutate(cip_chr = sprintf(fmt = "%06g", CIPCode * 1e4)) # Need a 6-digit string with no decimals
 
@@ -47,6 +46,8 @@ s_reg_statuses <- c("HS", "FH", "FF", "TU", "NG", "TG", "CS", "RS", "CG",
 undergrad_student_type_codes <- c('P', 'T', 'R', 'C', 'F', 'H')
 grad_student_type_codes <- c('1', '5', '2', '4')
 
+
+# Auxiliary information, a list of objects that can be referenced by checklist functions
 aux_info <- list(
 
   # Valid values
@@ -99,8 +100,8 @@ aux_info <- list(
   valid_room_use_codes = c(room_use_codes), #R08b
 
   # Inventories
-  building_inventory = building_list$building_number, #C19c and others
-  rooms_inventory = c() #C19d and others
+  building_inventory = building_list$building_number, #C19c and others, TODO: get from a query
+  rooms_inventory = c(building_list$building_number) #C19d and others, TODO: get from a query
 )
 
 

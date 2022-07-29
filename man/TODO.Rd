@@ -6,6 +6,9 @@
 \usage{
 TODO(msg)
 }
+\arguments{
+\item{msg}{Message to be displayed}
+}
 \description{
 Primarily intended to aid in the development of this package
 }

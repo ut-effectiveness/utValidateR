@@ -329,6 +329,9 @@ is_nonus_state <- function(state) {
 #' Helper for troubleshooting and communicating known needs
 #'
 #' Primarily intended to aid in the development of this package
+#'
+#' @param msg Message to be displayed
+#' @export
 TODO <- function(msg) {
   stop()
 }

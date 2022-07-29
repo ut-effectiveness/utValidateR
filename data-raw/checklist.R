@@ -199,7 +199,11 @@ rule_spec <- tribble(
   "C14b", expr(!(c_credit_ind %in% "N" &
                    c_extract %in% "3" &
                    !(c_instruct_type %in% "LAB"))), #USHE check now
-  "C14c", expr(TODO("complicated rule involving query")),
+  "C14c", expr(c_instruct_type %in% "LAB" |
+                 c_program_type %in% c("P", "V") |
+                 c_budget_code %in% c("BV", "SQ") |
+                 paste(c_crs_sbj, c_crs_num) %in% TODO("Need Reference.dbo.ETPL for code lookup") |
+                 !(c_extract %in% "E")),
   "C15a", expr(!is_missing_chr(meet_start_time_1)),
   "C23a", expr(!is_missing_chr(meet_start_time_2)),
   "C31a", expr(!is_missing_chr(meet_start_time_3)),
@@ -277,7 +281,7 @@ rule_spec <- tribble(
   "C48a", expr(is_valid_values(c_dest_site, valid_highschools)), #USHE rule
   "C49a", expr(!is.na(class_size) & class_size != 0),
   "C49b", expr(is.na(class_size) | class_size >= 0 & class_size <= 9999),
-  # "C49c", TODO: USHE rule comparing enrolled students to class size (involving group by/COUNT)
+  "C49c", expr(TODO("USHE rule comparing enrolled students to class size (involving group by/COUNT)")),
   "C51a", expr(c_level %in% c("R", "U", "G")), # USHE check
   "C51b", expr(c_crs %in% c("MATH", "MAT", "ENGL", "RDG", "WRTG", "ESL") |
                 !(c_level %in% "R")), # Ignoring complex edge-case logic
@@ -288,7 +292,7 @@ rule_spec <- tribble(
   "SC01a", expr(!is_missing_chr(sc_inst)),
   "R01a", expr(!is_missing_chr(r_inst)),
   "G02a", expr(!is_missing_chr(sis_student_id) & !is_missing_chr(ssn)),
-  # "G02b", expr(sis_student_id %in% student_file$student_id), # TODO: how to get student file?
+  "G02b", expr(sis_student_id %in% TODO("Need a way to bring in students table for comparing")),
   "G12a", expr(is_valid_credits(overall_cumulative_credits_earned)), # TODO: verify mapping of rules to fields
   "G13a", expr(is_valid_credits(required_credits)),
   "G14a", expr(is_valid_credits(total_cumulative_ap_credits_earned)),
@@ -296,8 +300,8 @@ rule_spec <- tribble(
   "G22a", expr(is_valid_credits(total_cumulative_credits_attempted_other_sources)),
   "G23a", expr(is_valid_credits(transfer_cumulative_credits_earned)),
   "G17a", expr(is_valid_values(degree_id, valid_degree_ids)),
-  # "G21e", expr(ssn %in% student_file$ssn), # TODO: how to get student file?
-  "G03e", expr(nchar(g_first) <= 15), # USHE rule, might need to rename
+  "G21e", expr(ssn %in% TODO("Need a way to bring in students table for comparing (same as G02b)")),
+  "G03e", expr(nchar(g_first) <= 15), # USHE rule
   "G03g", expr(nchar(g_middle) <= 15), # USHE rule
   "G03i", expr(nchar(g_suffix) <= 4), # USHE rule
   "G08b", expr(is_valid_graduation_date(graduation_date)),
@@ -358,8 +362,8 @@ rule_spec <- tribble(
   "SC13b", expr(is_valid_student_id(sis_student_id)), # Redundant unless I can assume banner_id format
   "SC14a", expr(is_valid_course_reference_number(course_reference_number)),
   "SC14b", expr(!is_missing_chr(course_reference_number)),
-  # "SC15b", TODO: sort out what needs to be done with edify data
-  # "SC15c", TODO: sort out what needs to be done with edify data
+  "SC15b", expr(TODO("Database rule--how to get cr_type equivalent, how do sql values translate?")),
+  "SC15c", expr(TODO("Database rule--how to get cr_type equivalent, how do sql values translate?")),
   "B02a", expr(!is_missing_chr(building_location_code) & !is_missing_chr(building_location_desc)),
   "B02b", expr(is_valid_values(building_location_code, valid_building_location_codes)),
   "B03a", expr(!is_missing_chr(building_ownership_code)),
@@ -384,7 +388,7 @@ rule_spec <- tribble(
   "B12a", expr(!is_missing_chr(building_area_gross)),
   "B12b", expr(!is.na(as.numeric(building_area_gross)) &
                  as.numeric(building_area_gross) > 0), # TODO: condition on ownership and aux?
-  # "B12c", TODO: this one needs a summary of rooms data - "Gross area less than sum of rooms in building"
+  "B12c", expr(TODO('Needs a summary of rooms data "Gross area less than sum of rooms in building"')),
   "B14a", expr(is.na(building_cost_replacement) |
                  building_cost_replacement <= 3.5e6 | !
                  is_missing_chr(building_risk_number)), # Risk number not currently in buildings table
@@ -393,8 +397,8 @@ rule_spec <- tribble(
   "B15a", expr(!is_missing_chr(building_auxiliary)), # Do I need to condition on ownership?
   "B15b", expr(is_valid_values(building_auxiliary, c("A", "N"), missing_ok = TRUE)),
   "B99a", expr(!is_duplicated(cbind(b_inst,b_year,b_number))), # USHE rule
-  # "B99b", TODO: USHE rule for "buildings must have rooms", requires join to rooms data
-  # "R03b", TODO USHE rule for "Room building not in building file", requires join to buildings data
+  "B99b", expr(TODO('USHE rule for "buildings must have rooms", requires join to rooms data')),
+  "R03b", expr(TODO('USHE rule for "Room building not in building file", requires join to buildings data')),
   "R04a", expr(!is_missing_chr(room_number)),
   "R06a", expr(!is_missing_chr(room_group1_code)),
   "R06b", expr(is_valid_values(room_group1_code, valid_room_group1_codes, missing_ok = TRUE)),
@@ -429,7 +433,7 @@ rule_spec <- tribble(
   "R13e", expr(!(room_prorated_area %in% "0") | room_area %in% "0"),
   "R13f", expr(room_prorated_area %in% "0" | !(room_prorated %in% "N")),
   "R14a", expr(!is_missing_chr(room_prorated_area)),
-  # "R14b" TODO: Needs a join of proration info to room info. How to get sum of prorated area?
+  "R14b", expr(TODO('Needs a join of proration info to room info. How to get sum of prorated area?')),
   "R15a", expr(is.Date(room_activity_date) & !is.na(room_activity_date)),
   "R15b", expr(!is.na(room_activity_date)),
   "R15b", expr(age_in_range(room_activity_date, 0, Inf)),

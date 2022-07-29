@@ -294,7 +294,7 @@ is_missing_chr <- function(x) {
 #' @export
 is_utah_county <- function(county_code) {
   # Per USHE logic: 99 is US but not UT, 97 is non-US
-  nchar(county_code) == 2 & !(county_code %in% c("97", "99"))
+  nchar(county_code) %in% 2 & !(county_code %in% c("97", "99"))
 }
 
 #' @describeIn is_utah_county Checks whether a county is in USA
@@ -326,3 +326,9 @@ is_nonus_state <- function(state) {
   (nchar(state) == 2) & !is_us_state(state)
 }
 
+#' Helper for troubleshooting and communicating known needs
+#'
+#' Primarily intended to aid in the development of this package
+TODO <- function(msg) {
+  stop()
+}

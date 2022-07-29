@@ -30,11 +30,16 @@ make_checker <- function(rule, expr, env = rlang::caller_env()) {
     },
 
     error = function(cond) {
-      message("Check attempt failed for rule ", rule, ":\n",
-              expr_chr, "\n",
-              "With the following error:\n",
-              cond, "\n\n")
-      return(rep(cond$message, nrow(df)))
+      msg <- paste0("`", expr_chr, "`\n")
+      msg2 <- paste0("Failed with the following message:\n",
+                     cond$message, "\n")
+
+      if (nchar(cond$message) > 0) {
+        msg <- paste0(msg, msg2)
+      }
+
+      message(rule, ": ", msg, "\n\n")
+      return(rep(msg, nrow(df)))
     })
 
   }

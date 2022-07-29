@@ -20,9 +20,6 @@ library(utValidateR)
 library(dplyr)
 ```
 
-## Introduction
-
-This vignette gives an overview of the utValidateR workflow for validating database and USHE files. The focus of this vignette is on using the package; a separate vignette documents the package design for purposes of contributing to the codebase.  
 
 ## Workflow 
 

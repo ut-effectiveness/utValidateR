@@ -65,4 +65,4 @@ glimpse(student_check_result)
 
 ## Contributing
 
-
+Changes to the R code for performing each rule check should be made in data-raw/checklist.R, in the `rule_spec` object. Functions used by these checks are defined in R/checker-helpers.R. Data objects referenced in the checker functions are provided in `aux_info`, which can be modified in data-raw/aux_info.R. 

@@ -9,7 +9,7 @@ library(tidyr)
 library(purrr)
 library(stringr)
 
-# Currently a partial rule set for demonstration purposes.
+# This is where each rule is implemented as an R expression
 rule_spec <- tribble(
   ~rule,  ~checker,
   "S00a", expr(!is_duplicated(student_id)),

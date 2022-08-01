@@ -32,6 +32,18 @@ age_in_range <- function(birthdate, lwr, upr) {
   age > lwr & age < upr
 }
 
+
+#' Checks whether a number is between lwr and upr
+#'
+#' Returns TRUE for x between lwr and upr, FALSE otherwise. Missing maps to FALSE.
+#'
+#' @param x Numeric vector
+#' @param lwr,upr Limits on x, inclusive
+#' @export
+in_range <- function(x, lwr, upr) {
+  !is.na(x) & x >= lwr & x <= upr
+}
+
 #' Checks whether a given date falls befor the present year
 #'
 #' Used in S12a, G05a

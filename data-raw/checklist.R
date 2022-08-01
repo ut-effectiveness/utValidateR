@@ -417,11 +417,11 @@ rule_spec <- tribble(
   "R10c", expr(!(room_use_code %in% "110") |
                  room_group1_code %in% "Z" |
                  room_use_code_group %in% "000" |
-                 in_range(room_area / room_stations, 7, 16)),
+                 in_range(as.numeric(room_area) / as.numeric(room_stations), 7, 16)),
   "R10d", expr(!(room_use_code %in% "210") |
                  room_group1_code %in% "Z" |
                  room_use_code_group %in% "000" |
-                 in_range(room_area / room_stations, 8, 19)),
+                 in_range(as.numeric(room_area) / as.numeric(room_stations), 8, 19)),
   "R11a", expr(!is_missing_chr(room_area)),
   "R11b", expr(!(room_area %in% "0")),
   "R13a", expr(room_prorated %in% c("Y", "N")),
@@ -436,7 +436,7 @@ rule_spec <- tribble(
   "R14b", expr(TODO('Needs a join of proration info to room info. How to get sum of prorated area?')),
   "R15a", expr(is.Date(room_activity_date) & !is.na(room_activity_date)),
   "R15b", expr(!is.na(room_activity_date)),
-  "R15b", expr(age_in_range(room_activity_date, 0, Inf)),
+  "R15c", expr(is.na(room_activity_date) | age_in_range(room_activity_date, 0, Inf)), # Not flagging NAs (15b does)
   "R99a", expr(!is_duplicated(cbind(r_inst, r_year, r_build_number, r_number,
                                     r_suffix, r_group1, r_use_code)))
 )

@@ -1950,7 +1950,7 @@ From Rooms_ext'+@year+'
 Where r_update_date = ''''
 and r_inst = @rinst
 Order by r_build_number, r_number",room_activity_date,room_activity_date,Add room_activity_date to quad.rooms
-Update date is in the future,Database,Failure,,R15,R15b,Rooms,r_update_date,R_Update_Date is in the future,"Into #R15C
+Update date is in the future,Database,Failure,,R15,R15c,Rooms,r_update_date,R_Update_Date is in the future,"Into #R15C
 From Rooms_ext'+@year+'
 where Convert(varchar(10), cast(r_update_date as date),101) > GETDATE()
 and r_inst = @rinst

@@ -140,16 +140,16 @@ rule_spec <- tribble(
   "S31a", expr(s_inst %in% c("5220","5221","3679","3676","63") | s_cum_membership %in% 0),
   "S32a", expr(is_valid_credits(transfer_cumulative_clep_earned)),
   "S33a", expr(is_valid_credits(transfer_cumulative_ap_earned)),
-  "S34a", expr(is_valid_ssid(ssid)), # TODO: missing ssid
+  "S34a", expr(is_valid_ssid(ssid)),
   "S34b", expr(is_valid_ssid(ssid) |
-                 !(is_hs_type(student_type_code) & first_admit_state_code == "UT")), # TODO: No ssid present
+                 !(is_hs_type(student_type_code) & first_admit_state_code == "UT")),
   "S34c", expr(!(is.na(ssid) &
                    first_admit_state_code == "UT" &
-                   is_hs_type(student_type_code))), # TODO: no ssid present
-  "S34d", expr(!is.na(ssid) | !(budget_code %in% c("BC", "SF"))), # TODO: no ssid, no budget code present
+                   is_hs_type(student_type_code))),
+  "S34d", expr(!is.na(ssid) | !(budget_code %in% c("BC", "SF"))),
   "S34e", expr(!is.na(ssid) |
                  (!is_hs_type(student_type_code) &
-                    !is_freshmen_type(student_type_code))), # TODO: no ssid present
+                    !is_freshmen_type(student_type_code))),
   "S35a", expr(is_valid_student_id(student_id)),
   "S35b", expr(is_valid_student_id(student_id)), # TODO: redundant with S35a? Seems to be relevant for banner IDs only
   "S35c", expr(is_alpha_chr(substring(s_banner_id, 1, 1))),
@@ -173,10 +173,10 @@ rule_spec <- tribble(
   "S46b", expr(is_alpha_chr(primary_major_college_id)),
   "S47a", expr(!is_missing_chr(primary_major_cip_code)),
   "S47b", expr(primary_major_cip_code != secondary_major_cip_code),
-  "S47c", expr(is_alpha_chr(primary_major_desc)), # TODO: No primary_major_desc in data
+  "S47c", expr(is_alpha_chr(primary_major_desc)),
   "S48a", expr(is_alpha_chr(secondary_major_college_id)),
-  "S49a", expr(!is_missing_chr(secondary_major_cip_code) & !is_missing_chr(secondary_major_desc)), # TODO: no secondary_major_desc in data
-  "S49b", expr(is_alpha_chr(secondary_major_desc)), # TODO: No primary_major_desc in data
+  "S49a", expr(!is_missing_chr(secondary_major_cip_code) & !is_missing_chr(secondary_major_desc)),
+  "S49b", expr(is_alpha_chr(secondary_major_desc)),
   "C00",  expr(!is_duplicated(cbind(subject_code, course_number, section_number))),
   "C04a", expr(nchar(course_number) == 4),
   "C04c", expr(!stringr::str_detect(course_number, "^[89]")),

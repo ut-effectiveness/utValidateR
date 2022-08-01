@@ -30,19 +30,15 @@ You can install the development version of utValidateR from [GitHub](https://git
 devtools::install_github("dsu-effectiveness/utValidateR", ref = "develop")
 ```
 
-## Fake data set
+## Contributing
 
-`utValidateR` contains a simulated data set. This data simulates the structure of the data pulled from the data warehouse when submitting the Student file to USHE. Use this data set to test your validation functions. The dataset loads automatically when you load the `utValidateR` package.
+Changes to the R code for performing each rule check should be made in data-raw/checklist.R, in the `rule_spec` object. Functions used by these checks are defined in R/checker-helpers.R. Data objects referenced in the checker functions are provided in `aux_info`, which can be modified in data-raw/aux_info.R. 
 
-
-```r
-library(DT)
-View(head(fake_student_df))
-```
+Specific questions or requests can be submitted as github issues.  
 
 ## Using
 
-The following is an example of applying `do_checks()` to the supplied `fake_student_df` dataset. Further examples and orientation are provided in vignettes/database-checks.Rmd, which (if installed with `build_vignettes = TRUE`) can be view via `vignette("database-checks")`.
+The following is an example of applying `do_checks()` to the supplied `fake_student_df` dataset. Further examples and orientation are provided in vignettes/database-checks.Rmd, which (if installed with `build_vignettes = TRUE`) can be viewed via `vignette("database-checks")`.
 
 ```{r}
 library(utValidateR)
@@ -63,6 +59,3 @@ student_check_result <- suppressMessages(suppressWarnings( # suppressing rather 
 glimpse(student_check_result)
 ```
 
-## Contributing
-
-Changes to the R code for performing each rule check should be made in data-raw/checklist.R, in the `rule_spec` object. Functions used by these checks are defined in R/checker-helpers.R. Data objects referenced in the checker functions are provided in `aux_info`, which can be modified in data-raw/aux_info.R. 

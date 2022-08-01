@@ -133,7 +133,7 @@ rule_spec <- tribble(
   "S27c", expr(is_valid_country_code(first_admit_country_code)),
   "S28a", expr(!(first_admit_state_code %in% "UT") |
                  !is_undergrad_type(student_type_code) |
-                 is_valid_values(latest_high_school_code, valid_hs_codes, missing_ok = FALSE)),
+                 is_valid_values(high_school_code, valid_hs_codes, missing_ok = FALSE)),
   "S29a", expr(s_hb75_waiver <= 100),
   "S29b", expr(!is.na(s_hb75_waiver) & s_hb75_waiver <= 100 & s_hb75_waiver >= 0),
   "S30a", expr(is_valid_values(secondary_major_cip_code, valid_cip_codes)),

@@ -15,6 +15,7 @@ equivalent <- function(x, y) {
 #' Checks whether an object is Date class
 #'
 #' @param x object to check
+#' @export
 is.Date <- function(x) inherits(x, "Date")
 
 #' Computes age for birthdate and returns a logical vector indicating whether

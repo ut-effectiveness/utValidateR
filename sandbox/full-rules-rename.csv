@@ -491,16 +491,6 @@ AND (
 (S_REG_STATUS in (''hs'',''fh'',''ff'',''tu'',''cs'',''rs'') AND s_level in (''gn'',''gg''))
 OR (S_REG_STATUS in (''NG'',''TG'',''CG'',''RG'') AND s_level in (''fr'',''so'',''jr'',''sr'',''ug''))
 )",class function in banner,n/a,student_term_level.primary_level_class_id
-GR student types cannot be undergraduate class levels,Database,Failure,,S18,S18b,Student,s_level,"Class Level vs. Registration Status a student registered as Undgergrad cannot be grad class level
---or a student registered as grad connot be an undergrad class level","INSERT INTO #s18b
-SELECT '''' [S18B FTL Level and reg_status conflict],
-s_inst, s_banner_id, s_last, s_first, s_gender, s_reg_status, s_level
-FROM students_'+ @extract +'
-WHERE s_instance = @instance
-AND s_inst = @inst
-AND S_REG_STATUS in (''NG'',''TG'',''CG'',''RG'')
-AND s_level in (''fr'',''so'',''jr'',''sr'',''ug'')
-Order by s_banner_id",class function in banner,n/a,student_term_level.primary_level_class_id
 missing degree id,Database,Failure,,"S19, G17","S19a, G17a",Student,"s_deg_intent, g_ipeds",There should be a degree intent for each student.,"INTO #s19a
 FROM students_'+ @extract +'
 WHERE s_deg_intent NOT IN (Select ipeds_code from Reference.dbo.IPEDS_Awards where Inactive = ''N'')

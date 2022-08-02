@@ -498,7 +498,20 @@ and (s_deg_intent <> ''0'' or s_deg_intent is null)
 AND s_instance = @instance
 and s_inst = @inst
 Order by s_banner_id",banner.sgbstdn_degc_code_1,sgbstdn_activity_date,student_term_level.primary_degree_id
-invalid credit format,Database,Failure,,"S20, 24, G12, G13, G14, G15, G22, G23, SC07, SC08, SC09, SC11, C08","S20a, 24a, G12a, G13a, G14a, G15a, G22a, G23a, SC07a, SC08a, SC09a, SC11a, C08a","Student, Course, Graudation, Courses","s_cum_hrs_ugrad, s_trans_total, g_trans_total, g_grad_hrs, g_hrs_other, g_remedial_hrs, g_we_earned_contact_hrs, g_we_program_hrs, sc_att_cr, sc_earned_cr, sc_contact_hrs, sc_membership_hrs, c_contact_hrs",S_CUM_HRS_UGrad wrong format,"Into #s20a
+invalid credit format,Database,Failure,,"S20, 24, G12, G13, G14, G15, G22, G23, SC07, SC08, SC09, C08","S20a, 24a, G12a, G13a, G14a, G15a, G22a, G23a, SC07a, SC08a, SC09a, C08a","Student, Course, Graudation, Courses","s_cum_hrs_ugrad, s_trans_total, g_trans_total, g_grad_hrs, g_hrs_other, g_remedial_hrs, g_we_earned_contact_hrs, g_we_program_hrs, sc_att_cr, sc_earned_cr, sc_contact_hrs, sc_membership_hrs, c_contact_hrs",S_CUM_HRS_UGrad wrong format,"Into #s20a
+From students_'+ @extract +'
+Where (cast(s_cum_hrs_ugrad as float) In (''00000'', ''0000'',''000'',''00'')
+or cast(s_cum_hrs_ugrad as float) = ''''
+or len(s_cum_hrs_ugrad) > ''6''
+or cast(s_cum_hrs_ugrad as float) > ''9999.9''
+or cast(s_cum_hrs_ugrad as float) < ''0''
+or s_cum_hrs_ugrad like ''%[^.0-9]%'' )
+and s_cum_hrs_ugrad <> ''0''
+and s_cum_hrs_ugrad <> ''0.0''
+and s_instance = @instance
+and s_inst = @inst
+Order by s_banner_id",banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),shrlgpa_activity_date,"student_term_level.institutional_cumulative_credits_earned, student_term_level.transfer_cumulative_credits_earned"
+invalid credit format,USHE,Failure,,SC11,SC11a,Student Course,"s_cum_hrs_ugrad, s_trans_total, g_trans_total, g_grad_hrs, g_hrs_other, g_remedial_hrs, g_we_earned_contact_hrs, g_we_program_hrs, sc_att_cr, sc_earned_cr, sc_contact_hrs, sc_membership_hrs, c_contact_hrs",S_CUM_HRS_UGrad wrong format,"Into #s20a
 From students_'+ @extract +'
 Where (cast(s_cum_hrs_ugrad as float) In (''00000'', ''0000'',''000'',''00'')
 or cast(s_cum_hrs_ugrad as float) = ''''

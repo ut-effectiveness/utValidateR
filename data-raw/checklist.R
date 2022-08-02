@@ -138,16 +138,16 @@ rule_spec <- tribble(
   "S29b", expr(!is.na(s_hb75_waiver) & s_hb75_waiver <= 100 & s_hb75_waiver >= 0),
   "S30a", expr(is_valid_values(secondary_major_cip_code, valid_cip_codes)),
   "S31a", expr(s_inst %in% c("5220","5221","3679","3676","63") | s_cum_membership %in% 0),
-  "S32a", expr(is_valid_credits(transfer_cumulative_clep_earned)),
-  "S33a", expr(is_valid_credits(transfer_cumulative_ap_earned)),
-  "S34a", expr(is_valid_ssid(ssid)),
-  "S34b", expr(is_valid_ssid(ssid) |
+  "S32a", expr(is_valid_credits(total_cumulative_clep_credits_earned)),
+  "S33a", expr(is_valid_credits(total_cumulative_ap_credits_earned)),
+  "S34a", expr(is_valid_student_id(student_id)),
+  "S34b", expr(is_valid_student_id(student_id) |
                  !(is_hs_type(student_type_code) & first_admit_state_code == "UT")),
-  "S34c", expr(!(is.na(ssid) &
+  "S34c", expr(!(is.na(student_id) &
                    first_admit_state_code == "UT" &
                    is_hs_type(student_type_code))),
-  "S34d", expr(!is.na(ssid) | !(budget_code %in% c("BC", "SF"))),
-  "S34e", expr(!is.na(ssid) |
+  "S34d", expr(!is.na(student_id) | !(budget_code %in% c("BC", "SF"))),
+  "S34e", expr(!is.na(student_id) |
                  (!is_hs_type(student_type_code) &
                     !is_freshmen_type(student_type_code))),
   "S35a", expr(is_valid_student_id(student_id)),
@@ -328,14 +328,14 @@ rule_spec <- tribble(
   "G24a", expr(is_valid_year(graduated_academic_year_code)), # TODO: should verify matching some reference year
   "G25a", expr(is_valid_values(season, valid_seasons)),
   "G28a", expr(!is_missing_chr(degree_desc)),
-  "SC03", expr(!is.na(sis_student_id) & !is.na(ssn)),
+  "SC03", expr(!is.na(student_id) & !is.na(ssn)),
   "SC04a", expr(!is_missing_chr(subject_code)),
   "SC05a", expr(!is_missing_chr(course_number)),
   "SC06a", expr(!is_missing_chr(section_number)),
   "SC07a", expr(is_valid_credits(attempted_credits)),
   "SC08a", expr(is_valid_credits(earned_credits)),
   "SC09a", expr(is_valid_credits(contact_hours)),
-  "SC11a", expr(is_valid_credits(membership_hours)),
+  "SC11a", expr(is_valid_credits(sc_membership_hrs)),
   "SC08b", expr(is.na(earned_credits) | earned_credits == 0 |
                   !(final_grade %in% c('CW', 'L', 'NG', 'E', 'F', 'UW',
                                        'I', 'IP', 'NC', 'AU', 'W'))),
@@ -360,8 +360,8 @@ rule_spec <- tribble(
   "SC12e", expr(c_budget_code %in% c("BC", "SF") |
                   !(sc_student_type %in% "CC")), #USHE rule
   "SC12f", expr(s_high_school %in% ut_highschools | !(sc_student_type %in% "CC")), #USHE rule
-  "SC13a", expr(is_valid_student_id(sis_student_id)),
-  "SC13b", expr(is_valid_student_id(sis_student_id)), # Redundant unless I can assume banner_id format
+  "SC13a", expr(is_valid_student_id(student_id)),
+  "SC13b", expr(is_valid_student_id(student_id)), # Redundant unless I can assume banner_id format
   "SC14a", expr(is_valid_course_reference_number(course_reference_number)),
   "SC14b", expr(!is_missing_chr(course_reference_number)),
   "SC15b", expr(TODO("Database rule--how to get cr_type equivalent, how do sql values translate?")),

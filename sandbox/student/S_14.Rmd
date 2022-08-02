@@ -37,6 +37,7 @@ library(lubridate)
 ### Fake data sets
 
 ```{r}
+
 data("fake_student_df")
 s_14_test_values <- fake_student_df[21:30,] %>% 
   mutate(birth_date = NA) %>% 

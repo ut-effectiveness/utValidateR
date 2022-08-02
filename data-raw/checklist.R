@@ -17,11 +17,11 @@ rule_spec <- tribble(
   "S02a", expr(!is.na(s_year) & !is.na(s_term) & !is.na(s_extract)), # USHE check
   "SC02a", expr(!is.na(sc_year) & !is.na(sc_term) & !is.na(sc_extract)), # USHE check
   "C02", expr(!is.na(c_year) & !is.na(c_term) & !is.na(c_extract)), # USHE check
-  "S03a", expr(!is.na(student_id) & !is.na(ssn)),
+  "S03a", expr(!is.na(student_id) & is_missing_chr(ssn)),
   "S03b", expr(!(s_id_flage %in% "S") | !is.na(s_ssn)), # USHE rule
-  "S03c", expr((us_citizenship_code != 1) | !is.na(ssn)),
+  "S03c", expr(!((us_citizenship_code %in% "1") & is_missing_chr(ssn))),
   "S04a", expr(s_id_flag %in% c("S", "I")), # USHE rule
-  "S04b", expr(is_valid_ssn(ssn)),
+  "S04b", expr(is_valid_ssn(ssn, missing_ok = TRUE)),
   "S04c", expr(!(s_id_flag %in% "S") | (s_id == s_banner_id)), # USHE rule
   "S04d", expr(!(s_id_flag %in% "I") | (s_id != s_banner_id)), # USHE rule
   "S05a", expr(is_valid_previous_id(previous_student_id)),
@@ -37,8 +37,8 @@ rule_spec <- tribble(
   "S07d", expr(is_alpha_chr(previous_name_suffix)),
   "S08a", expr(!is_missing_chr(local_address_zip_code) &
                  !is_missing_chr(mailing_address_zip_code)),
-  "S08b", expr(is_valid_zip_code(local_address_zip_code) &
-                 is_valid_zip_code(mailing_address_zip_code)),
+  "S08b", expr(is_valid_zip_code(local_address_zip_code, missing_ok = TRUE) &
+                 is_valid_zip_code(mailing_address_zip_code, missing_ok = TRUE)),
   "S09a", expr(!is_missing_chr(us_citizenship_code)),
   "S09b", expr(equivalent(is_international, us_citizenship_code == 2)),
   "S10a", expr(!is_missing_chr(first_admit_county_code)), # TODO verify I don't need to check code validity
@@ -172,7 +172,9 @@ rule_spec <- tribble(
   "S46a", expr(!is_missing_chr(primary_major_college_id)),
   "S46b", expr(is_alpha_chr(primary_major_college_id)),
   "S47a", expr(!is_missing_chr(primary_major_cip_code)),
-  "S47b", expr(primary_major_cip_code != secondary_major_cip_code),
+  "S47b", expr(is_missing_chr(primary_major_cip_code) |
+                 is_missing_chr(secondary_major_cip_code) |
+                 (primary_major_cip_code != secondary_major_cip_code)),
   "S47c", expr(is_alpha_chr(primary_major_desc)),
   "S48a", expr(is_alpha_chr(secondary_major_college_id)),
   "S49a", expr(!is_missing_chr(secondary_major_cip_code) & !is_missing_chr(secondary_major_desc)),

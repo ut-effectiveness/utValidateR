@@ -80,23 +80,36 @@ is_valid_act_score <- function(x) {
 
 #' @describeIn is_valid_act_score ssn
 #' @export
-is_valid_ssn <- function(x) {
+is_valid_ssn <- function(x, missing_ok = TRUE) {
 
   # Regex to check ssn, from:
   # https://www.geeksforgeeks.org/how-to-validate-ssn-social-security-number-using-regular-expression
   ssn_regex <- "^(?!666|000|9\\d{2})\\d{3}-(?!00)\\d{2}-(?!0{4})\\d{4}$"
-  stringr::str_detect(x, ssn_regex)
+  matches <- stringr::str_detect(x, ssn_regex)
+  missing_check <- if (missing_ok) is.na(x) else !is.na(x)
+  out <- if (missing_ok) {
+    matches | is.na(x)
+  } else {
+    matches & !is.na(x)
+  }
+  out
 }
 
 
 #' @describeIn is_valid_act_score zip_code
 #' @export
-is_valid_zip_code <- function(x) {
+is_valid_zip_code <- function(x, missing_ok = TRUE) {
 
   # Regex to check zip code, from:
   # https://regexlib.com/Search.aspx?k=us+zip+code
   zipcode_regex <- "^\\d{5}(-\\d{4})?$"
-  stringr::str_detect(x, zipcode_regex)
+  matches <- stringr::str_detect(x, zipcode_regex)
+  out <- if (missing_ok) {
+    matches | is.na(x)
+  } else {
+    matches & !is.na(x)
+  }
+  out
 }
 
 #' @describeIn is_valid_act_score SSID
@@ -228,7 +241,7 @@ is_valid_graduation_date <- function(x) {
 #' @export
 is_freshmen_type <- function(student_type) {
   # TODO: verify freshmen type code. Also, sql references both FF and FH. Do I need to tell these apart?
-  student_type == "F" # Guessing for now.
+  student_type %in% "F" # Guessing for now.
 }
 
 #' @describeIn is_freshmen_type returns TRUE for high-school student_types
@@ -337,7 +350,7 @@ is_us_state <- function(state) {
 #' @export
 is_nonus_state <- function(state) {
   # Only return TRUE if a state code is specified (a 2-digit code) but not one of the US states
-  (nchar(state) == 2) & !is_us_state(state)
+  (nchar(state) %in% 2) & !is_us_state(state)
 }
 
 #' Helper for troubleshooting and communicating known needs

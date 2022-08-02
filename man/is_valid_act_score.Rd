@@ -21,9 +21,9 @@
 \usage{
 is_valid_act_score(x)
 
-is_valid_ssn(x)
+is_valid_ssn(x, missing_ok = TRUE)
 
-is_valid_zip_code(x)
+is_valid_zip_code(x, missing_ok = TRUE)
 
 is_valid_ssid(x)
 
@@ -54,9 +54,9 @@ is_valid_graduation_date(x)
 \arguments{
 \item{x}{Vector to check}
 
-\item{valid_values}{vector of valid values x can take}
-
 \item{missing_ok}{if TRUE (default), do not flag \code{NA} or \code{""} values}
+
+\item{valid_values}{vector of valid values x can take}
 }
 \description{
 Validity checks on various values

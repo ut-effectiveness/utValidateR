@@ -1,3 +1,7 @@
+# utValidateR 0.1.1.9000
+
+* checklist now contains banner column
+
 # utValidateR 0.1.1
 
 * Added a `NEWS.md` file to track changes to the package.

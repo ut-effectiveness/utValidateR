@@ -12,8 +12,8 @@ library(stringr)
 # This is where each rule is implemented as an R expression
 rule_spec <- tribble(
   ~rule,  ~checker,
-  "S00a", expr(!is_duplicated(student_id)),
-  "S00b", expr(!is_duplicated(ssn)),
+  "S00a", expr(!is_duplicated(cbind(student_id, term_id))),
+  "S00b", expr(!is_duplicated(cbind(ssn, term_id))),
   "S02a", expr(!is.na(s_year) & !is.na(s_term) & !is.na(s_extract)), # USHE check
   "SC02a", expr(!is.na(sc_year) & !is.na(sc_term) & !is.na(sc_extract)), # USHE check
   "C02", expr(!is.na(c_year) & !is.na(c_term) & !is.na(c_extract)), # USHE check
@@ -133,7 +133,7 @@ rule_spec <- tribble(
   "S27c", expr(is_valid_country_code(first_admit_country_code)),
   "S28a", expr(!(first_admit_state_code %in% "UT") |
                  !is_undergrad_type(student_type_code) |
-                 is_valid_values(high_school_code, valid_hs_codes, missing_ok = FALSE)),
+                 is_valid_values(high_school_code, valid_highschools, missing_ok = FALSE)),
   "S29a", expr(s_hb75_waiver <= 100),
   "S29b", expr(!is.na(s_hb75_waiver) & s_hb75_waiver <= 100 & s_hb75_waiver >= 0),
   "S30a", expr(is_valid_values(secondary_major_cip_code, valid_cip_codes)),
@@ -465,7 +465,7 @@ all_rules <- read.csv("sandbox/full-rules-rename.csv") %>%
   unnest(cols = ushe_rule) %>%
   mutate(activity_date = ifelse(activity_date == "n/a", NA_character_, activity_date)) %>%
   select(rule = ushe_rule, ref_rule, description, status,
-         type, activity_date) %>%
+         type, activity_date, banner) %>%
 
   # Where a rule exists in rule_spec, force it to be its own ref_rule.
   # I've determined these need their own specification (can't use another rule's spec)

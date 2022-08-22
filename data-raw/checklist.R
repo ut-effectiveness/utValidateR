@@ -18,7 +18,7 @@ rule_spec <- tribble(
   "SC02a", expr(!is.na(sc_year) & !is.na(sc_term) & !is.na(sc_extract)), # USHE check
   "C02", expr(!is.na(c_year) & !is.na(c_term) & !is.na(c_extract)), # USHE check
   "S03a", expr(!is.na(student_id) & is_missing_chr(ssn)),
-  "S03b", expr(!(s_id_flage %in% "S") | !is.na(s_ssn)), # USHE rule
+  "S03b", expr(!(s_id_flag %in% "S") | !is.na(s_ssn)), # USHE rule
   "S03c", expr(!((us_citizenship_code %in% "1") & is_missing_chr(ssn))),
   "S04a", expr(s_id_flag %in% c("S", "I")), # USHE rule
   "S04b", expr(is_valid_ssn(ssn, missing_ok = TRUE)),
@@ -51,31 +51,31 @@ rule_spec <- tribble(
   "S13", expr(toupper(gender_code) %in% c("M", "F")),
   "S13a", expr(TODO('USHE rule for "gender change after census"')),
   "S13b", expr(TODO('USHE rule for "gender change after previous term"')),
-  "S14a", expr(s_ethnic_a %in% "A" | is.na(s_ethnic_a)),
-  "S14b", expr(s_ethnic_b %in% "B" | is.na(s_ethnic_b)),
-  "S14h", expr(s_ethnic_h %in% "H" | is.na(s_ethnic_h)),
-  "S14i", expr(s_ethnic_i %in% "I" | is.na(s_ethnic_i)),
+  "S14a", expr(s_ethnic_a %in% c("A", NA)),
+  "S14b", expr(s_ethnic_b %in% c("B", NA)),
+  "S14h", expr(s_ethnic_h %in% c("H", NA)),
+  "S14i", expr(s_ethnic_i %in% c("I", NA)),
   "S14m", expr(!(s_ethnic_ipeds %in% c("H","A","B","I","P","W","N","U"))), # TODO: verify my interpretation
-  "S14n", expr(s_ethnic_n %in% "N" | is.na(s_ethnic_n)),
-  "S14p", expr(s_ethnic_p %in% "P" | is.na(s_ethnic_p)),
-  "S14u", expr(s_ethnic_u %in% "U" | is.na(s_ethnic_u)),
+  "S14n", expr(s_ethnic_n %in% c("N", NA)),
+  "S14p", expr(s_ethnic_p %in% c("P", NA)),
+  "S14u", expr(s_ethnic_u %in% c("U", NA)),
   "S14ua", expr(!(s_ethnic_u %in% "U") |
                   (is.na(s_ethnic_a) & is.na(s_ethnic_b) & is.na(s_ethnic_h) &
                    is.na(s_ethnic_i) & is.na(s_ethnic_p) & is.na(s_ethnic_w) &
                    is.na(s_ethnic_n))),
-  "S14w", expr(s_ethnic_w %in% "W" | is.na(s_ethnic_w)),
-  "G07a", expr(g_ethnic_a %in% "A" | is.na(g_ethnic_a)),
-  "G07b", expr(g_ethnic_b %in% "B" | is.na(g_ethnic_b)),
-  "G07c", expr(g_ethnic_h %in% "H" | is.na(g_ethnic_h)),
-  "G07d", expr(g_ethnic_i %in% "I" | is.na(g_ethnic_i)),
-  "G07g", expr(g_ethnic_n %in% "N" | is.na(g_ethnic_n)),
-  "G07e", expr(g_ethnic_p %in% "P" | is.na(g_ethnic_p)),
-  "G07h", expr(g_ethnic_u %in% "U" | is.na(g_ethnic_u)),
+  "S14w", expr(s_ethnic_w %in% c("W", NA)),
+  "G07a", expr(g_ethnic_a %in% c("A", NA)),
+  "G07b", expr(g_ethnic_b %in% c("B", NA)),
+  "G07c", expr(g_ethnic_h %in% c("H", NA)),
+  "G07d", expr(g_ethnic_i %in% c("I", NA)),
+  "G07g", expr(g_ethnic_n %in% c("N", NA)),
+  "G07e", expr(g_ethnic_p %in% c("P", NA)),
+  "G07h", expr(g_ethnic_u %in% c("U", NA)),
   "G07i", expr(!(g_ethnic_u %in% "U") |
                   (is.na(g_ethnic_a) & is.na(g_ethnic_b) & is.na(g_ethnic_h) &
                      is.na(g_ethnic_i) & is.na(g_ethnic_p) & is.na(g_ethnic_w) &
                      is.na(g_ethnic_n))),
-  "G07f", expr(g_ethnic_w %in% "W" | is.na(g_ethnic_w)),
+  "G07f", expr(g_ethnic_w %in% c("W", NA)),
 
   "S15a", expr(is_valid_values(residency_code, c("R", "N", "A", "M"))),
   "S16a", expr(is_valid_values(primary_major_cip_code, valid_cip_codes)),

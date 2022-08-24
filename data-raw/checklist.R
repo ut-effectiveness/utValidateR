@@ -130,7 +130,7 @@ rule_spec <- tribble(
   "S27b", expr(!(first_admit_country_code %in% "US" &
                    (first_admit_county_code %in% "97" |
                       is_nonus_state(first_admit_state_code)))),
-  "S27c", expr(is_valid_country_code(first_admit_country_code)),
+  "S27c", expr(is_valid_values(first_admit_country_code, valid_country_codes, missing_ok = FALSE)),
   "S28a", expr(!(first_admit_state_code %in% "UT") |
                  !is_undergrad_type(student_type_code) |
                  is_valid_values(high_school_code, valid_highschools, missing_ok = FALSE)),
@@ -325,7 +325,7 @@ rule_spec <- tribble(
   "G21d", expr(!is_duplicated(cbind(sis_student_id,
                                     graduation_date, primary_major_cip_code, degree_id,
                                     ipeds_award_level_code, primary_major_id))),
-  "G24a", expr(is_valid_year(graduated_academic_year_code)), # TODO: should verify matching some reference year
+  "G24a", expr(is_valid_year(graduated_academic_year_code), missing_ok = FALSE), # TODO: should verify matching some reference year
   "G25a", expr(is_valid_values(season, valid_seasons)),
   "G28a", expr(!is_missing_chr(degree_desc)),
   "SC03", expr(!is.na(student_id) & !is.na(ssn)),

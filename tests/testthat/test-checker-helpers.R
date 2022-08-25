@@ -118,7 +118,7 @@ test_that("is_valid_course_reference_number works", {
 })
 
 test_that("is_valid_graduation_date works", {
-  stop("need to clarify this rule. SQL uses g_fis_year in a couple different ways")
+  skip("need to clarify this rule. SQL uses g_fis_year in a couple different ways")
 })
 
 test_that("is_valid_values works", {

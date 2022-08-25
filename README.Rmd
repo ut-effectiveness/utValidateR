@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![Codecov test coverage](https://codecov.io/gh/dsu-effectiveness/utValidateR/branch/master/graph/badge.svg)](https://app.codecov.io/gh/dsu-effectiveness/utValidateR?branch=master)
 <!-- badges: end -->
 
 The goal of utValidateR is to validate elements within the warehouse ETL pipeline, or elements in the reporting layer. The functions in this library are used in USHE and IPEDS reporting. The functions also for the basis for the campus data audits. 

@@ -1,6 +1,8 @@
 
 test_that("do_checks returns dataframe with correct structure", {
 
+  withr::local_package("rlang")
+
   test_checklist <- tibble(
     rule = c("rule1", "rule2"),
     type = c("Database", "USHE"),
@@ -42,8 +44,8 @@ test_that("do_checks returns dataframe with correct structure", {
 
 test_that("error age is computed correctly for database checks", {
 
+  withr::local_package("rlang")
   withr::local_package("lubridate")
-
 
   test_checklist <- tibble(
     rule = c("rule1", "rule2"),

@@ -18,19 +18,20 @@ equivalent <- function(x, y) {
 #' @export
 is.Date <- function(x) inherits(x, "Date")
 
-#' Computes age for birthdate and returns a logical vector indicating whether
+#' Computes age from startdate and returns a logical vector indicating whether
 #'  the age is between lwr and upr years
 #'
-#' @param birthdate Date-valued vector
+#' @param startdate Date-valued vector
 #' @param lwr lower bound on age in years
 #' @param upr upper bound on age in years
 #'
 #' @export
 #'
-age_in_range <- function(birthdate, lwr, upr) {
-  stopifnot(is.Date(birthdate))
-  age <- lubridate::interval(birthdate, Sys.Date()) / lubridate::years(x=1)
-  age > lwr & age < upr
+age_in_range <- function(startdate, lwr, upr) {
+  stopifnot(is.Date(startdate))
+  age <- lubridate::interval(startdate, Sys.Date()) / lubridate::years(x=1)
+  out <- age > lwr & age < upr
+  out & !is.na(out) # map missing to FALSE
 }
 
 
@@ -54,7 +55,8 @@ in_range <- function(x, lwr, upr) {
 #' @export
 date_before_present_year <- function(date, year = format(Sys.Date(), "%Y")) {
   # TODO: what desired missingness behavior? Assuming NA OK
-  out <- date < lubridate::ymd(paste0(year), "-01-01")
+  out <- date < lubridate::ymd(paste0(year, "-01-01"))
+
   out | is.na(date) # Does not flag missing dates (that's for another check)
 }
 

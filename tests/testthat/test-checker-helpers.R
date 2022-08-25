@@ -1,7 +1,3 @@
-test_that("multiplication works", {
-  expect_equal(2 * 2, 4)
-})
-
 
 test_that("equivalent function works", {
   expect_true(equivalent("abc", "abc"))
@@ -20,6 +16,46 @@ test_that("is.Date works", {
   expect_false(is.Date("2022-01-01"))
   expect_false(is.Date(20220101))
   expect_false(is.Date(NA))
+})
+
+
+test_that("age_in_range works", {
+  withr::local_package("lubridate")
+  year_offset <- runif(100, 0, 30)
+  ref_date <- ymd("1990-01-01")
+  startdates <- ref_date + days(round(year_offset * 365.25))
+
+  age_days <- get_age(startdates) # get_age result is in days
+
+  age_years_lwr <- floor((age_days - 2) / 365.25)
+  age_years_upr <- ceiling((age_days + 2) / 365.25)
+
+  expect_true(all(age_in_range(startdates, age_years_lwr, age_years_upr)))
+  expect_false(age_in_range(as.Date(NA), -Inf, Inf)) # Missing values map to FALSE
+})
+
+test_that("in_range works", {
+  xmin <- -100
+  xmax <- 100
+  x <- runif(100, xmin, xmax)
+
+  expect_true(all(in_range(x, xmin, xmax)))
+  expect_true(all(in_range(x, x - 0.1, x + 0.1)))
+  expect_false(in_range(NA, 0, 1)) # Missing values map to FALSE
+})
+
+test_that("date_before_present_year works", {
+  withr::local_package("lubridate")
+  cur_year <- year(Sys.Date())
+  ref_date <- ymd(paste0(cur_year, "-01-01"))
+
+  prior_dates <- ref_date - days(c(1, round(runif(100, 0, 9999))))
+  post_dates <- ref_date + days(c(0, round(runif(100, 0, 9999))))
+
+  expect_true(all(date_before_present_year(prior_dates)))
+  expect_false(any(date_before_present_year(post_dates)))
+
+  expect_true(date_before_present_year(as.Date(NA))) # Missing values are OK (checked in a different rule)
 })
 
 test_that("is_duplicated works", {
@@ -201,3 +237,7 @@ test_that("is_nonus_state works", {
   expect_equal(is_nonus_state(input), out1)
 })
 
+test_that("TODO function errors", {
+  expect_error(TODO())
+  expect_error(TODO("abcd"))
+})

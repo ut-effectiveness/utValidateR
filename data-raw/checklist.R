@@ -325,7 +325,7 @@ rule_spec <- tribble(
   "G21d", expr(!is_duplicated(cbind(sis_student_id,
                                     graduation_date, primary_major_cip_code, degree_id,
                                     ipeds_award_level_code, primary_major_id))),
-  "G24a", expr(is_valid_year(graduated_academic_year_code), missing_ok = FALSE), # TODO: should verify matching some reference year
+  "G24a", expr(is_valid_year(graduated_academic_year_code, missing_ok = FALSE)), # TODO: should verify matching some reference year
   "G25a", expr(is_valid_values(season, valid_seasons)),
   "G28a", expr(!is_missing_chr(degree_desc)),
   "SC03", expr(!is.na(student_id) & !is.na(ssn)),
@@ -459,11 +459,7 @@ get_ushe_file <- function(ushe_element) {
 }
 
 # dataframe with rule info from Data Inventory
-all_rules <- read.csv("sandbox/full-rules-rename.csv") %>%
-  mutate(ushe_rule = map(ushe_rule, ~unlist(str_split(., pattern = ", "))),
-         ref_rule = map_chr(ushe_rule, ~`[`(., 1))) %>%
-  unnest(cols = ushe_rule) %>%
-  mutate(activity_date = ifelse(activity_date == "n/a", NA_character_, activity_date)) %>%
+rule_metadata <- read.csv("sandbox/rule-metadata.csv") %>%
   select(rule = ushe_rule, ref_rule, description, status,
          type, activity_date, banner) %>%
 
@@ -474,7 +470,7 @@ all_rules <- read.csv("sandbox/full-rules-rename.csv") %>%
 
 
 # Rule info joined to anonymous-function tibble
-checklist <- all_rules %>%
+checklist <- rule_metadata %>%
   inner_join(rule_spec, by = c(ref_rule = "rule")) %>%
   mutate(file = get_ushe_file(rule)) %>%
   glimpse()

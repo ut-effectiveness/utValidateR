@@ -11,6 +11,8 @@
 #' @param checklist a tibble containing rule functions in `checker` column, as
 #'  well as `rule` and `activity_date` columns
 #' @param aux_info list (or environment) with additional objects used by the checkers
+#' @param verbose if TRUE, print additional information (currently only passed to
+#' `verify_columns_present()`)
 #' @seealso [checklist], [aux_info], which are included in utValidateR as data objects
 #' @returns A tibble created by appending `status` and (for database checks) `activity_date`
 #' and `age` columns for each rule in `checklist` to `df_tocheck`. The `status` column
@@ -36,12 +38,18 @@
 #' @importFrom dplyr bind_cols all_of select
 #' @importFrom rlang new_environment caller_env
 #' @export
-do_checks <- function(df_tocheck, checklist, aux_info) {
+do_checks <- function(df_tocheck, checklist, aux_info, verbose = FALSE) {
 
   # must be an environment to be passed to the env argument in rlang::eval_tidy()
   if (is.list(aux_info))
     aux_info <- new_environment(data = aux_info,
                                 parent = caller_env()) # Is this the right parent? Does it matter?
+
+  # Remove checks that do not have needed information
+  checklist <- verify_columns_present(df_tocheck = df_tocheck,
+                                      checklist = checklist,
+                                      aux_info = aux_info,
+                                      verbose = verbose)
 
   # Activity dates are not relevant for USHE checks
   checklist$activity_date[checklist$type == "USHE"] <- NA
@@ -113,5 +121,50 @@ get_activity_dates <- function(df, datecol, rule) {
   out <- tibble(activity_date = df[[datecol]]) %>%
     mutate(error_age = get_age(.data$activity_date)) %>%
     setNames(paste(rule, names(.), sep = "_"))
+  out
+}
+
+
+#' Returns checklist with non-applicable rules removed.
+#'
+#' A rule is non-applicable if the information it requires (via `all.vars()`) is
+#' not present in either `df_tocheck` or `aux_info`.
+#'
+#' @inheritParams do_checks
+#' @export
+verify_columns_present <- function(df_tocheck, checklist, aux_info, verbose = TRUE) {
+  # list of needed columns for each rule
+  checker_list <- setNames(checklist$checker, checklist$rule)
+  needed_vars <- map(checker_list, ~all.vars(.))
+
+  avail_vars <- unique(c(names(df_tocheck), names(aux_info)))
+
+  has_needed_vars <- needed_vars %>%
+    imap_lgl(~vars_available(.x, avail_vars, .y, verbose = verbose))
+
+  if (sum(!has_needed_vars) > 0) {
+    warning(sprintf("%i rules removed from checklist due to missing variables",
+                    sum(!has_needed_vars)))
+  }
+
+  out <- checklist[has_needed_vars, ]
+
+  out
+}
+
+#' For a single rule, returns TRUE if all needed_vars are present in avail_vars,
+#' FALSE otherwise.
+#'
+#' @param needed_vars,avail_vars character vectors
+#' @param rule character specifying the rule name
+#' @param verbose if TRUE, print which variables are missing
+vars_available <- function(needed_vars, avail_vars, rule, verbose = TRUE) {
+  missing_vars <- setdiff(needed_vars, avail_vars)
+  any_missing <- length(missing_vars) > 0
+  if (verbose && any_missing) {
+    message("Missing variables for rule ", rule, ": ", missing_vars)
+  }
+
+  out <- !any_missing
   out
 }

@@ -100,7 +100,8 @@ is_valid_ssn <- function(x, missing_ok = TRUE) {
 
   # Regex to check ssn, from:
   # https://www.geeksforgeeks.org/how-to-validate-ssn-social-security-number-using-regular-expression
-  ssn_regex <- "^(?!666|000|9\\d{2})\\d{3}-(?!00)\\d{2}-(?!0{4})\\d{4}$"
+  # ssn_regex <- "^(?!666|000|9\\d{2})\\d{3}-(?!00)\\d{2}-(?!0{4})\\d{4}$"
+  ssn_regex <- "^\\d{3}-\\d{2}-\\d{4}$" # Simpler, to accommodate dummy data (with technically invalid ssn!)
   matches <- stringr::str_detect(x, ssn_regex)
   out <- if (missing_ok) {
     matches | is.na(x)

@@ -19,8 +19,9 @@ expect_no_failures <- function(do_checks_result_row,
 
   expect(
     sum(act$failures) == 0,
-    sprintf("Failures were encountered for rules %s",
-            paste(act$rules[act$failures], collapse = ", "))
+    sprintf("Failures were encountered for rules %s in test data row %i",
+            paste(act$rules[act$failures], collapse = ", "),
+            do_checks_result_row$row_number)
   )
 
   # 3. Invisibly return the value
@@ -52,9 +53,10 @@ expect_rule_fails <- function(do_checks_result_row,
 
   expect(
     dfrow[[elem_name]] %in% fail_values,
-    sprintf("Rule %s did not fail; check result was:\n %s\n",
+    sprintf("Rule %s did not fail for test data row %i; check result was:\n %s\n",
             rule_name,
-            dfrow[[elem_name]])
+            do_checks_result_row$row_number,
+            act$val[[elem_name]])
   )
 
   # 3. Invisibly return the value
@@ -68,7 +70,10 @@ get_test_data <- function(file = "student", checklist,
                           rule_name_column = "USHE rule") {
   col_spec <- get_col_spec(file = file)
   test_data_csv <- get_test_data_csv_loc(file = file)
-  testdf <- readr::read_csv(test_data_csv, col_types = col_spec) %>%
+  testdf0 <- readr::read_csv(test_data_csv, col_types = col_spec)
+  testdf0$row_number <- 1:nrow(testdf0) # original row number before removing rows in check_*()
+
+  testdf <- testdf0 %>%
     check_expected_values(colname = expected_value_column) %>%
     check_rule_names(checklist = checklist, colname = rule_name_column)
 
@@ -83,7 +88,9 @@ check_expected_values <- function(df, colname = "Expected value",
 
   if (sum(!validvals) > 0) {
     warning("The following rows of test data have bad expected values and ",
-            "were removed: ", paste(which(!validvals), collapse = ", "))
+            "were removed: ",
+            paste(df$row_number[!validvals], collapse = ", "),
+            "\n")
   }
   df[validvals, ]
 }
@@ -98,7 +105,9 @@ check_rule_names <- function(df, checklist, colname = "USHE rule") {
 
   if (sum(!validrules) > 0) {
     warning("The following rows of test data have bad rule names and ",
-            "were removed: ", paste(which(!validrules), collapse = ", "))
+            "were removed: ",
+            paste(df$row_number[!validrules], collapse = ", "),
+            "\n")
   }
   df[validrules, ]
 }

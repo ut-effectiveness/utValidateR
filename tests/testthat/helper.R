@@ -97,7 +97,7 @@ check_rule_names <- function(df, checklist, colname = "USHE rule") {
   validrules <- df[[colname]] %in% c(NA_character_, "", rules) # Empty/missing for "pass" rows
 
   if (sum(!validrules) > 0) {
-    warning("The following rows of test data have bad expected values and ",
+    warning("The following rows of test data have bad rule names and ",
             "were removed: ", paste(which(!validrules), collapse = ", "))
   }
   df[validrules, ]

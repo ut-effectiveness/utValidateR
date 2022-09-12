@@ -6,6 +6,9 @@
 \usage{
 is_base_expression(x)
 }
+\arguments{
+\item{x}{an expression}
+}
 \description{
 Function for checking whether to treat as base-case or continue recursion
 }

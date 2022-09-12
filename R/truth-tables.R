@@ -21,6 +21,9 @@ get_truth_table <- function(x, aux_info, limit = Inf) {
   out
 }
 
+#' Utility function to combine same-name elements of veclist to produce a list
+#' with unique names and unique values per element
+#' @param veclist a list of vectors
 combine_same_vars <- function(veclist) {
   out <- unique(names(veclist)) %>%
     setNames(., .) %>%
@@ -49,8 +52,8 @@ get_tt_vecs <- function(x, aux_info) {
 }
 
 #' Function for checking whether to treat as base-case or continue recursion
+#' @param x an expression
 is_base_expression <- function(x) {
-  # browser()
   x_list <- as.list(x)
   length(as.list(x_list[[2]])) == 1
 }

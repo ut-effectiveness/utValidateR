@@ -2,9 +2,8 @@
 
 
 test_that("student database checks match expected outcomes in test data", {
-
   student_checks <- checklist %>%
-    filter(type == "Database", file == "Student")
+    dplyr::filter(type == "Database", file == "Student")
 
   student_test_data <- get_test_data("student", student_checks)
   student_res <- do_checks(student_test_data, student_checks, aux_info)

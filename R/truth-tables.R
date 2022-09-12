@@ -5,13 +5,19 @@
 #' expression on the dataframe
 #'
 #' @param x an expression like those in `checklist$checker`
-get_truth_table <- function(x, aux_info) {
+get_truth_table <- function(x, aux_info, limit = Inf) {
   vecs_list <- get_tt_vecs(x, aux_info) # named list of vectors for expand.grid()
 
   vecs_toexpand <- combine_same_vars(vecs_list)
 
-  out <- expand.grid(vecs_toexpand, stringsAsFactors = FALSE)
-  out$passes <- eval_tidy(x, data = out)
+  ttdf <- expand.grid(vecs_toexpand, stringsAsFactors = FALSE)
+  ttdf$passes <- eval_tidy(x, data = ttdf)
+
+  out <- ttdf %>%
+    group_by(passes) %>%
+    slice_head(n = limit) %>%
+    ungroup()
+
   out
 }
 

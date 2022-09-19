@@ -35,10 +35,9 @@ test_that("do_checks returns dataframe with correct structure", {
   expect_equal(test_res$rule2_status, c("Warning", "Pass"))
 
   # Looking for variable not present in aux_info
-  expect_message(bad_check <- do_checks(test_df, test_checklist, aux_info = list()),
-                 regexp = "aux_val")
-  expect_length(unique(bad_check$rule2_status), 1) # should all contain error message
-  expect_false(any(bad_check$rule2_status %in% c("Pass", "Error", "Warning")))
+  expect_warning(bad_check <- do_checks(test_df, test_checklist, aux_info = list()),
+                 regexp = "1 rules removed")
+  expect_false(exists("rule2_status", where = bad_check))
 })
 
 

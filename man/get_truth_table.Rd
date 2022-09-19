@@ -6,7 +6,7 @@
 an expression and a logical \code{passes} column that is the result of calling the
 expression on the dataframe}
 \usage{
-get_truth_table(x, aux_info, limit = Inf)
+get_truth_table(x, aux_info, limit = Inf, extra_rows = NULL)
 }
 \arguments{
 \item{x}{an expression like those in \code{checklist$checker}}

@@ -175,7 +175,8 @@ rule_spec <- tribble(
   "S47b", expr(is_missing_chr(primary_major_cip_code) |
                  is_missing_chr(secondary_major_cip_code) |
                  (primary_major_cip_code != secondary_major_cip_code)),
-  "S47c", expr(is_alpha_chr(primary_major_desc)),
+  "S47c", expr(matches_regex(primary_major_desc, "^[a-zA-Z' \\-]*$", #alpha plus space, apostrophe, hyphen
+                             missing_ok = TRUE)),
   "S48a", expr(is_alpha_chr(secondary_major_college_id)),
   "S49a", expr(!is_missing_chr(secondary_major_cip_code) & !is_missing_chr(secondary_major_desc)),
   "S49b", expr(is_alpha_chr(secondary_major_desc)),

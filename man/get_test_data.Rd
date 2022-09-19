@@ -4,12 +4,10 @@
 \alias{get_test_data}
 \title{Returns a dataframe containing info needed for \code{do_checks()} plus expected outcome for specified rules}
 \usage{
-get_test_data(file = c("student"), checklist)
+get_test_data(file = c("student"))
 }
 \arguments{
 \item{file}{which file to get. Currently only "student" is available}
-
-\item{checklist}{used for checking rule names (see \code{check_rule_names()})}
 }
 \description{
 This data is specified by UT Tech, and located in inst/testdata/

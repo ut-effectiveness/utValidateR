@@ -11,8 +11,6 @@ compare_rule_output <- function(rule, testdf = get_test_data("student"), mismatc
   data("checklist", package = "utValidateR", envir = environment())
   data("aux_info", package = "utValidateR", envir = environment())
 
-
-
   rule_in <- rule # namespace hygiene
   checklist_row <- checklist[checklist$rule == rule_in, ]
   stopifnot(nrow(checklist_row) == 1L)

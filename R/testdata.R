@@ -5,12 +5,12 @@
 #' This data is specified by UT Tech, and located in inst/testdata/
 #'
 #' @param file which file to get. Currently only "student" is available
-#' @param checklist used for checking rule names (see `check_rule_names()`)
-#' @param expected_value_column
 #' @export
-get_test_data <- function(file = c("student"), checklist) {
+get_test_data <- function(file = c("student")) {
 
   file <- match.arg(file)
+
+  checklist <- get_checklist(file, "database")
 
   # Unclear whether these will change in future
   expected_value_column = "Expected value"  # csv column with expected outcome

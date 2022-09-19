@@ -140,7 +140,7 @@ verify_columns_present <- function(df_tocheck, checklist, aux_info, verbose = TR
   avail_vars <- unique(c(names(df_tocheck), names(aux_info)))
 
   has_needed_vars <- needed_vars %>%
-    imap_lgl(~vars_available(.x, avail_vars, .y, verbose = verbose))
+    purrr::imap_lgl(~vars_available(.x, avail_vars, .y, verbose = verbose))
 
   if (sum(!has_needed_vars) > 0) {
     warning(sprintf("%i rules removed from checklist due to missing variables",

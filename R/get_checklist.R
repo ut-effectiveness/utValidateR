@@ -10,8 +10,8 @@ get_checklist <- function(file = c("student", "student course",
                                    "buildings", "rooms"),
                           type = c("database", "ushe")) {
 
-  file <- match.arg(file)
-  type <- match.arg(type)
+  file <- match.arg(file, several.ok = TRUE) # with several.ok, default is to include everything
+  type <- match.arg(type, several.ok = TRUE)
 
   # full checklist from package data
   data("checklist", package = "utValidateR", envir = environment())
@@ -21,7 +21,7 @@ get_checklist <- function(file = c("student", "student course",
   type_in <- type
 
   out <- checklist %>%
-    dplyr::filter(tolower(.data$file) == file_in,
-                  tolower(.data$type) == type_in)
+    dplyr::filter(tolower(.data$file) %in% file_in,
+                  tolower(.data$type) %in% type_in)
   out
 }

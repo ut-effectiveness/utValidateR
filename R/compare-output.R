@@ -4,6 +4,7 @@
 #' @param rule character name of rule, e.g. "S17b"
 #' @param testdf dataframe with test data, like that found in extdata/student_unit_test.csv
 #' @param mismatch_only if TRUE (default), only show rows where expected rule outcome does not match actual
+#' @importFrom dplyr rename filter
 #' @export
 compare_rule_output <- function(rule, testdf = get_test_data("student"), mismatch_only = TRUE) {
 

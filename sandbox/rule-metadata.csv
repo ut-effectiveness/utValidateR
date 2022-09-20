@@ -103,7 +103,7 @@ classes FROM the institution while still IN high school.",NA,"banner.sgbstdn_sty
 "S19a","missing degree id","Database","Failure",NA,"There should be a degree intent for each student.","sgbstdn_activity_date","banner.sgbstdn_degc_code_1","S19a"
 "G17a","missing degree id","Database","Failure",NA,"There should be a degree intent for each student.","sgbstdn_activity_date","banner.sgbstdn_degc_code_1","S19a"
 "S20a","invalid credit format","Database","Failure",NA,"S_CUM_HRS_UGrad wrong format","shrlgpa_activity_date","banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned)","S20a"
-"24a","invalid credit format","Database","Failure",NA,"S_CUM_HRS_UGrad wrong format","shrlgpa_activity_date","banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned)","S20a"
+"S24a","invalid credit format","Database","Failure",NA,"S_CUM_HRS_UGrad wrong format","shrlgpa_activity_date","banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned)","S20a"
 "G12a","invalid credit format","Database","Failure",NA,"S_CUM_HRS_UGrad wrong format","shrlgpa_activity_date","banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned)","S20a"
 "G13a","invalid credit format","Database","Failure",NA,"S_CUM_HRS_UGrad wrong format","shrlgpa_activity_date","banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned)","S20a"
 "G14a","invalid credit format","Database","Failure",NA,"S_CUM_HRS_UGrad wrong format","shrlgpa_activity_date","banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned)","S20a"
@@ -123,7 +123,7 @@ classes FROM the institution while still IN high school.",NA,"banner.sgbstdn_sty
 "G11a","invalid institutional cumulative gpa format","Database","Failure",NA,"S_CUM_GPA_UGRAD wrong format","shrlgpa_activity_date","banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa)","S21a"
 "S21b","missing GPA at end of term","USHE","Failure",NA,"UGrads without UGrad GPA","shrlgpa_activity_date","banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa)","S21b"
 "S22b","missing GPA at end of term","USHE","Failure",NA,"UGrads without UGrad GPA","shrlgpa_activity_date","banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa)","S21b"
-"23d","missing GPA at end of term","USHE","Failure",NA,"UGrads without UGrad GPA","shrlgpa_activity_date","banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa)","S21b"
+"S23d","missing GPA at end of term","USHE","Failure",NA,"UGrads without UGrad GPA","shrlgpa_activity_date","banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa)","S21b"
 "S23a","UG students have hours and gpa in GR hours or GPA","USHE","Failure",NA,"Checking if undergraduate students have any hours OR gpa IN
 graduate hours OR gpa.",NA,"banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa)","S23a"
 "S25a","missing part-time/full-time status","Database","Failure",NA,"Part-time/Full-time Should be a value for each student.",NA,"sum(banner.sfrstcr_credit_hr)","S25a"

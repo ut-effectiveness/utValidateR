@@ -2,6 +2,8 @@
 # This script generates the rule-metadata.csv file, which is ingested into the checklist in checklist.R
 # Based on work in my 20220901 notebook.
 
+library(readxl)
+
 read_data_inventory <- function(xlsx_file, xlsx_sheet = "validation rules") {
   # Data Inventory excel file
   invntry <- read_excel(xlsx_file, sheet = xlsx_sheet) %>% # Replaces "" cells with NA!
@@ -49,6 +51,8 @@ metadf_i <- read_data_inventory(data_inventory_xlsx) %>%
   `[`(-61, ) %>% # removed redundant S18b rule (keeping undergrad, ditching grad)
   unnest_metadata() %>%
   filter(!(ushe_rule == "SC11a" & ref_rule == "S20a")) %>% # Remove redundant SC11a rule
+  mutate(ushe_rule = ifelse(ushe_rule == "24a", "S24a", ushe_rule), # fix apparent typo omitting "S"
+         ushe_rule = ifelse(ushe_rule == "23d", "S23d", ushe_rule)) %>%  # fix apparent typo omitting "S"
   glimpse()
 
 

@@ -52,7 +52,8 @@ metadf_i <- read_data_inventory(data_inventory_xlsx) %>%
   unnest_metadata() %>%
   filter(!(ushe_rule == "SC11a" & ref_rule == "S20a")) %>% # Remove redundant SC11a rule
   mutate(ushe_rule = ifelse(ushe_rule == "24a", "S24a", ushe_rule), # fix apparent typo omitting "S"
-         ushe_rule = ifelse(ushe_rule == "23d", "S23d", ushe_rule)) %>%  # fix apparent typo omitting "S"
+         ushe_rule = ifelse(ushe_rule == "23d", "S23d", ushe_rule),  # fix apparent typo omitting "S"
+         ushe_rule = ifelse(ushe_rule == "S37A", "S37a", ushe_rule)) %>%
   glimpse()
 
 

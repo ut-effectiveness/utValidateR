@@ -82,7 +82,7 @@
 "G07f","invalid ethnicity code (White)","USHE","Failure",NA,"Ethnicity White Please resolve any invalid codes.",NA,"dsc.ipeds_ethnicity","S14w"
 "S15a","missing residency","Database","Failure",NA,"There should be a residency status for each record.","sgbstdn_activity_date","banner.sgbstdn_resd_code","S15a"
 "S16a","missing cip code","Database","Failure",NA,"Declared Major CIP codes There should be a s_curr_cip for each record.","stvmajr_activity_date","banner.stvmajr_cipc_code","S16a"
-"S37A","missing cip code","Database","Failure",NA,"Declared Major CIP codes There should be a s_curr_cip for each record.","stvmajr_activity_date","banner.stvmajr_cipc_code","S16a"
+"S37a","missing cip code","Database","Failure",NA,"Declared Major CIP codes There should be a s_curr_cip for each record.","stvmajr_activity_date","banner.stvmajr_cipc_code","S16a"
 "S30a","missing cip code","Database","Failure",NA,"Declared Major CIP codes There should be a s_curr_cip for each record.","stvmajr_activity_date","banner.stvmajr_cipc_code","S16a"
 "G09b","missing cip code","Database","Failure",NA,"Declared Major CIP codes There should be a s_curr_cip for each record.","stvmajr_activity_date","banner.stvmajr_cipc_code","S16a"
 "S17a","invalid registration status codes","USHE","Failure",NA,"Checking for valid registration status values",NA,"banner.sgbstdn_styp_code","S17a"

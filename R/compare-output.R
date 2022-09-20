@@ -23,10 +23,11 @@ compare_rule_output <- function(rule, testdf = get_test_data("student"), mismatc
   testdf_filt <- testdf %>%
     rename(expected = `Expected value`) %>%
     mutate(expr = paste(deparse(rule_expr), collapse = " "),
-           description = checklist_row$description) %>%
+           description = checklist_row$description,
+           csv_row = row_number + 1) %>%
     filter(`USHE element` == "all" | `USHE rule` == rule_in) %>%
     mutate(rule = rule_in) %>%
-    select(row_number, rule, description, expr,
+    select(csv_row, rule, description, expr,
            any_of(all.vars(rule_expr)),
            expected)
 

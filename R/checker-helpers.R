@@ -114,6 +114,7 @@ is_valid_ssn <- function(x, missing_ok = TRUE) {
 #' Helper function for regex matching with missingness toggle
 #'
 #' @inheritParams is_valid_zip_code
+#' @export
 matches_regex <- function(x, regex, missing_ok) {
   matches <- stringr::str_detect(x, regex)
   out <- if (missing_ok) {

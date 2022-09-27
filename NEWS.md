@@ -2,6 +2,7 @@
 
 * checklist now contains banner column
 * Added unit tests for do_checks and helper functions
+* New `get_checklist()` function for generating a file- and type-specific checklist
 
 # utValidateR 0.1.1
 

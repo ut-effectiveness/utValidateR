@@ -1,0 +1,77 @@
+---
+title: "development"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{development}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(utValidateR)
+```
+
+This vignette illustrates design ideas, development workflows, and known development needs for the utValidateR package. 
+
+### Package structure and design
+
+The utValidateR package follows standard R package design conventions as described in the [writing R extensions](https://cran.r-project.org/doc/manuals/R-exts.html) manual and the [R Packages](https://r-pkgs.org/) book. However, several departures from this convention have been employed in order to fit the specific demands of the project. Namely:
+
+- R code defining individual rules is located not in R/, but rather in data-raw/checklist.R, where it is defined in the `rule_spec` tibble and ultimately included in the package as the `checklist` object. This can be loaded from the installed package via `data("checklist", pacakge = "utValidateR")`. Running the checklist.R script will regenerate the corresponding .rda file in data/ that will be included in the loaded package. 
+- Metadata about each rule, including the rule type (database vs USHE), relevant file (e.g. "Student"), text description, activity-date field, and data steward (not-yet populated) are contained in sandbox/rule-metadata.csv, which is generated in data-raw/metadata.R script. The metadata.R file sources information from the State Report Data Inventory xlsx file currently located in sandbox/. Unlike the xlsx file, the metadata.csv file enforces one-rule-per-row and corrects various typos and issues with the xlsx file. Future updates to rule-metadata.csv should be made interactively via the metadata.R script so as to catch and accommodate any additional issues in the xlsx.
+- Auxiliary information required for various rules, including lists of valid values, is contained in the `aux_info` data object, which is generated in data-raw/aux_info.R. Much of this information is hard-coded in that file, but some components are sourced from csv files in the sandbox/ directory. Like the `checklist` object, updates to `aux_info` are not automatically applied when the package is installed/loaded, but must be run manually in the data-raw/metadata.R script (specifically the `usethis::use_data()` function), which will update data/aux_info.rda. 
+- Test data containing expected rule output associated with given inputs is located in inst/testdata/. This is used in two different situations:
+    - unit-testing the codebase via `devtools::test()`, specifically for tests in tests/testthat/test-expected-results.R
+    - Interactively comparing expected and actual rule output using the exported function `compare_rule_output()`
+    
+    
+### Development workflows
+
+Unit tests located in the tests/testthat/ directory can be executed via `devtools::test()`. In particular, the tests/testthat/test-expected-results.R is relevant for comparing `do_checks()` output to expected output, and for informing future development. These tests can be run using `devtools::test(filter = "expected")`, which will note the specific rules and test-data rows in which rule output did not match test-data expectations. Such mismatches for individual rules can then be investigated using the `compare_rule_output()` function, as follows:
+
+```{r}
+test_data <- get_test_data("student")
+rule49a_comparison <- compare_rule_output("S49a", testdf = test_data)
+knitr::kable(rule49a_comparison)
+```
+
+Note that this currently only accommodates student-file checks, which is the only currently available test dataset. When other test datasets are added, the `get_test_data()` function will need to be modified, as well as `get_col_spec()` and potentially other functions in R/testdata.R.
+
+The output of `compare_rule_output()` should make clear the reason for test data not matching the specified rule's output from `do_checks()`. Remedying the mismatch could require making changes in one of several places:
+
+- If the test data is in error, then the relevant csv should be modified in inst/testdata/, e.g. by changing the "Expected value" column or by changing the relevant columns referenced in the `expr` column of the `compare_rule_output()` result.
+- If the R expression in the `expr` column is in error, then this should be modified in the relevant row of `rule_spec` in data-raw/checklist.R. Once changes have been made, `source()` this script to update the `checklist` object included in the package
+- If the R expression calls another R function that is in error, e.g. `is_valid_act_score()`, then that function should be updated in R/checker-helpers.R. Any relevant unit tests should also be updated/improved in tests/testthat/. 
+- If the R code is correct, but values referenced in `aux_info` are in error (e.g. `valid_final_grades`) then these should be modified in data-raw/aux_info.R. Once changes have been made, the full aux_info.R script should be run (e.g. via `source()`) to ensure the data object is updated in the package. 
+- If the metadata for the rule is misspecified, e.g. it is labeled a Database rule when it should be a USHE rule, this should be remedied in the data-raw/metadata.R script. Running this script will regenerate sandbox/rule-metadata.R, and thereafter running the data-raw/checklist.R script will update the metadata in the `checklist` package object. (Admittedly this workflow is a little half-baked and could use revision; it was a relatively late addition that was required to accommodate anticipated changes to the State Report Data Inventory file.)  
+
+Note that any changes to the package will only be made available to the R environment once the package is re-loaded, either via `devtools::load_all()` or `devtools::install()` and `library(utValidateR)`. 
+
+
+### Known development needs
+
+Aside from the need for more complete test data as described above, I expect future development needs for utValidateR to include:
+
+- Verifying and troubleshooting activity dates specified in the State Report Data Inventory and included in sandbox/rule-metadata.csv. Expected activity-date columns that are not found in the data are shown in warning messages when running `do_checks()`
+- Similarly, some columns expected by the checklist rules are missing from the dummy data. These can be determined from running `do_checks()` with the argument `verbose = TRUE`. 
+- Completing a small number of rules currently specified as TODOs in checklist.R
+- Fixing rules that fail to execute (as opposed to rules executing to indicate a failure in the data). Such failures will print their error message to the console when `do_checks()` is run. 
+
+As noted, calling `do_checks()` with `verbose = TRUE` will show informative messages/warnings in the console for all of the above situations, allowing each to be iteratively resolved. The following example shows this information for the current rule set and student dummy data.
+
+
+```{r}
+data("fake_student_df")
+student_checklist <- get_checklist("student", "database")
+result <- do_checks(df_tocheck = fake_student_df, checklist = student_checklist, aux_info = aux_info, verbose = TRUE)
+```
+
+
+

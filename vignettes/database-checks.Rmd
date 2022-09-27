@@ -40,13 +40,13 @@ Calling `do_checks()` on a dataframe (provided as the `df_tocheck` arguement) pe
 data("checklist")
 ```
 
-The included `checklist` tibble contains information for (at last count) 338 rules, including the rule name, type ("Database" or "USHE"), file ("Student", "Course", etc.), and the R expression that computes the rule check. These expressions, in the `checker` column, are perhaps the most important part of the utValidateR package, as they evaluate to produce the result of applying each individual rule on the input data. 
+The included `checklist` tibble contains information for (at last count) 336 rules, including the rule name, type ("Database" or "USHE"), file ("Student", "Course", etc.), and the R expression that computes the rule check. These expressions, in the `checker` column, are perhaps the most important part of the utValidateR package, as they evaluate to produce the result of applying each individual rule on the input data. Information on modifying and troubleshooting these rules is provided in the development vignette (`vignette("development", package = "utValidateR")`)
 
-It is important to note that the `checklist` object should not be supplied directly to `do_checks()`, but should first be filtered to include only the rules relevant to a given `df_tocheck`. This is because each file (Student, Course, etc.) and each dataset type (Database vs USHE) requires its own set of checks, constituting a subset of the rows of `checklist`. An example of this would be to generate the checks relevant to a Database check on a Student Course file as follows:
+It is important to note that the `checklist` object should not be supplied directly to `do_checks()`, but should first be filtered to include only the rules relevant to a given `df_tocheck`. This is because each file (Student, Course, etc.) and each dataset type (Database vs USHE) requires its own set of checks, constituting a subset of the rows of `checklist`. As of utValitdateR version 0.1.2, the `get_checklist(file, type)` function can be used to retrieve the relevant checklist for a given dataset. For example, the following retrieves the checklist for student-file database checks. 
 
 ```{r}
-student_course_checklist <- dplyr::filter(checklist, type == "Database", file == "Student Course") %>% 
-  glimpse()
+student_checklist <- get_checklist("student", "database")
+glimpse(student_checklist)
 ```
 
 The full `checklist` object is created in the data-raw/checklist.R file. I recommend referring to that script for viewing the source code of each rule. 

@@ -84,8 +84,7 @@ data("fake_student_df")
 
 ```{r}
 # Subset the full checklist to only the relevant checks
-student_checks <- checklist %>% 
-  filter(file == "Student", type == "Database") %>% 
+student_checks <- get_checklist(file = "student", type = "database") %>% 
   glimpse()
 
 student_res <- do_checks(df_tocheck = fake_student_df, 
@@ -99,8 +98,7 @@ glimpse(student_res)
 
 
 ```{r}
-course_checks <- checklist %>% 
-  filter(file == "Course", type == "Database") %>% 
+course_checks <- get_checklist(file = "course", type = "database") %>% 
   glimpse()
 
 course_res <- do_checks(fake_course_validation, course_checks, aux_info = aux_info)
@@ -109,8 +107,7 @@ course_res <- do_checks(fake_course_validation, course_checks, aux_info = aux_in
 ### Graduation
 
 ```{r}
-graduation_checks <- checklist %>% 
-  filter(file == "Graduation", type == "Database") %>% 
+graduation_checks <- get_checklist(file = "graduation", type = "database") %>% 
   glimpse()
 
 graduation_res <- do_checks(fake_graduation_validation, graduation_checks, aux_info = aux_info)
@@ -121,8 +118,7 @@ graduation_res <- do_checks(fake_graduation_validation, graduation_checks, aux_i
 
 
 ```{r}
-student_course_checks <- checklist %>% 
-  filter(file == "Student Course", type == "Database") %>% 
+student_course_checks <- get_checklist(file = "student course", type = "database") %>% 
   glimpse()
 
 student_course_res <- do_checks(fake_student_course_validation, 
@@ -134,8 +130,7 @@ student_course_res <- do_checks(fake_student_course_validation,
 
 
 ```{r}
-buildings_checks <- checklist %>% 
-  filter(file == "Buildings", type == "Database") %>% 
+buildings_checks <- get_checklist(file = "buildings", type = "database") %>% 
   glimpse()
 
 buildings_res <- do_checks(fake_buildings_validation, 
@@ -146,8 +141,7 @@ buildings_res <- do_checks(fake_buildings_validation,
 ### Rooms
 
 ```{r}
-rooms_checks <- checklist %>% 
-  filter(file == "Rooms", type == "Database") %>% 
+rooms_checks <- get_checklist(file = "rooms", type = "database") %>% 
   glimpse()
 
 rooms_res <- fake_rooms_validation %>% 

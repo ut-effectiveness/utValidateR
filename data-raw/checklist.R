@@ -77,7 +77,7 @@ rule_spec <- tribble(
                      is.na(g_ethnic_n))),
   "G07f", expr(g_ethnic_w %in% "W" | is.na(g_ethnic_w)),
 
-  "S15a", expr(is_valid_values(residency_code, c("R", "N", "A", "M"))),
+  "S15a", expr(is_valid_values(residency_code, c("R", "N", "A", "M", "G"))),
   "S16a", expr(is_valid_values(primary_major_cip_code, valid_cip_codes)),
   "S17a", expr(is_valid_values(s_reg_status, valid_s_reg_statuses, missing_ok = FALSE)), # USHE check
   "S17b", expr(!((s_reg_status %in% c("CS","HS","FF","FH","TU")) &

@@ -165,8 +165,8 @@ rule_spec <- tribble(
   "S43c", expr((s_term_gpa == s_cum_gpa_ugrad) |
                (s_reg_status %in% c("FF", "FH", "TU", "TG")) |
                (s_level == "FR")), # USHE rule
-  "S44c", expr(!(is_pell_awarded %in% TRUE &
-                   (!(is_pell_eligible %in% TRUE) | is_hs_type(student_type_code)))), # pell_eligible might already account for student type
+  "S44c", expr(!is_hs_type(student_type_code) |
+                 (!(is_pell_eligible %in% TRUE) & !(is_pell_awarded %in% TRUE))),
   "S44d", expr(s_pell %in% c("E", "R") | !(s_extract %in% "e")),
   "S45c", expr(s_bia %in% "B" | !(s_extract %in% "e")),
   "S46a", expr(!is_missing_chr(primary_major_college_id)),

@@ -138,7 +138,7 @@ rule_spec <- tribble(
   "S29b", expr(!is.na(s_hb75_waiver) & s_hb75_waiver <= 100 & s_hb75_waiver >= 0),
   "S30a", expr(is_valid_values(secondary_major_cip_code, valid_cip_codes)),
   "S31a", expr(s_inst %in% c("5220","5221","3679","3676","63") | s_cum_membership %in% 0),
-  "S32a", expr(is_valid_credits(total_cumulative_clep_credits_earned)),
+  "S32a", expr(is_valid_credits(total_cumulative_clep_credits_earned, missing_ok = TRUE)),
   "S33a", expr(is_valid_credits(total_cumulative_ap_credits_earned)),
   "S34a", expr(is_valid_student_id(student_id)),
   "S34b", expr(is_valid_student_id(student_id) |
@@ -299,7 +299,7 @@ rule_spec <- tribble(
   "G12a", expr(is_valid_credits(overall_cumulative_credits_earned)), # TODO: verify mapping of rules to fields
   "G13a", expr(is_valid_credits(required_credits)),
   "G14a", expr(is_valid_credits(total_cumulative_ap_credits_earned)),
-  "G15a", expr(is_valid_credits(total_cumulative_clep_credits_earned)),
+  "G15a", expr(is_valid_credits(total_cumulative_clep_credits_earned, missing_ok = TRUE)),
   "G22a", expr(is_valid_credits(total_cumulative_credits_attempted_other_sources)),
   "G23a", expr(is_valid_credits(transfer_cumulative_credits_earned)),
   "G17a", expr(is_valid_values(degree_id, valid_degree_ids)),

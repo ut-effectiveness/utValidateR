@@ -2,14 +2,11 @@
 % Please edit documentation in R/checker-helpers.R
 \name{is_utah_county}
 \alias{is_utah_county}
-\alias{is_us_county}
 \alias{is_us_state}
 \alias{is_nonus_state}
 \title{Checks whether a county is in Utah.}
 \usage{
 is_utah_county(county_code)
-
-is_us_county(county_code)
 
 is_us_state(state)
 
@@ -25,8 +22,6 @@ Checks whether a county is in Utah.
 }
 \section{Functions}{
 \itemize{
-\item \code{is_us_county()}: Checks whether a county is in USA
-
 \item \code{is_us_state()}: Checks whether a state code is in USA
 
 \item \code{is_nonus_state()}: Checks whether a state code is not in USA

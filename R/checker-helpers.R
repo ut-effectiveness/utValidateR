@@ -294,13 +294,6 @@ is_utah_county <- function(county_code) {
                         "055", "057"))
 }
 
-#' @describeIn is_utah_county Checks whether a county is in USA
-#' @export
-is_us_county <- function(county_code) {
-  # Per USHE logic: 99 is US but not UT, 97 is non-US
-  nchar(county_code) %in% 2 & !(county_code %in% "97")
-}
-
 #' @describeIn is_utah_county Checks whether a state code is in USA
 #'
 #' @param state first_admit_state_code

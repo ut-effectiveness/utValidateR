@@ -40,13 +40,13 @@ Calling `do_checks()` on a dataframe (provided as the `df_tocheck` arguement) pe
 data("checklist")
 ```
 
-The included `checklist` tibble contains information for (at last count) 338 rules, including the rule name, type ("Database" or "USHE"), file ("Student", "Course", etc.), and the R expression that computes the rule check. These expressions, in the `checker` column, are perhaps the most important part of the utValidateR package, as they evaluate to produce the result of applying each individual rule on the input data. 
+The included `checklist` tibble contains information for (at last count) 336 rules, including the rule name, type ("Database" or "USHE"), file ("Student", "Course", etc.), and the R expression that computes the rule check. These expressions, in the `checker` column, are perhaps the most important part of the utValidateR package, as they evaluate to produce the result of applying each individual rule on the input data. Information on modifying and troubleshooting these rules is provided in the development vignette (`vignette("development", package = "utValidateR")`)
 
-It is important to note that the `checklist` object should not be supplied directly to `do_checks()`, but should first be filtered to include only the rules relevant to a given `df_tocheck`. This is because each file (Student, Course, etc.) and each dataset type (Database vs USHE) requires its own set of checks, constituting a subset of the rows of `checklist`. An example of this would be to generate the checks relevant to a Database check on a Student Course file as follows:
+It is important to note that the `checklist` object should not be supplied directly to `do_checks()`, but should first be filtered to include only the rules relevant to a given `df_tocheck`. This is because each file (Student, Course, etc.) and each dataset type (Database vs USHE) requires its own set of checks, constituting a subset of the rows of `checklist`. As of utValitdateR version 0.1.2, the `get_checklist(file, type)` function can be used to retrieve the relevant checklist for a given dataset. For example, the following retrieves the checklist for student-file database checks. 
 
 ```{r}
-student_course_checklist <- dplyr::filter(checklist, type == "Database", file == "Student Course") %>% 
-  glimpse()
+student_checklist <- get_checklist("student", "database")
+glimpse(student_checklist)
 ```
 
 The full `checklist` object is created in the data-raw/checklist.R file. I recommend referring to that script for viewing the source code of each rule. 
@@ -84,8 +84,7 @@ data("fake_student_df")
 
 ```{r}
 # Subset the full checklist to only the relevant checks
-student_checks <- checklist %>% 
-  filter(file == "Student", type == "Database") %>% 
+student_checks <- get_checklist(file = "student", type = "database") %>% 
   glimpse()
 
 student_res <- do_checks(df_tocheck = fake_student_df, 
@@ -99,8 +98,7 @@ glimpse(student_res)
 
 
 ```{r}
-course_checks <- checklist %>% 
-  filter(file == "Course", type == "Database") %>% 
+course_checks <- get_checklist(file = "course", type = "database") %>% 
   glimpse()
 
 course_res <- do_checks(fake_course_validation, course_checks, aux_info = aux_info)
@@ -109,8 +107,7 @@ course_res <- do_checks(fake_course_validation, course_checks, aux_info = aux_in
 ### Graduation
 
 ```{r}
-graduation_checks <- checklist %>% 
-  filter(file == "Graduation", type == "Database") %>% 
+graduation_checks <- get_checklist(file = "graduation", type = "database") %>% 
   glimpse()
 
 graduation_res <- do_checks(fake_graduation_validation, graduation_checks, aux_info = aux_info)
@@ -121,8 +118,7 @@ graduation_res <- do_checks(fake_graduation_validation, graduation_checks, aux_i
 
 
 ```{r}
-student_course_checks <- checklist %>% 
-  filter(file == "Student Course", type == "Database") %>% 
+student_course_checks <- get_checklist(file = "student course", type = "database") %>% 
   glimpse()
 
 student_course_res <- do_checks(fake_student_course_validation, 
@@ -134,8 +130,7 @@ student_course_res <- do_checks(fake_student_course_validation,
 
 
 ```{r}
-buildings_checks <- checklist %>% 
-  filter(file == "Buildings", type == "Database") %>% 
+buildings_checks <- get_checklist(file = "buildings", type = "database") %>% 
   glimpse()
 
 buildings_res <- do_checks(fake_buildings_validation, 
@@ -146,8 +141,7 @@ buildings_res <- do_checks(fake_buildings_validation,
 ### Rooms
 
 ```{r}
-rooms_checks <- checklist %>% 
-  filter(file == "Rooms", type == "Database") %>% 
+rooms_checks <- get_checklist(file = "rooms", type = "database") %>% 
   glimpse()
 
 rooms_res <- fake_rooms_validation %>% 

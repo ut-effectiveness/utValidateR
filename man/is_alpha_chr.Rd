@@ -21,6 +21,6 @@ Checker for missing character values
 }
 \section{Functions}{
 \itemize{
-\item \code{is_missing_chr}: returns TRUE for NA or empty-string values
-}}
+\item \code{is_missing_chr()}: returns TRUE for NA or empty-string values
 
+}}

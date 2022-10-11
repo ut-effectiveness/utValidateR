@@ -4,9 +4,7 @@
 \alias{is_freshmen_type}
 \alias{is_hs_type}
 \alias{is_undergrad_type}
-\alias{is_grad_type}
 \alias{is_undergrad_level}
-\alias{is_grad_level}
 \title{Helper functions for student_type  and level_class_id categories}
 \usage{
 is_freshmen_type(student_type)
@@ -15,30 +13,20 @@ is_hs_type(student_type)
 
 is_undergrad_type(student_type)
 
-is_grad_type(student_type)
-
 is_undergrad_level(level)
-
-is_grad_level(level)
 }
 \arguments{
 \item{student_type}{vector of student_type_code values}
-
-\item{level}{vector of primary_level_class_id values}
 }
 \description{
 Helper functions for student_type  and level_class_id categories
 }
 \section{Functions}{
 \itemize{
-\item \code{is_hs_type}: returns TRUE for high-school student_types
+\item \code{is_hs_type()}: returns TRUE for high-school student_types
 
-\item \code{is_undergrad_type}: returns TRUE for undergrad student_types
+\item \code{is_undergrad_type()}: returns TRUE for undergrad student_types
 
-\item \code{is_grad_type}: returns TRUE for grad-school student_types
+\item \code{is_undergrad_level()}: returns TRUE for undergrad level_class_ids
 
-\item \code{is_undergrad_level}: returns TRUE for undergrad level_class_ids
-
-\item \code{is_grad_level}: returns TRUE for grad-school level_class_ids
 }}
-

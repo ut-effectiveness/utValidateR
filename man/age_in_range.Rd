@@ -2,19 +2,19 @@
 % Please edit documentation in R/checker-helpers.R
 \name{age_in_range}
 \alias{age_in_range}
-\title{Computes age for birthdate and returns a logical vector indicating whether
+\title{Computes age from startdate and returns a logical vector indicating whether
 the age is between lwr and upr years}
 \usage{
-age_in_range(birthdate, lwr, upr)
+age_in_range(startdate, lwr, upr)
 }
 \arguments{
-\item{birthdate}{Date-valued vector}
+\item{startdate}{Date-valued vector}
 
 \item{lwr}{lower bound on age in years}
 
 \item{upr}{upper bound on age in years}
 }
 \description{
-Computes age for birthdate and returns a logical vector indicating whether
+Computes age from startdate and returns a logical vector indicating whether
 the age is between lwr and upr years
 }

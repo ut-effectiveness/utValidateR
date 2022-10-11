@@ -2,7 +2,7 @@
 % Please edit documentation in R/checker-helpers.R
 \name{date_before_present_year}
 \alias{date_before_present_year}
-\title{Checks whether a given date falls befor the present year}
+\title{Checks whether a given date falls before the present year}
 \usage{
 date_before_present_year(date, year = format(Sys.Date(), "\%Y"))
 }

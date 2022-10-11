@@ -4,7 +4,7 @@
 \alias{do_checks}
 \title{Apply all rules in checklist to a dataframe}
 \usage{
-do_checks(df_tocheck, checklist, aux_info)
+do_checks(df_tocheck, checklist, aux_info, verbose = FALSE)
 }
 \arguments{
 \item{df_tocheck}{a data.frame to check, like the included \code{fake_student_df}}
@@ -13,6 +13,9 @@ do_checks(df_tocheck, checklist, aux_info)
 well as \code{rule} and \code{activity_date} columns}
 
 \item{aux_info}{list (or environment) with additional objects used by the checkers}
+
+\item{verbose}{if TRUE, print additional information (currently only passed to
+\code{verify_columns_present()})}
 }
 \value{
 A tibble created by appending \code{status} and (for database checks) \code{activity_date}

@@ -12,13 +12,13 @@ library(stringr)
 # This is where each rule is implemented as an R expression
 rule_spec <- tribble(
   ~rule,  ~checker,
-  "S00a", expr(!is_duplicated(student_id)),
-  "S00b", expr(!is_duplicated(ssn)),
+  "S00a", expr(!is_duplicated(cbind(student_id, term_id))),
+  "S00b", expr(!is_duplicated(cbind(ssn, term_id))),
   "S02a", expr(!is.na(s_year) & !is.na(s_term) & !is.na(s_extract)), # USHE check
   "SC02a", expr(!is.na(sc_year) & !is.na(sc_term) & !is.na(sc_extract)), # USHE check
   "C02", expr(!is.na(c_year) & !is.na(c_term) & !is.na(c_extract)), # USHE check
-  "S03a", expr(!is.na(student_id) & is_missing_chr(ssn)),
-  "S03b", expr(!(s_id_flage %in% "S") | !is.na(s_ssn)), # USHE rule
+  "S03a", expr(!is.na(student_id) & !is_missing_chr(ssn)),
+  "S03b", expr(!(s_id_flag %in% "S") | !is.na(s_ssn)), # USHE rule
   "S03c", expr(!((us_citizenship_code %in% "1") & is_missing_chr(ssn))),
   "S04a", expr(s_id_flag %in% c("S", "I")), # USHE rule
   "S04b", expr(is_valid_ssn(ssn, missing_ok = TRUE)),
@@ -51,31 +51,31 @@ rule_spec <- tribble(
   "S13", expr(toupper(gender_code) %in% c("M", "F")),
   "S13a", expr(TODO('USHE rule for "gender change after census"')),
   "S13b", expr(TODO('USHE rule for "gender change after previous term"')),
-  "S14a", expr(s_ethnic_a %in% "A" | is.na(s_ethnic_a)),
-  "S14b", expr(s_ethnic_b %in% "B" | is.na(s_ethnic_b)),
-  "S14h", expr(s_ethnic_h %in% "H" | is.na(s_ethnic_h)),
-  "S14i", expr(s_ethnic_i %in% "I" | is.na(s_ethnic_i)),
+  "S14a", expr(s_ethnic_a %in% c("A", NA)),
+  "S14b", expr(s_ethnic_b %in% c("B", NA)),
+  "S14h", expr(s_ethnic_h %in% c("H", NA)),
+  "S14i", expr(s_ethnic_i %in% c("I", NA)),
   "S14m", expr(!(s_ethnic_ipeds %in% c("H","A","B","I","P","W","N","U"))), # TODO: verify my interpretation
-  "S14n", expr(s_ethnic_n %in% "N" | is.na(s_ethnic_n)),
-  "S14p", expr(s_ethnic_p %in% "P" | is.na(s_ethnic_p)),
-  "S14u", expr(s_ethnic_u %in% "U" | is.na(s_ethnic_u)),
+  "S14n", expr(s_ethnic_n %in% c("N", NA)),
+  "S14p", expr(s_ethnic_p %in% c("P", NA)),
+  "S14u", expr(s_ethnic_u %in% c("U", NA)),
   "S14ua", expr(!(s_ethnic_u %in% "U") |
                   (is.na(s_ethnic_a) & is.na(s_ethnic_b) & is.na(s_ethnic_h) &
                    is.na(s_ethnic_i) & is.na(s_ethnic_p) & is.na(s_ethnic_w) &
                    is.na(s_ethnic_n))),
-  "S14w", expr(s_ethnic_w %in% "W" | is.na(s_ethnic_w)),
-  "G07a", expr(g_ethnic_a %in% "A" | is.na(g_ethnic_a)),
-  "G07b", expr(g_ethnic_b %in% "B" | is.na(g_ethnic_b)),
-  "G07c", expr(g_ethnic_h %in% "H" | is.na(g_ethnic_h)),
-  "G07d", expr(g_ethnic_i %in% "I" | is.na(g_ethnic_i)),
-  "G07g", expr(g_ethnic_n %in% "N" | is.na(g_ethnic_n)),
-  "G07e", expr(g_ethnic_p %in% "P" | is.na(g_ethnic_p)),
-  "G07h", expr(g_ethnic_u %in% "U" | is.na(g_ethnic_u)),
+  "S14w", expr(s_ethnic_w %in% c("W", NA)),
+  "G07a", expr(g_ethnic_a %in% c("A", NA)),
+  "G07b", expr(g_ethnic_b %in% c("B", NA)),
+  "G07c", expr(g_ethnic_h %in% c("H", NA)),
+  "G07d", expr(g_ethnic_i %in% c("I", NA)),
+  "G07g", expr(g_ethnic_n %in% c("N", NA)),
+  "G07e", expr(g_ethnic_p %in% c("P", NA)),
+  "G07h", expr(g_ethnic_u %in% c("U", NA)),
   "G07i", expr(!(g_ethnic_u %in% "U") |
                   (is.na(g_ethnic_a) & is.na(g_ethnic_b) & is.na(g_ethnic_h) &
                      is.na(g_ethnic_i) & is.na(g_ethnic_p) & is.na(g_ethnic_w) &
                      is.na(g_ethnic_n))),
-  "G07f", expr(g_ethnic_w %in% "W" | is.na(g_ethnic_w)),
+  "G07f", expr(g_ethnic_w %in% c("W", NA)),
 
   "S15a", expr(is_valid_values(residency_code, c("R", "N", "A", "M", "G"))),
   "S16a", expr(is_valid_values(primary_major_cip_code, valid_cip_codes)),
@@ -130,10 +130,10 @@ rule_spec <- tribble(
   "S27b", expr(!(first_admit_country_code %in% "US" &
                    (first_admit_county_code %in% "97" |
                       is_nonus_state(first_admit_state_code)))),
-  "S27c", expr(is_valid_country_code(first_admit_country_code)),
+  "S27c", expr(is_valid_values(first_admit_country_code, valid_country_codes, missing_ok = FALSE)),
   "S28a", expr(!(first_admit_state_code %in% "UT") |
                  !is_undergrad_type(student_type_code) |
-                 is_valid_values(high_school_code, valid_hs_codes, missing_ok = FALSE)),
+                 is_valid_values(high_school_code, valid_highschools, missing_ok = FALSE)),
   "S29a", expr(s_hb75_waiver <= 100),
   "S29b", expr(!is.na(s_hb75_waiver) & s_hb75_waiver <= 100 & s_hb75_waiver >= 0),
   "S30a", expr(is_valid_values(secondary_major_cip_code, valid_cip_codes)),
@@ -165,8 +165,8 @@ rule_spec <- tribble(
   "S43c", expr((s_term_gpa == s_cum_gpa_ugrad) |
                (s_reg_status %in% c("FF", "FH", "TU", "TG")) |
                (s_level == "FR")), # USHE rule
-  "S44c", expr(!(is_pell_awarded %in% TRUE &
-                   (!(is_pell_eligible %in% TRUE) | is_hs_type(student_type_code)))), # pell_eligible might already account for student type
+  "S44c", expr(!is_hs_type(student_type_code) |
+                 (!(is_pell_eligible %in% TRUE) & !(is_pell_awarded %in% TRUE))),
   "S44d", expr(s_pell %in% c("E", "R") | !(s_extract %in% "e")),
   "S45c", expr(s_bia %in% "B" | !(s_extract %in% "e")),
   "S46a", expr(!is_missing_chr(primary_major_college_id)),
@@ -175,9 +175,10 @@ rule_spec <- tribble(
   "S47b", expr(is_missing_chr(primary_major_cip_code) |
                  is_missing_chr(secondary_major_cip_code) |
                  (primary_major_cip_code != secondary_major_cip_code)),
-  "S47c", expr(is_alpha_chr(primary_major_desc)),
+  "S47c", expr(matches_regex(primary_major_desc, "^[a-zA-Z' \\-]*$", #alpha plus space, apostrophe, hyphen
+                             missing_ok = TRUE)),
   "S48a", expr(is_alpha_chr(secondary_major_college_id)),
-  "S49a", expr(!is_missing_chr(secondary_major_cip_code) & !is_missing_chr(secondary_major_desc)),
+  "S49a", expr(is_missing_chr(secondary_major_cip_code) | !is_missing_chr(secondary_major_desc)),
   "S49b", expr(is_alpha_chr(secondary_major_desc)),
   "C00",  expr(!is_duplicated(cbind(subject_code, course_number, section_number))),
   "C04a", expr(nchar(course_number) == 4),
@@ -325,7 +326,7 @@ rule_spec <- tribble(
   "G21d", expr(!is_duplicated(cbind(sis_student_id,
                                     graduation_date, primary_major_cip_code, degree_id,
                                     ipeds_award_level_code, primary_major_id))),
-  "G24a", expr(is_valid_year(graduated_academic_year_code)), # TODO: should verify matching some reference year
+  "G24a", expr(is_valid_year(graduated_academic_year_code, missing_ok = FALSE)), # TODO: should verify matching some reference year
   "G25a", expr(is_valid_values(season, valid_seasons)),
   "G28a", expr(!is_missing_chr(degree_desc)),
   "SC03", expr(!is.na(student_id) & !is.na(ssn)),
@@ -459,13 +460,9 @@ get_ushe_file <- function(ushe_element) {
 }
 
 # dataframe with rule info from Data Inventory
-all_rules <- read.csv("sandbox/full-rules-rename.csv") %>%
-  mutate(ushe_rule = map(ushe_rule, ~unlist(str_split(., pattern = ", "))),
-         ref_rule = map_chr(ushe_rule, ~`[`(., 1))) %>%
-  unnest(cols = ushe_rule) %>%
-  mutate(activity_date = ifelse(activity_date == "n/a", NA_character_, activity_date)) %>%
+rule_metadata <- read.csv("sandbox/rule-metadata.csv") %>%
   select(rule = ushe_rule, ref_rule, description, status,
-         type, activity_date) %>%
+         type, activity_date, banner) %>%
 
   # Where a rule exists in rule_spec, force it to be its own ref_rule.
   # I've determined these need their own specification (can't use another rule's spec)
@@ -474,7 +471,7 @@ all_rules <- read.csv("sandbox/full-rules-rename.csv") %>%
 
 
 # Rule info joined to anonymous-function tibble
-checklist <- all_rules %>%
+checklist <- rule_metadata %>%
   inner_join(rule_spec, by = c(ref_rule = "rule")) %>%
   mutate(file = get_ushe_file(rule)) %>%
   glimpse()

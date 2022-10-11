@@ -1,0 +1,60 @@
+buildings_id,building_location_code,building_location_desc,building_ownership_code,building_name,building_number,building_abbrv,building_construction_year,building_remodel_year,building_cost_replacement,building_condition_code,building_condition_desc,building_area_gross,building_cost_myr,building_auxiliary,building_activity_date,building_to_term_id,building_from_term_id,is_state_reported
+ABBY,MC,Main Campus,O,Abby Apartments,10516,ABBY,1977,2006,,3,3-Fair,20148,,Y,2021-10-26,,200420,true
+ADMIN,MC,Main Campus,O,Administration Building,707,ADMIN,1968,2017,1640942,3,3-Fair,9826,6117.3,N,2021-10-29,,200420,true
+ALUMNI,MC,Main Campus,O,Wade Alumni House,8346,ALUMNI,1996,,900000,4,4-Satisfactory,7139,,N,2021-11-01,,200420,true
+ASTOR,MC,Main Campus,O,Automotive Storage,8964,ASTOR,1990,,313875,3,3-Fair,1079,,N,2021-11-01,,200420,true
+BKS,MC,Main Campus,O,Brooks' Stop,6520,BKS,1968,2017,330148,5,5-Good,1814,,Y,2021-10-29,,200420,true
+BROWN,MC,Main Campus,O,Browning Learning Resource Ctr,5399,BROWN,1990,,3275454,4,4-Satisfactory,17997,,N,2021-10-29,,200420,true
+BURNS,MC,Main Campus,O,Burns Arena,8603,BURNS,1987,2015,18487000,3,3-Fair,95934,32000000.0,N,2021-12-03,,200420,true
+BURNSM,MC,Main Campus,O,Burns Maintenance Building,8599,BURNSM,1989,,771206,3,3-Fair,4618,16300.0,N,2021-11-01,,200420,true
+BWC,MC,Main Campus,O,Booth Wellness Center,16089,BWC,1987,2010,700000,4,4-Satisfactory,6039,,Y,2021-10-29,,200420,true
+CABIN,SPS,Special Purpose Sites,O,Dolowitz/Snow Cabin,8923,CABIN,2000,,1223300,4,4-Satisfactory,9410,,Y,2021-10-29,,200420,true
+CHANCE,MC,Main Campus,O,Chancellor Apartments,12068,CHANCE,1995,,,3,3-Fair,14916,,Y,2021-10-26,,200420,true
+COLINN,,,,College Inn,,COLINN,,,,,,,,,2022-01-05,,200420,true
+COOPER,MC,Main Campus,O,Cooper Field Building,9152,COOPER,1996,,38484,3,3-Fair,1069,,N,2021-10-29,,200420,true
+COX,MC,Main Campus,O,Cox Auditorium,8602,COX,1987,,6865331,4,4-Satisfactory,36713,,N,2021-10-29,,200420,true
+CVSA,MC,Main Campus,O,Campus View Suites A,17612,CVSA,2016,,,5,5-Good,88349,,Y,2021-10-26,,200420,true
+CVSII,MC,Main Campus,O,Campus View Suites II,18853,CVSII,2021,,,5,5-Good,119165,,,2022-04-07,,202140,true
+ECCLES,MC,Main Campus,O,Delores D Eccles Fine Arts Ctr,9699,ECCLES,2004,,20514000,4,4-Satisfactory,78000,,N,2021-10-29,,200420,true
+FACMAN,MC,Main Campus,O,Facilitites Management,6993,FACMAN,1968,2019,3419548,5,5-Good,15686,,N,2021-10-29,,200420,true
+GARDNR,MC,Main Campus,O,Gardner Center,8113,GARDNR,1994,2002,12973680,4,4-Satisfactory,54057,,Y,2021-10-29,,200420,true
+GRAFF,MC,Main Campus,O,Graff Fine Arts Center,708,GRAFF,1962,2019,1241604,5,5-Good,10095,314722.1,N,2021-10-29,,200420,true
+HAB,MC,Main Campus,O,Habibian Wrestling Center,16214,HAB,2010,,3169200,4,4-Satisfactory,13900,,N,2021-10-29,,200420,true
+HANGAR,MC,Main Campus,O,Airport Hangar,100272,HANGAR,1979,2012,43382,4,4-Satisfactory,5810,108.21,N,2022-01-19,,200420,true
+HAZMAT,MC,Main Campus,O,Hazmat/HP Storage Building,17845,HAZMAT,2016,,30744,4,4-Satisfactory,732,,N,2021-11-01,,200420,true
+HCC,MC,Main Campus,O,Holland Centennial Commons,15130,HCC,2012,,48000000,5,5-Good,175927,,N,2021-10-29,,201320,true
+HEAT,MC,Main Campus,O,Heating Plant,720,HEAT,1962,1975,408893,4,4-Satisfactory,9973,758659.55,N,2021-10-29,,200420,true
+HPC,MC,Main Campus,O,Human Performance Center,18649,HPC,2019,,45000000,5,5-Good,155000,,N,2021-10-29,,200420,true
+HURCTR,IC,Instructional Center,O,Hurricane Education Center,9208,HURCTR,2000,,1942864,4,4-Satisfactory,11039,,N,2021-10-29,,200420,true
+HURST,MC,Main Campus,O,Hurst Baseball Complex,8112,HURST,1996,,2085060,4,4-Satisfactory,9145,,N,2021-11-01,,200420,true
+ICL,MC,Main Campus,O,ICL House,5400,ICL,1920,1990,329588,2,2-Poor,2086,5999.31,N,2021-10-29,,200420,true
+INN,SPC,Special Purpose Centers,O,University Inn,730,INN,1956,1995,3637997,3,3-Fair,22319,3200.95,Y,2021-10-29,,200420,true
+INNOV,MC,Main Campus,O,Atwood Innovation Plaza,17844,INNOV,1952,,7900000,3,3-Fair,52582,,N,2021-10-29,,200420,true
+IR,MC,Main Campus,O,Institutional Residence,12288,IR,1994,,681980,5,5-Good,5246,,N,2021-10-29,,200420,true
+ITS,MC,Main Campus,O,IT Solutions Building,715,ITS,1968,,1598158,4,4-Satisfactory,7331,,N,2021-10-29,,200420,true
+JEN,MC,Main Campus,O,Jennings Communication Bldg,2195,JEN,1979,2002,5116566,3,3-Fair,28113,61668.13,N,2021-10-29,,200420,true
+MCDON,MC,Main Campus,O,McDonald Center,6518,MCDON,1968,1993,3606330,4,4-Satisfactory,19815,207652.92,N,2021-10-29,,200420,true
+MORGAN,MC,Main Campus,O,Morgan Apartment Complex,16600,MORGAN,1978,,,3,3-Fair,14048,,Y,2021-10-26,,200420,true
+PAV,MC,Main Campus,O,DSU Pavilion,16391,PAV,2011,,19782,5,5-Good,2826,,N,2021-11-01,,200420,true
+SAC,MC,Main Campus,O,Student Activities Center,713,SAC,1956,,7180800,3,3-Fair,38400,108727.02,N,2021-10-29,,202220,true
+SET,MC,Main Campus,O,"Science, Engineering & Tech",18317,SET,2021,,,5,5-Good,107319,,N,2022-03-30,,202140,true
+SMITH,MC,Main Campus,O,Smith Computer Center,8600,SMITH,1987,2016,3698240,4,4-Satisfactory,20320,741262.87,N,2021-10-29,,200420,true
+SNOW,MC,Main Campus,O,Snow Math & Science Center,710,SNOW,1966,2012,12830160,3,3-Fair,53459,4244346.66,N,2021-10-29,,200420,true
+SOFBL,MC,Main Campus,O,Softball Building,10517,SOFBL,2006,,107789,3,3-Fair,2629,,N,2021-11-01,,200420,true
+TANNER,OIS,Other Instructional Sites,O,O.C. Tanner Amphitheater,5404,TANNER,1976,,1030370,3,3-Fair,5510,282398.95,N,2021-10-29,,200420,true
+TAYLOR,MC,Main Campus,O,Taylor Health Sciences Bldg,12273,TAYLOR,2008,,18557760,4,4-Satisfactory,77324,,N,2021-10-29,,200420,true
+TC,MC,Main Campus,O,Trailblazer  Concessions,10460,TC,2005,,414766,3,3-Fair,2218,,N,2021-11-01,,200420,true
+TECH,MC,Main Campus,O,Technology Building,6519,TECH,1968,,1781136,3,3-Fair,7812,,N,2021-10-29,,200420,true
+TOWERA,MC,Main Campus,O,Nisson Tower A Dorm,722,TOWERA,1968,,1009785,2,2-Poor,7861,,Y,2021-10-29,,200420,true
+TOWERB,MC,Main Campus,O,Nisson Tower B Dorm,723,TOWERB,1968,,1009785,2,2-Poor,5871,,Y,2021-10-29,,200420,true
+TOWERC,MC,Main Campus,O,Nisson Tower C Dorm,724,TOWERC,1968,,1009785,2,2-Poor,5871,,Y,2021-10-29,,200420,true
+TOWERD,MC,Main Campus,O,Nisson Tower D Dorm,725,TOWERD,1968,,1009785,2,2-Poor,5871,,Y,2021-10-29,,200420,true
+TS,MC,Main Campus,O,Trailblazer Stadium,5402,TS,1984,,7000000,5,5-Good,10882,,N,2021-11-01,,200420,true
+TSE,MC,Main Campus,O,Trailblazer Stadium East,18734,TSE,2018,,5776750,5,5-Good,16505,,Y,2021-10-29,,200420,true
+TSM,MC,Main Campus,O,Trailblazer Sports Medicine,8604,TSM,1987,2021,1890616,3,3-Fair,5950,,N,2021-12-15,,202140,true
+UHB,MC,Main Campus,O,Udvar-Hazy Business Building,8345,UHB,1996,,13958400,4,4-Satisfactory,58160,,N,2021-11-03,,202220,true
+UPLAZA,MC,Main Campus,O,University Plaza Building A,12914,UPLAZA,1996,,1443200,4,4-Satisfactory,8200,,N,2021-10-29,,200420,true
+UPLAZB,MC,Main Campus,O,University Plaza Building B,17652,UPLAZB,1996,2010,1455168,3,3-Fair,8268,,N,2021-10-29,,200420,true
+UPLAZC,MC,Main Campus,O,University Plaza Building C,12651,UPLAZC,1996,,1443200,3,3-Fair,8200,,N,2021-10-29,,200420,true
+UPLAZD,MC,Main Campus,O,University Plaza Building D,17765,UPLAZD,1996,,1443200,3,3-Fair,8200,,N,2021-10-29,,200420,true
+WEDU,MC,Main Campus,O,Whitehead Education Bldg,8644,WEDU,1963,1990,6126484,2,2-Poor,33662,,N,2021-10-29,,200420,true

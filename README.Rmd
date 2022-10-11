@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![Codecov test coverage](https://codecov.io/gh/dsu-effectiveness/utValidateR/branch/master/graph/badge.svg)](https://app.codecov.io/gh/dsu-effectiveness/utValidateR?branch=master)
 <!-- badges: end -->
 
 The goal of utValidateR is to validate elements within the warehouse ETL pipeline, or elements in the reporting layer. The functions in this library are used in USHE and IPEDS reporting. The functions also for the basis for the campus data audits. 
@@ -34,6 +35,8 @@ devtools::install_github("dsu-effectiveness/utValidateR", ref = "develop")
 
 Changes to the R code for performing each rule check should be made in data-raw/checklist.R, in the `rule_spec` object. Functions used by these checks are defined in R/checker-helpers.R. Data objects referenced in the checker functions are provided in `aux_info`, which can be modified in data-raw/aux_info.R. 
 
+See `vignette("development", package = "utValidateR")` (or view its source in vignettes/development.Rmd) for more information on development workflows and needs. 
+
 Specific questions or requests can be submitted as github issues.  
 
 ## Using
@@ -47,7 +50,7 @@ data("fake_student_df")
 data("checklist")
 data("aux_info")
 
-student_checks <- filter(checklist, file == "Student", type == "Database") %>% 
+student_checks <- get_checklist(file = "student", type = "database") %>% 
   glimpse()
 
 student_check_result <- suppressMessages(suppressWarnings( # suppressing rather verbose error descriptions

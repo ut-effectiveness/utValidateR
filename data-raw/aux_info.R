@@ -4,6 +4,10 @@
 concurrent_list <- read.csv("sandbox/analytics_quad_concurrent_courses.csv")
 building_list <- read.csv("sandbox/analytics_quad_buildings.csv")
 
+# ISO country codes from csv
+iso_countries <- read.csv("sandbox/iso-countries.csv")
+country_codes <- setdiff(iso_countries$iso_alpha2, "")
+
 # CIP codes from csv
 cipdf <- read.csv("sandbox/CIPCode2020.csv")
 cip_codes <- cipdf %>%
@@ -64,6 +68,8 @@ aux_info <- list(
 
   valid_cip_codes = cip_codes$cip_chr, #G09a
 
+  valid_country_codes = country_codes, #S27c
+
   valid_highschools = unique(highschools$HS_ACT_Code), #C48a
 
   non_concurrent_highschools = c("459050","459100","459150","459200","459300",
@@ -98,6 +104,8 @@ aux_info <- list(
                                  "NON", "WWW", "XXX", "YYY", "ZZZ"), #R07b
 
   valid_room_use_codes = c(room_use_codes), #R08b
+
+  valid_student_type_codes <- c('N','2','R','C','T','3','P','H','0','5','1','F','S'),
 
   # Inventories
   building_inventory = building_list$building_number, #C19c and others, TODO: get from a query

@@ -25,10 +25,10 @@ Checks whether a county is in Utah.
 }
 \section{Functions}{
 \itemize{
-\item \code{is_us_county}: Checks whether a county is in USA
+\item \code{is_us_county()}: Checks whether a county is in USA
 
-\item \code{is_us_state}: Checks whether a state code is in USA
+\item \code{is_us_state()}: Checks whether a state code is in USA
 
-\item \code{is_nonus_state}: Checks whether a state code is not in USA
+\item \code{is_nonus_state()}: Checks whether a state code is not in USA
+
 }}
-

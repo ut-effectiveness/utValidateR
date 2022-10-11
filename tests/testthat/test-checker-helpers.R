@@ -213,15 +213,9 @@ test_that("is_missing_chr works", {
 })
 
 test_that("is_utah_county works", {
-  input <- c("01", "97",  "98", "99",  "100", " 97", "",     NA   )
-  out1  <- c(TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE , FALSE)
+  input <- c("001", "097",  "029", "035",  "100", "29",  "",     NA   )
+  out1  <- c(TRUE,  FALSE,  TRUE,  TRUE,   FALSE, FALSE, FALSE , FALSE)
   expect_equal(is_utah_county(input), out1)
-})
-
-test_that("is_us_county works", {
-  input <- c("01", "97",  "98", "99",  "100", " 97", "",     NA   )
-  out1  <- c(TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE , FALSE)
-  expect_equal(is_us_county(input), out1)
 })
 
 test_that("is_us_state works", {

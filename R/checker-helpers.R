@@ -287,7 +287,8 @@ is_missing_chr <- function(x) {
 #' @export
 is_utah_county <- function(county_code) {
   # Per USHE logic: 99 is US but not UT, 97 is non-US
-  nchar(county_code) %in% 2 & (county_code %in% c("001", "003", "005", "007", "009", "011", "013", "015", "017",
+  nchar(county_code) %in% 3 &
+    (county_code %in% c("001", "003", "005", "007", "009", "011", "013", "015", "017",
                         "019", "021", "023", "025", "027", "029", "031", "033", "035",
                         "037", "039", "041", "043", "045", "047", "049", "051", "053",
                         "055", "057"))

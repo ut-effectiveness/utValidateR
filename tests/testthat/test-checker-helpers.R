@@ -125,7 +125,9 @@ test_that("is_valid_previous_id works", {
 test_that("is_valid_credits works", {
   input <- c(-1,    0,    1,    100.1, 9999,  10000, NA   )
   out1  <- c(FALSE, TRUE, TRUE, TRUE,  TRUE,  FALSE, FALSE)
+  out2  <- c(FALSE, TRUE, TRUE, TRUE,  TRUE,  FALSE, TRUE)
   expect_equal(is_valid_credits(input), out1)
+  expect_equal(is_valid_credits(input, missing_ok = TRUE), out2)
 })
 
 test_that("is_valid_credits_chr works", {

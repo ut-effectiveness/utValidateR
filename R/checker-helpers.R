@@ -163,8 +163,15 @@ is_valid_previous_id <- function(x) {
 
 #' @describeIn is_valid_values credits_earned
 #' @export
-is_valid_credits <- function(x) {
-  is.numeric(x) & !is.na(x) & x >= 0 & x < 10000
+is_valid_credits <- function(x, missing_ok = FALSE) {
+  out <- is.numeric(x) & x >= 0 & x < 10000
+
+  out <- if (missing_ok) {
+    out | is.na(x)
+  } else {
+    out & !is.na(x)
+  }
+  out
 }
 
 #' @describeIn is_valid_values character-valued credits (min_credits and max_credits)

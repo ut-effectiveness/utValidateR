@@ -30,7 +30,7 @@ is_valid_student_id(x)
 
 is_valid_previous_id(x)
 
-is_valid_credits(x)
+is_valid_credits(x, missing_ok = FALSE)
 
 is_valid_credits_chr(x)
 

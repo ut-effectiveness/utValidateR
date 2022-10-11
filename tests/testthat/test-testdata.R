@@ -2,7 +2,7 @@
 test_that("get_test_data returns desired dataframe", {
 
   data(checklist, package = "utValidateR", envir = environment())
-  studentdf <- suppressWarnings(get_test_data("student", checklist))
+  studentdf <- suppressWarnings(get_test_data("student"))
 
   expect_s3_class(studentdf, "data.frame")
   expect_gt(nrow(studentdf), 0)
@@ -11,7 +11,7 @@ test_that("get_test_data returns desired dataframe", {
 test_that("get_test_data output is valid do_checks input", {
   data("checklist", package = "utValidateR", envir = environment())
   data("aux_info", package = "utValidateR", envir = environment())
-  studentdf <- suppressWarnings(get_test_data("student", checklist))
+  studentdf <- suppressWarnings(get_test_data("student"))
 
   student_checks <- dplyr::filter(checklist, type == "Database", file == "Student")
 

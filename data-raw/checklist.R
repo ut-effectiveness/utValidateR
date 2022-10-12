@@ -187,7 +187,7 @@ rule_spec <- tribble(
   "C06a", expr(is_valid_credits_chr(course_min_credits)),
   "C07a", expr(is_valid_credits_chr(course_max_credits)),
   "C07b", expr(course_max_credits >= course_min_credits),
-  "C08a", expr(is_valid_credits(contact_hours)),
+  "C08a", expr(is_valid_credits(contact_hours), missing_ok = TRUE),
   "C09", expr(is_valid_values(tolower(c_line_item), valid_c_line_items, missing_ok = TRUE)), # USHE rule
   "C10", expr(!is_missing_chr(campus_id)),
   "C11", expr(!is_missing_chr(budget_code)),

@@ -96,8 +96,8 @@ rule_spec <- tribble(
   "S18b", expr(!(s_reg_status %in% c("HS", "FH", "FF", "TU", "CS", "RS") & s_level %in% c("GN","GG")) |
                  (s_reg_status %in% c("NG","TG","CG","RG") & s_level %in% c("FR", "SO", "JR", "SR", "UG"))),
   "S19a", expr(is_valid_values(primary_degree_id, valid_degree_ids)),
-  "S20a", expr(is_valid_credits(institutional_cumulative_credits_earned)),
-  "S24a", expr(is_valid_credits(transfer_cumulative_credits_earned)),
+  "S20a", expr(is_valid_credits(institutional_cumulative_credits_earned, missing_ok = FALSE)),
+  "S24a", expr(is_valid_credits(transfer_cumulative_credits_earned, missing_ok = TRUE)),
   "S21",  expr(!is.na(institutional_cumulative_gpa)),
   "S21a", expr(is_valid_gpa(institutional_cumulative_gpa)),
   "S21b", expr(s_level %in% c("GN", "GG") |
@@ -138,8 +138,8 @@ rule_spec <- tribble(
   "S29b", expr(!is.na(s_hb75_waiver) & s_hb75_waiver <= 100 & s_hb75_waiver >= 0),
   "S30a", expr(is_valid_values(secondary_major_cip_code, valid_cip_codes)),
   "S31a", expr(s_inst %in% c("5220","5221","3679","3676","63") | s_cum_membership %in% 0),
-  "S32a", expr(is_valid_credits(total_cumulative_clep_credits_earned)),
-  "S33a", expr(is_valid_credits(total_cumulative_ap_credits_earned)),
+  "S32a", expr(is_valid_credits(total_cumulative_clep_credits_earned, missing_ok = TRUE)),
+  "S33a", expr(is_valid_credits(total_cumulative_ap_credits_earned, missing_ok = TRUE)),
   "S34a", expr(is_valid_student_id(student_id)),
   "S34b", expr(is_valid_student_id(student_id) |
                  !(is_hs_type(student_type_code) & first_admit_state_code == "UT")),

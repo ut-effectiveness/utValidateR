@@ -64,10 +64,23 @@ date_before_present_year <- function(date, year = format(Sys.Date(), "%Y")) {
 #' Returns TRUE for duplicated elements of x; FALSE otherwise
 #'
 #' @param x a vector
+#' @param count_missing if TRUE, count multiple missing values as duplicates,
+#'  otherwise treat as incomparable. Defaults to FALSE.
 #' @export
-is_duplicated <- function(x) {
+is_duplicated <- function(x, count_missing = FALSE) {
   if (is.array(x)) x <- as.data.frame(x) # results from `cbind`ing vectors
-  duplicated(x) | duplicated(x, fromLast = TRUE)
+
+  out <- duplicated(x) | duplicated(x, fromLast = TRUE)
+
+  # by default duplicated() counts multiple missing as duplicated. We want default
+  # to be not to count missing as duplicated, i.e. is_duplicated(c(NA, NA)) == c(F, F)
+  if (!count_missing) {
+    missingvec <- is.na(x)
+    if (is.array(missingvec)) missingvec <- apply(missingvec, 1, any)
+    out[missingvec] <- FALSE
+  }
+
+  out
 }
 
 #' Validity checks on various values

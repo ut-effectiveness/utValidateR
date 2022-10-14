@@ -4,10 +4,13 @@
 \alias{is_duplicated}
 \title{Returns TRUE for duplicated elements of x; FALSE otherwise}
 \usage{
-is_duplicated(x)
+is_duplicated(x, count_missing = FALSE)
 }
 \arguments{
 \item{x}{a vector}
+
+\item{count_missing}{if TRUE, count multiple missing values as duplicates,
+otherwise treat as incomparable. Defaults to FALSE.}
 }
 \description{
 Returns TRUE for duplicated elements of x; FALSE otherwise

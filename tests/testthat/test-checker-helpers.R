@@ -60,15 +60,23 @@ test_that("date_before_present_year works", {
 
 test_that("is_duplicated works", {
 
-  vec1 <- c("a", "b", "b", "c", "a")
-  expect_equal(is_duplicated(vec1), c(TRUE, TRUE, TRUE, FALSE, TRUE))
+  vec1 <- c("a",   "b",  "b",  NA,    NA,    NA)
+  out1 <- c(FALSE, TRUE, TRUE, FALSE, FALSE, FALSE)
+  out2 <- c(FALSE, TRUE, TRUE, TRUE,  TRUE,  TRUE)
 
-  # Missing values count as duplicated
-  vec2 <- c("a", NA, "b", NA, "a")
-  expect_equal(is_duplicated(vec2), c(TRUE, TRUE, FALSE, TRUE, TRUE))
+  expect_equal(is_duplicated(vec1), out1)
+  expect_equal(is_duplicated(vec1, count_missing = FALSE), out1)
+  expect_equal(is_duplicated(vec1, count_missing = TRUE), out2)
 
-  expect_equal(is_duplicated(cbind(vec1, vec2)),
-               c(TRUE, FALSE, FALSE, FALSE, TRUE))
+  # Case when x is a dataframe--look for duplicated combinations of columns
+  df1 <- data.frame(v1 = vec1,
+                    v2 = c(2, 2, 2, 2, NA, NA))
+
+  out3 <- c(FALSE, TRUE, TRUE, FALSE, FALSE, FALSE)
+  out4 <- c(FALSE, TRUE, TRUE, FALSE, TRUE, TRUE)
+  expect_equal(is_duplicated(df1), out3)
+  expect_equal(is_duplicated(df1, count_missing = FALSE), out3)
+  expect_equal(is_duplicated(df1, count_missing = TRUE),  out4)
 })
 
 test_that("is_valid_act_score works", {

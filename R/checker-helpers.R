@@ -88,9 +88,16 @@ is_valid_values <- function(x, valid_values, missing_ok = TRUE) {
 
 #' @describeIn is_valid_values ACT score7
 #' @export
-is_valid_act_score <- function(x) {
+is_valid_act_score <- function(x, missing_ok = TRUE) {
   # Sql indicates missing is not OK
-  !is.na(x) & is.numeric(x) & x >= 0 & x <= 36
+  out <- is.numeric(x) & x >= 0 & x <= 36
+
+  out <- if(missing_ok) {
+    out | is.na(x)
+  } else {
+    out & !is.na(x)
+  }
+  out
 }
 
 

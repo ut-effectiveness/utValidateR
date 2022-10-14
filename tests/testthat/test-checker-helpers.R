@@ -73,7 +73,7 @@ test_that("is_duplicated works", {
 
 test_that("is_valid_act_score works", {
   input  <- c(-1,    0,    13.3, 36,   37,    NA   )
-  output <- c(FALSE, TRUE, TRUE, TRUE, FALSE, FALSE)
+  output <- c(FALSE, TRUE, TRUE, TRUE, FALSE, TRUE)
 
   expect_equal(is_valid_act_score(input), output)
 })

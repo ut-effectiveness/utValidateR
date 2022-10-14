@@ -96,7 +96,7 @@ rule_spec <- tribble(
   "S18b", expr(!(s_reg_status %in% c("HS", "FH", "FF", "TU", "CS", "RS") & s_level %in% c("GN","GG")) |
                  (s_reg_status %in% c("NG","TG","CG","RG") & s_level %in% c("FR", "SO", "JR", "SR", "UG"))),
   "S19a", expr(is_valid_values(primary_degree_id, valid_degree_ids)),
-  "S20a", expr(is_valid_credits(institutional_cumulative_credits_earned, missing_ok = FALSE)),
+  "S20a", expr(is_valid_credits(institutional_cumulative_credits_earned, missing_ok = TRUE)),
   "S24a", expr(is_valid_credits(transfer_cumulative_credits_earned, missing_ok = TRUE)),
   "S21",  expr(!is.na(institutional_cumulative_gpa)),
   "S21a", expr(is_valid_gpa(institutional_cumulative_gpa)),

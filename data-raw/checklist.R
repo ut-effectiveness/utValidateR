@@ -187,7 +187,7 @@ rule_spec <- tribble(
   "C06a", expr(is_valid_credits_chr(course_min_credits)),
   "C07a", expr(is_valid_credits_chr(course_max_credits)),
   "C07b", expr(course_max_credits >= course_min_credits),
-  "C08a", expr(is_valid_credits(contact_hours)),
+  "C08a", expr(is_valid_credits(contact_hours), missing_ok = TRUE),
   "C09", expr(is_valid_values(tolower(c_line_item), valid_c_line_items, missing_ok = TRUE)), # USHE rule
   "C10", expr(!is_missing_chr(campus_id)),
   "C11", expr(!is_missing_chr(budget_code)),
@@ -299,7 +299,7 @@ rule_spec <- tribble(
   "G12a", expr(is_valid_credits(overall_cumulative_credits_earned)), # TODO: verify mapping of rules to fields
   "G13a", expr(is_valid_credits(required_credits)),
   "G14a", expr(is_valid_credits(total_cumulative_ap_credits_earned)),
-  "G15a", expr(is_valid_credits(total_cumulative_clep_credits_earned)),
+  "G15a", expr(is_valid_credits(total_cumulative_clep_credits_earned, missing_ok = TRUE)),
   "G22a", expr(is_valid_credits(total_cumulative_credits_attempted_other_sources)),
   "G23a", expr(is_valid_credits(transfer_cumulative_credits_earned)),
   "G17a", expr(is_valid_values(degree_id, valid_degree_ids)),

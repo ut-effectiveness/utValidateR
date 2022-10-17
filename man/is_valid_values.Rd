@@ -18,7 +18,7 @@
 \usage{
 is_valid_values(x, valid_values, missing_ok = TRUE)
 
-is_valid_act_score(x)
+is_valid_act_score(x, missing_ok = TRUE)
 
 is_valid_ssn(x, missing_ok = TRUE)
 

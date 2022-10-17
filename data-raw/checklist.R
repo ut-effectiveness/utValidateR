@@ -77,7 +77,7 @@ rule_spec <- tribble(
                      is.na(g_ethnic_n))),
   "G07f", expr(g_ethnic_w %in% c("W", NA)),
 
-  "S15a", expr(is_valid_values(residency_code, c("R", "N", "A", "M", "G"))),
+  "S15a", expr(is_valid_values(s_regent_res, c("R", "N", "A", "M", "G"))), #USHE check
   "S16a", expr(is_valid_values(primary_major_cip_code, valid_cip_codes)),
   "S17a", expr(is_valid_values(s_reg_status, valid_s_reg_statuses, missing_ok = FALSE)), # USHE check
   "S17b", expr(!((s_reg_status %in% c("CS","HS","FF","FH","TU")) &
@@ -96,8 +96,8 @@ rule_spec <- tribble(
   "S18b", expr(!(s_reg_status %in% c("HS", "FH", "FF", "TU", "CS", "RS") & s_level %in% c("GN","GG")) |
                  (s_reg_status %in% c("NG","TG","CG","RG") & s_level %in% c("FR", "SO", "JR", "SR", "UG"))),
   "S19a", expr(is_valid_values(primary_degree_id, valid_degree_ids)),
-  "S20a", expr(is_valid_credits(institutional_cumulative_credits_earned)),
-  "S24a", expr(is_valid_credits(transfer_cumulative_credits_earned)),
+  "S20a", expr(is_valid_credits(institutional_cumulative_credits_earned, missing_ok = TRUE)),
+  "S24a", expr(is_valid_credits(transfer_cumulative_credits_earned, missing_ok = TRUE)),
   "S21",  expr(!is.na(institutional_cumulative_gpa)),
   "S21a", expr(is_valid_gpa(institutional_cumulative_gpa)),
   "S21b", expr(s_level %in% c("GN", "GG") |
@@ -139,7 +139,7 @@ rule_spec <- tribble(
   "S30a", expr(is_valid_values(secondary_major_cip_code, valid_cip_codes)),
   "S31a", expr(s_inst %in% c("5220","5221","3679","3676","63") | s_cum_membership %in% 0),
   "S32a", expr(is_valid_credits(total_cumulative_clep_credits_earned, missing_ok = TRUE)),
-  "S33a", expr(is_valid_credits(total_cumulative_ap_credits_earned)),
+  "S33a", expr(is_valid_credits(total_cumulative_ap_credits_earned, missing_ok = TRUE)),
   "S34a", expr(is_valid_student_id(student_id)),
   "S34b", expr(is_valid_student_id(student_id) |
                  !(is_hs_type(student_type_code) & first_admit_state_code == "UT")),
@@ -156,7 +156,7 @@ rule_spec <- tribble(
   "G21c", expr(is_alpha_chr(substring(g_banner_id, 1, 1))),
   "SC13c", expr(is_alpha_chr(substring(sc_banner_id, 1, 1))),
   "S36a", expr(is_valid_act_score(act_composite_score)),
-  "S37a", expr(is_valid_values(primary_major_cip_code, valid_cip_codes)),
+  "S37a", expr(is_valid_values(s_curr_cip, valid_cip_codes)), #USHE Rule
   "S38a", expr(is_valid_act_score(act_english_score)),
   "S39a", expr(is_valid_act_score(act_math_score)),
   "S40a", expr(is_valid_act_score(act_reading_score)),
@@ -172,9 +172,9 @@ rule_spec <- tribble(
   "S46a", expr(!is_missing_chr(primary_major_college_id)),
   "S46b", expr(is_alpha_chr(primary_major_college_id)),
   "S47a", expr(!is_missing_chr(primary_major_cip_code)),
-  "S47b", expr(is_missing_chr(primary_major_cip_code) |
-                 is_missing_chr(secondary_major_cip_code) |
-                 (primary_major_cip_code != secondary_major_cip_code)),
+  "S47b", expr(is_missing_chr(primary_major_desc) |
+                 is_missing_chr(secondary_major_desc) |
+                 (primary_major_desc != secondary_major_desc)),
   "S47c", expr(matches_regex(primary_major_desc, "^[a-zA-Z' \\-]*$", #alpha plus space, apostrophe, hyphen
                              missing_ok = TRUE)),
   "S48a", expr(is_alpha_chr(secondary_major_college_id)),

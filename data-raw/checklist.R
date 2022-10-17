@@ -77,7 +77,7 @@ rule_spec <- tribble(
                      is.na(g_ethnic_n))),
   "G07f", expr(g_ethnic_w %in% c("W", NA)),
 
-  "S15a", expr(is_valid_values(residency_code, c("R", "N", "A", "M", "G"))),
+  "S15a", expr(is_valid_values(s_regent_res, c("R", "N", "A", "M", "G"))), #USHE check
   "S16a", expr(is_valid_values(primary_major_cip_code, valid_cip_codes)),
   "S17a", expr(is_valid_values(s_reg_status, valid_s_reg_statuses, missing_ok = FALSE)), # USHE check
   "S17b", expr(!((s_reg_status %in% c("CS","HS","FF","FH","TU")) &
@@ -156,7 +156,7 @@ rule_spec <- tribble(
   "G21c", expr(is_alpha_chr(substring(g_banner_id, 1, 1))),
   "SC13c", expr(is_alpha_chr(substring(sc_banner_id, 1, 1))),
   "S36a", expr(is_valid_act_score(act_composite_score)),
-  "S37a", expr(is_valid_values(primary_major_cip_code, valid_cip_codes)),
+  "S37a", expr(is_valid_values(s_curr_cip, valid_cip_codes)), #USHE Rule
   "S38a", expr(is_valid_act_score(act_english_score)),
   "S39a", expr(is_valid_act_score(act_math_score)),
   "S40a", expr(is_valid_act_score(act_reading_score)),

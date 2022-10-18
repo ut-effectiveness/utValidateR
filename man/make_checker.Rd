@@ -14,5 +14,7 @@ make_checker(rule, expr, env = rlang::caller_env())
 \item{env}{environment for evaluating checkers, passed to \code{rlang::eval_tidy()}}
 }
 \description{
-Result is a function with a single dataframe argument
+Used internally by \code{do_checks()} to convert r expression into function that can
+be used on a dataset that needs checking. Result is a function with a single
+dataframe argument.
 }

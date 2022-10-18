@@ -445,15 +445,17 @@ rule_spec <- tribble(
 )
 
 
-# Helper to get the ushe file type from the ushe element
-get_ushe_file <- function(ushe_element) {
+#' Helper to get the ushe file type from the ushe element
+#'
+#' @param rule rule name, e.g. "S00b"
+get_ushe_file <- function(rule) {
   out <- case_when(
-    grepl("^SC", ushe_element) ~ "Student Course",
-    grepl("^S[0-9]", ushe_element) ~ "Student",
-    grepl("^C", ushe_element) ~ "Course",
-    grepl("^G", ushe_element) ~ "Graduation",
-    grepl("^B", ushe_element) ~ "Buildings",
-    grepl("^R", ushe_element) ~ "Rooms",
+    grepl("^SC", rule) ~ "Student Course",
+    grepl("^S[0-9]", rule) ~ "Student",
+    grepl("^C", rule) ~ "Course",
+    grepl("^G", rule) ~ "Graduation",
+    grepl("^B", rule) ~ "Buildings",
+    grepl("^R", rule) ~ "Rooms",
     TRUE ~ NA_character_
     )
   out

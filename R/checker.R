@@ -1,7 +1,9 @@
 
 #' Function factory for generating checker functions
 #'
-#' Result is a function with a single dataframe argument
+#' Used internally by `do_checks()` to convert r expression into function that can
+#' be used on a dataset that needs checking. Result is a function with a single
+#' dataframe argument.
 #'
 #' @param rule Name of the rule being applied, e.g. "S03b"
 #' @param expr Expression that generates a logical vector when applied to a dataframe

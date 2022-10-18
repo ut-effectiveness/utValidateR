@@ -22,7 +22,7 @@ student_courses <- utHelpR::get_data_from_sql_file(file_name = 'student_courses.
 ) %>%
   filter(term_id == v_term)
 
-courses <- utHelpR::get_data_from_sql_file(file_name = 'course_validation.sql',
+courses <- utHelpR::get_data_from_sql_file(file_name = 'course.sql',
                                            dsn = 'edify',
                                            context = 'sandbox'
 ) %>%
@@ -66,7 +66,8 @@ course_check_res <- do_checks(df_tocheck = courses,
 
 
 AuditDataSteward::run_app(
-  student_result = student_check_res
+  student_result = student_check_res,
+  course_result = course_check_res
 )
 
 

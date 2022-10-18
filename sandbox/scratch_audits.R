@@ -66,9 +66,7 @@ course_check_res <- do_checks(df_tocheck = courses,
 
 
 AuditDataSteward::run_app(
-  student_result = student_check_res,
-  course_result = course_check_res,
-  student_course_result = student_course_res
+  student_result = student_check_res
 )
 
 

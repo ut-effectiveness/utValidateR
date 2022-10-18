@@ -456,6 +456,7 @@ get_ushe_file <- function(rule) {
     grepl("^G", rule) ~ "Graduation",
     grepl("^B", rule) ~ "Buildings",
     grepl("^R", rule) ~ "Rooms",
+    grepl("^UT", rule) ~ "Student",
     TRUE ~ NA_character_
     )
   out

@@ -134,6 +134,7 @@ is_valid_ssn <- function(x, missing_ok = TRUE) {
 #' Helper function for regex matching with missingness toggle
 #'
 #' @inheritParams is_valid_zip_code
+#' @param regex regular expression string
 #' @export
 matches_regex <- function(x, regex, missing_ok) {
   matches <- stringr::str_detect(x, regex)
@@ -275,7 +276,9 @@ is_undergrad_type <- function(student_type) {
   student_type %in% undergrad_types
 }
 
-#' @describeIn is_freshmen_type returns TRUE for undergrad level_class_ids
+#' Returns TRUE if level is one of "FR", "SO", "JR", "SR", and FALSE otherwise
+#'
+#' @param level character vector
 #' @export
 is_undergrad_level <- function(level) {
   level %in% c('JR','SR','FR','SO') # 7/27/22 slack message from Justin

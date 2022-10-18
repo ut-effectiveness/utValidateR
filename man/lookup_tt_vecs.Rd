@@ -10,6 +10,8 @@ lookup_tt_vecs(fun, args, aux_info)
 \item{fun}{character function name}
 
 \item{args}{Named list of arguments}
+
+\item{aux_info}{a list with auxiliary information to be used by the expression}
 }
 \description{
 Returns a named list containing vector of test values

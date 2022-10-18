@@ -41,7 +41,7 @@
 "S07c","previous middle name with non-alpha characters","Database","Warning",NA,"S_Prev_Middle name with Non-Alpha characters","spriden_activity_date","banner.spriden_mi","S07c"
 "S07d","previous suffix last name with non-alpha characters","Database","Warning",NA,"S_Suffix name with Non-Alpha characters","spbpers_activity_date","banner.spbpers_name_suffix","S07d"
 "G03h","previous suffix last name with non-alpha characters","Database","Warning",NA,"S_Suffix name with Non-Alpha characters","spbpers_activity_date","banner.spbpers_name_suffix","S07d"
-"S08a","missing zip code","Database","Failure",NA,"Every student should have a zip code","spraddr_activity_date","banner.spraddr_zip","S08a"
+"S08a","missing zip code","USHE","Failure",NA,"Every student should have a zip code","spraddr_activity_date","banner.spraddr_zip","S08a"
 "S08b","invalid zip code","Database","Failure",NA,"Invalid zip code","spraddr_activity_date","banner.spraddr_zip","S08b"
 "S09a","missing citizenship code","Database","Failure",NA,"Missing citzenship code","spbpers_activity_date","banner.spbpers_cit_code","S09a"
 "S09b","missing citizenship code (Nonresident Alien mismatch)","Database","Failure",NA,"Nonresident Alien mismatch","spbpers_activity_date","banner.spbpers_cit_code","S09b"

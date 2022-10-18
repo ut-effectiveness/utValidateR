@@ -100,8 +100,8 @@ classes FROM the institution while still IN high school.",NA,"banner.sgbstdn_sty
 "S18a","missing class level","Database","Failure",NA,"There should be a valid level for each student.",NA,"class function in banner","S18a"
 "S18b","UG student types cannot be graduate class levels","USHE","Failure",NA,"Class Level vs. Registration Status a student registered as Undgergrad cannot be grad class level
 --or a student registered as grad connot be an undergrad class level",NA,"class function in banner","S18b"
-"S19a","missing degree id","Database","Failure",NA,"There should be a degree intent for each student.","sgbstdn_activity_date","banner.sgbstdn_degc_code_1","S19a"
-"G17a","missing degree id","Database","Failure",NA,"There should be a degree intent for each student.","sgbstdn_activity_date","banner.sgbstdn_degc_code_1","S19a"
+"S19a","invalid IPEDS Award Level","USHE","Failure",NA,"There should be a degree intent for each student.","sgbstdn_activity_date","banner.sgbstdn_degc_code_1","S19a"
+"G17a","invalid IPEDS Award Level","USHE","Failure",NA,"There should be a degree intent for each student.","sgbstdn_activity_date","banner.sgbstdn_degc_code_1","S19a"
 "S20a","invalid credit format","Database","Failure",NA,"S_CUM_HRS_UGrad wrong format","shrtgpa_activity_date","banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned)","S20a"
 "S24a","invalid credit format","Database","Failure",NA,"S_CUM_HRS_UGrad wrong format","shrtgpa_activity_date","banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned)","S20a"
 "G12a","invalid credit format","Database","Failure",NA,"S_CUM_HRS_UGrad wrong format","shrtgpa_activity_date","banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned)","S20a"

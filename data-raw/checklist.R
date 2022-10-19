@@ -98,8 +98,8 @@ rule_spec <- tribble(
   "S19a", expr(is_valid_values(primary_degree_id, valid_degree_ids)),
   "S20a", expr(is_valid_credits(institutional_cumulative_credits_earned, missing_ok = TRUE)),
   "S24a", expr(is_valid_credits(transfer_cumulative_credits_earned, missing_ok = TRUE)),
-  "S21",  expr(!is.na(institutional_cumulative_gpa)),
-  "S21a", expr(is_valid_gpa(institutional_cumulative_gpa)),
+  "S21",  expr(!is.na(institutional_cumulative_gpa)), # USHE rule
+  "S21a", expr(is_valid_gpa(institutional_cumulative_gpa, missing_ok = TRUE)),
   "S21b", expr(s_level %in% c("GN", "GG") |
                  !(s_cum_gpa_ugrad %in% c(0, "", NA)) |
                  sc_grade %in% c("CR", "NG", "P", "SP") |
@@ -311,7 +311,7 @@ rule_spec <- tribble(
   "G09a", expr(is_valid_values(primary_major_cip_code, valid_cip_codes, missing_ok = TRUE)),
   "G10a", expr(!is_missing_chr(degree_type)),
   "G10b", expr(is_valid_values(degree_id, valid_degree_ids, missing_ok = FALSE)),
-  "G11a", expr(is_valid_gpa(cumulative_graduation_gpa)),
+  "G11a", expr(is_valid_gpa(cumulative_graduation_gpa, missing_ok = TRUE)),
   "G12b", expr(is.na(g_trans_total) | g_trans_total <= 300), #USHE rule
   "G13b", expr((g_req_hrs_deg * 1.5) >= g_grad_hrs), #USHE rule
   "G14b", expr((g_req_hrs_deg * 1.5) >= g_other_hrs), #USHE rule

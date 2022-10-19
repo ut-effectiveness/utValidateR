@@ -167,7 +167,8 @@ rule_spec <- tribble(
                (s_reg_status %in% c("FF", "FH", "TU", "TG")) |
                (s_level == "FR")), # USHE rule
   "S44c", expr(!is_hs_type(student_type_code) |
-                 (!(is_pell_eligible %in% TRUE) & !(is_pell_awarded %in% TRUE))),
+                 (!(is_pell_eligible %in% TRUE) & !(is_pell_awarded %in% TRUE))), #USHE check
+  "UTS02", expr(!is_hs_type(student_type_code) | !(is_pell_awarded %in% TRUE)),
   "S44d", expr(s_pell %in% c("E", "R") | !(s_extract %in% "e")),
   "S45c", expr(s_bia %in% "B" | !(s_extract %in% "e")),
   "S46a", expr(!is_missing_chr(primary_major_college_id)),
@@ -176,11 +177,12 @@ rule_spec <- tribble(
   "S47b", expr(is_missing_chr(primary_major_desc) |
                  is_missing_chr(secondary_major_desc) |
                  (primary_major_desc != secondary_major_desc)),
-  "S47c", expr(matches_regex(primary_major_desc, "^[a-zA-Z' \\-]*$", #alpha plus space, apostrophe, hyphen
+  "S47c", expr(matches_regex(primary_major_desc, "^[a-zA-Z' \\- & /]*$", #alpha plus space, apostrophe, hyphen, ampersand, forward slash
                              missing_ok = TRUE)),
   "S48a", expr(is_alpha_chr(secondary_major_college_id)),
   "S49a", expr(is_missing_chr(secondary_major_cip_code) | !is_missing_chr(secondary_major_desc)),
-  "S49b", expr(is_alpha_chr(secondary_major_desc)),
+  "S49b", expr(matches_regex(secondary_major_desc, "^[a-zA-Z' \\- & /]*$", #alpha plus space, apostrophe, hyphen, ampersand, forward slash
+                             missing_ok = TRUE)),
   "C00",  expr(!is_duplicated(cbind(subject_code, course_number, section_number))),
   "C04a", expr(nchar(course_number) == 4),
   "C04c", expr(!stringr::str_detect(course_number, "^[89]")),

@@ -132,7 +132,7 @@ S26b,age and birthdate do not align,Database,Failure,NA,Checking s_age vs calcul
 S27a,US state codes do not align with country code,Database,Failure,NA,"Country origin codes WHERE there is a state code within US, but the country is not ''US''.",sabsupl_activity_date,banner.sabsupl_natn_code_admit,S27a
 S27b,State and county do not align with country code (US),Database,Failure,NA,"state AND county code point outside of US, but the country code is ''US''",sabsupl_activity_date,banner.sabsupl_natn_code_admit,S27b
 S27c,country code not found on ISO list,Database,Failure,NA,Country codes. Where there is a country code not in the ISO list.,sabsupl_activity_date,banner.sabsupl_natn_code_admit,S27c
-S28a,invalid UT high school code,Database,Failure,NA,"Should be a valid high school code for each student.
+S28a,invalid UT high school code,USHE,Failure,NA,"Should be a valid high school code for each student.
 --We are mainly concerned with zeroes AND invalid 45 series high schools. Anything not 45
 --comes FROM out of state unless it is invalid",sorhsch_activity_date,banner.sorhsch_sgbi_code,S28a
 S29a,invalid HB75 waiver code,USHE,Failure,NA,Checking for valid HB75 Waiver codes. Should be less than OR equal to 100.,NA,"banner.rpratrm, sfrrgfe",S29a

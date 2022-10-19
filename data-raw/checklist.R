@@ -17,13 +17,13 @@ rule_spec <- tribble(
   "S02a", expr(!is.na(s_year) & !is.na(s_term) & !is.na(s_extract)), # USHE check
   "SC02a", expr(!is.na(sc_year) & !is.na(sc_term) & !is.na(sc_extract)), # USHE check
   "C02", expr(!is.na(c_year) & !is.na(c_term) & !is.na(c_extract)), # USHE check
-  "S03a", expr(!is.na(student_id) & !is_missing_chr(ssn)),
-  "S03b", expr(!(s_id_flag %in% "S") | !is.na(s_ssn)), # USHE rule
-  "S03c", expr(!((us_citizenship_code %in% "1") & is_missing_chr(ssn))),
-  "S04a", expr(s_id_flag %in% c("S", "I")), # USHE rule
+  "S03a", expr(!is.na(s_id) & !is_missing_chr(s_id)), #USHE check
+  "S03b", expr(!(s_id_flag %in% "S") | !is.na(s_ssn)), # USHE check
+  "S03c", expr(!((s_citz_code %in% "1") & s_ssn(ssn))), #USHE check
+  "S04a", expr(s_id_flag %in% c("S", "I")), # USHE check
   "S04b", expr(is_valid_ssn(ssn, missing_ok = TRUE)),
-  "S04c", expr(!(s_id_flag %in% "S") | (s_id == s_banner_id)), # USHE rule
-  "S04d", expr(!(s_id_flag %in% "I") | (s_id != s_banner_id)), # USHE rule
+  "S04c", expr(!(s_id_flag %in% "S") | (s_id == s_banner_id)), # USHE check
+  "S04d", expr(!(s_id_flag %in% "I") | (s_id != s_banner_id)), # USHE check
   "S05a", expr(is_valid_previous_id(previous_student_id)),
   "S06a", expr(!is_missing_chr(last_name)),
   "S06b", expr(is_alpha_chr(last_name)),
@@ -78,6 +78,7 @@ rule_spec <- tribble(
   "G07f", expr(g_ethnic_w %in% c("W", NA)),
 
   "S15a", expr(is_valid_values(s_regent_res, c("R", "N", "A", "M", "G"))), #USHE check
+  "UTS01", expr(is_valid_values(residency_code, c("R", "N", "A", "M", "G", "C"))),
   "S16a", expr(is_valid_values(primary_major_cip_code, valid_cip_codes)),
   "S17a", expr(is_valid_values(s_reg_status, valid_s_reg_statuses, missing_ok = FALSE)), # USHE check
   "S17b", expr(!((s_reg_status %in% c("CS","HS","FF","FH","TU")) &
@@ -98,8 +99,8 @@ rule_spec <- tribble(
   "S19a", expr(is_valid_values(primary_degree_id, valid_degree_ids)),
   "S20a", expr(is_valid_credits(institutional_cumulative_credits_earned, missing_ok = TRUE)),
   "S24a", expr(is_valid_credits(transfer_cumulative_credits_earned, missing_ok = TRUE)),
-  "S21",  expr(!is.na(institutional_cumulative_gpa)),
-  "S21a", expr(is_valid_gpa(institutional_cumulative_gpa)),
+  "S21",  expr(!is.na(institutional_cumulative_gpa)), # USHE rule
+  "S21a", expr(is_valid_gpa(institutional_cumulative_gpa, missing_ok = TRUE)),
   "S21b", expr(s_level %in% c("GN", "GG") |
                  !(s_cum_gpa_ugrad %in% c(0, "", NA)) |
                  sc_grade %in% c("CR", "NG", "P", "SP") |
@@ -131,9 +132,9 @@ rule_spec <- tribble(
                    (first_admit_county_code %in% "97" |
                       is_nonus_state(first_admit_state_code)))),
   "S27c", expr(is_valid_values(first_admit_country_code, valid_country_codes, missing_ok = FALSE)),
-  "S28a", expr(!(first_admit_state_code %in% "UT") |
-                 !is_undergrad_type(student_type_code) |
-                 is_valid_values(high_school_code, valid_highschools, missing_ok = FALSE)),
+  "S28a", expr(!(s_state_origin %in% "UT") |
+                 !is_undergrad_type(s_reg_status) |
+                 is_valid_values(s_high_school, valid_highschools, missing_ok = FALSE)),
   "S29a", expr(s_hb75_waiver <= 100),
   "S29b", expr(!is.na(s_hb75_waiver) & s_hb75_waiver <= 100 & s_hb75_waiver >= 0),
   "S30a", expr(is_valid_values(secondary_major_cip_code, valid_cip_codes)),
@@ -166,7 +167,8 @@ rule_spec <- tribble(
                (s_reg_status %in% c("FF", "FH", "TU", "TG")) |
                (s_level == "FR")), # USHE rule
   "S44c", expr(!is_hs_type(student_type_code) |
-                 (!(is_pell_eligible %in% TRUE) & !(is_pell_awarded %in% TRUE))),
+                 (!(is_pell_eligible %in% TRUE) & !(is_pell_awarded %in% TRUE))), #USHE check
+  "UTS02", expr(!is_hs_type(student_type_code) | !(is_pell_awarded %in% TRUE)),
   "S44d", expr(s_pell %in% c("E", "R") | !(s_extract %in% "e")),
   "S45c", expr(s_bia %in% "B" | !(s_extract %in% "e")),
   "S46a", expr(!is_missing_chr(primary_major_college_id)),
@@ -175,11 +177,12 @@ rule_spec <- tribble(
   "S47b", expr(is_missing_chr(primary_major_desc) |
                  is_missing_chr(secondary_major_desc) |
                  (primary_major_desc != secondary_major_desc)),
-  "S47c", expr(matches_regex(primary_major_desc, "^[a-zA-Z' \\-]*$", #alpha plus space, apostrophe, hyphen
+  "S47c", expr(matches_regex(primary_major_desc, "^[a-zA-Z' \\- & /]*$", #alpha plus space, apostrophe, hyphen, ampersand, forward slash
                              missing_ok = TRUE)),
   "S48a", expr(is_alpha_chr(secondary_major_college_id)),
   "S49a", expr(is_missing_chr(secondary_major_cip_code) | !is_missing_chr(secondary_major_desc)),
-  "S49b", expr(is_alpha_chr(secondary_major_desc)),
+  "S49b", expr(matches_regex(secondary_major_desc, "^[a-zA-Z' \\- & /]*$", #alpha plus space, apostrophe, hyphen, ampersand, forward slash
+                             missing_ok = TRUE)),
   "C00",  expr(!is_duplicated(cbind(subject_code, course_number, section_number))),
   "C04a", expr(nchar(course_number) == 4),
   "C04c", expr(!stringr::str_detect(course_number, "^[89]")),
@@ -294,7 +297,7 @@ rule_spec <- tribble(
   "G01b", expr(!is_missing_chr(g_inst)),
   "SC01a", expr(!is_missing_chr(sc_inst)),
   "R01a", expr(!is_missing_chr(r_inst)),
-  "G02a", expr(!is_missing_chr(sis_student_id) & !is_missing_chr(ssn)),
+  "G02a", expr(!is_missing_chr(s_id) & !is_missing_chr(s_id)), # USHE Rule
   "G02b", expr(sis_student_id %in% TODO("Need a way to bring in students table for comparing")),
   "G12a", expr(is_valid_credits(overall_cumulative_credits_earned)), # TODO: verify mapping of rules to fields
   "G13a", expr(is_valid_credits(required_credits)),
@@ -311,7 +314,7 @@ rule_spec <- tribble(
   "G09a", expr(is_valid_values(primary_major_cip_code, valid_cip_codes, missing_ok = TRUE)),
   "G10a", expr(!is_missing_chr(degree_type)),
   "G10b", expr(is_valid_values(degree_id, valid_degree_ids, missing_ok = FALSE)),
-  "G11a", expr(is_valid_gpa(cumulative_graduation_gpa)),
+  "G11a", expr(is_valid_gpa(cumulative_graduation_gpa, missing_ok = TRUE)),
   "G12b", expr(is.na(g_trans_total) | g_trans_total <= 300), #USHE rule
   "G13b", expr((g_req_hrs_deg * 1.5) >= g_grad_hrs), #USHE rule
   "G14b", expr((g_req_hrs_deg * 1.5) >= g_other_hrs), #USHE rule
@@ -329,7 +332,7 @@ rule_spec <- tribble(
   "G24a", expr(is_valid_year(graduated_academic_year_code, missing_ok = FALSE)), # TODO: should verify matching some reference year
   "G25a", expr(is_valid_values(season, valid_seasons)),
   "G28a", expr(!is_missing_chr(degree_desc)),
-  "SC03", expr(!is.na(student_id) & !is.na(ssn)),
+  "SC03", expr(!is.na(sc_id) & !is.na(sc_id)), # USHE Rule
   "SC04a", expr(!is_missing_chr(subject_code)),
   "SC05a", expr(!is_missing_chr(course_number)),
   "SC06a", expr(!is_missing_chr(section_number)),

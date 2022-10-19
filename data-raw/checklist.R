@@ -17,13 +17,13 @@ rule_spec <- tribble(
   "S02a", expr(!is.na(s_year) & !is.na(s_term) & !is.na(s_extract)), # USHE check
   "SC02a", expr(!is.na(sc_year) & !is.na(sc_term) & !is.na(sc_extract)), # USHE check
   "C02", expr(!is.na(c_year) & !is.na(c_term) & !is.na(c_extract)), # USHE check
-  "S03a", expr(!is.na(student_id) & !is_missing_chr(ssn)),
-  "S03b", expr(!(s_id_flag %in% "S") | !is.na(s_ssn)), # USHE rule
-  "S03c", expr(!((us_citizenship_code %in% "1") & is_missing_chr(ssn))),
-  "S04a", expr(s_id_flag %in% c("S", "I")), # USHE rule
+  "S03a", expr(!is.na(s_id) & !is_missing_chr(s_id)), #USHE check
+  "S03b", expr(!(s_id_flag %in% "S") | !is.na(s_ssn)), # USHE check
+  "S03c", expr(!((s_citz_code %in% "1") & s_ssn(ssn))), #USHE check
+  "S04a", expr(s_id_flag %in% c("S", "I")), # USHE check
   "S04b", expr(is_valid_ssn(ssn, missing_ok = TRUE)),
-  "S04c", expr(!(s_id_flag %in% "S") | (s_id == s_banner_id)), # USHE rule
-  "S04d", expr(!(s_id_flag %in% "I") | (s_id != s_banner_id)), # USHE rule
+  "S04c", expr(!(s_id_flag %in% "S") | (s_id == s_banner_id)), # USHE check
+  "S04d", expr(!(s_id_flag %in% "I") | (s_id != s_banner_id)), # USHE check
   "S05a", expr(is_valid_previous_id(previous_student_id)),
   "S06a", expr(!is_missing_chr(last_name)),
   "S06b", expr(is_alpha_chr(last_name)),
@@ -295,7 +295,7 @@ rule_spec <- tribble(
   "G01b", expr(!is_missing_chr(g_inst)),
   "SC01a", expr(!is_missing_chr(sc_inst)),
   "R01a", expr(!is_missing_chr(r_inst)),
-  "G02a", expr(!is_missing_chr(sis_student_id) & !is_missing_chr(ssn)),
+  "G02a", expr(!is_missing_chr(s_id) & !is_missing_chr(s_id)), # USHE Rule
   "G02b", expr(sis_student_id %in% TODO("Need a way to bring in students table for comparing")),
   "G12a", expr(is_valid_credits(overall_cumulative_credits_earned)), # TODO: verify mapping of rules to fields
   "G13a", expr(is_valid_credits(required_credits)),
@@ -330,7 +330,7 @@ rule_spec <- tribble(
   "G24a", expr(is_valid_year(graduated_academic_year_code, missing_ok = FALSE)), # TODO: should verify matching some reference year
   "G25a", expr(is_valid_values(season, valid_seasons)),
   "G28a", expr(!is_missing_chr(degree_desc)),
-  "SC03", expr(!is.na(student_id) & !is.na(ssn)),
+  "SC03", expr(!is.na(sc_id) & !is.na(sc_id)), # USHE Rule
   "SC04a", expr(!is_missing_chr(subject_code)),
   "SC05a", expr(!is_missing_chr(course_number)),
   "SC06a", expr(!is_missing_chr(section_number)),

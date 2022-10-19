@@ -115,7 +115,7 @@ classes FROM the institution while still IN high school.",NA,"banner.sgbstdn_sty
 "SC09a","invalid credit format","Database","Failure",NA,"S_CUM_HRS_UGrad wrong format","shrtgpa_activity_date","banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned)","S20a"
 "C08a","invalid credit format","Database","Failure",NA,"S_CUM_HRS_UGrad wrong format","shrtgpa_activity_date","banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned)","S20a"
 "SC11a","invalid credit format","USHE","Failure",NA,"S_CUM_HRS_UGrad wrong format","shrtgpa_activity_date","banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned)","SC11a"
-"S21","missing institutional cumulative gpa","Database","Failure",NA,NA,"shrtgpa_activity_date","banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa)","S21"
+"S21","missing institutional cumulative gpa","USHE","Failure",NA,NA,"shrtgpa_activity_date","banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa)","S21"
 "S21a","invalid institutional cumulative gpa format","Database","Failure",NA,"S_CUM_GPA_UGRAD wrong format","shrtgpa_activity_date","banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa)","S21a"
 "S22a","invalid institutional cumulative gpa format","Database","Failure",NA,"S_CUM_GPA_UGRAD wrong format","shrtgpa_activity_date","banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa)","S21a"
 "S23c","invalid institutional cumulative gpa format","Database","Failure",NA,"S_CUM_GPA_UGRAD wrong format","shrtgpa_activity_date","banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa)","S21a"

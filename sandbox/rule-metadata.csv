@@ -164,7 +164,7 @@ S40a,invalid act test score format,Database,Failure,NA,S_ACT wrong format,sortes
 S41a,invalid act test score format,Database,Failure,NA,S_ACT wrong format,sortest_activity_date,banner.sortest_test_score,S36a
 S42a,missing HS graduation date,Database,Failure,NA,High School Grad Date required where s_reg_status = FH,sorhsch_activity_date,banner.sorhsch_graduation_date,S42a
 S43c,cumulative gpa matches term gpa based on certain student types,USHE,Warning,NA,S_CUM_GPA_UGRAD = S_TERM_GPA,NA,round(sum(shrtgpa_quality_points) / sum(shrtgpa_gpa_hours),S43c
-S44c,invalid pell awarded to highschool students,Database,Failure,NA,HS students should not have pell,rpratrm_activity_date,banner.rpratrm_offer_amt,S44c
+S44c,invalid pell awarded to highschool students,USHE,Failure,NA,HS students should not have pell,rpratrm_activity_date,banner.rpratrm_offer_amt,S44c
 S44d,invalid pell value,USHE,Failure,NA,Wrong values for Pell,NA,banner.rpratrm_offer_amt,S44d
 S45c,invalid bia code,USHE,Failure,NA,Wrong value fo s_bia,NA,banner.tbraccd,S45c
 S46a,missing college,Database,Failure,NA,There should be a college for every record.,sgbstdn_activity_date,banner.sgbstdn_coll_code_1,S46a
@@ -354,4 +354,5 @@ R15a,Invalid Date Format,Database,Failure,NA,R_Update_Date wrong format,room_act
 R15b,Missing activity date,Database,Failure,NA,R_Update_Date blank list,room_activity_date,room_activity_date,R15b
 R15c,Update date is in the future,Database,Failure,NA,R_Update_Date is in the future,room_activity_date,room_activity_date,R15c
 R99a,Duplicate records,USHE,Failure,NA,Looking for duplicate r_keys,room_activity_date,NA,R99a
-UTS01,Invalid residency code,Database,Failure,NA,"Looking for values of ""R"", ""N"", ""A"", ""M"", ""G"", ""C""",sgbstdn_activity_date,sgbstdn_resd_code,UTS01
+UTS01,Invalid residency code,Database,Failure,NA,"Looking for values of ""R"", ""N"", ""A"", ""M"", ""G"", ""C""",sgbstdn_activity_date,sgbstdn_resd_code,S15a
+UTS02,invalid pell awarded to highschool students,Database,Failure,NA,HS students should not have pell,rpratrm_activity_date,banner.rpratrm_offer_amt,S44c

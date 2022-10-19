@@ -13,12 +13,12 @@ S00b,duplicate ssn,Database,Failure,NA,Duplicate Records by S_ID,spbpers_activit
 S02a,"missing ushe_academic_year, version_id, season",USHE,Failure,NA,Wrong year/term/extract in submission files,NA,n/a,S02a
 SC02a,"missing ushe_academic_year, version_id, season",USHE,Failure,NA,Wrong year/term/extract in submission files,NA,n/a,S02a
 C02,"missing ushe_academic_year, version_id, season",USHE,Failure,NA,Wrong year/term/extract in submission files,NA,n/a,S02a
-S03a,missing student_id or _ssn,Database,Failure,NA,Every record should have an s_id for every student,spbpers_activity_date,"banner.spbpers_ssn, banner.spriden_id",S03a
-G02a,missing student_id or _ssn,Database,Failure,NA,Every record should have an s_id for every student,spbpers_activity_date,"banner.spbpers_ssn, banner.spriden_id",S03a
-SC03,missing student_id or _ssn,Database,Failure,NA,Every record should have an s_id for every student,spbpers_activity_date,"banner.spbpers_ssn, banner.spriden_id",S03a
+S03a,missing student_id or _ssn,USHE,Failure,NA,Every record should have an s_id for every student,NA,NA,S03a
+G02a,missing student_id or _ssn,USHE,Failure,NA,Every record should have an s_id for every student,NA,NA,S03a
+SC03,missing student_id or _ssn,USHE,Failure,NA,Every record should have an s_id for every student,NA,NA,S03a
 S03b,missing ssn,USHE,Failure,NA,"Missing SSN with s_id_flag. If they are non-residents,
 --they should have an institutional id AND s_id_flag should be flagged I",spbpers_activity_date,banner.spbpers_ssn,S03b
-S03c,missin ssn with citz code of 1,Database,Failure,NA,"Residents Missing SSN. These are the students who are flagged as residents should have SSNs. However, students may decide not to release their SSN if they dont want to, so no SSNs is not entirely uncommon",spbpers_activity_date,banner.spbpers_cit_code,S03c
+S03c,missin ssn with citz code of 1,USHE,Failure,NA,"Residents Missing SSN. These are the students who are flagged as residents should have SSNs. However, students may decide not to release their SSN if they dont want to, so no SSNs is not entirely uncommon",NA,NA,S03c
 S04a,s_id not equal to S or I,USHE,Failure,NA,Every student should have an id_flag,NA,NA,S04a
 S04b,invalid ssn,Database,Failure,NA,check for invalid S_ID,spbpers_activity_date,banner.spbpers_ssn,S04b
 G02c,invalid ssn,Database,Failure,NA,check for invalid S_ID,spbpers_activity_date,banner.spbpers_ssn,S04b

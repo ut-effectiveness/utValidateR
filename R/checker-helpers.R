@@ -211,8 +211,15 @@ is_valid_credits_chr <- function(x) {
 
 #' @describeIn is_valid_values gpa
 #' @export
-is_valid_gpa <- function(x) {
-  !is.na(x) & is.numeric(x) & x >= 0 & x <= 5
+is_valid_gpa <- function(x, missing_ok = FALSE) {
+  out <- !is.na(x) & is.numeric(x) & x >= 0 & x <= 5 & !is.character(x)
+
+  out <- if (missing_ok) {
+    out | is.na(x)
+  } else {
+    out & !is.na(x)
+  }
+  out
 }
 
 #' @describeIn is_valid_values room occupancy

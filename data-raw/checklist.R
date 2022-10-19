@@ -37,8 +37,7 @@ rule_spec <- tribble(
   "S07d", expr(is_alpha_chr(previous_name_suffix)),
   "S08a", expr(!is_missing_chr(local_address_zip_code) &
                  !is_missing_chr(mailing_address_zip_code)),
-  "S08b", expr(is_valid_zip_code(local_address_zip_code, missing_ok = TRUE) &
-                 is_valid_zip_code(mailing_address_zip_code, missing_ok = TRUE)),
+  "S08b", expr(is_valid_zip_code(s_curr_zip, missing_ok = FALSE)), # USHE Check
   "S09a", expr(!is_missing_chr(us_citizenship_code)),
   "S09b", expr(equivalent(is_international, us_citizenship_code == 2)),
   "S10a", expr(!is_missing_chr(first_admit_county_code)), # TODO verify I don't need to check code validity

@@ -106,7 +106,7 @@ aux_info <- list(
 
   valid_room_use_codes = c(room_use_codes), #R08b
 
-  valid_student_type_codes <- c('N','2','R','C','T','3','P','H','0','5','1','F','S'),
+  valid_student_type_codes = c('N','2','R','C','T','3','P','H','0','5','1','F','S'),
 
   # Inventories
   building_inventory = building_list$building_number, #C19c and others, TODO: get from a query

@@ -7,14 +7,13 @@ library(utHelpR)
 library(xlsx)
 
 #Define variables
-v_term = "202240"
+#v_term = "202140"
 
 #Pulling the data
 student <- utHelpR::get_data_from_sql_file(file_name = 'student.sql',
                                            dsn = 'edify',
                                            context = 'sandbox'
-) %>%
-  filter(term_id == v_term)
+)
 
 student_courses <- utHelpR::get_data_from_sql_file(file_name = 'student_courses.sql',
                                                    dsn = 'edify',
@@ -54,7 +53,8 @@ data("aux_info")
 
 student_check_res <- do_checks(df_tocheck = student,
                                checklist = get_checklist("student", "database"),
-                               aux_info = aux_info)
+                               aux_info = aux_info,
+                               verbose = TRUE)
 
 student_course_res <- do_checks(df_tocheck = student_courses,
                                 checklist = get_checklist("student course", "database"),

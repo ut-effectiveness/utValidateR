@@ -34,6 +34,7 @@
                       e.meet_days AS meet_days_3,
                       NULLIF(a.ssbsect_insm_code, '') AS instruction_method_code,
                       i.scbcrse_dept_code AS academic_department_id,
+                      c.meet_start_date,
                       c.meet_end_date,
                       g.first_name || ' ' || g.last_name AS instructor_name,
                       a.ssbsect_schd_code AS section_format_type_code,

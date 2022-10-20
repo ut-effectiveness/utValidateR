@@ -44,7 +44,7 @@ G03h,previous suffix last name with non-alpha characters,Database,Warning,NA,S_S
 S08a,missing zip code,USHE,Failure,NA,Every student should have a zip code,spraddr_activity_date,banner.spraddr_zip,S08a
 S08b,invalid zip code,USHE,Failure,NA,Invalid zip code,NA,NA,S08b
 S09a,missing citizenship code,Database,Failure,NA,Missing citzenship code,spbpers_activity_date,banner.spbpers_cit_code,S09a
-S09b,Nonresident Alien mismatch,Database,Failure,NA,Nonresident Alien mismatch,spbpers_activity_date,banner.spbpers_cit_code,S09b
+S09b,Non-Resident Alien mismatch,Database,Failure,NA,Non-Resident Alien mismatch,spbpers_activity_date,banner.spbpers_cit_code,S09b
 S10a,missing county code,Database,Failure,NA,There should be a county origin for every record,sabsupl_activity_date,banner.sabsupl_cnty_code_admit,S10a
 G04a,missing county code,Database,Failure,NA,There should be a county origin for every record,sabsupl_activity_date,banner.sabsupl_cnty_code_admit,S10a
 S11a,state code is UT but county code is out of state,Database,Failure,NA,Checks where the state is UT but county is out of state,sabsupl_activity_date,"banner.sabsupl_stat_code_admit, banner.sabsupl_cnty_code_admit",S11a

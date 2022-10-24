@@ -9,7 +9,7 @@ library(xlsx)
 #This is a scratch audit report used for testing
 
 #Define variables
-v_term = "202140"
+v_term = "202240"
 
 #Pulling the data
 student <- utHelpR::get_data_from_sql_file(file_name = 'student.sql',
@@ -20,8 +20,7 @@ student <- utHelpR::get_data_from_sql_file(file_name = 'student.sql',
 courses <- utHelpR::get_data_from_sql_file(file_name = 'course.sql',
                                            dsn = 'edify',
                                            context = 'sandbox'
-) %>%
-  filter(term_id == v_term)
+)
 
 student_courses <- utHelpR::get_data_from_sql_file(file_name = 'student_courses.sql',
                                                    dsn = 'edify',
@@ -73,6 +72,11 @@ student_course_res <- do_checks(df_tocheck = student_courses,
 
 
 AuditDataSteward::run_app(
-  student_result = student_check_res
-  #course_result = course_check_res
+  student_result = student_check_res,
+  course_result = course_check_res
 )
+
+courses %>%
+  select(building_number_2,
+         meet_days_2,
+         meet_start_time_2)

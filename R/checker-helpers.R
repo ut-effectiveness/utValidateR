@@ -362,3 +362,16 @@ is_nonus_state <- function(state) {
 TODO <- function(msg) {
   stop()
 }
+
+#' Helper functions for missing building numbers
+#' @describeIn Missing Building check whether a time or day exist and if the building number is missing
+#' @param building_number vector of building_number values
+#' @param start_time vector of start_time values
+#' @param meet_days vector of meet_day values
+#' @export
+is_missing_building_number <- function(building_number, start_time, meet_days) {
+    case_when((is.na(start_time) | is.na(meet_days)) ~ TRUE,
+            is.na(building_number) ~ FALSE,
+            !is.na(building_number) ~ TRUE)
+}
+

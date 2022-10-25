@@ -185,7 +185,7 @@ rule_spec <- tribble(
   "S49a", expr(is_missing_chr(secondary_major_cip_code) | !is_missing_chr(secondary_major_desc)),
   "S49b", expr(matches_regex(secondary_major_desc, "^[a-zA-Z' \\- & /]*$", #alpha plus space, apostrophe, hyphen, ampersand, forward slash
                              missing_ok = TRUE)),
-  "C00",  expr(!is_duplicated(cbind(subject_code, course_number, section_number))),
+  "C00",  expr(!is_duplicated(cbind(term_id, subject_code, course_number, section_number))),
   "C04a", expr(nchar(course_number) == 4),
   "C04c", expr(!stringr::str_detect(course_number, "^[89]")),
   "C04d", expr(!stringr::str_detect(substring(course_number, 1, 4), "[a-zA-Z]")),
@@ -272,7 +272,7 @@ rule_spec <- tribble(
                  !(c_extract %in% "3")),
   "C42a", expr(!is_missing_chr(instructor_employee_id)),
   "C42b", expr(is_missing_chr(instructor_employee_id) |
-                 (nchar(instructor_employee_id) == 9L &
+                 (nchar(instructor_employee_id) == 8 &
                     grepl("^[a-zA-Z]", instructor_employee_id))),
   "C42c", expr(is_missing_chr(c_instruct_id) |
                  !grepl("^[a-zA-Z\\']", c_instruct_id) |

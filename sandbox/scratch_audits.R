@@ -77,6 +77,7 @@ AuditDataSteward::run_app(
 )
 
 View(courses %>%
-  select(meet_building_id_3,
+  select(meet_room_number_3,
+         meet_start_time_3,
          meet_days_3,
-         meet_start_time_3))
+         meet_end_time_3))

@@ -95,3 +95,4 @@
             LEFT JOIN banner.ssrsccd j ON j.ssrsccd_crn = a.ssbsect_crn
                   AND j.ssrsccd_term_code = a.ssbsect_term_code
                 WHERE a.ssbsect_term_code >= (SELECT term_id FROM quad.term WHERE is_previous_term) -- Previous Term and forward
+                  AND ssbsect_ssts_code = 'A';

@@ -271,9 +271,9 @@ rule_spec <- tribble(
                  !grepl("[^a-zA-Z0-9 /&()+:.-\\']", c_title) |
                  !(c_extract %in% "3")),
   "C42a", expr(!is_missing_chr(instructor_employee_id)),
-  "C42b", expr(is_missing_chr(instructor_employee_id) |
+  "C42b", expr(!is_missing_chr(instructor_employee_id) |
                  (nchar(instructor_employee_id) == 8 &
-                    grepl("^[a-zA-Z]", instructor_employee_id))),
+                    grepl("^[0-9]", instructor_employee_id))),
   "C42c", expr(is_missing_chr(c_instruct_id) |
                  !grepl("^[a-zA-Z\\']", c_instruct_id) |
                  is_valid_values(substring(c_instruct_id, 1, 1), valid_i_banner)), # TODO: valid_i_banner needs a query

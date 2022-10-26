@@ -196,7 +196,7 @@ rule_spec <- tribble(
   "C09", expr(is_valid_values(tolower(c_line_item), valid_c_line_items, missing_ok = TRUE)), # USHE rule
   "C10", expr(!is_missing_chr(campus_id)),
   "C11", expr(!is_missing_chr(budget_code)),
-  "C11b", expr(paste0(subject_code, "-", course_number) %in% concurrent_course_ids),
+  "C11b", expr((paste0(subject_code, "-", course_number) %in% concurrent_course_ids) | !(budget_code %in% c('BC', 'SF'))),
   "C12", expr(is_valid_values(instruction_method_code,
                               valid_instruction_method_codes,
                               missing_ok = TRUE)), # TODO: is missing OK?

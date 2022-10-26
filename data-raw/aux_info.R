@@ -22,6 +22,10 @@ ut_highschools <- highschools %>%
   filter(HS_State == "UT") %>%
   pull(HS_ACT_Code)
 
+# Campus IDs from file--supplied by Justin
+campus_ids <- scan("sandbox/valid_campus_ids.txt", what = character(0))
+
+
 previous_degree_types <- c("1", "1A", "1B", "2", "3", "4", "5", "6", "7", "8", "17",
                            "18", "19", "DIP", "CER", "AX", "BX", "MX", "DX", "FP")
 
@@ -106,6 +110,8 @@ aux_info <- list(
   valid_room_use_codes = c(room_use_codes), #R08b
 
   valid_student_type_codes <- c('N','2','R','C','T','3','P','H','0','5','1','F','S'),
+
+  valid_campus_ids = campus_ids,
 
   # Inventories
   building_inventory = building_list$building_number, #C19c and others, TODO: get from a query

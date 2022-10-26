@@ -223,9 +223,9 @@ C35d,building number not in rooms inventory,Database,Failure,NA,BLDG NUM not in 
 C20a,building room is missing,Database,Failure,NA,BLDG Room conditionally required,ssrmeet_activity_date,banner.ssrmeet_room_code,C20a
 C28a,building room is missing,Database,Failure,NA,BLDG Room conditionally required,ssrmeet_activity_date,banner.ssrmeet_room_code,C20a
 C36a,building room is missing,Database,Failure,NA,BLDG Room conditionally required,ssrmeet_activity_date,banner.ssrmeet_room_code,C20a
-C21a,invalid room max,Database,Failure,NA,C_Room_Max Invalid,ssbsect_activity_date,banner.ssbsect_max_enrl,C21a
-C29a,invalid room max,Database,Failure,NA,C_Room_Max Invalid,ssbsect_activity_date,banner.ssbsect_max_enrl,C21a
-C37a,invalid room max,Database,Failure,NA,C_Room_Max Invalid,ssbsect_activity_date,banner.ssbsect_max_enrl,C21a
+C21a,invalid room max occupancy,Database,Failure,NA,C_Room_Max Invalid,ssbsect_activity_date,banner.ssbsect_max_enrl,C21a
+C29a,invalid room max occupancy,Database,Failure,NA,C_Room_Max Invalid,ssbsect_activity_date,banner.ssbsect_max_enrl,C21a
+C37a,invalid room max occupancy,Database,Failure,NA,C_Room_Max Invalid,ssbsect_activity_date,banner.ssbsect_max_enrl,C21a
 C22a,invalid room use type,Database,Failure,NA,Checking for valid values for c_room_type3,room_activity_date,space_utlz.rooms_detail.room_use_code,C22a
 C30a,invalid room use type,Database,Failure,NA,Checking for valid values for c_room_type3,room_activity_date,space_utlz.rooms_detail.room_use_code,C22a
 C38a,invalid room use type,Database,Failure,NA,Checking for valid values for c_room_type3,room_activity_date,space_utlz.rooms_detail.room_use_code,C22a

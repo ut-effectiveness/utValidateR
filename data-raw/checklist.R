@@ -212,12 +212,12 @@ rule_spec <- tribble(
                  c_budget_code %in% c("BV", "SQ") |
                  paste(c_crs_sbj, c_crs_num) %in% TODO("Need Reference.dbo.ETPL for code lookup") |
                  !(c_extract %in% "E")),
-  "C15a", expr(!is_missing_chr(meet_start_time_1)),
-  "C23a", expr(!is_missing_chr(meet_start_time_2)),
-  "C31a", expr(!is_missing_chr(meet_start_time_3)),
-  "C16a", expr(!is_missing_chr(meet_end_time_1)),
-  "C24a", expr(!is_missing_chr(meet_end_time_2)),
-  "C32a", expr(!is_missing_chr(meet_end_time_3)),
+  "C15a", expr(!is_missing_chr(meet_start_time_1) | is.na(meet_days_1)),
+  "C23a", expr(!is_missing_chr(meet_start_time_2) | is.na(meet_days_2)),
+  "C31a", expr(!is_missing_chr(meet_start_time_3) | is.na(meet_days_3)),
+  "C16a", expr(!is_missing_chr(meet_end_time_1) | is.na(meet_days_1)),
+  "C24a", expr(!is_missing_chr(meet_end_time_2) | is.na(meet_days_2)),
+  "C32a", expr(!is_missing_chr(meet_end_time_3) | is.na(meet_days_3)),
   "C17a", expr(!is_missing_chr(c_days) |
                  c_delivery_method %in% c("C", "I", "V", "Y") |
                  c_budget_code %in% "SF" |

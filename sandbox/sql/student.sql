@@ -9,7 +9,7 @@
                 b.dixie_previous_last_name AS previous_last_name,
                 b.dixie_previous_first_name AS previous_first_name,
                 b.dixie_previous_middle_name AS previous_middle_name,
-              --  b.previous_name_suffix,
+                b.previous_name_suffix,
                 b.local_address_zip_code,
                 b.mailing_address_zip_code,
                 b.us_citizenship_code,
@@ -25,6 +25,7 @@
                 b.is_white,
                 b.is_international,
                 b.is_other_race,
+                b.ipeds_race_ethnicity,
                 a.residential_housing_code AS residency_code,
                 a.primary_major_cip_code,
                 a.student_type_code,
@@ -71,9 +72,8 @@
                 b.spraddr_activity_date,
                 b.spriden_activity_date,
                 b.sorhsch_activity_date,
-                a.stvmajr_activity_date
-                -- add shrlgpa_activity_date
-                -- add rpratrm_activity_date
+                a.stvmajr_activity_date,
+                a.rpratrm_activity_date
            FROM quad.student_term_level a
       LEFT JOIN quad.student b
              ON b.student_id = a.student_id

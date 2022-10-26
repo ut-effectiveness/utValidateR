@@ -11,7 +11,8 @@ country_codes <- setdiff(iso_countries$iso_alpha2, "")
 # CIP codes from csv
 cipdf <- read.csv("sandbox/CIPCode2020.csv")
 cip_codes <- cipdf %>%
-  mutate(cip_chr = sprintf(fmt = "%06g", CIPCode * 1e4)) # Need a 6-digit string with no decimals
+  mutate(cip_chr = sprintf(fmt = "%06g", CIPCode * 1e4)) %>% # Need a 6-digit string with no decimals
+  add_row(cip_chr = "999999") # Appending this cip code since all majors including non-degree are assigned a cip code.
 
 # Degree types from csv
 degree_types <- read.csv("sandbox/degree-types.csv")
@@ -109,7 +110,7 @@ aux_info <- list(
 
   valid_room_use_codes = c(room_use_codes), #R08b
 
-  valid_student_type_codes <- c('N','2','R','C','T','3','P','H','0','5','1','F','S'),
+  valid_student_type_codes = c('N','2','R','C','T','3','P','H','0','5','1','F','S'),
 
   valid_campus_ids = campus_ids,
 

@@ -245,3 +245,39 @@ test_that("TODO function errors", {
   expect_error(TODO())
   expect_error(TODO("abcd"))
 })
+
+test_that("course_conditional_check works", {
+  input <- c("abc", "123", "!@#$", " ",   "",   NA)
+  out_check <- c(TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)
+  out_ignore <- rep(TRUE, length(input))
+
+  data("aux_info", package = "utValidateR", envir = environment())
+
+  check_inst_methods <- c("c", "i", "abc", "12345")
+  check_format_codes <- c('LEV', 'LEX', 'LES', 'INS', 'STU', 'LBC', 'LBS', 'LBC')
+  check_campus_ids <- aux_info$valid_campus_ids
+  check_budget_codes <- c("abc", "def", "111", "A")
+
+  ignore_inst_methods <- c("C", "I", "V", "Y")
+  ignore_format_codes <- c("lev", "abc", "1234")
+  ignore_campus_ids <- setdiff(c(ignore_inst_methods, ignore_format_codes), check_budget_codes)
+  ignore_budget_codes <- c("SF")
+
+  im1 <- sample(check_inst_methods, length(input), replace = TRUE)
+  sf1 <- sample(check_format_codes, length(input), replace = TRUE)
+  bc1 <- sample(check_budget_codes, length(input), replace = TRUE)
+  ci1 <- sample(check_campus_ids, length(input), replace = TRUE)
+
+  im2 <- sample(ignore_inst_methods, length(input), replace = TRUE)
+  sf2 <- sample(ignore_format_codes, length(input), replace = TRUE)
+  bc2 <- sample(ignore_budget_codes, length(input), replace = TRUE)
+  ci2 <- sample(ignore_campus_ids, length(input), replace = TRUE)
+
+  expect_equal(course_conditional_check(input, im1, sf1, bc1, ci1), out_check)
+
+  expect_equal(course_conditional_check(input, im2, sf1, bc1, ci1), out_ignore)
+  expect_equal(course_conditional_check(input, im1, sf2, bc1, ci1), out_ignore)
+  expect_equal(course_conditional_check(input, im1, sf1, bc2, ci1), out_ignore)
+  expect_equal(course_conditional_check(input, im1, sf1, bc1, ci2), out_ignore)
+
+})

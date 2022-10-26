@@ -353,6 +353,25 @@ is_nonus_state <- function(state) {
   matches_regex(state, "^[A-Z]{2}$", missing_ok = FALSE) & !is_us_state(state)
 }
 
+#' Function for checking conditional missingness for rules like C18a, C19a
+#'
+#' @param x vector of values to check, e.g. from building_name or building_number
+#' @param instruction_method_code,section_format_type_code,budget_code,campus_id relevant vector columns of df_tocheck
+#'
+#' @export
+course_conditional_check <- function(x,
+                     instruction_method_code, section_format_type_code, budget_code, campus_id) {
+  data("aux_info", package = "utValidateR", envir = environment())
+  isbad <- is_missing_chr(trimws(x)) &
+    !(instruction_method_code %in% c("C", "I", "V", "Y")) &
+    section_format_type_code %in% c('LEV', 'LEX', 'LES', 'INS', 'STU', 'LBC', 'LBS', 'LBC') &
+    !(budget_code %in% "SF") &
+    is_valid_values(campus_id, aux_info$valid_campus_ids)
+
+  out <- !isbad
+  out
+}
+
 #' Helper for troubleshooting and communicating known needs
 #'
 #' Primarily intended to aid in the development of this package

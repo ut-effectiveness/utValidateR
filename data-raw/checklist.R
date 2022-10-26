@@ -212,12 +212,12 @@ rule_spec <- tribble(
                  c_budget_code %in% c("BV", "SQ") |
                  paste(c_crs_sbj, c_crs_num) %in% TODO("Need Reference.dbo.ETPL for code lookup") |
                  !(c_extract %in% "E")),
-  "C15a", expr(!is_missing_chr(meet_start_time_1)),
-  "C23a", expr(!is_missing_chr(meet_start_time_2)),
-  "C31a", expr(!is_missing_chr(meet_start_time_3)),
-  "C16a", expr(!is_missing_chr(meet_end_time_1)),
-  "C24a", expr(!is_missing_chr(meet_end_time_2)),
-  "C32a", expr(!is_missing_chr(meet_end_time_3)),
+  "C15a", expr(!is_missing_chr(meet_start_time_1) | is.na(meet_days_1)),
+  "C23a", expr(!is_missing_chr(meet_start_time_2) | is.na(meet_days_2)),
+  "C31a", expr(!is_missing_chr(meet_start_time_3) | is.na(meet_days_3)),
+  "C16a", expr(!is_missing_chr(meet_end_time_1) | is.na(meet_days_1)),
+  "C24a", expr(!is_missing_chr(meet_end_time_2) | is.na(meet_days_2)),
+  "C32a", expr(!is_missing_chr(meet_end_time_3) | is.na(meet_days_3)),
   "C17a", expr(!is_missing_chr(c_days) |
                  c_delivery_method %in% c("C", "I", "V", "Y") |
                  c_budget_code %in% "SF" |
@@ -248,15 +248,15 @@ rule_spec <- tribble(
   "C20a", expr(!is_missing_chr(meet_room_number_1)), # TODO: conditionality required?
   "C28a", expr(!is_missing_chr(meet_room_number_2)), # TODO: conditionality required?
   "C36a", expr(!is_missing_chr(meet_room_number_3)), # TODO: conditionality required?
-  "C21a", expr(is_valid_occupancy(room_max_occupancy_1)),
-  "C29a", expr(is_valid_occupancy(room_max_occupancy_2)),
-  "C37a", expr(is_valid_occupancy(room_max_occupancy_3)),
+  "C21a", expr(is_valid_occupancy(room_max_occupancy_1) | is.na(meet_room_number_1)),
+  "C29a", expr(is_valid_occupancy(room_max_occupancy_2) | is.na(meet_room_number_2)),
+  "C37a", expr(is_valid_occupancy(room_max_occupancy_3) | is.na(meet_room_number_3)),
   "C22a", expr(is_valid_values(room_use_code_1, valid_room_use_codes, missing_ok = TRUE)),
   "C30a", expr(is_valid_values(room_use_code_2, valid_room_use_codes, missing_ok = TRUE)),
   "C38a", expr(is_valid_values(room_use_code_3, valid_room_use_codes, missing_ok = TRUE)),
-  "C22b", expr(!is_missing_chr(room_use_code_1)),
-  "C30b", expr(!is_missing_chr(room_use_code_2)),
-  "C38b", expr(!is_missing_chr(room_use_code_3)),
+  "C22b", expr(!is_missing_chr(room_use_code_1) | is.na(meet_room_number_1)),
+  "C30b", expr(!is_missing_chr(room_use_code_2) | is.na(meet_room_number_2)),
+  "C38b", expr(!is_missing_chr(room_use_code_3) | is.na(meet_room_number_3)),
   "C39a", expr(is.Date(meet_start_date) & !is.na(meet_start_date)), # Summer TODO: how to distinguish? from fall, spring?
   "C39b", expr(is.Date(meet_start_date) & !is.na(meet_start_date)), # Fall
   "C39c", expr(is.Date(meet_start_date) & !is.na(meet_start_date)), # Spring

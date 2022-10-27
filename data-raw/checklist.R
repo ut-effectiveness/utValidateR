@@ -186,7 +186,7 @@ rule_spec <- tribble(
   "S49b", expr(matches_regex(secondary_major_desc, "^[a-zA-Z' \\- & /]*$", #alpha plus space, apostrophe, hyphen, ampersand, forward slash
                              missing_ok = TRUE)),
   "C00",  expr(!is_duplicated(cbind(term_id, subject_code, course_number, section_number))),
-  "C04a", expr(nchar(course_number) == 4),
+  "C04a", expr(nchar(course_number) != 3 | nchar(course_number) != 2 | nchar(course_number) != 1),
   "C04c", expr(!stringr::str_detect(course_number, "^[89]")),
   "C04d", expr(!stringr::str_detect(substring(course_number, 1, 4), "[a-zA-Z]")),
   "C06a", expr(is_valid_credits_chr(course_min_credits)),
@@ -277,7 +277,7 @@ rule_spec <- tribble(
   "C42c", expr(is_missing_chr(c_instruct_id) |
                  !grepl("^[a-zA-Z\\']", c_instruct_id) |
                  is_valid_values(substring(c_instruct_id, 1, 1), valid_i_banner)), # TODO: valid_i_banner needs a query
-  "C43a", expr(!is_missing_chr(instructor_name)),
+  "C43a", expr(!is_missing_chr(instructor_name) | (class_size == 0)),
   "C43c", expr(is_alpha_chr(c_instruct_name) | !(c_extract %in% "3")),
   "C44", expr(!is_missing_chr(section_format_type_code)),
   "C44a", expr(is_valid_values(c_instruct_type, valid_instruct_types, missing_ok = TRUE)),

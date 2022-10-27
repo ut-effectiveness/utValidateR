@@ -270,7 +270,7 @@ rule_spec <- tribble(
   "C41d", expr(is_missing_chr(c_title) |
                  !grepl("[^a-zA-Z0-9 /&()+:.-\\']", c_title) |
                  !(c_extract %in% "3")),
-  "C42a", expr(!is_missing_chr(instructor_employee_id)),
+  "C42a", expr(!is_missing_chr(instructor_employee_id) | (class_size == 0)),
   "C42b", expr(!is_missing_chr(instructor_employee_id) |
                  (nchar(instructor_employee_id) == 8 &
                     grepl("^[0-9]", instructor_employee_id))),

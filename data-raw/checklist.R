@@ -245,9 +245,10 @@ rule_spec <- tribble(
   "C19d", expr(building_number_1 %in% rooms_inventory),
   "C27d", expr(building_number_2 %in% rooms_inventory),
   "C35d", expr(building_number_3 %in% rooms_inventory),
-  "C20a", expr(!is_missing_chr(meet_room_number_1)), # TODO: conditionality required?
-  "C28a", expr(!is_missing_chr(meet_room_number_2)), # TODO: conditionality required?
-  "C36a", expr(!is_missing_chr(meet_room_number_3)), # TODO: conditionality required?
+  #Start Here tomorrow!!!
+  "C20a", expr(course_conditional_check(meet_room_number_1, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_1)),
+  "C28a", expr(course_conditional_check(meet_room_number_2, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_2)),
+  "C36a", expr(course_conditional_check(meet_room_number_3, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_3)),
   "C21a", expr(is_valid_occupancy(room_max_occupancy_1) | is.na(meet_room_number_1)),
   "C29a", expr(is_valid_occupancy(room_max_occupancy_2) | is.na(meet_room_number_2)),
   "C37a", expr(is_valid_occupancy(room_max_occupancy_3) | is.na(meet_room_number_3)),

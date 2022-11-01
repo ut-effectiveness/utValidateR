@@ -296,7 +296,7 @@ rule_spec <- tribble(
                 !(c_level %in% "R")), # Ignoring complex edge-case logic
   "C52a", expr(!is_missing_chr(course_reference_number)),
   "C52b", expr(is_valid_course_reference_number(course_reference_number)),
-  "C52c", expr(!is_duplicated(course_reference_number)),
+  "C52c", expr(!is_duplicated(cbind(course_reference_number, term_id))),
   "G01b", expr(!is_missing_chr(g_inst)),
   "SC01a", expr(!is_missing_chr(sc_inst)),
   "R01a", expr(!is_missing_chr(r_inst)),

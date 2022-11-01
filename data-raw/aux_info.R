@@ -65,7 +65,9 @@ aux_info <- list(
   valid_c_line_items = c("A", "B", "C", "D", "E", "F", "G", "H", "I", "K", "L",
                          "M", "N", "P", "Q", "R", "S", "T", "X"), #C09
 
-  valid_instruction_method_codes = c("P", "H", "T", "R", "I", "B", "C", "O", "V", "Y"), #C12
+  valid_ushe_instruction_method_codes = c("P", "H", "T", "R", "I", "B", "C", "O", "V", "Y"), #C12
+
+  valid_instruction_method_codes = c("P", "H", "T", "R", "I", "B", "C", "O", "V", "Y", "E"), #UTC01
 
   valid_program_types = c("A", "V", "P", "C"), # C13
 

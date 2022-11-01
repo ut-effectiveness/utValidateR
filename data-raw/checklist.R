@@ -197,9 +197,12 @@ rule_spec <- tribble(
   "C10", expr(!is_missing_chr(campus_id)),
   "C11", expr(!is_missing_chr(budget_code)),
   "C11b", expr((paste0(subject_code, "-", course_number) %in% concurrent_course_ids) | !(budget_code %in% c('BC', 'SF'))),
-  "C12", expr(is_valid_values(instruction_method_code,
-                              valid_instruction_method_codes,
-                              missing_ok = TRUE)), # TODO: is missing OK?
+  "C12", expr(is_valid_values(c_delivery_method,
+                              valid_ushe_instruction_method_codes,
+                              missing_ok = TRUE)), # USHE Check
+  "UTC01", expr(is_valid_values(instruction_method_code,
+                                valid_instruction_method_codes,
+                                missing_ok = TRUE)),
   "C13", expr(is_valid_values(program_type, valid_program_types, missing_ok = TRUE)),
   "C13a", expr(TODO("USHE check on perkins program types. Requires a query?")),
   "C13c", expr(TODO("USHE check on perkins budget codes. Need query for perkins codes?")),

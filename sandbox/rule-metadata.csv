@@ -356,4 +356,4 @@ R15c,Update date is in the future,Database,Failure,NA,R_Update_Date is in the fu
 R99a,Duplicate records,USHE,Failure,NA,Looking for duplicate r_keys,room_activity_date,NA,R99a
 UTS01,Invalid residency code,Database,Failure,NA,"Looking for values of ""R"", ""N"", ""A"", ""M"", ""G"", ""C""",sgbstdn_activity_date,sgbstdn_resd_code,S15a
 UTS02,invalid pell awarded to highschool students,Database,Failure,NA,HS students should not have pell,rpratrm_activity_date,banner.rpratrm_offer_amt,S44c
-UTC01,invalid delivery method,USHE,Failure,NA,Checking for valid values IN instruction_method_code,ssbsect_activity_date,banner.ssbsect_insm_code,C12
+UTC01,invalid delivery method,Database,Failure,NA,Checking for valid values IN instruction_method_code,ssbsect_activity_date,banner.ssbsect_insm_code,C12

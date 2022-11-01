@@ -63,7 +63,10 @@
                       c.ssrmeet_activity_date,
                       f.scbcrse_activity_date,
                       b.sirasgn_activity_date,
-                      b.spriden_activity_date
+                      b.spriden_activity_date,
+                      j.ssrsccd_activity_date,
+                      COALESCE(c.bldg_activity_date, d.bldg_activity_date, e.bldg_activity_date) AS bldg_activity_date,
+                      COALESCE(c.room_activity_date, d.room_activity_date, e.room_activity_date) AS room_activity_date
                  FROM banner.ssbsect a
             LEFT JOIN quad.section_instructor_assignment b
                    ON b.course_reference_number = a.ssbsect_crn

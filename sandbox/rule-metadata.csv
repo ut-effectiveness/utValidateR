@@ -189,7 +189,7 @@ C10,missing site type,Database,Failure,NA,Checking for valid values IN c_site_ty
 C10a,invalid site type,Database,Failure,NA,Checking for valid values IN c_site_type.,ssbsect_activity_date,banner.ssbsect_camp_code,C10a
 C11,missing budget code,Database,Failure,NA,Checking to ensure that budget codes are not blank or NULL,ssrsccd_activity_date,banner.ssrsccd_sccd_code,C11
 C11b,budget code does not align with course and subject on concurrent enrolled master list from USHE,Database,Failure,NA,Not on CEML,ssrsccd_activity_date,banner.ssrsccd_sccd_code,C11b
-C12,invalid delivery method,Database,Failure,NA,Checking for valid values IN c_delivery_method.,ssbsect_activity_date,banner.ssbsect_insm_code,C12
+C12,invalid delivery method,USHE,Failure,NA,Checking for valid values IN c_delivery_method.,ssbsect_activity_date,banner.ssbsect_insm_code,C12
 C13,invalid program type and missing program type,Database,Failure,NA,Checking for invalid program types.,NA,banner.scbsupp_occs_code,C13
 C13a,invalid program type against perkins list,USHE,Failure,NA,checks validity of c_program_type against perkins list.,NA,banner.scbsupp_occs_code,C13a
 C13c,invalid budget code again perkins list,USHE,Failure,NA,"checks for courses allowed on perkins list, but not currently coded to vocational",NA,banner.scbsupp_occs_code,C13c
@@ -356,3 +356,4 @@ R15c,Update date is in the future,Database,Failure,NA,R_Update_Date is in the fu
 R99a,Duplicate records,USHE,Failure,NA,Looking for duplicate r_keys,room_activity_date,NA,R99a
 UTS01,Invalid residency code,Database,Failure,NA,"Looking for values of ""R"", ""N"", ""A"", ""M"", ""G"", ""C""",sgbstdn_activity_date,sgbstdn_resd_code,S15a
 UTS02,invalid pell awarded to highschool students,Database,Failure,NA,HS students should not have pell,rpratrm_activity_date,banner.rpratrm_offer_amt,S44c
+UTC01,invalid delivery method,USHE,Failure,NA,Checking for valid values IN instruction_method_code,ssbsect_activity_date,banner.ssbsect_insm_code,C12

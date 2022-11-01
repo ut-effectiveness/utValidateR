@@ -78,4 +78,4 @@ AuditDataSteward::run_app(
   course_result = course_check_res
 )
 
-View(courses)
+glimpse(courses)

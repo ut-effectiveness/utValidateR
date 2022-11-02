@@ -10,9 +10,6 @@ library(xlsx)
 
 #utHelpR::set_edify_password()
 
-#Define variables
-v_term = "202240"
-
 #Pulling the data
 student <- utHelpR::get_data_from_sql_file(file_name = 'student.sql',
                                            dsn = 'edify',
@@ -27,8 +24,7 @@ courses <- utHelpR::get_data_from_sql_file(file_name = 'course.sql',
 student_courses <- utHelpR::get_data_from_sql_file(file_name = 'student_courses.sql',
                                                    dsn = 'edify',
                                                    context = 'sandbox'
-) %>%
-  filter(term_id == v_term)
+)
 
 
 
@@ -75,7 +71,8 @@ student_course_res <- do_checks(df_tocheck = student_courses,
 
 AuditDataSteward::run_app(
   student_result = student_check_res,
-  course_result = course_check_res
+  course_result = course_check_res,
+  student_course_result = student_course_res
 )
 
 glimpse(courses)

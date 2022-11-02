@@ -11,7 +11,8 @@ country_codes <- setdiff(iso_countries$iso_alpha2, "")
 # CIP codes from csv
 cipdf <- read.csv("sandbox/CIPCode2020.csv")
 cip_codes <- cipdf %>%
-  mutate(cip_chr = sprintf(fmt = "%06g", CIPCode * 1e4)) # Need a 6-digit string with no decimals
+  mutate(cip_chr = sprintf(fmt = "%06g", CIPCode * 1e4)) %>% # Need a 6-digit string with no decimals
+  add_row(cip_chr = "999999") # Appending this cip code since all majors including non-degree are assigned a cip code.
 
 # Degree types from csv
 degree_types <- read.csv("sandbox/degree-types.csv")
@@ -21,6 +22,10 @@ highschools <- read.csv("sandbox/highschools.txt", sep = "|")
 ut_highschools <- highschools %>%
   filter(HS_State == "UT") %>%
   pull(HS_ACT_Code)
+
+# Campus IDs from file--supplied by Justin
+campus_ids <- scan("sandbox/valid_campus_ids.txt", what = character(0))
+
 
 previous_degree_types <- c("1", "1A", "1B", "2", "3", "4", "5", "6", "7", "8", "17",
                            "18", "19", "DIP", "CER", "AX", "BX", "MX", "DX", "FP")
@@ -60,7 +65,9 @@ aux_info <- list(
   valid_c_line_items = c("A", "B", "C", "D", "E", "F", "G", "H", "I", "K", "L",
                          "M", "N", "P", "Q", "R", "S", "T", "X"), #C09
 
-  valid_instruction_method_codes = c("P", "H", "T", "R", "I", "B", "C", "O", "V", "Y"), #C12
+  valid_ushe_instruction_method_codes = c("P", "H", "T", "R", "I", "B", "C", "O", "V", "Y"), #C12
+
+  valid_instruction_method_codes = c("P", "H", "T", "R", "I", "B", "C", "O", "V", "Y", "E"), #UTC01
 
   valid_program_types = c("A", "V", "P", "C"), # C13
 
@@ -105,7 +112,9 @@ aux_info <- list(
 
   valid_room_use_codes = c(room_use_codes), #R08b
 
-  valid_student_type_codes <- c('N','2','R','C','T','3','P','H','0','5','1','F','S'),
+  valid_student_type_codes = c('N','2','R','C','T','3','P','H','0','5','1','F','S'),
+
+  valid_campus_ids = campus_ids,
 
   # Inventories
   building_inventory = building_list$building_number, #C19c and others, TODO: get from a query

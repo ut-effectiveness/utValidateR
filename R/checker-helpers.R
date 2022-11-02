@@ -134,6 +134,7 @@ is_valid_ssn <- function(x, missing_ok = TRUE) {
 #' Helper function for regex matching with missingness toggle
 #'
 #' @inheritParams is_valid_zip_code
+#' @param regex regular expression string
 #' @export
 matches_regex <- function(x, regex, missing_ok) {
   matches <- stringr::str_detect(x, regex)
@@ -211,8 +212,15 @@ is_valid_credits_chr <- function(x) {
 
 #' @describeIn is_valid_values gpa
 #' @export
-is_valid_gpa <- function(x) {
-  !is.na(x) & is.numeric(x) & x >= 0 & x <= 5
+is_valid_gpa <- function(x, missing_ok = FALSE) {
+  out <- !is.na(x) & is.numeric(x) & x >= 0 & x <= 5 & !is.character(x)
+
+  out <- if (missing_ok) {
+    out | is.na(x)
+  } else {
+    out & !is.na(x)
+  }
+  out
 }
 
 #' @describeIn is_valid_values room occupancy
@@ -275,7 +283,9 @@ is_undergrad_type <- function(student_type) {
   student_type %in% undergrad_types
 }
 
-#' @describeIn is_freshmen_type returns TRUE for undergrad level_class_ids
+#' Returns TRUE if level is one of "FR", "SO", "JR", "SR", and FALSE otherwise
+#'
+#' @param level character vector
 #' @export
 is_undergrad_level <- function(level) {
   level %in% c('JR','SR','FR','SO') # 7/27/22 slack message from Justin
@@ -326,11 +336,11 @@ is_utah_county <- function(county_code) {
 #' @param state first_admit_state_code
 #' @export
 is_us_state <- function(state) {
-  us_states <- c("AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL",
-                 "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
-                 "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM",
-                 "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN",
-                 "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY")
+  us_states <- c("AA", "AE", "AK", "AL", "AP", "AR", "AS", "AZ", "CA", "CO", "CT", "DC", "DE", "FL",
+                 "FM", "GA", "GU", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME",
+                 "MH", "MI", "MN", "MS", "MO", "MP", "MT", "NE", "NV", "NH", "NJ", "NM",
+                 "NY", "NC", "ND", "OH", "OK", "OR", "PA", "PR", "PW", "RI", "SC", "SD", "TN",
+                 "TX", "UT", "VA", "VI", "VT", "WA", "WV", "WI", "WY")
   state %in% us_states
 }
 
@@ -343,6 +353,25 @@ is_nonus_state <- function(state) {
   matches_regex(state, "^[A-Z]{2}$", missing_ok = FALSE) & !is_us_state(state)
 }
 
+#' Function for checking conditional missingness for rules like C18a, C19a
+#'
+#' @param x vector of values to check, e.g. from building_name or building_number
+#' @param instruction_method_code,section_format_type_code,budget_code,campus_id relevant vector columns of df_tocheck
+#'
+#' @export
+course_conditional_check <- function(x,
+                     instruction_method_code, section_format_type_code, budget_code, campus_id) {
+  data("aux_info", package = "utValidateR", envir = environment())
+  isbad <- is_missing_chr(trimws(x)) &
+    !(instruction_method_code %in% c("C", "I", "V", "Y")) &
+    section_format_type_code %in% c('LEV', 'LEX', 'LES', 'INS', 'STU', 'LBC', 'LBS', 'LBC') &
+    !(budget_code %in% "SF") &
+    is_valid_values(campus_id, aux_info$valid_campus_ids)
+
+  out <- !isbad
+  out
+}
+
 #' Helper for troubleshooting and communicating known needs
 #'
 #' Primarily intended to aid in the development of this package
@@ -352,3 +381,16 @@ is_nonus_state <- function(state) {
 TODO <- function(msg) {
   stop()
 }
+
+#' Helper functions for missing building numbers
+#' @describeIn Missing Building check whether a time or day exist and if the building number is missing
+#' @param space vector of space i.e building_id,
+#' @param start_time vector of start_time values
+#' @param meet_days vector of meet_day values
+#' @export
+is_missing_space <- function(space, start_time, meet_days) {
+    case_when((is.na(start_time) | is.na(meet_days)) ~ TRUE,
+            is.na(space) ~ FALSE,
+            !is.na(space) ~ TRUE)
+}
+

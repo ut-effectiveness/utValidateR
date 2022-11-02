@@ -5,8 +5,14 @@
 #' expression on the dataframe
 #'
 #' @param x an expression like those in `checklist$checker`
-get_truth_table <- function(x, aux_info, limit = Inf, extra_rows = NULL) {
+#' @param limit maximum number of example rows to return per truth outcome (T or F)
+#' @param extra_rows optional dataframe to which the expression will be applied,
+#' supplementing rows of returned truth table
+#' @importFrom dplyr bind_rows group_by ungroup slice_head
+#' @export
+get_truth_table <- function(x, limit = Inf, extra_rows = NULL) {
 
+  data("aux_info", package = "utValidateR", envir = environment())
   aux_env <- new_environment(data = aux_info, parent = caller_env())
 
   vecs_list <- get_tt_vecs(x, aux_info) # named list of vectors for expand.grid()
@@ -71,6 +77,7 @@ is_base_expression <- function(x) {
 #' Might make more sense to code this directly into if() clause in get_tt_vecs()
 #'
 #' @param base_expr A non-nested expression
+#' @param aux_info a list with auxiliary information to be used by the expression
 get_tt_vecs_basecase <- function(base_expr, aux_info) {
   funname <- deparse(base_expr[[1]]) # function name as character
   arglist <- as.list(base_expr)[-1] # function arguments as list
@@ -83,6 +90,8 @@ get_tt_vecs_basecase <- function(base_expr, aux_info) {
 #'
 #' @param fun character function name
 #' @param args Named list of arguments
+#' @param aux_info a list with auxiliary information to be used by the expression
+#' @importFrom rlang current_env
 lookup_tt_vecs <- function(fun, args, aux_info) {
 
   if (fun == "is.na") {

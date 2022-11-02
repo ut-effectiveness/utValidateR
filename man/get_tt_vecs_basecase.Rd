@@ -8,6 +8,8 @@ get_tt_vecs_basecase(base_expr, aux_info)
 }
 \arguments{
 \item{base_expr}{A non-nested expression}
+
+\item{aux_info}{a list with auxiliary information to be used by the expression}
 }
 \description{
 Might make more sense to code this directly into if() clause in get_tt_vecs()

@@ -6,10 +6,15 @@
 an expression and a logical \code{passes} column that is the result of calling the
 expression on the dataframe}
 \usage{
-get_truth_table(x, aux_info, limit = Inf, extra_rows = NULL)
+get_truth_table(x, limit = Inf, extra_rows = NULL)
 }
 \arguments{
 \item{x}{an expression like those in \code{checklist$checker}}
+
+\item{limit}{maximum number of example rows to return per truth outcome (T or F)}
+
+\item{extra_rows}{optional dataframe to which the expression will be applied,
+supplementing rows of returned truth table}
 }
 \description{
 High-level truth-table generator, returns a dataframe with all variables in

@@ -1,356 +1,359 @@
-"ushe_rule","description","type","status","steward","ushe_notes","activity_date","banner","ref_rule"
-"S01a","institution id unknown","USHE","Failure",NA,"G_Inst Unknown",NA,NA,"S01a"
-"C01a","institution id unknown","USHE","Failure",NA,"G_Inst Unknown",NA,NA,"S01a"
-"G01a","institution id unknown","USHE","Failure",NA,"G_Inst Unknown",NA,NA,"S01a"
-"SC01a","institution id unknown","USHE","Failure",NA,"G_Inst Unknown",NA,NA,"S01a"
-"B01a","institution id unknown","USHE","Failure",NA,"G_Inst Unknown",NA,NA,"S01a"
-"R01b","institution id unknown","USHE","Failure",NA,"G_Inst Unknown",NA,NA,"S01a"
-"G01b","missing instituion","USHE","Failure",NA,"G_Inst NULL",NA,NA,"G01b"
-"SC01a","missing instituion","USHE","Failure",NA,"G_Inst NULL",NA,NA,"G01b"
-"R01a","missing instituion","USHE","Failure",NA,"G_Inst NULL",NA,NA,"G01b"
-"S00a","duplicate student_id's","Database","Failure",NA,"Duplicate Records by Banner_ID","spriden_activity_date","banner.spriden_id","S00a"
-"S00b","duplicate ssn","Database","Failure",NA,"Duplicate Records by S_ID","spbpers_activity_date","banner.spbpers_ssn","S00b"
-"S02a","missing ushe_academic_year, version_id, season","USHE","Failure",NA,"Wrong year/term/extract in submission files",NA,"n/a","S02a"
-"SC02a","missing ushe_academic_year, version_id, season","USHE","Failure",NA,"Wrong year/term/extract in submission files",NA,"n/a","S02a"
-"C02","missing ushe_academic_year, version_id, season","USHE","Failure",NA,"Wrong year/term/extract in submission files",NA,"n/a","S02a"
-"S03a","missing student_id or _ssn","Database","Failure",NA,"Every record should have an s_id for every student","spbpers_activity_date","banner.spbpers_ssn, banner.spriden_id","S03a"
-"G02a","missing student_id or _ssn","Database","Failure",NA,"Every record should have an s_id for every student","spbpers_activity_date","banner.spbpers_ssn, banner.spriden_id","S03a"
-"SC03","missing student_id or _ssn","Database","Failure",NA,"Every record should have an s_id for every student","spbpers_activity_date","banner.spbpers_ssn, banner.spriden_id","S03a"
-"S03b","missing ssn","USHE","Failure",NA,"Missing SSN with s_id_flag. If they are non-residents,
---they should have an institutional id AND s_id_flag should be flagged I","spbpers_activity_date","banner.spbpers_ssn","S03b"
-"S03c","missin ssn with citz code of 1","Database","Failure",NA,"Residents Missing SSN. These are the students who are flagged as residents should have SSNs. However, students may decide not to release their SSN if they dont want to, so no SSNs is not entirely uncommon","spbpers_activity_date","banner.spbpers_cit_code","S03c"
-"S04a","s_id not equal to S or I","USHE","Failure",NA,"Every student should have an id_flag",NA,NA,"S04a"
-"S04b","invalid ssn","Database","Failure",NA,"check for invalid S_ID","spbpers_activity_date","banner.spbpers_ssn","S04b"
-"G02c","invalid ssn","Database","Failure",NA,"check for invalid S_ID","spbpers_activity_date","banner.spbpers_ssn","S04b"
-"S04c","s_id must match s_banner_id when s_id_flag is S","USHE","Failure",NA,"incorrect id_flag",NA,"banner.spbpers_ssn, banner.spriden_id","S04c"
-"S04d","s_id must NOT match s_banner_id when s_id_flag is I","USHE","Failure",NA,"incorrect id_flag. With I flag, s_id should match s_banner_id",NA,"banner.spbpers_ssn, banner.spriden_id","S04d"
-"S05a","invalid previous_id","Database","Failure",NA,"Default Previous ID",NA,NA,"S05a"
-"S06a","missing last name","Database","Failure",NA,"Every student should have a last name","spriden_activity_date","banner.spriden_last_name","S06a"
-"G03a","missing last name","Database","Failure",NA,"Every student should have a last name","spriden_activity_date","banner.spriden_last_name","S06a"
-"S06b","last name with non-alpha characters","Database","Warning",NA,"S_Last name with Non-Alpha characters","spriden_activity_date","banner.spriden_last_name","S06b"
-"G03b","last name with non-alpha characters","Database","Warning",NA,"S_Last name with Non-Alpha characters","spriden_activity_date","banner.spriden_last_name","S06b"
-"S06c","missing first name","Database","Failure",NA,"Every student should have a first name","spriden_activity_date","banner.spriden_first_name","S06c"
-"G03c","missing first name","Database","Failure",NA,"Every student should have a first name","spriden_activity_date","banner.spriden_first_name","S06c"
-"S06d","first name with non-alpha characters","Database","Warning",NA,"S_First name with Non-Alpha characters","spriden_activity_date","banner.spriden_first_name","S06d"
-"G03d","first name with non-alpha characters","Database","Warning",NA,"S_First name with Non-Alpha characters","spriden_activity_date","banner.spriden_first_name","S06d"
-"S06e","middle name with non-alpha characters","Database","Warning",NA,"S_Middle name with Non-Alpha characters","spriden_activity_date","banner.spriden_mi","S06e"
-"G03f","middle name with non-alpha characters","Database","Warning",NA,"S_Middle name with Non-Alpha characters","spriden_activity_date","banner.spriden_mi","S06e"
-"S06f","suffix last name with non-alpha characters","Database","Warning",NA,"S_Suffix name with Non-Alpha characters","spbpers_activity_date","banner.spbpers_name_suffix","S06f"
-"S07a","previous last name with non-alpha characters","Database","Warning",NA,"S_Prev_Last name with Non-Alpha characters","spriden_activity_date","banner.spriden_last_name","S07a"
-"S07b","previous first name with non-alpha characters","Database","Warning",NA,"S_Prev_First name with Non-Alpha characters","spriden_activity_date","banner.spriden_first_name","S07b"
-"S07c","previous middle name with non-alpha characters","Database","Warning",NA,"S_Prev_Middle name with Non-Alpha characters","spriden_activity_date","banner.spriden_mi","S07c"
-"S07d","previous suffix last name with non-alpha characters","Database","Warning",NA,"S_Suffix name with Non-Alpha characters","spbpers_activity_date","banner.spbpers_name_suffix","S07d"
-"G03h","previous suffix last name with non-alpha characters","Database","Warning",NA,"S_Suffix name with Non-Alpha characters","spbpers_activity_date","banner.spbpers_name_suffix","S07d"
-"S08a","missing zip code","Database","Failure",NA,"Every student should have a zip code","spraddr_activity_date","banner.spraddr_zip","S08a"
-"S08b","invalid zip code","Database","Failure",NA,"Invalid zip code","spraddr_activity_date","banner.spraddr_zip","S08b"
-"S09a","missing citizenship code","Database","Failure",NA,"Missing citzenship code","spbpers_activity_date","banner.spbpers_cit_code","S09a"
-"S09b","missing citizenship code (Nonresident Alien mismatch)","Database","Failure",NA,"Nonresident Alien mismatch","spbpers_activity_date","banner.spbpers_cit_code","S09b"
-"S10a","missing county code","Database","Failure",NA,"There should be a county origin for every record","sabsupl_activity_date","banner.sabsupl_cnty_code_admit","S10a"
-"G04a","missing county code","Database","Failure",NA,"There should be a county origin for every record","sabsupl_activity_date","banner.sabsupl_cnty_code_admit","S10a"
-"S11a","state code is UT but county code is out of state","Database","Failure",NA,"Checks where the state is UT but county is out of state","sabsupl_activity_date","banner.sabsupl_stat_code_admit, banner.sabsupl_cnty_code_admit","S11a"
-"S12","missing birthdates","Database","Failure",NA,"There should be a birth date for every record","spbpers_activity_date","banner.spbpers_birth_date","S12"
-"G05","missing birthdates","Database","Failure",NA,"There should be a birth date for every record","spbpers_activity_date","banner.spbpers_birth_date","S12"
-"G08a","missing birthdates","Database","Failure",NA,"There should be a birth date for every record","spbpers_activity_date","banner.spbpers_birth_date","S12"
-"S12A","invalid birthdate","Database","Failure",NA,"Checks for invalid birth date year equal to current year or future years","spbpers_activity_date","banner.spbpers_birth_date","S12A"
-"G05a","invalid birthdate","Database","Failure",NA,"Checks for invalid birth date year equal to current year or future years","spbpers_activity_date","banner.spbpers_birth_date","S12A"
-"S12B","invalid birthdate formating of YYYYMMDD","USHE","Failure",NA,"Checks for valid date format YYYYMMDD",NA,"banner.spbpers_birth_date","S12B"
-"S12C","age over 100","Database","Failure",NA,"Birth date older than 100 years","spbpers_activity_date","banner.spbpers_birth_date","S12C"
-"S13","missing or invalid gender","Database","Failure",NA,"Please resolve any missing OR invalid values","spbpers_activity_date","banner.spbpers_sex","S13"
-"G06a","missing or invalid gender","Database","Failure",NA,"Please resolve any missing OR invalid values","spbpers_activity_date","banner.spbpers_sex","S13"
-"S13a","gender change after census","USHE","Warning",NA,"GENDER CHANGED BASED ON 3RD WEEK DATA",NA,"banner.spbpers_sex","S13a"
-"S13b","gender change after previous term","USHE","Warning",NA,"Gender change from last instance",NA,"banner.spbpers_sex","S13b"
-"S14a","invalid ethnicity code (Asian)","USHE","Failure",NA,"Ethnicity Asian Please resolve any invalid codes.",NA,"dsc.ipeds_ethnicity","S14a"
-"G07a","invalid ethnicity code (Asian)","USHE","Failure",NA,"Ethnicity Asian Please resolve any invalid codes.",NA,"dsc.ipeds_ethnicity","S14a"
-"S14b","invalid ethnicity code (Black)","USHE","Failure",NA,"Ethnicity Black Please resolve any invalid codes.",NA,"dsc.ipeds_ethnicity","S14b"
-"G07b","invalid ethnicity code (Black)","USHE","Failure",NA,"Ethnicity Black Please resolve any invalid codes.",NA,"dsc.ipeds_ethnicity","S14b"
-"S14h","invalid ethnicity code (Hispanic)","USHE","Failure",NA,"Ethnicity Hispanic Please resolve any invalid codes",NA,"dsc.ipeds_ethnicity","S14h"
-"G07c","invalid ethnicity code (Hispanic)","USHE","Failure",NA,"Ethnicity Hispanic Please resolve any invalid codes",NA,"dsc.ipeds_ethnicity","S14h"
-"S14i","invalid ethnicity code (American Indian)","USHE","Failure",NA,"Ethnicity American Indian Please resolve any invalid codes",NA,"dsc.ipeds_ethnicity","S14i"
-"G07d","invalid ethnicity code (American Indian)","USHE","Failure",NA,"Ethnicity American Indian Please resolve any invalid codes",NA,"dsc.ipeds_ethnicity","S14i"
-"S14m","invalid ethnicity codes","USHE","Failure",NA,"No multiple ethnicities",NA,"dsc.ipeds_ethnicity","S14m"
-"S14n","invalid ethnicity code (Non-Resident Alien)","USHE","Failure",NA,"Ethnicity Non-Resident Alien Please resolve any invalid codes",NA,"dsc.ipeds_ethnicity","S14n"
-"G07g","invalid ethnicity code (Non-Resident Alien)","USHE","Failure",NA,"Ethnicity Non-Resident Alien Please resolve any invalid codes",NA,"dsc.ipeds_ethnicity","S14n"
-"S14p","invalid ethnicity code (Pacific Islander)","USHE","Failure",NA,"Ethnicity Pacific Islander Please resolve any invalid codes.",NA,"dsc.ipeds_ethnicity","S14p"
-"G07e","invalid ethnicity code (Pacific Islander)","USHE","Failure",NA,"Ethnicity Pacific Islander Please resolve any invalid codes.",NA,"dsc.ipeds_ethnicity","S14p"
-"S14u","invalid ethnicity code (Unspecified)","USHE","Failure",NA,"Ethnicity Unspecified Please resolve any invalid codes.",NA,"dsc.ipeds_ethnicity","S14u"
-"G07h","invalid ethnicity code (Unspecified)","USHE","Failure",NA,"Ethnicity Unspecified Please resolve any invalid codes.",NA,"dsc.ipeds_ethnicity","S14u"
-"S14u","Unspecified when already specified with a race/ethnicity","USHE","Failure",NA,"Ethnicity Unspecified When already specified. These students are marked ''U'' for unspecified even though
---they have an ethnicity marked elsewhere in the same record.",NA,"dsc.ipeds_ethnicity","S14u"
-"G07i","Unspecified when already specified with a race/ethnicity","USHE","Failure",NA,"Ethnicity Unspecified When already specified. These students are marked ''U'' for unspecified even though
---they have an ethnicity marked elsewhere in the same record.",NA,"dsc.ipeds_ethnicity","S14u"
-"S14w","invalid ethnicity code (White)","USHE","Failure",NA,"Ethnicity White Please resolve any invalid codes.",NA,"dsc.ipeds_ethnicity","S14w"
-"G07f","invalid ethnicity code (White)","USHE","Failure",NA,"Ethnicity White Please resolve any invalid codes.",NA,"dsc.ipeds_ethnicity","S14w"
-"S15a","missing residency","USHE","Failure",NA,"There should be a residency status for each record.","sgbstdn_activity_date","banner.sgbstdn_resd_code","S15a"
-"S16a","missing cip code","Database","Failure",NA,"Declared Major CIP codes There should be a s_curr_cip for each record.","stvmajr_activity_date","banner.stvmajr_cipc_code","S16a"
-"S37a","missing cip code","USHE","Failure",NA,"Declared Major CIP codes There should be a s_curr_cip for each record.","stvmajr_activity_date","banner.stvmajr_cipc_code","S16a"
-"S30a","missing cip code","Database","Failure",NA,"Declared Major CIP codes There should be a s_curr_cip for each record.","stvmajr_activity_date","banner.stvmajr_cipc_code","S16a"
-"G09b","missing cip code","Database","Failure",NA,"Declared Major CIP codes There should be a s_curr_cip for each record.","stvmajr_activity_date","banner.stvmajr_cipc_code","S16a"
-"S17a","invalid registration status codes","USHE","Failure",NA,"Checking for valid registration status values",NA,"banner.sgbstdn_styp_code","S17a"
-"S17b","graduate class level coded with an undergraduate student type","USHE","Failure",NA,"Graduates as entering Undergrads","sgbstdn_activity_date","banner.sgbstdn_styp_code, class function in banner","S17b"
-"S17c","first time freshman with prior enrollment record","Database","Failure",NA,"Shows students coded as first time students even though they have records in past semesters.","sgbstdn_activity_date","banner.sgbstdn_styp_code","S17c"
-"S17d","first time freshman out of HS with prior enrollment record","Database","Failure",NA,"Shows students coded as first time students out of HS even though they have records in past semesters.","sgbstdn_activity_date","banner.sgbstdn_styp_code","S17d"
-"S17e","HS students that are over 20 yrs old and under 10","USHE","Warning",NA,"This query shows the age of students who are taking
-classes FROM the institution while still IN high school.",NA,"banner.sgbstdn_styp_code","S17e"
-"S17f","First Time Freshman that are under 18 yrs old","USHE","Warning",NA,"These students --may-- be miscoded. Possibly should be ''FH''.",NA,"banner.sgbstdn_styp_code","S17f"
-"S17g","First Time Freshman out of HS that are over 21","USHE","Warning",NA,"First-time Freshmen out of HS over 21. These students --may-- be miscoded.",NA,"banner.sgbstdn_styp_code","S17g"
-"S17h","invalid student type enrolled in concurrent classes","USHE","Failure",NA,"Traditional students attending concurrent enrollment classes.","sgbstdn_activity_date","banner.sgbstdn_styp_code","S17h"
-"S17i","invalid student type enrolled in concurrent classes","USHE","Failure",NA,"Traditional students attending concurrent enrollment classes.","sgbstdn_activity_date","banner.sgbstdn_styp_code","S17h"
-"S17j","student type change after census","USHE","Warning",NA,"REGISTRATION STATUS CHANGED BASED ON 3RD WEEK DATA",NA,"banner.sgbstdn_styp_code","S17j"
-"S17k","First Time Freshman in HS under 16","USHE","Warning",NA,"First-time Student under 16.",NA,"banner.sgbstdn_styp_code","S17k"
-"S18a","missing class level","Database","Failure",NA,"There should be a valid level for each student.",NA,"class function in banner","S18a"
-"S18b","UG student types cannot be graduate class levels","USHE","Failure",NA,"Class Level vs. Registration Status a student registered as Undgergrad cannot be grad class level
---or a student registered as grad connot be an undergrad class level",NA,"class function in banner","S18b"
-"S19a","missing degree id","Database","Failure",NA,"There should be a degree intent for each student.","sgbstdn_activity_date","banner.sgbstdn_degc_code_1","S19a"
-"G17a","missing degree id","Database","Failure",NA,"There should be a degree intent for each student.","sgbstdn_activity_date","banner.sgbstdn_degc_code_1","S19a"
-"S20a","invalid credit format","Database","Failure",NA,"S_CUM_HRS_UGrad wrong format","shrlgpa_activity_date","banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned)","S20a"
-"S24a","invalid credit format","Database","Failure",NA,"S_CUM_HRS_UGrad wrong format","shrlgpa_activity_date","banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned)","S20a"
-"G12a","invalid credit format","Database","Failure",NA,"S_CUM_HRS_UGrad wrong format","shrlgpa_activity_date","banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned)","S20a"
-"G13a","invalid credit format","Database","Failure",NA,"S_CUM_HRS_UGrad wrong format","shrlgpa_activity_date","banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned)","S20a"
-"G14a","invalid credit format","Database","Failure",NA,"S_CUM_HRS_UGrad wrong format","shrlgpa_activity_date","banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned)","S20a"
-"G15a","invalid credit format","Database","Failure",NA,"S_CUM_HRS_UGrad wrong format","shrlgpa_activity_date","banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned)","S20a"
-"G22a","invalid credit format","Database","Failure",NA,"S_CUM_HRS_UGrad wrong format","shrlgpa_activity_date","banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned)","S20a"
-"G23a","invalid credit format","Database","Failure",NA,"S_CUM_HRS_UGrad wrong format","shrlgpa_activity_date","banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned)","S20a"
-"SC07a","invalid credit format","Database","Failure",NA,"S_CUM_HRS_UGrad wrong format","shrlgpa_activity_date","banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned)","S20a"
-"SC08a","invalid credit format","Database","Failure",NA,"S_CUM_HRS_UGrad wrong format","shrlgpa_activity_date","banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned)","S20a"
-"SC09a","invalid credit format","Database","Failure",NA,"S_CUM_HRS_UGrad wrong format","shrlgpa_activity_date","banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned)","S20a"
-"C08a","invalid credit format","Database","Failure",NA,"S_CUM_HRS_UGrad wrong format","shrlgpa_activity_date","banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned)","S20a"
-"SC11a","invalid credit format","USHE","Failure",NA,"S_CUM_HRS_UGrad wrong format","shrlgpa_activity_date","banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned)","SC11a"
-"S21","missing institutional cumulative gpa","Database","Failure",NA,NA,"shrlgpa_activity_date","banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa)","S21"
-"S21a","invalid institutional cumulative gpa format","Database","Failure",NA,"S_CUM_GPA_UGRAD wrong format","shrlgpa_activity_date","banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa)","S21a"
-"S22a","invalid institutional cumulative gpa format","Database","Failure",NA,"S_CUM_GPA_UGRAD wrong format","shrlgpa_activity_date","banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa)","S21a"
-"S23c","invalid institutional cumulative gpa format","Database","Failure",NA,"S_CUM_GPA_UGRAD wrong format","shrlgpa_activity_date","banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa)","S21a"
-"S43b","invalid institutional cumulative gpa format","Database","Failure",NA,"S_CUM_GPA_UGRAD wrong format","shrlgpa_activity_date","banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa)","S21a"
-"G11a","invalid institutional cumulative gpa format","Database","Failure",NA,"S_CUM_GPA_UGRAD wrong format","shrlgpa_activity_date","banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa)","S21a"
-"S21b","missing GPA at end of term","USHE","Failure",NA,"UGrads without UGrad GPA","shrlgpa_activity_date","banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa)","S21b"
-"S22b","missing GPA at end of term","USHE","Failure",NA,"UGrads without UGrad GPA","shrlgpa_activity_date","banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa)","S21b"
-"S23d","missing GPA at end of term","USHE","Failure",NA,"UGrads without UGrad GPA","shrlgpa_activity_date","banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa)","S21b"
-"S23a","UG students have hours and gpa in GR hours or GPA","USHE","Failure",NA,"Checking if undergraduate students have any hours OR gpa IN
-graduate hours OR gpa.",NA,"banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa)","S23a"
-"S25a","missing part-time/full-time status","Database","Failure",NA,"Part-time/Full-time Should be a value for each student.",NA,"sum(banner.sfrstcr_credit_hr)","S25a"
-"S26a","invalid age format","USHE","Failure",NA,"wrong format",NA,"banner.spbpers_birth_date","S26a"
-"S26b","age and birthdate do not align","Database","Failure",NA,"Checking s_age vs calculated age by birthdate. Plus or Minus 1 year buffer.","spbpers_activity_date","banner.spbpers_birth_date","S26b"
-"S27a","US state codes do not align with country code","Database","Failure",NA,"Country origin codes WHERE there is a state code within US, but the country is not ''US''.","sabsupl_activity_date","banner.sabsupl_natn_code_admit","S27a"
-"S27b","State and county do not align with country code (US)","Database","Failure",NA,"state AND county code point outside of US, but the country code is ''US''","sabsupl_activity_date","banner.sabsupl_natn_code_admit","S27b"
-"S27c","country code not found on ISO list","Database","Failure",NA,"Country codes. Where there is a country code not in the ISO list.","sabsupl_activity_date","banner.sabsupl_natn_code_admit","S27c"
-"S28a","invalid UT high school code","Database","Failure",NA,"Should be a valid high school code for each student.
+ushe_rule,description,type,status,steward,ushe_notes,activity_date,banner,ref_rule
+S01a,institution id unknown,USHE,Failure,NA,G_Inst Unknown,NA,NA,S01a
+C01a,institution id unknown,USHE,Failure,NA,G_Inst Unknown,NA,NA,S01a
+G01a,institution id unknown,USHE,Failure,NA,G_Inst Unknown,NA,NA,S01a
+SC01a,institution id unknown,USHE,Failure,NA,G_Inst Unknown,NA,NA,S01a
+B01a,institution id unknown,USHE,Failure,NA,G_Inst Unknown,NA,NA,S01a
+R01b,institution id unknown,USHE,Failure,NA,G_Inst Unknown,NA,NA,S01a
+G01b,missing instituion,USHE,Failure,NA,G_Inst NULL,NA,NA,G01b
+SC01a,missing instituion,USHE,Failure,NA,G_Inst NULL,NA,NA,G01b
+R01a,missing instituion,USHE,Failure,NA,G_Inst NULL,NA,NA,G01b
+S00a,duplicate student_id's,Database,Failure,NA,Duplicate Records by Banner_ID,spriden_activity_date,banner.spriden_id,S00a
+S00b,duplicate ssn,Database,Failure,NA,Duplicate Records by S_ID,spbpers_activity_date,banner.spbpers_ssn,S00b
+S02a,"missing ushe_academic_year, version_id, season",USHE,Failure,NA,Wrong year/term/extract in submission files,NA,n/a,S02a
+SC02a,"missing ushe_academic_year, version_id, season",USHE,Failure,NA,Wrong year/term/extract in submission files,NA,n/a,S02a
+C02,"missing ushe_academic_year, version_id, season",USHE,Failure,NA,Wrong year/term/extract in submission files,NA,n/a,S02a
+S03a,missing student_id or _ssn,USHE,Failure,NA,Every record should have an s_id for every student,NA,NA,S03a
+G02a,missing student_id or _ssn,USHE,Failure,NA,Every record should have an s_id for every student,NA,NA,S03a
+SC03,missing student_id or _ssn,USHE,Failure,NA,Every record should have an s_id for every student,NA,NA,S03a
+S03b,missing ssn,USHE,Failure,NA,"Missing SSN with s_id_flag. If they are non-residents,
+--they should have an institutional id AND s_id_flag should be flagged I",spbpers_activity_date,banner.spbpers_ssn,S03b
+S03c,missin ssn with citz code of 1,USHE,Failure,NA,"Residents Missing SSN. These are the students who are flagged as residents should have SSNs. However, students may decide not to release their SSN if they dont want to, so no SSNs is not entirely uncommon",NA,NA,S03c
+S04a,s_id not equal to S or I,USHE,Failure,NA,Every student should have an id_flag,NA,NA,S04a
+S04b,invalid ssn,Database,Failure,NA,check for invalid S_ID,spbpers_activity_date,banner.spbpers_ssn,S04b
+G02c,invalid ssn,Database,Failure,NA,check for invalid S_ID,spbpers_activity_date,banner.spbpers_ssn,S04b
+S04c,s_id must match s_banner_id when s_id_flag is S,USHE,Failure,NA,incorrect id_flag,NA,"banner.spbpers_ssn, banner.spriden_id",S04c
+S04d,s_id must NOT match s_banner_id when s_id_flag is I,USHE,Failure,NA,"incorrect id_flag. With I flag, s_id should match s_banner_id",NA,"banner.spbpers_ssn, banner.spriden_id",S04d
+S05a,invalid previous_id,Database,Failure,NA,Default Previous ID,NA,NA,S05a
+S06a,missing last name,Database,Failure,NA,Every student should have a last name,spriden_activity_date,banner.spriden_last_name,S06a
+G03a,missing last name,Database,Failure,NA,Every student should have a last name,spriden_activity_date,banner.spriden_last_name,S06a
+S06b,last name with non-alpha characters,Database,Warning,NA,S_Last name with Non-Alpha characters,spriden_activity_date,banner.spriden_last_name,S06b
+G03b,last name with non-alpha characters,Database,Warning,NA,S_Last name with Non-Alpha characters,spriden_activity_date,banner.spriden_last_name,S06b
+S06c,missing first name,Database,Failure,NA,Every student should have a first name,spriden_activity_date,banner.spriden_first_name,S06c
+G03c,missing first name,Database,Failure,NA,Every student should have a first name,spriden_activity_date,banner.spriden_first_name,S06c
+S06d,first name with non-alpha characters,Database,Warning,NA,S_First name with Non-Alpha characters,spriden_activity_date,banner.spriden_first_name,S06d
+G03d,first name with non-alpha characters,Database,Warning,NA,S_First name with Non-Alpha characters,spriden_activity_date,banner.spriden_first_name,S06d
+S06e,middle name with non-alpha characters,Database,Warning,NA,S_Middle name with Non-Alpha characters,spriden_activity_date,banner.spriden_mi,S06e
+G03f,middle name with non-alpha characters,Database,Warning,NA,S_Middle name with Non-Alpha characters,spriden_activity_date,banner.spriden_mi,S06e
+S06f,suffix last name with non-alpha characters,Database,Warning,NA,S_Suffix name with Non-Alpha characters,spbpers_activity_date,banner.spbpers_name_suffix,S06f
+S07a,previous last name with non-alpha characters,Database,Warning,NA,S_Prev_Last name with Non-Alpha characters,spriden_activity_date,banner.spriden_last_name,S07a
+S07b,previous first name with non-alpha characters,Database,Warning,NA,S_Prev_First name with Non-Alpha characters,spriden_activity_date,banner.spriden_first_name,S07b
+S07c,previous middle name with non-alpha characters,Database,Warning,NA,S_Prev_Middle name with Non-Alpha characters,spriden_activity_date,banner.spriden_mi,S07c
+S07d,previous suffix last name with non-alpha characters,Database,Warning,NA,S_Suffix name with Non-Alpha characters,spbpers_activity_date,banner.spbpers_name_suffix,S07d
+G03h,previous suffix last name with non-alpha characters,Database,Warning,NA,S_Suffix name with Non-Alpha characters,spbpers_activity_date,banner.spbpers_name_suffix,S07d
+S08a,missing zip code,USHE,Failure,NA,Every student should have a zip code,spraddr_activity_date,banner.spraddr_zip,S08a
+S08b,invalid zip code,USHE,Failure,NA,Invalid zip code,NA,NA,S08b
+S09a,missing citizenship code,Database,Failure,NA,Missing citzenship code,spbpers_activity_date,banner.spbpers_cit_code,S09a
+S09b,Non-Resident Alien mismatch,Database,Failure,NA,Non-Resident Alien mismatch,spbpers_activity_date,banner.spbpers_cit_code,S09b
+S10a,missing county code,Database,Failure,NA,There should be a county origin for every record,sabsupl_activity_date,banner.sabsupl_cnty_code_admit,S10a
+G04a,missing county code,Database,Failure,NA,There should be a county origin for every record,sabsupl_activity_date,banner.sabsupl_cnty_code_admit,S10a
+S11a,state code is UT but county code is out of state,Database,Failure,NA,Checks where the state is UT but county is out of state,sabsupl_activity_date,"banner.sabsupl_stat_code_admit, banner.sabsupl_cnty_code_admit",S11a
+S12,missing birthdates,Database,Failure,NA,There should be a birth date for every record,spbpers_activity_date,banner.spbpers_birth_date,S12
+G05,missing birthdates,Database,Failure,NA,There should be a birth date for every record,spbpers_activity_date,banner.spbpers_birth_date,S12
+G08a,missing birthdates,Database,Failure,NA,There should be a birth date for every record,spbpers_activity_date,banner.spbpers_birth_date,S12
+S12A,invalid birthdate,Database,Failure,NA,Checks for invalid birth date year equal to current year or future years,spbpers_activity_date,banner.spbpers_birth_date,S12A
+G05a,invalid birthdate,Database,Failure,NA,Checks for invalid birth date year equal to current year or future years,spbpers_activity_date,banner.spbpers_birth_date,S12A
+S12B,invalid birthdate formating of YYYYMMDD,USHE,Failure,NA,Checks for valid date format YYYYMMDD,NA,banner.spbpers_birth_date,S12B
+S12C,age over 100,Database,Failure,NA,Birth date older than 100 years,spbpers_activity_date,banner.spbpers_birth_date,S12C
+S13,missing or invalid gender,Database,Failure,NA,Please resolve any missing OR invalid values,spbpers_activity_date,banner.spbpers_sex,S13
+G06a,missing or invalid gender,Database,Failure,NA,Please resolve any missing OR invalid values,spbpers_activity_date,banner.spbpers_sex,S13
+S13a,gender change after census,USHE,Warning,NA,GENDER CHANGED BASED ON 3RD WEEK DATA,NA,banner.spbpers_sex,S13a
+S13b,gender change after previous term,USHE,Warning,NA,Gender change from last instance,NA,banner.spbpers_sex,S13b
+S14a,invalid ethnicity code (Asian),USHE,Failure,NA,Ethnicity Asian Please resolve any invalid codes.,NA,dsc.ipeds_ethnicity,S14a
+G07a,invalid ethnicity code (Asian),USHE,Failure,NA,Ethnicity Asian Please resolve any invalid codes.,NA,dsc.ipeds_ethnicity,S14a
+S14b,invalid ethnicity code (Black),USHE,Failure,NA,Ethnicity Black Please resolve any invalid codes.,NA,dsc.ipeds_ethnicity,S14b
+G07b,invalid ethnicity code (Black),USHE,Failure,NA,Ethnicity Black Please resolve any invalid codes.,NA,dsc.ipeds_ethnicity,S14b
+S14h,invalid ethnicity code (Hispanic),USHE,Failure,NA,Ethnicity Hispanic Please resolve any invalid codes,NA,dsc.ipeds_ethnicity,S14h
+G07c,invalid ethnicity code (Hispanic),USHE,Failure,NA,Ethnicity Hispanic Please resolve any invalid codes,NA,dsc.ipeds_ethnicity,S14h
+S14i,invalid ethnicity code (American Indian),USHE,Failure,NA,Ethnicity American Indian Please resolve any invalid codes,NA,dsc.ipeds_ethnicity,S14i
+G07d,invalid ethnicity code (American Indian),USHE,Failure,NA,Ethnicity American Indian Please resolve any invalid codes,NA,dsc.ipeds_ethnicity,S14i
+S14m,invalid ethnicity codes,USHE,Failure,NA,No multiple ethnicities,NA,dsc.ipeds_ethnicity,S14m
+S14n,invalid ethnicity code (Non-Resident Alien),USHE,Failure,NA,Ethnicity Non-Resident Alien Please resolve any invalid codes,NA,dsc.ipeds_ethnicity,S14n
+G07g,invalid ethnicity code (Non-Resident Alien),USHE,Failure,NA,Ethnicity Non-Resident Alien Please resolve any invalid codes,NA,dsc.ipeds_ethnicity,S14n
+S14p,invalid ethnicity code (Pacific Islander),USHE,Failure,NA,Ethnicity Pacific Islander Please resolve any invalid codes.,NA,dsc.ipeds_ethnicity,S14p
+G07e,invalid ethnicity code (Pacific Islander),USHE,Failure,NA,Ethnicity Pacific Islander Please resolve any invalid codes.,NA,dsc.ipeds_ethnicity,S14p
+S14u,invalid ethnicity code (Unspecified),USHE,Failure,NA,Ethnicity Unspecified Please resolve any invalid codes.,NA,dsc.ipeds_ethnicity,S14u
+G07h,invalid ethnicity code (Unspecified),USHE,Failure,NA,Ethnicity Unspecified Please resolve any invalid codes.,NA,dsc.ipeds_ethnicity,S14u
+S14u,Unspecified when already specified with a race/ethnicity,USHE,Failure,NA,"Ethnicity Unspecified When already specified. These students are marked ''U'' for unspecified even though
+--they have an ethnicity marked elsewhere in the same record.",NA,dsc.ipeds_ethnicity,S14u
+G07i,Unspecified when already specified with a race/ethnicity,USHE,Failure,NA,"Ethnicity Unspecified When already specified. These students are marked ''U'' for unspecified even though
+--they have an ethnicity marked elsewhere in the same record.",NA,dsc.ipeds_ethnicity,S14u
+S14w,invalid ethnicity code (White),USHE,Failure,NA,Ethnicity White Please resolve any invalid codes.,NA,dsc.ipeds_ethnicity,S14w
+G07f,invalid ethnicity code (White),USHE,Failure,NA,Ethnicity White Please resolve any invalid codes.,NA,dsc.ipeds_ethnicity,S14w
+S15a,missing residency,USHE,Failure,NA,There should be a residency status for each record.,sgbstdn_activity_date,banner.sgbstdn_resd_code,S15a
+S16a,missing cip code,Database,Failure,NA,Declared Major CIP codes There should be a s_curr_cip for each record.,stvmajr_activity_date,banner.stvmajr_cipc_code,S16a
+S37a,missing cip code,USHE,Failure,NA,Declared Major CIP codes There should be a s_curr_cip for each record.,stvmajr_activity_date,banner.stvmajr_cipc_code,S16a
+S30a,missing cip code,Database,Failure,NA,Declared Major CIP codes There should be a s_curr_cip for each record.,stvmajr_activity_date,banner.stvmajr_cipc_code,S16a
+G09b,missing cip code,Database,Failure,NA,Declared Major CIP codes There should be a s_curr_cip for each record.,stvmajr_activity_date,banner.stvmajr_cipc_code,S16a
+S17a,invalid registration status codes,USHE,Failure,NA,Checking for valid registration status values,NA,banner.sgbstdn_styp_code,S17a
+S17b,graduate class level coded with an undergraduate student type,USHE,Failure,NA,Graduates as entering Undergrads,sgbstdn_activity_date,"banner.sgbstdn_styp_code, class function in banner",S17b
+S17c,first time freshman with prior enrollment record,Database,Failure,NA,Shows students coded as first time students even though they have records in past semesters.,sgbstdn_activity_date,banner.sgbstdn_styp_code,S17c
+S17d,first time freshman out of HS with prior enrollment record,Database,Failure,NA,Shows students coded as first time students out of HS even though they have records in past semesters.,sgbstdn_activity_date,banner.sgbstdn_styp_code,S17d
+S17e,HS students that are over 20 yrs old and under 10,USHE,Warning,NA,"This query shows the age of students who are taking
+classes FROM the institution while still IN high school.",NA,banner.sgbstdn_styp_code,S17e
+S17f,First Time Freshman that are under 18 yrs old,USHE,Warning,NA,These students --may-- be miscoded. Possibly should be ''FH''.,NA,banner.sgbstdn_styp_code,S17f
+S17g,First Time Freshman out of HS that are over 21,USHE,Warning,NA,First-time Freshmen out of HS over 21. These students --may-- be miscoded.,NA,banner.sgbstdn_styp_code,S17g
+S17h,invalid student type enrolled in concurrent classes,USHE,Failure,NA,Traditional students attending concurrent enrollment classes.,sgbstdn_activity_date,banner.sgbstdn_styp_code,S17h
+S17i,invalid student type enrolled in concurrent classes,USHE,Failure,NA,Traditional students attending concurrent enrollment classes.,sgbstdn_activity_date,banner.sgbstdn_styp_code,S17h
+S17j,student type change after census,USHE,Warning,NA,REGISTRATION STATUS CHANGED BASED ON 3RD WEEK DATA,NA,banner.sgbstdn_styp_code,S17j
+S17k,First Time Freshman in HS under 16,USHE,Warning,NA,First-time Student under 16.,NA,banner.sgbstdn_styp_code,S17k
+S18a,missing class level,Database,Failure,NA,There should be a valid level for each student.,NA,class function in banner,S18a
+S18b,UG student types cannot be graduate class levels,USHE,Failure,NA,"Class Level vs. Registration Status a student registered as Undgergrad cannot be grad class level
+--or a student registered as grad connot be an undergrad class level",NA,class function in banner,S18b
+S19a,invalid IPEDS Award Level,USHE,Failure,NA,There should be a degree intent for each student.,sgbstdn_activity_date,banner.sgbstdn_degc_code_1,S19a
+G17a,invalid IPEDS Award Level,USHE,Failure,NA,There should be a degree intent for each student.,sgbstdn_activity_date,banner.sgbstdn_degc_code_1,S19a
+S20a,invalid credit format,Database,Failure,NA,S_CUM_HRS_UGrad wrong format,shrtgpa_activity_date,banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),S20a
+S24a,invalid credit format,Database,Failure,NA,S_CUM_HRS_UGrad wrong format,shrtgpa_activity_date,banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),S20a
+G12a,invalid credit format,Database,Failure,NA,S_CUM_HRS_UGrad wrong format,shrtgpa_activity_date,banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),S20a
+G13a,invalid credit format,Database,Failure,NA,S_CUM_HRS_UGrad wrong format,shrtgpa_activity_date,banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),S20a
+G14a,invalid credit format,Database,Failure,NA,S_CUM_HRS_UGrad wrong format,shrtgpa_activity_date,banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),S20a
+G15a,invalid credit format,Database,Failure,NA,S_CUM_HRS_UGrad wrong format,shrtgpa_activity_date,banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),S20a
+G22a,invalid credit format,Database,Failure,NA,S_CUM_HRS_UGrad wrong format,shrtgpa_activity_date,banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),S20a
+G23a,invalid credit format,Database,Failure,NA,S_CUM_HRS_UGrad wrong format,shrtgpa_activity_date,banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),S20a
+SC07a,invalid credit format,Database,Failure,NA,S_CUM_HRS_UGrad wrong format,shrtgpa_activity_date,banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),S20a
+SC08a,invalid credit format,Database,Failure,NA,S_CUM_HRS_UGrad wrong format,shrtgpa_activity_date,banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),S20a
+SC09a,invalid credit format,Database,Failure,NA,S_CUM_HRS_UGrad wrong format,shrtgpa_activity_date,banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),S20a
+C08a,invalid credit format,Database,Failure,NA,S_CUM_HRS_UGrad wrong format,shrtgpa_activity_date,banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),S20a
+SC11a,invalid credit format,USHE,Failure,NA,S_CUM_HRS_UGrad wrong format,shrtgpa_activity_date,banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),SC11a
+S21,missing institutional cumulative gpa,USHE,Failure,NA,NA,shrtgpa_activity_date,banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa),S21
+S21a,invalid institutional cumulative gpa format,Database,Failure,NA,S_CUM_GPA_UGRAD wrong format,shrtgpa_activity_date,banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa),S21a
+S22a,invalid institutional cumulative gpa format,Database,Failure,NA,S_CUM_GPA_UGRAD wrong format,shrtgpa_activity_date,banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa),S21a
+S23c,invalid institutional cumulative gpa format,Database,Failure,NA,S_CUM_GPA_UGRAD wrong format,shrtgpa_activity_date,banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa),S21a
+S43b,invalid institutional cumulative gpa format,Database,Failure,NA,S_CUM_GPA_UGRAD wrong format,shrtgpa_activity_date,banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa),S21a
+G11a,invalid institutional cumulative gpa format,Database,Failure,NA,S_CUM_GPA_UGRAD wrong format,shrtgpa_activity_date,banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa),S21a
+S21b,missing GPA at end of term,USHE,Failure,NA,UGrads without UGrad GPA,shrtgpa_activity_date,banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa),S21b
+S22b,missing GPA at end of term,USHE,Failure,NA,UGrads without UGrad GPA,shrtgpa_activity_date,banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa),S21b
+S23d,missing GPA at end of term,USHE,Failure,NA,UGrads without UGrad GPA,shrtgpa_activity_date,banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa),S21b
+S23a,UG students have hours and gpa in GR hours or GPA,USHE,Failure,NA,"Checking if undergraduate students have any hours OR gpa IN
+graduate hours OR gpa.",NA,banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa),S23a
+S25a,missing part-time/full-time status,Database,Failure,NA,Part-time/Full-time Should be a value for each student.,NA,sum(banner.sfrstcr_credit_hr),S25a
+S26a,invalid age format,USHE,Failure,NA,wrong format,NA,banner.spbpers_birth_date,S26a
+S26b,age and birthdate do not align,Database,Failure,NA,Checking s_age vs calculated age by birthdate. Plus or Minus 1 year buffer.,spbpers_activity_date,banner.spbpers_birth_date,S26b
+S27a,US state codes do not align with country code,Database,Failure,NA,"Country origin codes WHERE there is a state code within US, but the country is not ''US''.",sabsupl_activity_date,banner.sabsupl_natn_code_admit,S27a
+S27b,State and county do not align with country code (US),Database,Failure,NA,"state AND county code point outside of US, but the country code is ''US''",sabsupl_activity_date,banner.sabsupl_natn_code_admit,S27b
+S27c,country code not found on ISO list,Database,Failure,NA,Country codes. Where there is a country code not in the ISO list.,sabsupl_activity_date,banner.sabsupl_natn_code_admit,S27c
+S28a,invalid UT high school code,USHE,Failure,NA,"Should be a valid high school code for each student.
 --We are mainly concerned with zeroes AND invalid 45 series high schools. Anything not 45
---comes FROM out of state unless it is invalid","sorhsch_activity_date","banner.sorhsch_sgbi_code","S28a"
-"S29a","invalid HB75 waiver code","USHE","Failure",NA,"Checking for valid HB75 Waiver codes. Should be less than OR equal to 100.",NA,"banner.rpratrm, sfrrgfe","S29a"
-"S29b","invalid HB75 waiver format","USHE","Failure",NA,"Checking for valid HB75 Waiver codes format",NA,"banner.rpratrm, sfrrgfe","S29b"
-"S30a","missing cip code","Database","Failure",NA,"Declared Major CIP codes There should be a s_curr_cip2 for each record.","stvmajr_activity_date","banner.stvmajr_cipc_code","S30a"
-"S31a","Membership hours should be 0","USHE","Failure",NA,"The institutions in this query should not have membership hours.",NA,"n/a","S31a"
-"S32a","invalid CLEP wrong format","Database","Failure",NA,"S_Total_CLEP wrong format","shrtgpa_activity_date","shrtgpa_hours_earned","S32a"
-"S33a","invalid AP wrong format","Database","Failure",NA,"S_Total_AP wrong format","shrtgpa_activity_date","shrtgpa_hours_earned","S33a"
-"S34a","invalid ssid","Database","Failure",NA,"S_SSID is invalid","goradid_activity_date","goradid_additional_id","S34a"
-"G20a","invalid ssid","Database","Failure",NA,"S_SSID is invalid","goradid_activity_date","goradid_additional_id","S34a"
-"S34b","ssid does not align with student type and state code","Database","Failure",NA,"Bad SSID for Reg Status of HS and State of UT","goradid_activity_date","goradid_additional_id, banner.sabsupl_stat_code_admit, banner.sgbstdn_styp_code","S34b"
-"S34c","missing ssid for Utah HS students","Database","Failure",NA,"NULL SSID for HS Count","goradid_activity_date","goradid_additional_id, banner.sabsupl_stat_code_admit, banner.sgbstdn_styp_code","S34c"
-"S34d","missing ssid for concurrent students","Database","Failure",NA,"NULL SSID for CE Students","goradid_activity_date","goradid_additional_id, banner.sabsupl_stat_code_admit, banner.sgbstdn_styp_code","S34d"
-"S34e","missing ssid for first time freshman and highschool students","Database","Warning",NA,"Please provide as many SSIDs as possible. Our hope is for every freshmen
---AND high school student FROM Utah to have an SSID.","goradid_activity_date","goradid_additional_id, banner.sgbstdn_styp_code","S34e"
-"S35a","invalid student id","Database","Failure",NA,"There should be a valid institutionally assigned ID for all records.","spriden_activity_date","banner.spriden_id","S35a"
-"G21a","invalid student id","Database","Failure",NA,"There should be a valid institutionally assigned ID for all records.","spriden_activity_date","banner.spriden_id","S35a"
-"SC13a","invalid student id","Database","Failure",NA,"There should be a valid institutionally assigned ID for all records.","spriden_activity_date","banner.spriden_id","S35a"
-"S35b","invalid student id","Database","Failure",NA,"Changed to look for Alpha Characters at the start of the banner id","spriden_activity_date","banner.spriden_id","S35b"
-"G21b","invalid student id","Database","Failure",NA,"Changed to look for Alpha Characters at the start of the banner id","spriden_activity_date","banner.spriden_id","S35b"
-"SC13b","invalid student id","Database","Failure",NA,"Changed to look for Alpha Characters at the start of the banner id","spriden_activity_date","banner.spriden_id","S35b"
-"S35c","invalid alpha in student id","USHE","Failure",NA,"Wrong Alpha in Banner IDs. There should be a valid institutionally assigned ID for all records.",NA,"banner.spriden_id","S35c"
-"G21c","invalid alpha in student id","USHE","Failure",NA,"Wrong Alpha in Banner IDs. There should be a valid institutionally assigned ID for all records.",NA,"banner.spriden_id","S35c"
-"SC13c","invalid alpha in student id","USHE","Failure",NA,"Wrong Alpha in Banner IDs. There should be a valid institutionally assigned ID for all records.",NA,"banner.spriden_id","S35c"
-"S36a","invalid act test score format","Database","Failure",NA,"S_ACT wrong format","sortest_activity_date","banner.sortest_test_score","S36a"
-"S38a","invalid act test score format","Database","Failure",NA,"S_ACT wrong format","sortest_activity_date","banner.sortest_test_score","S36a"
-"S39a","invalid act test score format","Database","Failure",NA,"S_ACT wrong format","sortest_activity_date","banner.sortest_test_score","S36a"
-"S40a","invalid act test score format","Database","Failure",NA,"S_ACT wrong format","sortest_activity_date","banner.sortest_test_score","S36a"
-"S41a","invalid act test score format","Database","Failure",NA,"S_ACT wrong format","sortest_activity_date","banner.sortest_test_score","S36a"
-"S42a","missing HS graduation date","Database","Failure",NA,"High School Grad Date required where s_reg_status = FH","sorhsch_activity_date","banner.sorhsch_graduation_date","S42a"
-"S43c","cumulative gpa matches term gpa based on certain student types","USHE","Warning",NA,"S_CUM_GPA_UGRAD = S_TERM_GPA",NA,"round(sum(shrtgpa_quality_points) / sum(shrtgpa_gpa_hours)","S43c"
-"S44c","invalid pell awarded to highschool students","Database","Failure",NA,"HS students should not have pell","rpratrm_activity_date","banner.rpratrm_offer_amt","S44c"
-"S44d","invalid pell value","USHE","Failure",NA,"Wrong values for Pell",NA,"banner.rpratrm_offer_amt","S44d"
-"S45c","invalid bia code","USHE","Failure",NA,"Wrong value fo s_bia",NA,"banner.tbraccd","S45c"
-"S46a","missing college","Database","Failure",NA,"There should be a college for every record.","sgbstdn_activity_date","banner.sgbstdn_coll_code_1","S46a"
-"C45","missing college","Database","Failure",NA,"There should be a college for every record.","sgbstdn_activity_date","banner.sgbstdn_coll_code_1","S46a"
-"S46b","invalid college due to non-alpha characters","Database","Failure",NA,"S_College with Non-Alpha characters","sgbstdn_activity_date","banner.sgbstdn_coll_code_1, banner.sgbstdn_coll_code_2","S46b"
-"S48a","invalid college due to non-alpha characters","Database","Failure",NA,"S_College with Non-Alpha characters","sgbstdn_activity_date","banner.sgbstdn_coll_code_1, banner.sgbstdn_coll_code_2","S46b"
-"C45a","invalid college due to non-alpha characters","Database","Failure",NA,"S_College with Non-Alpha characters","sgbstdn_activity_date","banner.sgbstdn_coll_code_1, banner.sgbstdn_coll_code_2","S46b"
-"S47a","missing major","Database","Failure",NA,"There should be a major for every record.","sgbstdn_activity_date","banner.sgbstdn_majr_code_1","S47a"
-"S47b","duplicate major","Database","Failure",NA,"There should be a unique major for every record.","sgbstdn_activity_date","banner.sgbstdn_majr_code_2","S47b"
-"S47c","invalid major due to non-alpha characters","Database","Failure",NA,"S_Major with Non-Alpha characters","sgbstdn_activity_date","banner.sgbstdn_majr_code_1, banner.sgbstdn_majr_code_2","S47c"
-"S49b","invalid major due to non-alpha characters","Database","Failure",NA,"S_Major with Non-Alpha characters","sgbstdn_activity_date","banner.sgbstdn_majr_code_1, banner.sgbstdn_majr_code_2","S47c"
-"S49a","missing second major with second cip code","Database","Failure",NA,"Missing Second CIP or Major","sgbstdn_activity_date","banner.sgbstdn_majr_code_2","S49a"
-"C00","duplicate combination of course subject, number, and section","Database","Failure",NA,"FTL Duplicate Courses","ssbsect_activity_date","banner.ssbsect_subj_code, banner.ssbsect_crse_numb, banner.ssbsect_seq_numb","C00"
-"C04a","invalid course number length of characters","Database","Failure",NA,"the Course Number should have four digits","ssbsect_activity_date","banner.ssbsect_crse_numb","C04a"
-"C04c","invalid course number format (course numbers cannot start with an 8 or 9)","Database","Failure",NA,"the Course Number Invalid first character","ssbsect_activity_date","banner.ssbsect_crse_numb","C04c"
-"C04d","invalid course number format due to alpha in first 4 characters","Database","Failure",NA,"CRS_NUM has Alpha in 1st 4 Char","ssbsect_activity_date","banner.ssbsect_crse_numb","C04d"
-"C06a","invalid course min or max credits","Database","Failure",NA,"C_MIN_Credits Invalid, C_MAX_Credits Invalid","scbcrse_activity_date","banner.scbcrse_credit_hr_low, banner.scbcrse_credit_hr_high","C06a"
-"C07a","invalid course min or max credits","Database","Failure",NA,"C_MIN_Credits Invalid, C_MAX_Credits Invalid","scbcrse_activity_date","banner.scbcrse_credit_hr_low, banner.scbcrse_credit_hr_high","C06a"
-"C07b","max credits less than min credits","Database","Failure",NA,"C_MAX_Credits less than C_MIN_Credits","scbcrse_activity_date","banner.scbcrse_credit_hr_low, banner.scbcrse_credit_hr_high","C07b"
-"C09","invalid line item values","USHE","Failure",NA,"Checking for valid values in c_line_item.",NA,"N/A","C09"
-"C10","missing site type","Database","Failure",NA,"Checking for valid values IN c_site_type","ssbsect_activity_date","banner.ssbsect_camp_code","C10"
-"C10a","invalid site type","Database","Failure",NA,"Checking for valid values IN c_site_type.","ssbsect_activity_date","banner.ssbsect_camp_code","C10a"
-"C11","missing budget code","Database","Failure",NA,"Checking to ensure that budget codes are not blank or NULL","ssrsccd_activity_date","banner.ssrsccd_sccd_code","C11"
-"C11b","budget code does not align with course and subject on concurrent enrolled master list from USHE","Database","Failure",NA,"Not on CEML","ssrsccd_activity_date","banner.ssrsccd_sccd_code","C11b"
-"C12","invalid delivery method","Database","Failure",NA,"Checking for valid values IN c_delivery_method.","ssbsect_activity_date","banner.ssbsect_insm_code","C12"
-"C13","invalid program type and missing program type","Database","Failure",NA,"Checking for invalid program types.",NA,"banner.scbsupp_occs_code","C13"
-"C13a","invalid program type against perkins list","USHE","Failure",NA,"checks validity of c_program_type against perkins list.",NA,"banner.scbsupp_occs_code","C13a"
-"C13c","invalid budget code again perkins list","USHE","Failure",NA,"checks for courses allowed on perkins list, but not currently coded to vocational",NA,"banner.scbsupp_occs_code","C13c"
-"C14a","invalid credit indicator","USHE","Failure",NA,"Checking for valid values for c_credit_ind.",NA,"banner.scrlevl_levl_code = 'NC'","C14a"
-"C14b","credit indicator and section format type do not align","USHE","Failure",NA,"NON-CREDIT COURSES IN 3RD WEEK","ssbsect_activity_date","banner.ssbsect_schd_code, banner.scrlevl_levl_code = 'NC'","C14b"
-"C14c","invalid non-credit class based on program type and budget code","USHE","Failure",NA,"Only Labs and Vocational non-credit classes can be submitted","scbsupp_activity_date","banner.scbsupp_occs_code, banner.scrlevl_levl_code = 'NC', banner.ssbsect_schd_code","C14c"
-"C15a","missing start time","Database","Failure",NA,"Courses Start Time conditionally required","ssrmeet_activity_date","banner.ssrmeet_begin_time","C15a"
-"C23a","missing start time","Database","Failure",NA,"Courses Start Time conditionally required","ssrmeet_activity_date","banner.ssrmeet_begin_time","C15a"
-"C31a","missing start time","Database","Failure",NA,"Courses Start Time conditionally required","ssrmeet_activity_date","banner.ssrmeet_begin_time","C15a"
-"C16a","missing end time","Database","Failure",NA,"Courses Stop Time conditionally required","ssrmeet_activity_date","banner.ssrmeet_end_time","C16a"
-"C24a","missing end time","Database","Failure",NA,"Courses Stop Time conditionally required","ssrmeet_activity_date","banner.ssrmeet_end_time","C16a"
-"C32a","missing end time","Database","Failure",NA,"Courses Stop Time conditionally required","ssrmeet_activity_date","banner.ssrmeet_end_time","C16a"
-"C17a","missing course meeting days","USHE","Failure",NA,"Courses Days conditionally required",NA,"banner.ssrmeet_sun_day, etc...","C17a"
-"C25a","missing course meeting days","USHE","Failure",NA,"Courses Days conditionally required",NA,"banner.ssrmeet_sun_day, etc...","C17a"
-"C33a","missing course meeting days","USHE","Failure",NA,"Courses Days conditionally required",NA,"banner.ssrmeet_sun_day, etc...","C17a"
-"C18","building name and number are the same","Database","Failure",NA,"BLDG Name and number are the same","ssrmeet_activity_date","banner.ssrmeet_bldg_code, space_utlz.building_detail.bldg_number","C18"
-"C26","building name and number are the same","Database","Failure",NA,"BLDG Name and number are the same","ssrmeet_activity_date","banner.ssrmeet_bldg_code, space_utlz.building_detail.bldg_number","C18"
-"C34","building name and number are the same","Database","Failure",NA,"BLDG Name and number are the same","ssrmeet_activity_date","banner.ssrmeet_bldg_code, space_utlz.building_detail.bldg_number","C18"
-"C18a","missing building name","Database","Failure",NA,"BLDG SName conditionally Required","ssrmeet_activity_date","banner.ssrmeet_bldg_code","C18a"
-"C26a","missing building name","Database","Failure",NA,"BLDG SName conditionally Required","ssrmeet_activity_date","banner.ssrmeet_bldg_code","C18a"
-"C34a","missing building name","Database","Failure",NA,"BLDG SName conditionally Required","ssrmeet_activity_date","banner.ssrmeet_bldg_code","C18a"
-"C19a","missing building number","Database","Failure",NA,"BLDG NUM conditionally required","bldg_activity_date","space_utlz.building_detail.bldg_number","C19a"
-"C27a","missing building number","Database","Failure",NA,"BLDG NUM conditionally required","bldg_activity_date","space_utlz.building_detail.bldg_number","C19a"
-"C35a","missing building number","Database","Failure",NA,"BLDG NUM conditionally required","bldg_activity_date","space_utlz.building_detail.bldg_number","C19a"
-"C19c","building number not in building table","Database","Failure",NA,"BLDG NUM not in Building Inventory","bldg_activity_date","space_utlz.building_detail.bldg_number","C19c"
-"C27c","building number not in building table","Database","Failure",NA,"BLDG NUM not in Building Inventory","bldg_activity_date","space_utlz.building_detail.bldg_number","C19c"
-"C35c","building number not in building table","Database","Failure",NA,"BLDG NUM not in Building Inventory","bldg_activity_date","space_utlz.building_detail.bldg_number","C19c"
-"C19d","building number not in rooms inventory","Database","Failure",NA,"BLDG NUM not in Rooms Inventory","bldg_activity_date","space_utlz.building_detail.bldg_number","C19d"
-"C27d","building number not in rooms inventory","Database","Failure",NA,"BLDG NUM not in Rooms Inventory","bldg_activity_date","space_utlz.building_detail.bldg_number","C19d"
-"C35d","building number not in rooms inventory","Database","Failure",NA,"BLDG NUM not in Rooms Inventory","bldg_activity_date","space_utlz.building_detail.bldg_number","C19d"
-"C20a","building room is missing","Database","Failure",NA,"BLDG Room conditionally required","ssrmeet_activity_date","banner.ssrmeet_room_code","C20a"
-"C28a","building room is missing","Database","Failure",NA,"BLDG Room conditionally required","ssrmeet_activity_date","banner.ssrmeet_room_code","C20a"
-"C36a","building room is missing","Database","Failure",NA,"BLDG Room conditionally required","ssrmeet_activity_date","banner.ssrmeet_room_code","C20a"
-"C21a","invalid room max","Database","Failure",NA,"C_Room_Max Invalid","ssbsect_activity_date","banner.ssbsect_max_enrl","C21a"
-"C29a","invalid room max","Database","Failure",NA,"C_Room_Max Invalid","ssbsect_activity_date","banner.ssbsect_max_enrl","C21a"
-"C37a","invalid room max","Database","Failure",NA,"C_Room_Max Invalid","ssbsect_activity_date","banner.ssbsect_max_enrl","C21a"
-"C22a","invalid room use type","Database","Failure",NA,"Checking for valid values for c_room_type3","room_activity_date","space_utlz.rooms_detail.room_use_code","C22a"
-"C30a","invalid room use type","Database","Failure",NA,"Checking for valid values for c_room_type3","room_activity_date","space_utlz.rooms_detail.room_use_code","C22a"
-"C38a","invalid room use type","Database","Failure",NA,"Checking for valid values for c_room_type3","room_activity_date","space_utlz.rooms_detail.room_use_code","C22a"
-"C22b","missing room use type","Database","Failure",NA,"C_Room_type3 Missing","room_activity_date","space_utlz.rooms_detail.room_use_code","C22b"
-"C30b","missing room use type","Database","Failure",NA,"C_Room_type3 Missing","room_activity_date","space_utlz.rooms_detail.room_use_code","C22b"
-"C38b","missing room use type","Database","Failure",NA,"C_Room_type3 Missing","room_activity_date","space_utlz.rooms_detail.room_use_code","C22b"
-"C39a","valid start date and end date format (Summer)","Database","Failure",NA,"Checking for valid format for c_start_date","ssbsect_activity_date","banner.ssbsect_ptrm_start_date, banner.ssbsect_ptrm_end_date","C39a"
-"C40a","valid start date and end date format (Summer)","Database","Failure",NA,"Checking for valid format for c_start_date","ssbsect_activity_date","banner.ssbsect_ptrm_start_date, banner.ssbsect_ptrm_end_date","C39a"
-"C39b","valid start date and end date format (Fall)","Database","Failure",NA,"Checking for valid format for c_start_date.","ssbsect_activity_date","banner.ssbsect_ptrm_start_date, banner.ssbsect_ptrm_end_date","C39b"
-"C40b","valid start date and end date format (Fall)","Database","Failure",NA,"Checking for valid format for c_start_date.","ssbsect_activity_date","banner.ssbsect_ptrm_start_date, banner.ssbsect_ptrm_end_date","C39b"
-"C39c","valid start date and end date format (Spring)","Database","Failure",NA,"Checking for valid format for c_start_date.","ssbsect_activity_date","banner.ssbsect_ptrm_start_date, banner.ssbsect_ptrm_end_date","C39c"
-"C40c","valid start date and end date format (Spring)","Database","Failure",NA,"Checking for valid format for c_start_date.","ssbsect_activity_date","banner.ssbsect_ptrm_start_date, banner.ssbsect_ptrm_end_date","C39c"
-"C41a","missing course title","Database","Failure",NA,"C_Title is null or missing","scbcrse_activity_date","banner.scbcrse_title","C41a"
-"C41b","invalid title format","USHE","Failure",NA,"C_Title needs a minimum of 2 alpha characters together",NA,"banner.scbcrse_title","C41b"
-"C41d","invalid title format","USHE","Failure",NA,"C_Title special charaters not allowed",NA,"banner.scbcrse_title","C41d"
-"C42a","missing instructor","Database","Failure",NA,"C_Instruct_ID is null or missing","spriden_activity_date","banner.spriden_id","C42a"
-"C42b","invalid instructor id format","Database","Failure",NA,"C_Instruct_ID is 9 Characters, so should be using an Alpha character to start, this makes sure it is not Instructors SSN","spriden_activity_date","banner.spriden_id","C42b"
-"C42c","invalid instructor id format","USHE","Failure",NA,"C_Instruct_ID is using the wrong institutional assigned alpha characters",NA,"banner.spriden_id","C42c"
-"C43a","missing instructor name","Database","Failure",NA,"C_Instruct_Name is null or missing","spriden_activity_date","banner.spriden_first_name","C43a"
-"C43c","invalid instroctor name format","USHE","Failure",NA,"C_Instruct_Name no special characters",NA,"banner.spriden_first_name","C43c"
-"C44","missing instruction type","Database","Failure",NA,"C_instruct_type cannot be blank or NULL","ssbsect_activity_date","banner.ssbsect_schd_code","C44"
-"C44a","invalid instruction type format","USHE","Failure",NA,"Checking for valid values for c_instruct_type.","ssbsect_activity_date","banner.ssbsect_schd_code","C44a"
-"C46","missing department code","Database","Failure",NA,"Department exists","scbcrse_activity_date","banner.scbcrse_dept_code","C46"
-"C46a","invalid department due to non-alpha characters","Database","Failure",NA,"C_Dept Should only contain Alpha","scbcrse_activity_date","banner.scbcrse_dept_code","C46a"
-"C47b","invalid gen ed format","USHE","Failure",NA,"Check for valid c_gen_ed values",NA,"banner.ssrattr_attr_code","C47b"
-"C48a","missing destination type","USHE","Failure",NA,"C_Dest_Site if not null or blank, make sure it is in Reference.dbo.Highschools",NA,"banner.ssrsccd_sccd_code, banner.ssbsect_schd_code, banner.ssbsect_insm_code","C48a"
-"C49a","missing class size","Database","Failure",NA,"C49A FTL Missing Class Size","ssbsect_activity_date","banner.ssbsect_enrl","C49a"
-"C49b","invalid class size","Database","Failure",NA,"C_Class_Size Invalid","ssbsect_activity_date","banner.ssbsect_enrl","C49b"
-"C49c","class size and enrolled students don't align","USHE","Failure",NA,"C_CLASS_SIZE Number of Students Enrolled",NA,"banner.ssbsect_enrl","C49c"
-"C51a","invalid class level or missing class level","USHE","Failure",NA,"C_LEVEL classes",NA,"banner.scrlevl_levl_code","C51a"
-"C51b","invalid remedial level","USHE","Failure",NA,"C_LEVEL remedial",NA,"banner.scrlevl_levl_code","C51b"
-"C52a","missing course reference number","Database","Failure",NA,"Missing Course Reference Number","ssbsect_activity_date","banner.ssbsect_crn","C52a"
-"C52b","invalid course reference number","Database","Failure",NA,"Invalid Course Reference Number","ssbsect_activity_date","banner.ssbsect_crn","C52b"
-"C52c","duplicate course reference number","Database","Failure",NA,"Invalid Course Reference Number","ssbsect_activity_date","banner.ssbsect_crn","C52c"
-"G02b","graduation id is not in students table","Database","Failure",NA,"ID from graduation file is not in students file","spbpers_activity_date, spriden_activity_date","banner.spbpers_ssn, banner.spriden_id","G02b"
-"G21e","graduation id is not in students table","Database","Failure",NA,"ID from graduation file is not in students file","spbpers_activity_date, spriden_activity_date","banner.spbpers_ssn, banner.spriden_id","G02b"
-"G03e","first name too long","USHE","Failure",NA,"G_First name too long","spriden_activity_date","banner.spriden_first_name","G03e"
-"G03g","middle name too long","USHE","Failure",NA,"G_Middle too long","spriden_activity_date","banner.spriden_mi","G03g"
-"G03i","suffix too long","USHE","Failure",NA,"G_Suffix name too long","spbpers_activity_date","banner.spbpers_name_suffix","G03i"
-"G08b","graudation date is out of range","Database","Failure",NA,"G_Date out of IPEDS range","shrdgmr_activity_date","banner.shrdgmr_grad_date","G08b"
-"G09a","invalid CIP","Database","Failure",NA,"G_CIP Invalid","stvmajr_activity_date","banner.stvmajr_cipc_code","G09a"
-"G10a","missing degree type","Database","Failure",NA,"G_Deg_Type Missing","shrdgmr_activity_date","banner.shrdgmr_degc_code","G10a"
-"G10b","invalid degree type","Database","Failure",NA,"DEG_Type Invalid","shrdgmr_activity_date","banner.shrdgmr_degc_code","G10b"
-"G16a","invalid degree type","Database","Failure",NA,"DEG_Type Invalid","shrdgmr_activity_date","banner.shrdgmr_degc_code","G10b"
-"G12b","Transfer hours over 300 credits","USHE","Failure",NA,"G_Trans_Total seems excessive when over 300.0","shrtgpa_activity_date","sum(shrtgpa_hours_earned)","G12b"
-"G13b","Graduation hours 1.5 times required hours","USHE","Warning",NA,"G_Grad_HRS seems excessive when over 1.5 * g_req_hrs_deg","shrtgpa_activity_date","(sum(shrtgpa_hours_earned)","G13b"
-"G14b","Graduation hours 1.5 times required hours","USHE","Warning",NA,"G_Grad_HRS seems excessive when over 1.5 * g_req_hrs_deg","shrtgpa_activity_date","(sum(shrtgpa_hours_earned)","G13b"
-"G15b","Remedial hours over 60","USHE","Warning",NA,"G_Remedial_HRS seems excessive when over 60","ssbsect_activity_date","banner.ssbsect_crse_numb, (sum(shrtckg_credit_hours)","G15b"
-"G18a","Invalid Required hours for a degree","Database","Failure",NA,"Req HRS Deg Invalid","gorsdav_activity_date","gorsdav_value","G18a"
-"G19a","Missing HS code when county origin is in Utah","Database","Failure",NA,"Invalid UT HS ACT Code",NA,NA,"G19a"
-"G21d","duplicate graduation records","Database","Failure",NA,"check for duplicate graduation records.",NA,NA,"G21d"
-"G24a","Missing or incorrect year","Database","Failure",NA,NA,"shrdgmr_activity_date","shrdgmr_acyr_code","G24a"
-"G25a","invalid term","Database","Failure",NA,"G_Term Invalid","shrdgmr_activity_date","shrdgmr_term_code_grad","G25a"
-"G28a","missing degree type name","Database","Failure",NA,"g_deg_type_name not found","stvdegc_activity_date","banner.stvdegc_desc, banner.shrdgmr_degc_code","G28a"
-"SC04a","Missing course subject (prefix)","Database","Failure",NA,"Missing Course Subject","ssbsect_activity_date","banner.ssbsect_subj_code","SC04a"
-"SC05a","missing course number","Database","Failure",NA,"Missing Course Number","ssbsect_activity_date","banner.ssbsesct_crse_numb","SC05a"
-"SC06a","missing course section","Database","Failure",NA,"Missing Course Section","ssbsect_activity_date","banner.ssbsesct_seq_numb","SC06a"
-"SC08b","invalid earned credit hours based on grade","Database","Failure",NA,"Earned Credit. These grade types should not have any earned credit.","shrtckg_activity_date","banner.shrtckg_credit_hours","SC08b"
-"SC08c","earned credit hours is missing, but have a grade","Database","Failure",NA,"Earned Credit. Checking to see those who have grades but earned credit is null","shrtckg_activity_date","banner.shrtckg_credit_hours","SC08c"
-"SC08d","At end of term, earned credit hours should match attempted credit hours (when a passing grade)","Database","Failure",NA,"Earned Credit. Earned Credits should match sc_att_cr","shrtckg_activity_date","banner.shrtckg_credit_hours","SC08d"
-"SC10a","invalid grade","Database","Failure",NA,"Course Grade. Checking for invalid values in sc_grade where credit is given with an invalid/no grade. Do you have a grade for these courses?","shrtckg_activity_date","banner.shrtckg_grde_code_final","SC10a"
-"SC10b","missing concurrent enrollment grades","USHE","Failure",NA,"Missing Conc Enroll Grade","shrtckg_activity_date","banner.shrtckg_grde_code_final","SC10b"
-"SC10c","invalid concurrent enrollment grade","USHE","Failure",NA,"Invalid Conc Enroll Grade","shrtckg_activity_date","banner.shrtckg_grde_code_final","SC10c"
-"SC12a","Invaild student type codes (concurrent enrollment)","USHE","Failure",NA,"Student Type. Checks for valid student type codes.","sgbstdn_activity_date, sorhsch_activity_date, ssrsccd_activity_date","sgbstdn_styp_code, sorhsch_sgbi_code, ssrsccd_sccd_code, Concurrent course Master list","SC12a"
-"SC12b","Student type and HS code alignment (concurrent students only in Utah High schools)","USHE","Failure",NA,"Student Type. These students are listed as concurrent enrollment, but they attend a non-qualifying high school. Either an out-of-state OR adult high school, OR they are home schooled.","sgbstdn_activity_date, sorhsch_activity_date, ssrsccd_activity_date","sgbstdn_styp_code, sorhsch_sgbi_code, ssrsccd_sccd_code, Concurrent course Master list","SC12b"
-"SC12c","Budget code and student type alignment (concurrent classes has concurrent students)","USHE","Failure",NA,"Student Type. These students took concurrent enrollment courses, but the student is not coded CC.","sgbstdn_activity_date, sorhsch_activity_date, ssrsccd_activity_date","sgbstdn_styp_code, sorhsch_sgbi_code, ssrsccd_sccd_code, Concurrent course Master list","SC12c"
-"SC12d","Budget code, student type and entry action alignment","USHE","Failure",NA,"Checks for concurrent students not coded as high school in students file","sgbstdn_activity_date, sorhsch_activity_date, ssrsccd_activity_date","sgbstdn_styp_code, sorhsch_sgbi_code, ssrsccd_sccd_code, Concurrent course Master list","SC12d"
-"SC12e","Budget code and student type alignment (concurrent students in concurrent classes)","USHE","Failure",NA,"Student Type. Budget code is for CC students only","sgbstdn_activity_date, sorhsch_activity_date, ssrsccd_activity_date","sgbstdn_styp_code, sorhsch_sgbi_code, ssrsccd_sccd_code, Concurrent course Master list","SC12e"
-"SC12f","Budget code and student type alignement (concurrent students in concurrent classes in out-of state high schools)","USHE","Failure",NA,"Wrong budget code for student courses outside of UT","sgbstdn_activity_date, sorhsch_activity_date, ssrsccd_activity_date","sgbstdn_styp_code, sorhsch_sgbi_code, ssrsccd_sccd_code, Concurrent course Master list","SC12f"
-"SC14a","Invalid CRN","Database","Failure",NA,"SC_CRN Invalid","ssbsect_activity_date","banner.ssbsesct_crn","SC14a"
-"SC14b","Missing CRN","Database","Failure",NA,"Missing Courses Reference Number","ssbsect_activity_date","banner.ssbsesct_crn","SC14b"
-"SC15b","Course type, program type and course level alignement (Invalid U)","Database","Failure",NA,"SC_CR_Type = U Invalid","scrlevl_acitivy_date","scrlevl_levl_code","SC15b"
-"SC15c","Course type, program type and course level alignement (Invalid G)","Database","Failure",NA,"SC_CR_Type = G Invalid","scrlevl_acitivy_date","scrlevl_levl_code","SC15c"
-"B02a","Missing Location","Database","Failure",NA,"B_Location Missing","building_activity_date","space_utlz.building_detail.bldg_loc_code","B02a"
-"B02b","Invalid Location","Database","Failure",NA,"B_Location_Invalid","building_activity_date","space_utlz.building_detail.bldg_loc_code","B02b"
-"B03a","Missing Ownership","Database","Failure",NA,"B_Ownership Missing","building_activity_date","space_utlz.building_detail.bldg_own_code","B03a"
-"B03b","Invalid Ownership","Database","Failure",NA,"B_Ownership_Invalid","building_activity_date","space_utlz.building_detail.bldg_own_code","B03b"
-"B04a","Missing Year","Database","Failure",NA,"B_Year missing",NA,"TO_CHAR(SYSDATE, 'YYYY')","B04a"
-"R02a","Missing Year","Database","Failure",NA,"B_Year missing",NA,"TO_CHAR(SYSDATE, 'YYYY')","B04a"
-"B05a","Missing Name","Database","Failure",NA,"B_Name Missing","building_activity_date","space_utlz.building_detail.bldg_name","B05a"
-"B06a","Missing Number","Database","Failure",NA,"B_Number missing","building_activity_date","space_utlz.building_detail.bldg_number","B06a"
-"R03a","Missing Number","Database","Failure",NA,"B_Number missing","building_activity_date","space_utlz.building_detail.bldg_number","B06a"
-"B06b","Duplicate Number","Database","Failure",NA,"B_Number duplicates","building_activity_date","space_utlz.building_detail.bldg_number","B06b"
-"B07b","Missing Building Abbrv","Database","Failure",NA,"B_SName missing","building_activity_date","space_utlz.building_detail.bldg_abbrv","B07b"
-"B08a","Missing Year of Construction when replacement costs are greater than 3.5 million","Database","Failure",NA,"B_Year_Cons Missing for buildings greater than 3.5 million in replacement cost","building_activity_date","space_utlz.building_detail.bldg_const_year","B08a"
-"B08b","Missing Year of Construction when replacement costs are less than 3.5 million","Database","Warning",NA,"B_Year_Cons Missing for buildings less than 3.5 million in replacement cost","building_activity_date","space_utlz.building_detail.bldg_const_year","B08b"
-"B10a","Missing Replacement Cost","Database","Failure",NA,"B_Replace_Cost is NULL or blank, replacement costs are required","building_activity_date","space_utlz.building_detail.bldg_cost_replacement","B10a"
-"B11a","Missing building condition when replacement costs are greater than 3.5 million","Database","Failure",NA,"Condition Miss Greater 3.5Mil","building_activity_date","space_utlz.building_detail.bldg_condition_code","B11a"
-"B11b","Invalid building condition","Database","Failure",NA,"B_Condition_Invalid","building_activity_date","space_utlz.building_detail.bldg_condition_code","B11b"
-"B11c","Missing building condition when replacement costs are less than 3.5 mill","Database","Warning",NA,"B_Condition Missing where replacement cost is less than or equal to 3.5 million","building_activity_date","space_utlz.building_detail.bldg_condition_code","B11c"
-"B12a","Missing gross area","Database","Failure",NA,"B_Gross Missing","building_activity_date","space_utlz.building_detail.bldg_area_gross","B12a"
-"B12b","Invalid gross area","Database","Failure",NA,"B_Gross Invalid","building_activity_date","space_utlz.building_detail.bldg_area_gross","B12b"
-"B12c","Gross area less than sum of rooms in building","Database","Failure",NA,"B_Gross less than Sum of all the rooms area in the building","building_activity_date","space_utlz.building_detail.bldg_area_gross","B12c"
-"B14a","Missing risk number when replacement costs are greater than 3.5 million","Database","Failure",NA,"B_RSKNBR required (Fatal) for owned buildings greater than 3.5 million dollars replacement cost","building_activity_date","space_utlz.building_detail.bldg_number","B14a"
-"B14b","Missing risk number when replacement costs are less than 3.5 million","Database","Warning",NA,"B_RSKNBR required for owned buildings less than or equal to 3.5 million dollars replacement cost","building_activity_date","space_utlz.building_detail.bldg_number","B14b"
-"B15a","Missing Auxiliary","Database","Failure",NA,"B_AUX values missing","building_activity_date","space_utlz.building_detail.bldg_aux","B15a"
-"B15b","Invalid Auxiliary","Database","Failure",NA,"B_AUX contain wrong values","building_activity_date","space_utlz.building_detail.bldg_aux","B15b"
-"B99a","Duplicate records","USHE","Failure",NA,"Looking for duplicate b_keys","building_activity_date",NA,"B99a"
-"B99b","Building must have rooms","USHE","Failure",NA,"Buildings must have rooms","building_activity_date",NA,"B99b"
-"R03b","Room building not in building file","USHE","Failure",NA,"Rooms_Build_Number not in Buildings","room_activity_date","space_utlz.rooms_detail.rooms_detail.bldg_abbrv","R03b"
-"R04a","Missing room number","Database","Failure",NA,"Rooms missing Room Numbers","room_activity_date","space_utlz.rooms_detail.rooms_detail.bldg_abbrv","R04a"
-"R06a","Missing Room group","Database","Failure",NA,"R_Group1 missing","room_activity_date","space_utlz.rooms_detail.room_group1_desc","R06a"
-"R06b","Invalid room group","Database","Failure",NA,"R_Group1 not in Reference table","room_activity_date","space_utlz.rooms_detail.room_group1_desc","R06b"
-"R07a","Missing room use category when r_group1 not Z","Database","Failure",NA,"R_Use_Category missing","room_activity_date","space_utlz.rooms_detail.room_use_code_group","R07a"
-"R07b","Invalid room use category","Database","Failure",NA,"R_Use_Category not in Reference table","room_activity_date","space_utlz.rooms_detail.room_use_code_group","R07b"
-"R07c","Missing room use category when r_group1 = Z","Database","Failure",NA,"R_Use_Category missing","room_activity_date","space_utlz.rooms_detail.room_use_code_group","R07c"
-"R08a","Missing room use code","Database","Failure",NA,"R_Use_Code missing","room_activity_date","space_utlz.rooms_detail.room_use_code","R08a"
-"R08b","Invalid room use code","Database","Failure",NA,"R_Use_Code Unknown not in Reference table","room_activity_date","space_utlz.rooms_detail.room_use_code","R08b"
-"R08d","Invalid Room use code","Database","Failure",NA,"Room Use Code 250 and 255 only for UU and USU","room_activity_date","space_utlz.rooms_detail.room_use_code","R08d"
-"R09a","Missing room name","Database","Failure",NA,"R_Name missing","room_activity_date","space_utlz.rooms_detail.room_name","R09a"
-"R10a","Missing room stations when r_use_code 110, 210, 230","Database","Failure",NA,"R_Stations missing for R_Use_Code 110, 210, 230","room_activity_date","space_utlz.rooms_detail.room_stations","R10a"
-"R10b","Invalid room stations when r_use_code 110, 210, 230","Database","Failure",NA,"R_Stations Invalid for R_Use_Code 110, 210, 230","room_activity_date","space_utlz.rooms_detail.room_stations","R10b"
-"R10c","Stations out of range when r_use_code 110","Database","Warning",NA,"R_Stations out of range where r_use_code = 110","room_activity_date","space_utlz.rooms_detail.room_stations","R10c"
-"R10d","Stations out of range when r_use_code 210","Database","Warning",NA,"R_Stations out of range where r_use_code = 210","room_activity_date","space_utlz.rooms_detail.room_stations","R10d"
-"R11a","Missing room area","Database","Failure",NA,"R_Area missing","room_activity_date","space_utlz.rooms_detail.room_area","R11a"
-"R11b","Invalid room area","Database","Failure",NA,"R_Area Invalid","room_activity_date","space_utlz.rooms_detail.room_area","R11b"
-"R13a","Invalid proration","Database","Failure",NA,"R_Proration Not Y or N","room_activity_date","space_utlz.room_prorated","R13a"
-"R13b","Missing proration","Database","Failure",NA,"R_Proration missing","room_activity_date","space_utlz.room_prorated","R13b"
-"R13c","Prorated room area and prorated area equals zero","Database","Failure",NA,"R_Proration = Y, R_Area and R_Prorated_area = 0","room_activity_date","space_utlz.room_prorated","R13c"
-"R13d","Prorated room area does not equal zero, but room area equals zero","Database","Failure",NA,"R_Proration = Y, R_Area = 0 and R_Prorated_area <> 0","room_activity_date","space_utlz.room_prorated","R13d"
-"R13e","Prorated room area equals zero, but room area does not equal zero","Database","Failure",NA,"R_Proration = Y, R_Area <> 0 and R_Prorated_area = 0","room_activity_date","space_utlz.room_prorated","R13e"
-"R13f","Proration equals N, but prorated area does not equal zero","Database","Failure",NA,"R_Proration = N, R_Prorated_area <> 0","room_activity_date","space_utlz.room_prorated","R13f"
-"R14a","Missing prorated area","Database","Failure",NA,"R_Prorated_Area can not be null","room_activity_date","space_utlz.room_prorated_area","R14a"
-"R14b","Sum of prorated area is not equal to room area","Database","Failure",NA,"R_Prorated_Area Not Equal R_Area","room_activity_date","space_utlz.room_prorated_area","R14b"
-"R15a","Invalid Date Format","Database","Failure",NA,"R_Update_Date wrong format","room_activity_date","room_activity_date","R15a"
-"R15b","Missing activity date","Database","Failure",NA,"R_Update_Date blank list","room_activity_date","room_activity_date","R15b"
-"R15c","Update date is in the future","Database","Failure",NA,"R_Update_Date is in the future","room_activity_date","room_activity_date","R15c"
-"R99a","Duplicate records","USHE","Failure",NA,"Looking for duplicate r_keys","room_activity_date",NA,"R99a"
+--comes FROM out of state unless it is invalid",sorhsch_activity_date,banner.sorhsch_sgbi_code,S28a
+S29a,invalid HB75 waiver code,USHE,Failure,NA,Checking for valid HB75 Waiver codes. Should be less than OR equal to 100.,NA,"banner.rpratrm, sfrrgfe",S29a
+S29b,invalid HB75 waiver format,USHE,Failure,NA,Checking for valid HB75 Waiver codes format,NA,"banner.rpratrm, sfrrgfe",S29b
+S30a,missing cip code,Database,Failure,NA,Declared Major CIP codes There should be a s_curr_cip2 for each record.,stvmajr_activity_date,banner.stvmajr_cipc_code,S30a
+S31a,Membership hours should be 0,USHE,Failure,NA,The institutions in this query should not have membership hours.,NA,n/a,S31a
+S32a,invalid CLEP wrong format,Database,Failure,NA,S_Total_CLEP wrong format,shrtgpa_activity_date,shrtgpa_hours_earned,S32a
+S33a,invalid AP wrong format,Database,Failure,NA,S_Total_AP wrong format,shrtgpa_activity_date,shrtgpa_hours_earned,S33a
+S34a,invalid ssid,Database,Failure,NA,S_SSID is invalid,goradid_activity_date,goradid_additional_id,S34a
+G20a,invalid ssid,Database,Failure,NA,S_SSID is invalid,goradid_activity_date,goradid_additional_id,S34a
+S34b,ssid does not align with student type and state code,Database,Failure,NA,Bad SSID for Reg Status of HS and State of UT,goradid_activity_date,"goradid_additional_id, banner.sabsupl_stat_code_admit, banner.sgbstdn_styp_code",S34b
+S34c,missing ssid for Utah HS students,Database,Failure,NA,NULL SSID for HS Count,goradid_activity_date,"goradid_additional_id, banner.sabsupl_stat_code_admit, banner.sgbstdn_styp_code",S34c
+S34d,missing ssid for concurrent students,Database,Failure,NA,NULL SSID for CE Students,goradid_activity_date,"goradid_additional_id, banner.sabsupl_stat_code_admit, banner.sgbstdn_styp_code",S34d
+S34e,missing ssid for first time freshman and highschool students,Database,Warning,NA,"Please provide as many SSIDs as possible. Our hope is for every freshmen
+--AND high school student FROM Utah to have an SSID.",goradid_activity_date,"goradid_additional_id, banner.sgbstdn_styp_code",S34e
+S35a,invalid student id,Database,Failure,NA,There should be a valid institutionally assigned ID for all records.,spriden_activity_date,banner.spriden_id,S35a
+G21a,invalid student id,Database,Failure,NA,There should be a valid institutionally assigned ID for all records.,spriden_activity_date,banner.spriden_id,S35a
+SC13a,invalid student id,Database,Failure,NA,There should be a valid institutionally assigned ID for all records.,spriden_activity_date,banner.spriden_id,S35a
+S35b,invalid student id,Database,Failure,NA,Changed to look for Alpha Characters at the start of the banner id,spriden_activity_date,banner.spriden_id,S35b
+G21b,invalid student id,Database,Failure,NA,Changed to look for Alpha Characters at the start of the banner id,spriden_activity_date,banner.spriden_id,S35b
+SC13b,invalid student id,Database,Failure,NA,Changed to look for Alpha Characters at the start of the banner id,spriden_activity_date,banner.spriden_id,S35b
+S35c,invalid alpha in student id,USHE,Failure,NA,Wrong Alpha in Banner IDs. There should be a valid institutionally assigned ID for all records.,NA,banner.spriden_id,S35c
+G21c,invalid alpha in student id,USHE,Failure,NA,Wrong Alpha in Banner IDs. There should be a valid institutionally assigned ID for all records.,NA,banner.spriden_id,S35c
+SC13c,invalid alpha in student id,USHE,Failure,NA,Wrong Alpha in Banner IDs. There should be a valid institutionally assigned ID for all records.,NA,banner.spriden_id,S35c
+S36a,invalid act test score format,Database,Failure,NA,S_ACT wrong format,sortest_activity_date,banner.sortest_test_score,S36a
+S38a,invalid act test score format,Database,Failure,NA,S_ACT wrong format,sortest_activity_date,banner.sortest_test_score,S36a
+S39a,invalid act test score format,Database,Failure,NA,S_ACT wrong format,sortest_activity_date,banner.sortest_test_score,S36a
+S40a,invalid act test score format,Database,Failure,NA,S_ACT wrong format,sortest_activity_date,banner.sortest_test_score,S36a
+S41a,invalid act test score format,Database,Failure,NA,S_ACT wrong format,sortest_activity_date,banner.sortest_test_score,S36a
+S42a,missing HS graduation date,Database,Failure,NA,High School Grad Date required where s_reg_status = FH,sorhsch_activity_date,banner.sorhsch_graduation_date,S42a
+S43c,cumulative gpa matches term gpa based on certain student types,USHE,Warning,NA,S_CUM_GPA_UGRAD = S_TERM_GPA,NA,round(sum(shrtgpa_quality_points) / sum(shrtgpa_gpa_hours),S43c
+S44c,invalid pell awarded to highschool students,USHE,Failure,NA,HS students should not have pell,rpratrm_activity_date,banner.rpratrm_offer_amt,S44c
+S44d,invalid pell value,USHE,Failure,NA,Wrong values for Pell,NA,banner.rpratrm_offer_amt,S44d
+S45c,invalid bia code,USHE,Failure,NA,Wrong value fo s_bia,NA,banner.tbraccd,S45c
+S46a,missing college,Database,Failure,NA,There should be a college for every record.,sgbstdn_activity_date,banner.sgbstdn_coll_code_1,S46a
+C45,missing college,Database,Failure,NA,There should be a college for every record.,sgbstdn_activity_date,banner.sgbstdn_coll_code_1,S46a
+S46b,invalid college due to non-alpha characters,Database,Failure,NA,S_College with Non-Alpha characters,sgbstdn_activity_date,"banner.sgbstdn_coll_code_1, banner.sgbstdn_coll_code_2",S46b
+S48a,invalid college due to non-alpha characters,Database,Failure,NA,S_College with Non-Alpha characters,sgbstdn_activity_date,"banner.sgbstdn_coll_code_1, banner.sgbstdn_coll_code_2",S46b
+C45a,invalid college due to non-alpha characters,Database,Failure,NA,S_College with Non-Alpha characters,sgbstdn_activity_date,"banner.sgbstdn_coll_code_1, banner.sgbstdn_coll_code_2",S46b
+S47a,missing major,Database,Failure,NA,There should be a major for every record.,sgbstdn_activity_date,banner.sgbstdn_majr_code_1,S47a
+S47b,duplicate major,Database,Failure,NA,There should be a unique major for every record.,sgbstdn_activity_date,banner.sgbstdn_majr_code_2,S47b
+S47c,invalid major due to non-alpha characters,Database,Failure,NA,S_Major with Non-Alpha characters,sgbstdn_activity_date,"banner.sgbstdn_majr_code_1, banner.sgbstdn_majr_code_2",S47c
+S49b,invalid major due to non-alpha characters,Database,Failure,NA,S_Major with Non-Alpha characters,sgbstdn_activity_date,"banner.sgbstdn_majr_code_1, banner.sgbstdn_majr_code_2",S47c
+S49a,missing second major with second cip code,Database,Failure,NA,Missing Second CIP or Major,sgbstdn_activity_date,banner.sgbstdn_majr_code_2,S49a
+C00,"duplicate combination of course subject, number, and section",Database,Failure,NA,FTL Duplicate Courses,ssbsect_activity_date,"banner.ssbsect_subj_code, banner.ssbsect_crse_numb, banner.ssbsect_seq_numb",C00
+C04a,invalid course number length of characters,Database,Failure,NA,the Course Number should have four digits,ssbsect_activity_date,banner.ssbsect_crse_numb,C04a
+C04c,invalid course number format (course numbers cannot start with an 8 or 9),Database,Failure,NA,the Course Number Invalid first character,ssbsect_activity_date,banner.ssbsect_crse_numb,C04c
+C04d,invalid course number format due to alpha in first 4 characters,Database,Failure,NA,CRS_NUM has Alpha in 1st 4 Char,ssbsect_activity_date,banner.ssbsect_crse_numb,C04d
+C06a,invalid course min or max credits,Database,Failure,NA,"C_MIN_Credits Invalid, C_MAX_Credits Invalid",scbcrse_activity_date,"banner.scbcrse_credit_hr_low, banner.scbcrse_credit_hr_high",C06a
+C07a,invalid course min or max credits,Database,Failure,NA,"C_MIN_Credits Invalid, C_MAX_Credits Invalid",scbcrse_activity_date,"banner.scbcrse_credit_hr_low, banner.scbcrse_credit_hr_high",C06a
+C07b,max credits less than min credits,Database,Failure,NA,C_MAX_Credits less than C_MIN_Credits,scbcrse_activity_date,"banner.scbcrse_credit_hr_low, banner.scbcrse_credit_hr_high",C07b
+C09,invalid line item values,USHE,Failure,NA,Checking for valid values in c_line_item.,NA,N/A,C09
+C10,missing site type,Database,Failure,NA,Checking for valid values IN c_site_type,ssbsect_activity_date,banner.ssbsect_camp_code,C10
+C10a,invalid site type,Database,Failure,NA,Checking for valid values IN c_site_type.,ssbsect_activity_date,banner.ssbsect_camp_code,C10a
+C11,missing budget code,Database,Failure,NA,Checking to ensure that budget codes are not blank or NULL,ssrsccd_activity_date,banner.ssrsccd_sccd_code,C11
+C11b,budget code does not align with course and subject on concurrent enrolled master list from USHE,Database,Failure,NA,Not on CEML,ssrsccd_activity_date,banner.ssrsccd_sccd_code,C11b
+C12,invalid delivery method,USHE,Failure,NA,Checking for valid values IN c_delivery_method.,ssbsect_activity_date,banner.ssbsect_insm_code,C12
+C13,invalid program type and missing program type,Database,Failure,NA,Checking for invalid program types.,NA,banner.scbsupp_occs_code,C13
+C13a,invalid program type against perkins list,USHE,Failure,NA,checks validity of c_program_type against perkins list.,NA,banner.scbsupp_occs_code,C13a
+C13c,invalid budget code again perkins list,USHE,Failure,NA,"checks for courses allowed on perkins list, but not currently coded to vocational",NA,banner.scbsupp_occs_code,C13c
+C14a,invalid credit indicator,USHE,Failure,NA,Checking for valid values for c_credit_ind.,NA,banner.scrlevl_levl_code = 'NC',C14a
+C14b,credit indicator and section format type do not align,USHE,Failure,NA,NON-CREDIT COURSES IN 3RD WEEK,ssbsect_activity_date,"banner.ssbsect_schd_code, banner.scrlevl_levl_code = 'NC'",C14b
+C14c,invalid non-credit class based on program type and budget code,USHE,Failure,NA,Only Labs and Vocational non-credit classes can be submitted,scbsupp_activity_date,"banner.scbsupp_occs_code, banner.scrlevl_levl_code = 'NC', banner.ssbsect_schd_code",C14c
+C15a,missing start time,Database,Failure,NA,Courses Start Time conditionally required,ssrmeet_activity_date,banner.ssrmeet_begin_time,C15a
+C23a,missing start time,Database,Failure,NA,Courses Start Time conditionally required,ssrmeet_activity_date,banner.ssrmeet_begin_time,C15a
+C31a,missing start time,Database,Failure,NA,Courses Start Time conditionally required,ssrmeet_activity_date,banner.ssrmeet_begin_time,C15a
+C16a,missing end time,Database,Failure,NA,Courses Stop Time conditionally required,ssrmeet_activity_date,banner.ssrmeet_end_time,C16a
+C24a,missing end time,Database,Failure,NA,Courses Stop Time conditionally required,ssrmeet_activity_date,banner.ssrmeet_end_time,C16a
+C32a,missing end time,Database,Failure,NA,Courses Stop Time conditionally required,ssrmeet_activity_date,banner.ssrmeet_end_time,C16a
+C17a,missing course meeting days,USHE,Failure,NA,Courses Days conditionally required,NA,"banner.ssrmeet_sun_day, etc...",C17a
+C25a,missing course meeting days,USHE,Failure,NA,Courses Days conditionally required,NA,"banner.ssrmeet_sun_day, etc...",C17a
+C33a,missing course meeting days,USHE,Failure,NA,Courses Days conditionally required,NA,"banner.ssrmeet_sun_day, etc...",C17a
+C18,building name and number are the same,Database,Failure,NA,BLDG Name and number are the same,ssrmeet_activity_date,"banner.ssrmeet_bldg_code, space_utlz.building_detail.bldg_number",C18
+C26,building name and number are the same,Database,Failure,NA,BLDG Name and number are the same,ssrmeet_activity_date,"banner.ssrmeet_bldg_code, space_utlz.building_detail.bldg_number",C18
+C34,building name and number are the same,Database,Failure,NA,BLDG Name and number are the same,ssrmeet_activity_date,"banner.ssrmeet_bldg_code, space_utlz.building_detail.bldg_number",C18
+C18a,missing building name,Database,Failure,NA,BLDG SName conditionally Required,ssrmeet_activity_date,banner.ssrmeet_bldg_code,C18a
+C26a,missing building name,Database,Failure,NA,BLDG SName conditionally Required,ssrmeet_activity_date,banner.ssrmeet_bldg_code,C18a
+C34a,missing building name,Database,Failure,NA,BLDG SName conditionally Required,ssrmeet_activity_date,banner.ssrmeet_bldg_code,C18a
+C19a,missing building number,Database,Failure,NA,BLDG NUM conditionally required,bldg_activity_date,space_utlz.building_detail.bldg_number,C19a
+C27a,missing building number,Database,Failure,NA,BLDG NUM conditionally required,bldg_activity_date,space_utlz.building_detail.bldg_number,C19a
+C35a,missing building number,Database,Failure,NA,BLDG NUM conditionally required,bldg_activity_date,space_utlz.building_detail.bldg_number,C19a
+C19c,building number not in building table,Database,Failure,NA,BLDG NUM not in Building Inventory,bldg_activity_date,space_utlz.building_detail.bldg_number,C19c
+C27c,building number not in building table,Database,Failure,NA,BLDG NUM not in Building Inventory,bldg_activity_date,space_utlz.building_detail.bldg_number,C19c
+C35c,building number not in building table,Database,Failure,NA,BLDG NUM not in Building Inventory,bldg_activity_date,space_utlz.building_detail.bldg_number,C19c
+C19d,building number not in rooms inventory,Database,Failure,NA,BLDG NUM not in Rooms Inventory,bldg_activity_date,space_utlz.building_detail.bldg_number,C19d
+C27d,building number not in rooms inventory,Database,Failure,NA,BLDG NUM not in Rooms Inventory,bldg_activity_date,space_utlz.building_detail.bldg_number,C19d
+C35d,building number not in rooms inventory,Database,Failure,NA,BLDG NUM not in Rooms Inventory,bldg_activity_date,space_utlz.building_detail.bldg_number,C19d
+C20a,building room is missing,Database,Failure,NA,BLDG Room conditionally required,ssrmeet_activity_date,banner.ssrmeet_room_code,C20a
+C28a,building room is missing,Database,Failure,NA,BLDG Room conditionally required,ssrmeet_activity_date,banner.ssrmeet_room_code,C20a
+C36a,building room is missing,Database,Failure,NA,BLDG Room conditionally required,ssrmeet_activity_date,banner.ssrmeet_room_code,C20a
+C21a,invalid room max occupancy,Database,Failure,NA,C_Room_Max Invalid,ssbsect_activity_date,banner.ssbsect_max_enrl,C21a
+C29a,invalid room max occupancy,Database,Failure,NA,C_Room_Max Invalid,ssbsect_activity_date,banner.ssbsect_max_enrl,C21a
+C37a,invalid room max occupancy,Database,Failure,NA,C_Room_Max Invalid,ssbsect_activity_date,banner.ssbsect_max_enrl,C21a
+C22a,invalid room use type,Database,Failure,NA,Checking for valid values for c_room_type3,room_activity_date,space_utlz.rooms_detail.room_use_code,C22a
+C30a,invalid room use type,Database,Failure,NA,Checking for valid values for c_room_type3,room_activity_date,space_utlz.rooms_detail.room_use_code,C22a
+C38a,invalid room use type,Database,Failure,NA,Checking for valid values for c_room_type3,room_activity_date,space_utlz.rooms_detail.room_use_code,C22a
+C22b,missing room use type,Database,Failure,NA,C_Room_type3 Missing,room_activity_date,space_utlz.rooms_detail.room_use_code,C22b
+C30b,missing room use type,Database,Failure,NA,C_Room_type3 Missing,room_activity_date,space_utlz.rooms_detail.room_use_code,C22b
+C38b,missing room use type,Database,Failure,NA,C_Room_type3 Missing,room_activity_date,space_utlz.rooms_detail.room_use_code,C22b
+C39a,valid start date and end date format (Summer),Database,Failure,NA,Checking for valid format for c_start_date,ssbsect_activity_date,"banner.ssbsect_ptrm_start_date, banner.ssbsect_ptrm_end_date",C39a
+C40a,valid start date and end date format (Summer),Database,Failure,NA,Checking for valid format for c_start_date,ssbsect_activity_date,"banner.ssbsect_ptrm_start_date, banner.ssbsect_ptrm_end_date",C39a
+C39b,valid start date and end date format (Fall),Database,Failure,NA,Checking for valid format for c_start_date.,ssbsect_activity_date,"banner.ssbsect_ptrm_start_date, banner.ssbsect_ptrm_end_date",C39b
+C40b,valid start date and end date format (Fall),Database,Failure,NA,Checking for valid format for c_start_date.,ssbsect_activity_date,"banner.ssbsect_ptrm_start_date, banner.ssbsect_ptrm_end_date",C39b
+C39c,valid start date and end date format (Spring),Database,Failure,NA,Checking for valid format for c_start_date.,ssbsect_activity_date,"banner.ssbsect_ptrm_start_date, banner.ssbsect_ptrm_end_date",C39c
+C40c,valid start date and end date format (Spring),Database,Failure,NA,Checking for valid format for c_start_date.,ssbsect_activity_date,"banner.ssbsect_ptrm_start_date, banner.ssbsect_ptrm_end_date",C39c
+C41a,missing course title,Database,Failure,NA,C_Title is null or missing,scbcrse_activity_date,banner.scbcrse_title,C41a
+C41b,invalid title format,USHE,Failure,NA,C_Title needs a minimum of 2 alpha characters together,NA,banner.scbcrse_title,C41b
+C41d,invalid title format,USHE,Failure,NA,C_Title special charaters not allowed,NA,banner.scbcrse_title,C41d
+C42a,missing instructor,Database,Failure,NA,C_Instruct_ID is null or missing,spriden_activity_date,banner.spriden_id,C42a
+C42b,invalid instructor id format,Database,Failure,NA,"C_Instruct_ID is 9 Characters, so should be using an Alpha character to start, this makes sure it is not Instructors SSN",spriden_activity_date,banner.spriden_id,C42b
+C42c,invalid instructor id format,USHE,Failure,NA,C_Instruct_ID is using the wrong institutional assigned alpha characters,NA,banner.spriden_id,C42c
+C43a,missing instructor name,Database,Failure,NA,C_Instruct_Name is null or missing,spriden_activity_date,banner.spriden_first_name,C43a
+C43c,invalid instroctor name format,USHE,Failure,NA,C_Instruct_Name no special characters,NA,banner.spriden_first_name,C43c
+C44,missing instruction type,Database,Failure,NA,C_instruct_type cannot be blank or NULL,ssbsect_activity_date,banner.ssbsect_schd_code,C44
+C44a,invalid instruction type format,USHE,Failure,NA,Checking for valid values for c_instruct_type.,ssbsect_activity_date,banner.ssbsect_schd_code,C44a
+C46,missing department code,Database,Failure,NA,Department exists,scbcrse_activity_date,banner.scbcrse_dept_code,C46
+C46a,invalid department due to non-alpha characters,Database,Failure,NA,C_Dept Should only contain Alpha,scbcrse_activity_date,banner.scbcrse_dept_code,C46a
+C47b,invalid gen ed format,USHE,Failure,NA,Check for valid c_gen_ed values,NA,banner.ssrattr_attr_code,C47b
+C48a,missing destination type,USHE,Failure,NA,"C_Dest_Site if not null or blank, make sure it is in Reference.dbo.Highschools",NA,"banner.ssrsccd_sccd_code, banner.ssbsect_schd_code, banner.ssbsect_insm_code",C48a
+C49a,missing class size,USHE,Failure,NA,C49A FTL Missing Class Size,ssbsect_activity_date,banner.ssbsect_enrl,C49a
+C49b,invalid class size,Database,Failure,NA,C_Class_Size Invalid,ssbsect_activity_date,banner.ssbsect_enrl,C49b
+C49c,class size and enrolled students don't align,USHE,Failure,NA,C_CLASS_SIZE Number of Students Enrolled,NA,banner.ssbsect_enrl,C49c
+C51a,invalid class level or missing class level,USHE,Failure,NA,C_LEVEL classes,NA,banner.scrlevl_levl_code,C51a
+C51b,invalid remedial level,USHE,Failure,NA,C_LEVEL remedial,NA,banner.scrlevl_levl_code,C51b
+C52a,missing course reference number,Database,Failure,NA,Missing Course Reference Number,ssbsect_activity_date,banner.ssbsect_crn,C52a
+C52b,invalid course reference number,Database,Failure,NA,Invalid Course Reference Number,ssbsect_activity_date,banner.ssbsect_crn,C52b
+C52c,duplicate course reference number,Database,Failure,NA,Invalid Course Reference Number,ssbsect_activity_date,banner.ssbsect_crn,C52c
+G02b,graduation id is not in students table,Database,Failure,NA,ID from graduation file is not in students file,"spbpers_activity_date, spriden_activity_date","banner.spbpers_ssn, banner.spriden_id",G02b
+G21e,graduation id is not in students table,Database,Failure,NA,ID from graduation file is not in students file,"spbpers_activity_date, spriden_activity_date","banner.spbpers_ssn, banner.spriden_id",G02b
+G03e,first name too long,USHE,Failure,NA,G_First name too long,spriden_activity_date,banner.spriden_first_name,G03e
+G03g,middle name too long,USHE,Failure,NA,G_Middle too long,spriden_activity_date,banner.spriden_mi,G03g
+G03i,suffix too long,USHE,Failure,NA,G_Suffix name too long,spbpers_activity_date,banner.spbpers_name_suffix,G03i
+G08b,graudation date is out of range,Database,Failure,NA,G_Date out of IPEDS range,shrdgmr_activity_date,banner.shrdgmr_grad_date,G08b
+G09a,invalid CIP,Database,Failure,NA,G_CIP Invalid,stvmajr_activity_date,banner.stvmajr_cipc_code,G09a
+G10a,missing degree type,Database,Failure,NA,G_Deg_Type Missing,shrdgmr_activity_date,banner.shrdgmr_degc_code,G10a
+G10b,invalid degree type,Database,Failure,NA,DEG_Type Invalid,shrdgmr_activity_date,banner.shrdgmr_degc_code,G10b
+G16a,invalid degree type,Database,Failure,NA,DEG_Type Invalid,shrdgmr_activity_date,banner.shrdgmr_degc_code,G10b
+G12b,Transfer hours over 300 credits,USHE,Failure,NA,G_Trans_Total seems excessive when over 300.0,shrtgpa_activity_date,sum(shrtgpa_hours_earned),G12b
+G13b,Graduation hours 1.5 times required hours,USHE,Warning,NA,G_Grad_HRS seems excessive when over 1.5 * g_req_hrs_deg,shrtgpa_activity_date,(sum(shrtgpa_hours_earned),G13b
+G14b,Graduation hours 1.5 times required hours,USHE,Warning,NA,G_Grad_HRS seems excessive when over 1.5 * g_req_hrs_deg,shrtgpa_activity_date,(sum(shrtgpa_hours_earned),G13b
+G15b,Remedial hours over 60,USHE,Warning,NA,G_Remedial_HRS seems excessive when over 60,ssbsect_activity_date,"banner.ssbsect_crse_numb, (sum(shrtckg_credit_hours)",G15b
+G18a,Invalid Required hours for a degree,Database,Failure,NA,Req HRS Deg Invalid,gorsdav_activity_date,gorsdav_value,G18a
+G19a,Missing HS code when county origin is in Utah,Database,Failure,NA,Invalid UT HS ACT Code,NA,NA,G19a
+G21d,duplicate graduation records,Database,Failure,NA,check for duplicate graduation records.,NA,NA,G21d
+G24a,Missing or incorrect year,Database,Failure,NA,NA,shrdgmr_activity_date,shrdgmr_acyr_code,G24a
+G25a,invalid term,Database,Failure,NA,G_Term Invalid,shrdgmr_activity_date,shrdgmr_term_code_grad,G25a
+G28a,missing degree type name,Database,Failure,NA,g_deg_type_name not found,stvdegc_activity_date,"banner.stvdegc_desc, banner.shrdgmr_degc_code",G28a
+SC04a,Missing course subject (prefix),Database,Failure,NA,Missing Course Subject,ssbsect_activity_date,banner.ssbsect_subj_code,SC04a
+SC05a,missing course number,Database,Failure,NA,Missing Course Number,ssbsect_activity_date,banner.ssbsesct_crse_numb,SC05a
+SC06a,missing course section,Database,Failure,NA,Missing Course Section,ssbsect_activity_date,banner.ssbsesct_seq_numb,SC06a
+SC08b,invalid earned credit hours based on grade,Database,Failure,NA,Earned Credit. These grade types should not have any earned credit.,shrtckg_activity_date,banner.shrtckg_credit_hours,SC08b
+SC08c,"earned credit hours is missing, but have a grade",Database,Failure,NA,Earned Credit. Checking to see those who have grades but earned credit is null,shrtckg_activity_date,banner.shrtckg_credit_hours,SC08c
+SC08d,"At end of term, earned credit hours should match attempted credit hours (when a passing grade)",Database,Failure,NA,Earned Credit. Earned Credits should match sc_att_cr,shrtckg_activity_date,banner.shrtckg_credit_hours,SC08d
+SC10a,invalid grade,Database,Failure,NA,Course Grade. Checking for invalid values in sc_grade where credit is given with an invalid/no grade. Do you have a grade for these courses?,shrtckg_activity_date,banner.shrtckg_grde_code_final,SC10a
+SC10b,missing concurrent enrollment grades,USHE,Failure,NA,Missing Conc Enroll Grade,shrtckg_activity_date,banner.shrtckg_grde_code_final,SC10b
+SC10c,invalid concurrent enrollment grade,USHE,Failure,NA,Invalid Conc Enroll Grade,shrtckg_activity_date,banner.shrtckg_grde_code_final,SC10c
+SC12a,Invaild student type codes (concurrent enrollment),USHE,Failure,NA,Student Type. Checks for valid student type codes.,"sgbstdn_activity_date, sorhsch_activity_date, ssrsccd_activity_date","sgbstdn_styp_code, sorhsch_sgbi_code, ssrsccd_sccd_code, Concurrent course Master list",SC12a
+SC12b,Student type and HS code alignment (concurrent students only in Utah High schools),USHE,Failure,NA,"Student Type. These students are listed as concurrent enrollment, but they attend a non-qualifying high school. Either an out-of-state OR adult high school, OR they are home schooled.","sgbstdn_activity_date, sorhsch_activity_date, ssrsccd_activity_date","sgbstdn_styp_code, sorhsch_sgbi_code, ssrsccd_sccd_code, Concurrent course Master list",SC12b
+SC12c,Budget code and student type alignment (concurrent classes has concurrent students),USHE,Failure,NA,"Student Type. These students took concurrent enrollment courses, but the student is not coded CC.","sgbstdn_activity_date, sorhsch_activity_date, ssrsccd_activity_date","sgbstdn_styp_code, sorhsch_sgbi_code, ssrsccd_sccd_code, Concurrent course Master list",SC12c
+SC12d,"Budget code, student type and entry action alignment",USHE,Failure,NA,Checks for concurrent students not coded as high school in students file,"sgbstdn_activity_date, sorhsch_activity_date, ssrsccd_activity_date","sgbstdn_styp_code, sorhsch_sgbi_code, ssrsccd_sccd_code, Concurrent course Master list",SC12d
+SC12e,Budget code and student type alignment (concurrent students in concurrent classes),USHE,Failure,NA,Student Type. Budget code is for CC students only,"sgbstdn_activity_date, sorhsch_activity_date, ssrsccd_activity_date","sgbstdn_styp_code, sorhsch_sgbi_code, ssrsccd_sccd_code, Concurrent course Master list",SC12e
+SC12f,Budget code and student type alignement (concurrent students in concurrent classes in out-of state high schools),USHE,Failure,NA,Wrong budget code for student courses outside of UT,"sgbstdn_activity_date, sorhsch_activity_date, ssrsccd_activity_date","sgbstdn_styp_code, sorhsch_sgbi_code, ssrsccd_sccd_code, Concurrent course Master list",SC12f
+SC14a,Invalid CRN,Database,Failure,NA,SC_CRN Invalid,ssbsect_activity_date,banner.ssbsesct_crn,SC14a
+SC14b,Missing CRN,Database,Failure,NA,Missing Courses Reference Number,ssbsect_activity_date,banner.ssbsesct_crn,SC14b
+SC15b,"Course type, program type and course level alignement (Invalid U)",Database,Failure,NA,SC_CR_Type = U Invalid,scrlevl_acitivy_date,scrlevl_levl_code,SC15b
+SC15c,"Course type, program type and course level alignement (Invalid G)",Database,Failure,NA,SC_CR_Type = G Invalid,scrlevl_acitivy_date,scrlevl_levl_code,SC15c
+B02a,Missing Location,Database,Failure,NA,B_Location Missing,building_activity_date,space_utlz.building_detail.bldg_loc_code,B02a
+B02b,Invalid Location,Database,Failure,NA,B_Location_Invalid,building_activity_date,space_utlz.building_detail.bldg_loc_code,B02b
+B03a,Missing Ownership,Database,Failure,NA,B_Ownership Missing,building_activity_date,space_utlz.building_detail.bldg_own_code,B03a
+B03b,Invalid Ownership,Database,Failure,NA,B_Ownership_Invalid,building_activity_date,space_utlz.building_detail.bldg_own_code,B03b
+B04a,Missing Year,Database,Failure,NA,B_Year missing,NA,"TO_CHAR(SYSDATE, 'YYYY')",B04a
+R02a,Missing Year,Database,Failure,NA,B_Year missing,NA,"TO_CHAR(SYSDATE, 'YYYY')",B04a
+B05a,Missing Name,Database,Failure,NA,B_Name Missing,building_activity_date,space_utlz.building_detail.bldg_name,B05a
+B06a,Missing Number,Database,Failure,NA,B_Number missing,building_activity_date,space_utlz.building_detail.bldg_number,B06a
+R03a,Missing Number,Database,Failure,NA,B_Number missing,building_activity_date,space_utlz.building_detail.bldg_number,B06a
+B06b,Duplicate Number,Database,Failure,NA,B_Number duplicates,building_activity_date,space_utlz.building_detail.bldg_number,B06b
+B07b,Missing Building Abbrv,Database,Failure,NA,B_SName missing,building_activity_date,space_utlz.building_detail.bldg_abbrv,B07b
+B08a,Missing Year of Construction when replacement costs are greater than 3.5 million,Database,Failure,NA,B_Year_Cons Missing for buildings greater than 3.5 million in replacement cost,building_activity_date,space_utlz.building_detail.bldg_const_year,B08a
+B08b,Missing Year of Construction when replacement costs are less than 3.5 million,Database,Warning,NA,B_Year_Cons Missing for buildings less than 3.5 million in replacement cost,building_activity_date,space_utlz.building_detail.bldg_const_year,B08b
+B10a,Missing Replacement Cost,Database,Failure,NA,"B_Replace_Cost is NULL or blank, replacement costs are required",building_activity_date,space_utlz.building_detail.bldg_cost_replacement,B10a
+B11a,Missing building condition when replacement costs are greater than 3.5 million,Database,Failure,NA,Condition Miss Greater 3.5Mil,building_activity_date,space_utlz.building_detail.bldg_condition_code,B11a
+B11b,Invalid building condition,Database,Failure,NA,B_Condition_Invalid,building_activity_date,space_utlz.building_detail.bldg_condition_code,B11b
+B11c,Missing building condition when replacement costs are less than 3.5 mill,Database,Warning,NA,B_Condition Missing where replacement cost is less than or equal to 3.5 million,building_activity_date,space_utlz.building_detail.bldg_condition_code,B11c
+B12a,Missing gross area,Database,Failure,NA,B_Gross Missing,building_activity_date,space_utlz.building_detail.bldg_area_gross,B12a
+B12b,Invalid gross area,Database,Failure,NA,B_Gross Invalid,building_activity_date,space_utlz.building_detail.bldg_area_gross,B12b
+B12c,Gross area less than sum of rooms in building,Database,Failure,NA,B_Gross less than Sum of all the rooms area in the building,building_activity_date,space_utlz.building_detail.bldg_area_gross,B12c
+B14a,Missing risk number when replacement costs are greater than 3.5 million,Database,Failure,NA,B_RSKNBR required (Fatal) for owned buildings greater than 3.5 million dollars replacement cost,building_activity_date,space_utlz.building_detail.bldg_number,B14a
+B14b,Missing risk number when replacement costs are less than 3.5 million,Database,Warning,NA,B_RSKNBR required for owned buildings less than or equal to 3.5 million dollars replacement cost,building_activity_date,space_utlz.building_detail.bldg_number,B14b
+B15a,Missing Auxiliary,Database,Failure,NA,B_AUX values missing,building_activity_date,space_utlz.building_detail.bldg_aux,B15a
+B15b,Invalid Auxiliary,Database,Failure,NA,B_AUX contain wrong values,building_activity_date,space_utlz.building_detail.bldg_aux,B15b
+B99a,Duplicate records,USHE,Failure,NA,Looking for duplicate b_keys,building_activity_date,NA,B99a
+B99b,Building must have rooms,USHE,Failure,NA,Buildings must have rooms,building_activity_date,NA,B99b
+R03b,Room building not in building file,USHE,Failure,NA,Rooms_Build_Number not in Buildings,room_activity_date,space_utlz.rooms_detail.rooms_detail.bldg_abbrv,R03b
+R04a,Missing room number,Database,Failure,NA,Rooms missing Room Numbers,room_activity_date,space_utlz.rooms_detail.rooms_detail.bldg_abbrv,R04a
+R06a,Missing Room group,Database,Failure,NA,R_Group1 missing,room_activity_date,space_utlz.rooms_detail.room_group1_desc,R06a
+R06b,Invalid room group,Database,Failure,NA,R_Group1 not in Reference table,room_activity_date,space_utlz.rooms_detail.room_group1_desc,R06b
+R07a,Missing room use category when r_group1 not Z,Database,Failure,NA,R_Use_Category missing,room_activity_date,space_utlz.rooms_detail.room_use_code_group,R07a
+R07b,Invalid room use category,Database,Failure,NA,R_Use_Category not in Reference table,room_activity_date,space_utlz.rooms_detail.room_use_code_group,R07b
+R07c,Missing room use category when r_group1 = Z,Database,Failure,NA,R_Use_Category missing,room_activity_date,space_utlz.rooms_detail.room_use_code_group,R07c
+R08a,Missing room use code,Database,Failure,NA,R_Use_Code missing,room_activity_date,space_utlz.rooms_detail.room_use_code,R08a
+R08b,Invalid room use code,Database,Failure,NA,R_Use_Code Unknown not in Reference table,room_activity_date,space_utlz.rooms_detail.room_use_code,R08b
+R08d,Invalid Room use code,Database,Failure,NA,Room Use Code 250 and 255 only for UU and USU,room_activity_date,space_utlz.rooms_detail.room_use_code,R08d
+R09a,Missing room name,Database,Failure,NA,R_Name missing,room_activity_date,space_utlz.rooms_detail.room_name,R09a
+R10a,"Missing room stations when r_use_code 110, 210, 230",Database,Failure,NA,"R_Stations missing for R_Use_Code 110, 210, 230",room_activity_date,space_utlz.rooms_detail.room_stations,R10a
+R10b,"Invalid room stations when r_use_code 110, 210, 230",Database,Failure,NA,"R_Stations Invalid for R_Use_Code 110, 210, 230",room_activity_date,space_utlz.rooms_detail.room_stations,R10b
+R10c,Stations out of range when r_use_code 110,Database,Warning,NA,R_Stations out of range where r_use_code = 110,room_activity_date,space_utlz.rooms_detail.room_stations,R10c
+R10d,Stations out of range when r_use_code 210,Database,Warning,NA,R_Stations out of range where r_use_code = 210,room_activity_date,space_utlz.rooms_detail.room_stations,R10d
+R11a,Missing room area,Database,Failure,NA,R_Area missing,room_activity_date,space_utlz.rooms_detail.room_area,R11a
+R11b,Invalid room area,Database,Failure,NA,R_Area Invalid,room_activity_date,space_utlz.rooms_detail.room_area,R11b
+R13a,Invalid proration,Database,Failure,NA,R_Proration Not Y or N,room_activity_date,space_utlz.room_prorated,R13a
+R13b,Missing proration,Database,Failure,NA,R_Proration missing,room_activity_date,space_utlz.room_prorated,R13b
+R13c,Prorated room area and prorated area equals zero,Database,Failure,NA,"R_Proration = Y, R_Area and R_Prorated_area = 0",room_activity_date,space_utlz.room_prorated,R13c
+R13d,"Prorated room area does not equal zero, but room area equals zero",Database,Failure,NA,"R_Proration = Y, R_Area = 0 and R_Prorated_area <> 0",room_activity_date,space_utlz.room_prorated,R13d
+R13e,"Prorated room area equals zero, but room area does not equal zero",Database,Failure,NA,"R_Proration = Y, R_Area <> 0 and R_Prorated_area = 0",room_activity_date,space_utlz.room_prorated,R13e
+R13f,"Proration equals N, but prorated area does not equal zero",Database,Failure,NA,"R_Proration = N, R_Prorated_area <> 0",room_activity_date,space_utlz.room_prorated,R13f
+R14a,Missing prorated area,Database,Failure,NA,R_Prorated_Area can not be null,room_activity_date,space_utlz.room_prorated_area,R14a
+R14b,Sum of prorated area is not equal to room area,Database,Failure,NA,R_Prorated_Area Not Equal R_Area,room_activity_date,space_utlz.room_prorated_area,R14b
+R15a,Invalid Date Format,Database,Failure,NA,R_Update_Date wrong format,room_activity_date,room_activity_date,R15a
+R15b,Missing activity date,Database,Failure,NA,R_Update_Date blank list,room_activity_date,room_activity_date,R15b
+R15c,Update date is in the future,Database,Failure,NA,R_Update_Date is in the future,room_activity_date,room_activity_date,R15c
+R99a,Duplicate records,USHE,Failure,NA,Looking for duplicate r_keys,room_activity_date,NA,R99a
+UTS01,Invalid residency code,Database,Failure,NA,"Looking for values of ""R"", ""N"", ""A"", ""M"", ""G"", ""C""",sgbstdn_activity_date,sgbstdn_resd_code,S15a
+UTS02,invalid pell awarded to highschool students,Database,Failure,NA,HS students should not have pell,rpratrm_activity_date,banner.rpratrm_offer_amt,S44c
+UTC01,invalid delivery method,Database,Failure,NA,Checking for valid values IN instruction_method_code,ssbsect_activity_date,banner.ssbsect_insm_code,C12

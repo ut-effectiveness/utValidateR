@@ -9,6 +9,8 @@ matches_regex(x, regex, missing_ok)
 \arguments{
 \item{x}{Vector to check}
 
+\item{regex}{regular expression string}
+
 \item{missing_ok}{if TRUE (default), do not flag \code{NA} or \code{""} values}
 }
 \description{

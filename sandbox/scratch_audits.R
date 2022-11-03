@@ -66,6 +66,12 @@ student_course_res <- do_checks(df_tocheck = student_courses,
                                 checklist = get_checklist("student course", "database"),
                                 aux_info = aux_info)
 
+fake_rooms_res <- utValidateR::fake_rooms_validation
+
+rooms_res <- do_checks(df_tocheck = fake_rooms_res,
+                       checklist = get_checklist("rooms", "database"),
+                       aux_info = aux_info)
+
 
 
 

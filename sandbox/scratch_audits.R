@@ -66,10 +66,12 @@ student_course_res <- do_checks(df_tocheck = student_courses,
                                 checklist = get_checklist("student course", "database"),
                                 aux_info = aux_info)
 
-fake_rooms_res <- utValidateR::fake_rooms_validation
-
-rooms_res <- do_checks(df_tocheck = fake_rooms_res,
+rooms_res <- do_checks(df_tocheck = rooms,
                        checklist = get_checklist("rooms", "database"),
+                       aux_info = aux_info)
+
+building_res <- do_checks(df_tocheck = buildings,
+                       checklist = get_checklist("buildings", "database"),
                        aux_info = aux_info)
 
 
@@ -78,7 +80,7 @@ rooms_res <- do_checks(df_tocheck = fake_rooms_res,
 AuditDataSteward::run_app(
   student_result = student_check_res,
   course_result = course_check_res,
-  student_course_result = student_course_res
+  student_course_result = student_course_res,
+  room_result = rooms_res,
+  building_result = building_res
 )
-
-glimpse(courses)

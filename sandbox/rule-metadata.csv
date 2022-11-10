@@ -214,11 +214,11 @@ C34a,missing building name,Database,Failure,NA,BLDG SName conditionally Required
 C19a,missing building number,Database,Failure,NA,BLDG NUM conditionally required,bldg_activity_date,space_utlz.building_detail.bldg_number,C19a
 C27a,missing building number,Database,Failure,NA,BLDG NUM conditionally required,bldg_activity_date,space_utlz.building_detail.bldg_number,C19a
 C35a,missing building number,Database,Failure,NA,BLDG NUM conditionally required,bldg_activity_date,space_utlz.building_detail.bldg_number,C19a
-C19c,building number not in building table,Database,Failure,NA,BLDG NUM not in Building Inventory,bldg_activity_date,space_utlz.building_detail.bldg_number,C19c
-C27c,building number not in building table,Database,Failure,NA,BLDG NUM not in Building Inventory,bldg_activity_date,space_utlz.building_detail.bldg_number,C19c
+C19c,building number not in building table,USHE,Failure,NA,BLDG NUM not in Building Inventory,bldg_activity_date,space_utlz.building_detail.bldg_number,C19c
+C27c,building number not in building table,USHE,Failure,NA,BLDG NUM not in Building Inventory,bldg_activity_date,space_utlz.building_detail.bldg_number,C19c
 C35c,building number not in building table,Database,Failure,NA,BLDG NUM not in Building Inventory,bldg_activity_date,space_utlz.building_detail.bldg_number,C19c
-C19d,building number not in rooms inventory,Database,Failure,NA,BLDG NUM not in Rooms Inventory,bldg_activity_date,space_utlz.building_detail.bldg_number,C19d
-C27d,building number not in rooms inventory,Database,Failure,NA,BLDG NUM not in Rooms Inventory,bldg_activity_date,space_utlz.building_detail.bldg_number,C19d
+C19d,building number not in rooms inventory,USHE,Failure,NA,BLDG NUM not in Rooms Inventory,bldg_activity_date,space_utlz.building_detail.bldg_number,C19d
+C27d,building number not in rooms inventory,USHE,Failure,NA,BLDG NUM not in Rooms Inventory,bldg_activity_date,space_utlz.building_detail.bldg_number,C19d
 C35d,building number not in rooms inventory,Database,Failure,NA,BLDG NUM not in Rooms Inventory,bldg_activity_date,space_utlz.building_detail.bldg_number,C19d
 C20a,building room is missing,Database,Failure,NA,BLDG Room conditionally required,ssrmeet_activity_date,banner.ssrmeet_room_code,C20a
 C28a,building room is missing,Database,Failure,NA,BLDG Room conditionally required,ssrmeet_activity_date,banner.ssrmeet_room_code,C20a

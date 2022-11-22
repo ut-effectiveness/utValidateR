@@ -305,12 +305,12 @@ rule_spec <- tribble(
   "R01a", expr(!is_missing_chr(r_inst)),
   "G02a", expr(!is_missing_chr(s_id) & !is_missing_chr(s_id)), # USHE Rule
   "G02b", expr(sis_student_id %in% TODO("Need a way to bring in students table for comparing")),
-  "G12a", expr(is_valid_credits(overall_cumulative_credits_earned)), # TODO: verify mapping of rules to fields
+  "G12a", expr(is_valid_credits(overall_cumulative_credits_earned, missing_ok = TRUE)), # TODO: verify mapping of rules to fields
   "G13a", expr(is_valid_credits(required_credits)),
-  "G14a", expr(is_valid_credits(total_cumulative_ap_credits_earned)),
+  "G14a", expr(is_valid_credits(total_cumulative_ap_credits_earned, missing_ok = TRUE)),
   "G15a", expr(is_valid_credits(total_cumulative_clep_credits_earned, missing_ok = TRUE)),
-  "G22a", expr(is_valid_credits(total_cumulative_credits_attempted_other_sources)),
-  "G23a", expr(is_valid_credits(transfer_cumulative_credits_earned)),
+  "G22a", expr(is_valid_credits(total_cumulative_credits_attempted_other_sources, missing_ok = TRUE)),
+  "G23a", expr(is_valid_credits(transfer_cumulative_credits_earned, missing_ok = TRUE)),
   "G17a", expr(is_valid_values(degree_id, valid_degree_ids)),
   "G21e", expr(ssn %in% TODO("Need a way to bring in students table for comparing (same as G02b)")),
   "G03e", expr(nchar(g_first) <= 15), # USHE rule
@@ -326,7 +326,7 @@ rule_spec <- tribble(
   "G14b", expr((g_req_hrs_deg * 1.5) >= g_other_hrs), #USHE rule
   "G15b", expr(g_remedial_hrs <= 60), #USHE rule
   "G16a", expr(is_valid_values(previous_degree_type, valid_previous_degree_types)),
-  "G18a", expr(!is.na(primary_program_id) |
+  "G18a", expr(is.na(primary_program_id) |
     is.numeric(required_credits) &
                  !is.na(required_credits) &
                  required_credits >= 0 ),

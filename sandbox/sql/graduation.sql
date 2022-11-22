@@ -1,6 +1,7 @@
           /* Graduation Validation Query */
             SELECT a.student_id,
                    a.sis_system_id,
+                   a.primary_program_code as primary_program_id,
                    c.dixie_ssn AS ssn,
                    c.last_name,
                    c.first_name,

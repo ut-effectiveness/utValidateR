@@ -326,7 +326,8 @@ rule_spec <- tribble(
   "G14b", expr((g_req_hrs_deg * 1.5) >= g_other_hrs), #USHE rule
   "G15b", expr(g_remedial_hrs <= 60), #USHE rule
   "G16a", expr(is_valid_values(previous_degree_type, valid_previous_degree_types)),
-  "G18a", expr(is.numeric(required_credits) &
+  "G18a", expr(!is.na(primary_program_id) |
+    is.numeric(required_credits) &
                  !is.na(required_credits) &
                  required_credits >= 0 ),
   "G19a", expr(!is_utah_county(first_admit_county_code) | !is_missing_chr(high_school_code)),

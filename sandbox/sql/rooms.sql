@@ -32,4 +32,5 @@ SELECT DISTINCT
   FROM cte_buildings a
        LEFT JOIN quad.rooms b
        ON b.building_id = a.buildings_id
+    WHERE b.room_status_code = 'AC'
 ORDER BY a.buildings_id, b.room_number;

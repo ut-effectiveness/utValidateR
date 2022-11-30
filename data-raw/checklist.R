@@ -80,7 +80,7 @@ rule_spec <- tribble(
   "G07f", expr(g_ethnic_w %in% c("W", NA)),
 
   "S15a", expr(is_valid_values(s_regent_res, c("R", "N", "A", "M", "G"))), #USHE check
-  "UTS01", expr(is_valid_values(residency_code, c("R", "N", "A", "M", "G", "C"))),
+  "UTS01", expr(is_valid_values(residency_code, c("R", "N", "A", "M", "G", "C", "H"))),
   "S16a", expr(is_valid_values(primary_major_cip_code, valid_cip_codes)),
   "S17a", expr(is_valid_values(s_reg_status, valid_s_reg_statuses, missing_ok = FALSE)), # USHE check
   "S17b", expr(!((s_reg_status %in% c("CS","HS","FF","FH","TU")) &
@@ -444,7 +444,7 @@ rule_spec <- tribble(
                    room_area %in% "0")),
   "R13d", expr(!(room_area %in% "0") | room_prorated_area %in% "0"),
   "R13e", expr(!(room_prorated_area %in% "0") | room_area %in% "0"),
-  "R13f", expr(room_prorated_area %in% "0" | !(room_prorated %in% "N")),
+  "R13f", expr(room_prorated_area %in% c("0", "0.0") | !(room_prorated %in% "N")),
   "R14a", expr(!is_missing_chr(room_prorated_area)),
   "R14b", expr(TODO('Needs a join of proration info to room info. How to get sum of prorated area?')),
   "R15a", expr(is.Date(room_activity_date) & !is.na(room_activity_date)),

@@ -80,7 +80,7 @@ rule_spec <- tribble(
   "G07f", expr(g_ethnic_w %in% c("W", NA)),
 
   "S15a", expr(is_valid_values(s_regent_res, c("R", "N", "A", "M", "G"))), #USHE check
-  "UTS01", expr(is_valid_values(residency_code, c("R", "N", "A", "M", "G", "C"))),
+  "UTS01", expr(is_valid_values(residency_code, c("R", "N", "A", "M", "G", "C", "H"))),
   "S16a", expr(is_valid_values(primary_major_cip_code, valid_cip_codes)),
   "S17a", expr(is_valid_values(s_reg_status, valid_s_reg_statuses, missing_ok = FALSE)), # USHE check
   "S17b", expr(!((s_reg_status %in% c("CS","HS","FF","FH","TU")) &
@@ -305,12 +305,12 @@ rule_spec <- tribble(
   "R01a", expr(!is_missing_chr(r_inst)),
   "G02a", expr(!is_missing_chr(s_id) & !is_missing_chr(s_id)), # USHE Rule
   "G02b", expr(sis_student_id %in% TODO("Need a way to bring in students table for comparing")),
-  "G12a", expr(is_valid_credits(overall_cumulative_credits_earned)), # TODO: verify mapping of rules to fields
+  "G12a", expr(is_valid_credits(overall_cumulative_credits_earned, missing_ok = TRUE)), # TODO: verify mapping of rules to fields
   "G13a", expr(is_valid_credits(required_credits)),
-  "G14a", expr(is_valid_credits(total_cumulative_ap_credits_earned)),
+  "G14a", expr(is_valid_credits(total_cumulative_ap_credits_earned, missing_ok = TRUE)),
   "G15a", expr(is_valid_credits(total_cumulative_clep_credits_earned, missing_ok = TRUE)),
-  "G22a", expr(is_valid_credits(total_cumulative_credits_attempted_other_sources)),
-  "G23a", expr(is_valid_credits(transfer_cumulative_credits_earned)),
+  "G22a", expr(is_valid_credits(total_cumulative_credits_attempted_other_sources, missing_ok = TRUE)),
+  "G23a", expr(is_valid_credits(transfer_cumulative_credits_earned, missing_ok = TRUE)),
   "G17a", expr(is_valid_values(degree_id, valid_degree_ids)),
   "G21e", expr(ssn %in% TODO("Need a way to bring in students table for comparing (same as G02b)")),
   "G03e", expr(nchar(g_first) <= 15), # USHE rule
@@ -326,7 +326,8 @@ rule_spec <- tribble(
   "G14b", expr((g_req_hrs_deg * 1.5) >= g_other_hrs), #USHE rule
   "G15b", expr(g_remedial_hrs <= 60), #USHE rule
   "G16a", expr(is_valid_values(previous_degree_type, valid_previous_degree_types)),
-  "G18a", expr(is.numeric(required_credits) &
+  "G18a", expr(is.na(primary_program_id) |
+    is.numeric(required_credits) &
                  !is.na(required_credits) &
                  required_credits >= 0 ),
   "G19a", expr(!is_utah_county(first_admit_county_code) | !is_missing_chr(high_school_code)),
@@ -443,7 +444,7 @@ rule_spec <- tribble(
                    room_area %in% "0")),
   "R13d", expr(!(room_area %in% "0") | room_prorated_area %in% "0"),
   "R13e", expr(!(room_prorated_area %in% "0") | room_area %in% "0"),
-  "R13f", expr(room_prorated_area %in% "0" | !(room_prorated %in% "N")),
+  "R13f", expr(room_prorated_area %in% c("0", "0.0") | !(room_prorated %in% "N")),
   "R14a", expr(!is_missing_chr(room_prorated_area)),
   "R14b", expr(TODO('Needs a join of proration info to room info. How to get sum of prorated area?')),
   "R15a", expr(is.Date(room_activity_date) & !is.na(room_activity_date)),

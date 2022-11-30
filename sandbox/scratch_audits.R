@@ -74,6 +74,10 @@ building_res <- do_checks(df_tocheck = buildings,
                        checklist = get_checklist("buildings", "database"),
                        aux_info = aux_info)
 
+graduation_res <- do_checks(df_tocheck = graduation,
+                            checklist = get_checklist("graduation", "database"),
+                            aux_info = aux_info)
+
 
 
 
@@ -81,6 +85,7 @@ AuditDataSteward::run_app(
   student_result = student_check_res,
   course_result = course_check_res,
   student_course_result = student_course_res,
+  graduation_result = graduation_res,
   room_result = rooms_res,
   building_result = building_res
 )

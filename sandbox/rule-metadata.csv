@@ -105,7 +105,7 @@ G17a,invalid IPEDS Award Level,USHE,Failure,NA,There should be a degree intent f
 S20a,invalid credit format,Database,Failure,NA,S_CUM_HRS_UGrad wrong format,shrtgpa_activity_date,banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),S20a
 S24a,invalid credit format,Database,Failure,NA,S_CUM_HRS_UGrad wrong format,shrtgpa_activity_date,banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),S20a
 G12a,invalid credit format,Database,Failure,NA,S_CUM_HRS_UGrad wrong format,shrtgpa_activity_date,banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),S20a
-G13a,invalid credit format,Database,Failure,NA,S_CUM_HRS_UGrad wrong format,shrtgpa_activity_date,banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),S20a
+G13a,invalid credit format,Database,Failure,NA,S_CUM_HRS_UGrad wrong format,gorsdav_activity_date,banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),S20a
 G14a,invalid credit format,Database,Failure,NA,S_CUM_HRS_UGrad wrong format,shrtgpa_activity_date,banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),S20a
 G15a,invalid credit format,Database,Failure,NA,S_CUM_HRS_UGrad wrong format,shrtgpa_activity_date,banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),S20a
 G22a,invalid credit format,Database,Failure,NA,S_CUM_HRS_UGrad wrong format,shrtgpa_activity_date,banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),S20a
@@ -265,17 +265,16 @@ G21e,graduation id is not in students table,Database,Failure,NA,ID from graduati
 G03e,first name too long,USHE,Failure,NA,G_First name too long,spriden_activity_date,banner.spriden_first_name,G03e
 G03g,middle name too long,USHE,Failure,NA,G_Middle too long,spriden_activity_date,banner.spriden_mi,G03g
 G03i,suffix too long,USHE,Failure,NA,G_Suffix name too long,spbpers_activity_date,banner.spbpers_name_suffix,G03i
-G08b,graudation date is out of range,Database,Failure,NA,G_Date out of IPEDS range,shrdgmr_activity_date,banner.shrdgmr_grad_date,G08b
+G19a,Missing HS code when county origin is in Utah,USHE,Failure,NA,Invalid UT HS ACT Code,shrdgmr_activity_date,banner.sorhsch_activity_date,G08b
 G09a,invalid CIP,Database,Failure,NA,G_CIP Invalid,stvmajr_activity_date,banner.stvmajr_cipc_code,G09a
 G10a,missing degree type,Database,Failure,NA,G_Deg_Type Missing,shrdgmr_activity_date,banner.shrdgmr_degc_code,G10a
-G10b,invalid degree type,Database,Failure,NA,DEG_Type Invalid,shrdgmr_activity_date,banner.shrdgmr_degc_code,G10b
+G10b,invalid degree type,USHE,Failure,NA,DEG_Type Invalid,shrdgmr_activity_date,banner.shrdgmr_degc_code,G10b
 G16a,invalid degree type,Database,Failure,NA,DEG_Type Invalid,shrdgmr_activity_date,banner.shrdgmr_degc_code,G10b
 G12b,Transfer hours over 300 credits,USHE,Failure,NA,G_Trans_Total seems excessive when over 300.0,shrtgpa_activity_date,sum(shrtgpa_hours_earned),G12b
 G13b,Graduation hours 1.5 times required hours,USHE,Warning,NA,G_Grad_HRS seems excessive when over 1.5 * g_req_hrs_deg,shrtgpa_activity_date,(sum(shrtgpa_hours_earned),G13b
 G14b,Graduation hours 1.5 times required hours,USHE,Warning,NA,G_Grad_HRS seems excessive when over 1.5 * g_req_hrs_deg,shrtgpa_activity_date,(sum(shrtgpa_hours_earned),G13b
 G15b,Remedial hours over 60,USHE,Warning,NA,G_Remedial_HRS seems excessive when over 60,ssbsect_activity_date,"banner.ssbsect_crse_numb, (sum(shrtckg_credit_hours)",G15b
 G18a,Invalid Required hours for a degree,Database,Failure,NA,Req HRS Deg Invalid,gorsdav_activity_date,gorsdav_value,G18a
-G19a,Missing HS code when county origin is in Utah,Database,Failure,NA,Invalid UT HS ACT Code,NA,NA,G19a
 G21d,duplicate graduation records,Database,Failure,NA,check for duplicate graduation records.,NA,NA,G21d
 G24a,Missing or incorrect year,Database,Failure,NA,NA,shrdgmr_activity_date,shrdgmr_acyr_code,G24a
 G25a,invalid term,Database,Failure,NA,G_Term Invalid,shrdgmr_activity_date,shrdgmr_term_code_grad,G25a

@@ -44,6 +44,7 @@ fake_graduation_validation <- graduation_validation_pull %>%
   stir("primary_major_cip_code") %>%
   stir("primary_major_college_desc") %>%
   stir("primary_major_desc") %>%
+  stir("primary_program_id") %>%
   stir("shrdgmr_activity_date") %>%
   stir("shrtgpa_activity_date") %>%
   stir("total_cumulative_ap_credits_earned") %>%

@@ -75,8 +75,8 @@ building_res <- do_checks(df_tocheck = buildings,
                        aux_info = aux_info)
 
 graduation_res <- do_checks(df_tocheck = graduation,
-                          checklist = get_checklist("graduation", "database"),
-                          aux_info = aux_info)
+                            checklist = get_checklist("graduation", "database"),
+                            aux_info = aux_info)
 
 
 

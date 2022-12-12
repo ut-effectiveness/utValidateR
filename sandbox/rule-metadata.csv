@@ -356,5 +356,5 @@ R99a,Duplicate records,USHE,Failure,NA,Looking for duplicate r_keys,room_activit
 UTS01,Invalid residency code,Database,Failure,NA,"Looking for values of ""R"", ""N"", ""A"", ""M"", ""G"", ""C""",sgbstdn_activity_date,sgbstdn_resd_code,S15a
 UTS02,invalid pell awarded to highschool students,Database,Failure,NA,HS students should not have pell,rpratrm_activity_date,banner.rpratrm_offer_amt,S44c
 UTC01,invalid delivery method,Database,Failure,NA,Checking for valid values IN instruction_method_code,ssbsect_activity_date,banner.ssbsect_insm_code,C12
-UTS03,Enrolled student is missing College from supplemental tables,Database,Failure,NA,,gorsdav_activity_date,gorsdav_value,
-UTS04,Enrolled student is missing Department from supplemental tables,Database,Failure,NA,,gorsdav_activity_date,gorsdav_value,
+UTS03,Enrolled student is missing College from supplemental tables,Database,Failure,NA,,gorsdav_activity_date,gorsdav_value,UTS03
+UTS04,Enrolled student is missing Department from supplemental tables,Database,Warning,NA,,gorsdav_activity_date,gorsdav_value,UTS04

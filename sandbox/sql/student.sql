@@ -62,6 +62,10 @@
                 a.secondary_major_desc,
                 a.level_id,
                 a.term_id,
+                c.college_id,
+                c.college_desc,
+                c.department_id,
+                c.department_desc,
             -- "TODO : add activity dates"
                 b.spbpers_activity_date,
                 b.goradid_activity_date,
@@ -77,6 +81,8 @@
            FROM quad.student_term_level a
       LEFT JOIN quad.student b
              ON b.student_id = a.student_id
+      LEFT JOIN quad.supplemental_programs c
+             ON c.program_id = a.primary_program_code
           WHERE a.term_id >= (SELECT term_id FROM export.term WHERE is_previous_term)
             AND a.is_primary_level = TRUE
             AND a.is_enrolled

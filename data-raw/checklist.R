@@ -247,7 +247,7 @@ rule_spec <- tribble(
   "C35c", expr(building_number_3 %in% building_inventory),
   "C19d", expr(building_number_1 %in% rooms_inventory),
   "C27d", expr(building_number_2 %in% rooms_inventory),
-  "C35d", expr(meet_building_id_3, building_number_3 %in% rooms_inventory),
+  "C35d", expr(building_number_3 %in% rooms_inventory),
   "C20a", expr(course_conditional_check(meet_room_number_1, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_1)),
   "C28a", expr(course_conditional_check(meet_room_number_2, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_2)),
   "C36a", expr(course_conditional_check(meet_room_number_3, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_3)),
@@ -418,7 +418,7 @@ rule_spec <- tribble(
   "R07a", expr((room_group1_code %in% "Z") | !is_missing_chr(room_use_code_group)),
   "R07b", expr(is_valid_values(room_use_code_group, valid_room_use_code_groups, missing_ok = TRUE)),
   "R07c", expr(!(room_group1_code %in% "Z") | !is_missing_chr(room_use_code_group)),
-  "R08a", expr(!is_missing_chr(room_use_code)),
+  "R08a", expr(!is_missing_chr(room_use_code) | str_detect(room_number, "ROOF") | str_detect(room_number, "FIELD")),
   "R08b", expr(is_valid_values(room_use_code, valid_room_use_codes, missing_ok = TRUE)),
   "R08d", expr(!(room_use_code %in% c("250", "255"))),
   "R09a", expr(!is_missing_chr(room_name)),
@@ -452,8 +452,8 @@ rule_spec <- tribble(
   "R15c", expr(is.na(room_activity_date) | age_in_range(room_activity_date, 0, Inf)), # Not flagging NAs (15b does)
   "R99a", expr(!is_duplicated(cbind(r_inst, r_year, r_build_number, r_number,
                                     r_suffix, r_group1, r_use_code))),
-  "UTS03", expr(!is_missing(college_id) | !(is_missing(college_desc))),
-  "UTS03", expr(!is_missing(department_id) | !(is_missing(department_desc))),
+  "UTS03", expr(!is.na(college_id)),
+  "UTS04", expr(!is.na(department_id)),
 )
 
 

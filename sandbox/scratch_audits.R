@@ -45,10 +45,6 @@ graduation <- utHelpR::get_data_from_sql_file(file_name = 'graduation.sql',
 
 
 
-#Use the utValidateR Package to perform audits
-data("checklist")
-data("aux_info")
-
 #fk_student <- utValidateR::fake_student_df
 #View(course_checks)
 

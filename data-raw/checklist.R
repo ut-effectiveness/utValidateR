@@ -418,7 +418,7 @@ rule_spec <- tribble(
   "R07a", expr((room_group1_code %in% "Z") | !is_missing_chr(room_use_code_group)),
   "R07b", expr(is_valid_values(room_use_code_group, valid_room_use_code_groups, missing_ok = TRUE)),
   "R07c", expr(!(room_group1_code %in% "Z") | !is_missing_chr(room_use_code_group)),
-  "R08a", expr(!is_missing_chr(room_use_code)),
+  "R08a", expr(!is_missing_chr(room_use_code) | str_detect(room_number, "ROOF") | str_detect(room_number, "FIELD")),
   "R08b", expr(is_valid_values(room_use_code, valid_room_use_codes, missing_ok = TRUE)),
   "R08d", expr(!(room_use_code %in% c("250", "255"))),
   "R09a", expr(!is_missing_chr(room_name)),
@@ -451,7 +451,9 @@ rule_spec <- tribble(
   "R15b", expr(!is.na(room_activity_date)),
   "R15c", expr(is.na(room_activity_date) | age_in_range(room_activity_date, 0, Inf)), # Not flagging NAs (15b does)
   "R99a", expr(!is_duplicated(cbind(r_inst, r_year, r_build_number, r_number,
-                                    r_suffix, r_group1, r_use_code)))
+                                    r_suffix, r_group1, r_use_code))),
+  "UTS03", expr(!is.na(college_id)),
+  "UTS04", expr(!is.na(department_id)),
 )
 
 

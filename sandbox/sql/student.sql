@@ -77,7 +77,8 @@
                 b.spriden_activity_date,
                 b.sorhsch_activity_date,
                 a.stvmajr_activity_date,
-                a.rpratrm_activity_date
+                a.rpratrm_activity_date,
+                c.gorsdav_activity_date
            FROM quad.student_term_level a
       LEFT JOIN quad.student b
              ON b.student_id = a.student_id

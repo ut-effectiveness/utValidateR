@@ -358,3 +358,4 @@ UTS02,invalid pell awarded to highschool students,Database,Failure,Julie Stender
 UTC01,invalid delivery method,Database,Failure,Vicki Shurtz,Checking for valid values IN instruction_method_code,ssbsect_activity_date,banner.ssbsect_insm_code,C12
 UTS03,Enrolled student is missing College from supplemental tables,Database,Failure,Julie Stender,,gorsdav_activity_date,gorsdav_value,UTS03
 UTS04,Enrolled student is missing Department from supplemental tables,Database,Warning,Julie Stender,,gorsdav_activity_date,gorsdav_value,UTS04
+UTS05,Missing HS code,Database,Failure,Julie Stender,,sorhsch_activity_date,sorhsch_activity_date,UTS05

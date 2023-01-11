@@ -164,7 +164,7 @@ rule_spec <- tribble(
   "S39a", expr(is_valid_act_score(act_math_score)),
   "S40a", expr(is_valid_act_score(act_reading_score)),
   "S41a", expr(is_valid_act_score(act_science_score)),
-  "S42a", expr(!is.na(high_school_graduation_date) | !is_freshmen_type(student_type_code)),
+  "S42a", expr(!is.na(high_school_graduation_date)),
   "S43c", expr((s_term_gpa == s_cum_gpa_ugrad) |
                (s_reg_status %in% c("FF", "FH", "TU", "TG")) |
                (s_level == "FR")), # USHE rule
@@ -454,6 +454,7 @@ rule_spec <- tribble(
                                     r_suffix, r_group1, r_use_code))),
   "UTS03", expr(!is.na(college_id)),
   "UTS04", expr(!is.na(department_id)),
+  "UTS05", expr(!is_missing_chr(high_school_code))
 )
 
 

@@ -26,6 +26,10 @@
                        WHEN e.term_type IN ('Fall', 'Summer') THEN date_part('year', a.graduation_date) + 1
                        ELSE date_part('year', a.graduation_date)
                    END AS graduation_academic_year_check,
+                   CASE
+                       WHEN e.term_type IN ('Fall', 'Summer') THEN substr(graduated_term_id, 1,4) :: numeric + 1
+                       ELSE substr(graduated_term_id, 1,4) :: numeric
+                   END AS graduation_term_year_check,
                    a.primary_major_cip_code,
                    a.degree_id,
                    a.cumulative_graduation_gpa,

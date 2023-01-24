@@ -255,9 +255,8 @@ is_valid_course_reference_number <- function(x) {
 #' @importFrom lubridate month day days
 #' @export
 is_valid_graduation_date <- function(x) {
-  # Between 6/30 and 7/1 -- although I find this suspicious
-  # TODO: add check on year if data allow it
-  month(x + days(1)) == 7 & day(x + days(1)) <= 2
+  tryCatch(lubridate::is.Date(as.Date(x)) | is.na(x),
+           error = function(e) return(FALSE))
 }
 
 #' Helper functions for student_type  and level_class_id categories

@@ -75,8 +75,6 @@ graduation_res <- do_checks(df_tocheck = graduation,
                             aux_info = aux_info)
 
 
-
-
 AuditDataSteward::run_app(
   student_result = student_check_res,
   course_result = course_check_res,

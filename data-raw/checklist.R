@@ -7,6 +7,7 @@ library(dplyr)
 library(rlang)
 library(tidyr)
 library(purrr)
+library(lubridate)
 library(stringr)
 
 # This is where each rule is implemented as an R expression
@@ -260,12 +261,12 @@ rule_spec <- tribble(
   "C22b", expr(course_conditional_check(room_use_code_1, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_1)),
   "C30b", expr(course_conditional_check(room_use_code_2, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_2)),
   "C38b", expr(course_conditional_check(room_use_code_3, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_3)),
-  "C39a", expr(is.Date(meet_start_date) & !is.na(meet_start_date)), # Summer TODO: how to distinguish? from fall, spring?
-  "C39b", expr(is.Date(meet_start_date) & !is.na(meet_start_date)), # Fall
-  "C39c", expr(is.Date(meet_start_date) & !is.na(meet_start_date)), # Spring
-  "C40a", expr(is.Date(meet_end_date) & !is.na(meet_end_date)), # Summer
-  "C40b", expr(is.Date(meet_end_date) & !is.na(meet_end_date)), # Fall
-  "C40c", expr(is.Date(meet_end_date) & !is.na(meet_end_date)), # Spring
+  "C39a", expr(is.Date(meet_start_date) & !is.na(meet_start_date) | campus_id == 'XXX'), # Summer TODO: how to distinguish? from fall, spring?
+  "C39b", expr(is.Date(meet_start_date) & !is.na(meet_start_date) | campus_id == 'XXX'), # Fall
+  "C39c", expr(is.Date(meet_start_date) & !is.na(meet_start_date) | campus_id == 'XXX'), # Spring
+  "C40a", expr(is.Date(meet_end_date) & !is.na(meet_end_date) | campus_id == 'XXX'), # Summer
+  "C40b", expr(is.Date(meet_end_date) & !is.na(meet_end_date) | campus_id == 'XXX'), # Fall
+  "C40c", expr(is.Date(meet_end_date) & !is.na(meet_end_date) | campus_id == 'XXX'), # Spring
   "C41a", expr(!is_missing_chr(course_title)),
   "C41b", expr(is_missing_chr(c_title) |
                  grepl("[a-zA-Z]{2}", c_title) |
@@ -454,7 +455,13 @@ rule_spec <- tribble(
                                     r_suffix, r_group1, r_use_code))),
   "UTS03", expr(!is.na(college_id)),
   "UTS04", expr(!is.na(department_id)),
-  "UTS05", expr(!is_missing_chr(high_school_code))
+  "UTS05", expr(!is_missing_chr(high_school_code)),
+  "UTG01", expr(as.numeric(substr(graduated_term_id, 1, 4)) == as.numeric(lubridate::year(graduation_date))),
+  "UTG02", expr(as.numeric(graduated_academic_year_code) == as.numeric(graduation_academic_year_check)),
+  "UTGR03", expr(is_missing_chr(graduation_date))
+  #?
+  #19
+  #UTGR04
 )
 
 
@@ -472,6 +479,7 @@ get_ushe_file <- function(rule) {
     grepl("^UTS", rule) ~ "Student",
     grepl("^UTC", rule) ~ "Course",
     grepl("^UTSC", rule) ~ "Student Course",
+    grepl("^UTG", rule) ~ "Graduation",
     TRUE ~ NA_character_
     )
   out

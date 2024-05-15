@@ -144,7 +144,7 @@ rule_spec <- tribble(
   "S31a", expr(s_inst %in% c("5220","5221","3679","3676","63") | s_cum_membership %in% 0),
   "S32a", expr(is_valid_credits(total_cumulative_clep_credits_earned, missing_ok = TRUE)),
   "S33a", expr(is_valid_credits(total_cumulative_ap_credits_earned, missing_ok = TRUE)),
-  "S34a", expr(is_valid_student_id(student_id)),
+  "S34a", expr(is_valid_student_id(ssid)),
   "S34b", expr(is_valid_student_id(student_id) |
                  !(is_hs_type(student_type_code) & first_admit_state_code == "UT")),
   "S34c", expr(!(is.na(student_id) &

@@ -104,6 +104,7 @@ code_stuff <- tibble(
 
 demographic <- tibble(
   student_id = stringr::str_pad(sample(1:999999, sample_size), 8, pad = '0'),
+  ssid = sample(c("2345678", "1234567", "", "3456789", "1", "2"), sample_size, replace = TRUE),
   previous_student_id = NA,
   birth_date = sample(seq(as.Date('1978/01/01'), as.Date('2022/01/01'), by="day"), sample_size),
   gender_code = sample(gender_code_list, sample_size, replace = TRUE ),

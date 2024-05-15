@@ -172,6 +172,17 @@ is_valid_student_id <- function(x) {
   !is_missing_chr(x) # & nchar(x) == 9 # TODO: verify no need to check length or anything else
 }
 
+
+#' @describeIn is_valid_values ssid, and begin with 1 or 2 and length of 7
+#' @export
+is_valid_ssid_id <- function(x) {
+  !is_missing_chr(x) &
+    nchar(x) == 7 &
+    (stringr::str_starts(x, "1") |
+       stringr::str_starts(x, "2"))
+}
+
+
 #' @describeIn is_valid_values previous_student_id
 #' @export
 is_valid_previous_id <- function(x) {

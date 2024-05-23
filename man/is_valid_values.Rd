@@ -7,7 +7,7 @@
 \alias{is_valid_zip_code}
 \alias{is_valid_year}
 \alias{is_valid_student_id}
-\alias{is_valid_ssid_id}
+\alias{is_valid_ssid}
 \alias{is_valid_previous_id}
 \alias{is_valid_credits}
 \alias{is_valid_credits_chr}
@@ -29,7 +29,7 @@ is_valid_year(x, missing_ok = FALSE)
 
 is_valid_student_id(x)
 
-is_valid_ssid_id(x)
+is_valid_ssid(x)
 
 is_valid_previous_id(x)
 
@@ -67,7 +67,7 @@ Checks whether input matches a vector of values
 
 \item \code{is_valid_student_id()}: student_id, currently just a missingness check
 
-\item \code{is_valid_ssid_id()}: ssid, and begin with 1 or 2 and length of 7
+\item \code{is_valid_ssid()}: ssid, and begin with 1 or 2 and length of 7
 
 \item \code{is_valid_previous_id()}: previous_student_id
 

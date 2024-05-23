@@ -175,7 +175,7 @@ is_valid_student_id <- function(x) {
 
 #' @describeIn is_valid_values ssid, and begin with 1 or 2 and length of 7
 #' @export
-is_valid_ssid_id <- function(x) {
+is_valid_ssid <- function(x) {
   !is_missing_chr(x) &
     nchar(x) == 7 &
     (stringr::str_starts(x, "1") |

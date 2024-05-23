@@ -284,7 +284,7 @@ test_that("course_conditional_check works", {
 
 test_that("is_valid_ssid works", {
   message("TODO: Checking to see if this works")
-  input <- c("1234567", "2345678", "3456789", "23", "12",  "2345678", "",   NA)
-  out1  <- c(TRUE, TRUE, FALSE, FALSE, FALSE, FALSE,  FALSE, FALSE)
+  input <- c("1234567", "2345678", "3456789", "23", "12", "",   NA)
+  out1  <- c(TRUE, TRUE, FALSE, FALSE, FALSE, FALSE,  FALSE)
   expect_equal(is_valid_ssid(input), out1)
 })

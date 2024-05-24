@@ -145,13 +145,13 @@ rule_spec <- tribble(
   "S32a", expr(is_valid_credits(total_cumulative_clep_credits_earned, missing_ok = TRUE)),
   "S33a", expr(is_valid_credits(total_cumulative_ap_credits_earned, missing_ok = TRUE)),
   "S34a", expr(is_valid_ssid(ssid)),
-  "S34b", expr(is_valid_student_id(student_id) |
+  "S34b", expr(is_valid_ssid(ssid) |
                  !(is_hs_type(student_type_code) & first_admit_state_code == "UT")),
-  "S34c", expr(!(is.na(student_id) &
+  "S34c", expr(!(is.na(ssid) &
                    first_admit_state_code == "UT" &
                    is_hs_type(student_type_code))),
-  "S34d", expr(!is.na(student_id) | !(budget_code %in% c("BC", "SF"))),
-  "S34e", expr(!is.na(student_id) |
+  "S34d", expr(!is.na(ssid) | !(budget_code %in% c("BC", "SF"))),
+  "S34e", expr(!is.na(ssid) |
                  (!is_hs_type(student_type_code) &
                     !is_freshmen_type(student_type_code))),
   "S35a", expr(is_valid_student_id(student_id)),

@@ -362,5 +362,5 @@ UTS05,Missing HS code,Database,Failure,Julie Stender,,sorhsch_activity_date,sorh
 UTC02,Canceled course with enrollments,Database,Failure,Vickie Shurtz,,ssbsect_activity_date,ssbsect_activity_date,UTC02
 UTGR01,Term and Graduation Date don't align,Database,Failure,Julie Stender,,shrdgmr_activity_date,shrdgmr_activity_date,UTG01
 UTGR02,Academic Year and Graduation Date don't align,Database,Failure,Julie Stender,,shrdgmr_activity_date,shrdgmr_activity_date,UTG02
-UTGR03,Is valid graduation date,Database,Database,Failure,Julie Stender,,shrdgmr_activity_date,shrdgmr_activity_date,UTG03
+UTGR03,Is valid graduation date,Database,Failure,Julie Stender,,shrdgmr_activity_date,shrdgmr_activity_date,UTG03
 UTGR04,Graduation term and graduation academic year don't align,Database,Failure,Julie Stender,,shrdgmr_activity_date,shrdgmr_activity_date,UTG04

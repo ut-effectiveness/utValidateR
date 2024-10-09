@@ -34,7 +34,7 @@ is_valid_credits(x, missing_ok = FALSE)
 
 is_valid_credits_chr(x)
 
-is_valid_gpa(x)
+is_valid_gpa(x, missing_ok = FALSE)
 
 is_valid_occupancy(x)
 

@@ -17,10 +17,22 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![Codecov test coverage](https://codecov.io/gh/dsu-effectiveness/utValidateR/branch/master/graph/badge.svg)](https://app.codecov.io/gh/dsu-effectiveness/utValidateR?branch=master)
+[![Codecov test coverage](https://codecov.io/gh/ut-effectiveness/utValidateR/branch/master/graph/badge.svg)](https://app.codecov.io/gh/ut-effectiveness/utValidateR?branch=master)
 <!-- badges: end -->
 
-The goal of utValidateR is to validate elements within the warehouse ETL pipeline, or elements in the reporting layer. The functions in this library are used in USHE and IPEDS reporting. The functions also for the basis for the campus data audits. 
+The **utValidateR** package helps ensure data accuracy and consistency for reporting and auditing purposes. It is designed to validate data based on specific rules and metadata, with the goal of validating elements within the warehouse ETL pipeline or elements in the reporting layer. The functions in this library are used in USHE and IPEDS reporting and also form the basis for campus data audits. It stores rule definitions in `data-raw/checklist.R` as the `checklist` object, and metadata in `sandbox/rule-metadata.csv`, generated from an Excel file. Auxiliary information is contained in the `aux_info` data object, which requires manual updates. Test data for unit tests and interactive comparisons is located in `inst/testdata/`. Development workflows include running unit tests with `devtools::test()` and investigating mismatches using `compare_rule_output()`. The `do_checks()` function is used to perform the actual data validation checks, and the `get_checklist()` function helps retrieve and manage these rules. These two functions are the most important as they form the core of the package's validation process. For more details, refer to the package vignette.
+
+### Deliverables
+- **Rule Definitions**: `checklist` object in `data-raw/checklist.R`
+- **Metadata**: `sandbox/rule-metadata.csv`
+- **Auxiliary Information**: `aux_info` data object
+- **Test Data**: Located in `inst/testdata/`
+- **Unit Tests**: Executed via `devtools::test()`
+- **Interactive Comparison Tool**: `compare_rule_output()` function
+- **Validation Checks**: `do_checks()` function
+- **Rule Retrieval**: `get_checklist()` function
+
+
 
 ## Installation
 
@@ -28,7 +40,7 @@ You can install the development version of utValidateR from [GitHub](https://git
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("dsu-effectiveness/utValidateR", ref = "develop")
+devtools::install_github("ut-effectiveness/utValidateR", ref = "develop")
 ```
 
 ## Contributing

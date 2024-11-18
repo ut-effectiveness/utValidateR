@@ -39,12 +39,14 @@ A data frame with 13,866 rows and 44 variables:
 \item{primary_major_cip_code}{}
 \item{primary_major_college_desc}{}
 \item{primary_major_desc}{}
+\item{primary_program_id}{}
 \item{required_credits}{}
 \item{season}{}
 \item{shrdgmr_activity_date}{}
 \item{shrtgpa_activity_date}{}
 \item{sis_student_id}{}
 \item{sis_system_id}{}
+\item{sorhsch_activity_date}{}
 \item{ssn}{}
 \item{total_cumulative_ap_credits_earned}{}
 \item{total_cumulative_clep_credits_earned}{}

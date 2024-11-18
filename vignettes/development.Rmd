@@ -52,6 +52,8 @@ The output of `compare_rule_output()` should make clear the reason for test data
 - If the R code is correct, but values referenced in `aux_info` are in error (e.g. `valid_final_grades`) then these should be modified in data-raw/aux_info.R. Once changes have been made, the full aux_info.R script should be run (e.g. via `source()`) to ensure the data object is updated in the package. 
 - If the metadata for the rule is misspecified, e.g. it is labeled a Database rule when it should be a USHE rule, this should be remedied in the data-raw/metadata.R script. Running this script will regenerate sandbox/rule-metadata.R, and thereafter running the data-raw/checklist.R script will update the metadata in the `checklist` package object. (Admittedly this workflow is a little half-baked and could use revision; it was a relatively late addition that was required to accommodate anticipated changes to the State Report Data Inventory file.)  
 
+`vignette(development_workflow)`
+
 Note that any changes to the package will only be made available to the R environment once the package is re-loaded, either via `devtools::load_all()` or `devtools::install()` and `library(utValidateR)`. 
 
 

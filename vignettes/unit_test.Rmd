@@ -1,0 +1,56 @@
+---
+title: "Unit Test"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{unit_test}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(utValidateR)
+```
+
+## Unit testing in general
+
+To run tests in an R package using the testthat package, you can use several methods. If you’re using RStudio, simply click on the “Build” pane and select “Test Package” to run all tests in your tests/testthat directory. Alternatively, from the R console or a script, load the testthat package and use the test_dir function to run all tests in a specified directory. For example, `test_dir("tests/testthat")` will execute all test files in that directory. If you prefer using the devtools package, the `devtools::test()` command will automatically find and run all tests in your package. Additionally, you can run tests on individual files by specifying the file path in the test_file function, such as 
+```{r,eval=FALSE}
+testthat::test_file("tests/testthat/test-checker-helpers.R")
+```
+Alternitivlly, if you are already in a the file you can run `devtools::test_active_file()` or just click on **Run Test** in the right corner.
+
+This flexibility allows you to run specific tests or all tests as needed, providing detailed feedback on which tests pass or fail, and helping you identify and fix issues early in the development process. Regularly running tests ensures your code remains reliable and any bugs are caught promptly. 
+
+### Unit testing specific for utValidateR
+
+Unit tests located in the tests/testthat/ directory can be executed via `devtools::test()`. In particular, the tests/testthat/test-expected-results.R is relevant for comparing `do_checks()` output to expected output, and for informing future development. These tests can be run using `devtools::test(filter = "expected")`, which will note the specific rules and test-data rows in which rule output did not match test-data expectations. Such mismatches for individual rules can then be investigated using the `compare_rule_output()` function, as follows:
+
+```{r,}
+test_data <- get_test_data("student")
+rule49a_comparison <- compare_rule_output("S49a", testdf = test_data)
+knitr::kable(rule49a_comparison)
+```
+
+Files for unit testing.
+```{}
+utValidateR Files 
+├── test/  
+│   └── testthat/
+│       └── test-checker-helper.R
+│       └── test-do_checks.R
+│       └── test-exspected-results.R
+│       └── test-get_checklist.R
+│       └── test-testdata.R
+```
+
+This code will test all the unit test files and can give you good starting place
+```{r,}
+devtools::test()
+```

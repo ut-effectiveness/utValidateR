@@ -18,7 +18,7 @@ fake_graduation_validation <- graduation_validation_pull %>%
   mutate(ssn = ssn(sample_size)[['ssn']]) %>%
   mutate(sis_system_id = fake_id(8, sample_size, TRUE)) %>%
   mutate(sis_student_id = fake_id(8, sample_size, TRUE)) %>%
-  mutate(birth_date = sample(seq(as.Date('1978/01/01'), as.Date('2022/01/01'), by="day"), sample_size)) %>%
+  mutate(birth_date = sample(seq(as.Date('1978/01/01'), as.Date('2022/01/01'), by="day"), sample_size, TRUE)) %>%
   stir("cumulative_graduation_gpa") %>%
   stir("degree_desc") %>%
   stir("degree_id") %>%

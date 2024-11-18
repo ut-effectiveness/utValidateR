@@ -231,13 +231,13 @@ test_that("is_utah_county works", {
 test_that("is_us_state works", {
   message("TODO: Should DC, PR be considered states?")
   input <- c("UT", "WI", "PR", "DC", "ut",   "Utah", "",    NA)
-  out1  <- c(TRUE, TRUE, FALSE, TRUE, FALSE, FALSE,  FALSE, FALSE)
+  out1  <- c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE,  FALSE, FALSE)
   expect_equal(is_us_state(input), out1)
 })
 
 test_that("is_nonus_state works", {
   input <- c("UT",  "SP", "PR", "DC",  "sp",  "Spain", "",    NA)
-  out1  <- c(FALSE, TRUE, TRUE, FALSE, FALSE, FALSE,   FALSE, FALSE)
+  out1  <- c(FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE)
   expect_equal(is_nonus_state(input), out1)
 })
 

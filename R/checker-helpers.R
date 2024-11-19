@@ -393,3 +393,20 @@ is_missing_space <- function(space, start_time, meet_days) {
             !is.na(space) ~ TRUE)
 }
 
+
+#' Helper function for valid date for term
+#' @describeIn #todo
+#' @param date_ Date would be either start term or end term
+#' @param term_id It is the year with suffix
+#' @param term_sufx It is the suffix only
+#' @param campus_id valid campus id
+#' @export
+is_valid_dates_for_term <- function(date_, term_id, term_sufx, campus_id){
+
+  is.Date(date_) &
+    !is.na(date_) &
+    stringr::str_ends(term_id, term_sufx) |
+    campus_id == 'XXX'
+
+}
+

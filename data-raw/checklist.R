@@ -261,12 +261,12 @@ rule_spec <- tribble(
   "C22b", expr(course_conditional_check(room_use_code_1, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_1)),
   "C30b", expr(course_conditional_check(room_use_code_2, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_2)),
   "C38b", expr(course_conditional_check(room_use_code_3, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_3)),
-  "C39a", expr(is.Date(meet_start_date) & !is.na(meet_start_date) | campus_id == 'XXX'), # Summer TODO: how to distinguish? from fall, spring?
-  "C39b", expr(is.Date(meet_start_date) & !is.na(meet_start_date) | campus_id == 'XXX'), # Fall
-  "C39c", expr(is.Date(meet_start_date) & !is.na(meet_start_date) | campus_id == 'XXX'), # Spring
-  "C40a", expr(is.Date(meet_end_date) & !is.na(meet_end_date) | campus_id == 'XXX'), # Summer
-  "C40b", expr(is.Date(meet_end_date) & !is.na(meet_end_date) | campus_id == 'XXX'), # Fall
-  "C40c", expr(is.Date(meet_end_date) & !is.na(meet_end_date) | campus_id == 'XXX'), # Spring
+  "C39a", expr(is_valid_dates_for_term(meet_start_date, term_id, "30", campus_id)) , # Summer
+  "C39b", expr(is_valid_dates_for_term(meet_start_date, term_id, "40", campus_id)) , # Fall
+  "C39c", expr(is_valid_dates_for_term(meet_start_date, term_id, "20", campus_id)) , # Spring
+  "C40a", expr(is_valid_dates_for_term(meet_end_date, term_id, "30", campus_id)), # Summer
+  "C40b", expr(is_valid_dates_for_term(meet_end_date, term_id, "40", campus_id)), # Fall
+  "C40c", expr(is_valid_dates_for_term(meet_end_date, term_id, "20", campus_id)), # Spring
   "C41a", expr(!is_missing_chr(course_title)),
   "C41b", expr(is_missing_chr(c_title) |
                  grepl("[a-zA-Z]{2}", c_title) |

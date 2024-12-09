@@ -189,16 +189,17 @@ rule_spec <- tribble(
   "C00",  expr(section_status == "A" & !is_duplicated(cbind(term_id, subject_code, course_number, section_number))),
   "C04a", expr(section_status == "A" & nchar(course_number) != 3 | nchar(course_number) != 2 | nchar(course_number) != 1),
   "C04c", expr(section_status == "A" & !stringr::str_detect(course_number, "^[89]")),
-  "C04d", expr(!stringr::str_detect(substring(course_number, 1, 4), "[a-zA-Z]")),
-  "C06a", expr(is_valid_credits_chr(course_min_credits)),
-  "C07a", expr(is_valid_credits_chr(course_max_credits)),
-  "C07b", expr(as.numeric(course_max_credits) >= as.numeric(course_min_credits)),
-  "C08a", expr(is_valid_credits(contact_hours, missing_ok = TRUE)),
-  "C09", expr(is_valid_values(tolower(c_line_item), valid_c_line_items, missing_ok = TRUE)), # USHE rule
-  "C10", expr(!is_missing_chr(campus_id)),
-  "C11", expr((campus_id %in% 'XXX') | !is_missing_chr(budget_code)),
+  "C04d", expr(section_status == "A" & !stringr::str_detect(substring(course_number, 1, 4), "[a-zA-Z]")),
+  "C06a", expr(section_status == "A" & is_valid_credits_chr(course_min_credits)),
+  "C07a", expr(section_status == "A" & is_valid_credits_chr(course_max_credits)),
+  "C07b", expr(section_status == "A" & as.numeric(course_max_credits) >= as.numeric(course_min_credits)),
+  "C08a", expr(section_status == "A" & is_valid_credits(contact_hours, missing_ok = TRUE)),
+  "C09", expr(section_status == "A" & is_valid_values(tolower(c_line_item), valid_c_line_items, missing_ok = TRUE)), # USHE rule
+  "C10", expr(section_status == "A" & !is_missing_chr(campus_id)),
+  "C11", expr(section_status == "A" & (campus_id %in% 'XXX') | !is_missing_chr(budget_code)),
   "C11b", expr(section_status == "A" & (paste0(subject_code, "-", course_number) %in% concurrent_course_ids) | !(budget_code %in% c('BC', 'SF'))),
-  "C12", expr(is_valid_values(c_delivery_method,
+  "C12", expr(section_status == "A" &
+                is_valid_values(c_delivery_method,
                               valid_ushe_instruction_method_codes,
                               missing_ok = TRUE)), # USHE Check
   "UTC01", expr(is_valid_values(instruction_method_code,

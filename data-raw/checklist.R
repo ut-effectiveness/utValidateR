@@ -187,8 +187,8 @@ rule_spec <- tribble(
   "S49b", expr(matches_regex(secondary_major_desc, "^[a-zA-Z' \\- & /]*$", #alpha plus space, apostrophe, hyphen, ampersand, forward slash
                              missing_ok = TRUE)),
   "C00",  expr(section_status == "A" & !is_duplicated(cbind(term_id, subject_code, course_number, section_number))),
-  "C04a", expr(nchar(course_number) != 3 | nchar(course_number) != 2 | nchar(course_number) != 1),
-  "C04c", expr(!stringr::str_detect(course_number, "^[89]")),
+  "C04a", expr(section_status == "A" & nchar(course_number) != 3 | nchar(course_number) != 2 | nchar(course_number) != 1),
+  "C04c", expr(section_status == "A" & !stringr::str_detect(course_number, "^[89]")),
   "C04d", expr(!stringr::str_detect(substring(course_number, 1, 4), "[a-zA-Z]")),
   "C06a", expr(is_valid_credits_chr(course_min_credits)),
   "C07a", expr(is_valid_credits_chr(course_max_credits)),

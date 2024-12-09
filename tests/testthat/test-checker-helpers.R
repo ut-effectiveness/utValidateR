@@ -281,3 +281,12 @@ test_that("course_conditional_check works", {
   expect_equal(course_conditional_check(input, im1, sf1, bc1, ci2), out_ignore)
 
 })
+
+test_that("is_valid_dates_for_term works", {
+  expect_equal(is_valid_dates_for_term(Sys.Date(), "202440", "40", "003"), TRUE)
+  expect_equal(is_valid_dates_for_term(Sys.Date(), "202440", "30", "003"), FALSE)
+  expect_equal(is_valid_dates_for_term(Sys.Date(), "202440", "20", "XXX"), TRUE)
+  expect_equal(is_valid_dates_for_term("1978-11-09", "202440", "40", "003"), FALSE)
+  expect_equal(is_valid_dates_for_term(NA, "202440", "40", "003"), FALSE)
+
+})

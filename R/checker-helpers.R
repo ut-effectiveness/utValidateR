@@ -395,7 +395,7 @@ is_missing_space <- function(space, start_time, meet_days) {
 
 
 #' Helper function for valid date for term
-#' @describeIn #todo
+#' @describeIn is_valid_dates_for_term Validates if a given date aligns with the term, suffix, and campus ID criteria.
 #' @param date_ Date would be either start term or end term
 #' @param term_id It is the year with suffix
 #' @param term_sufx It is the suffix only

@@ -116,6 +116,8 @@ aux_info <- list(
 
   valid_campus_ids = campus_ids,
 
+  valid_ipeds_degree_award_levels = c("2", "7", "3", "1B", "1A", "5"), #S19 & G17
+
   # Inventories
   building_inventory = building_list$building_number, #C19c and others, TODO: get from a query
   rooms_inventory = c(building_list$building_number) #C19d and others, TODO: get from a query

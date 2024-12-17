@@ -86,7 +86,7 @@ aux_info <- list(
 
   ut_highschools = ut_highschools,
 
-  valid_degree_ids = degree_types$degree_type, #S19a
+  #valid_degree_ids = degree_types$degree_type, #S19a
 
   valid_previous_degree_types = previous_degree_types, #G16a
 

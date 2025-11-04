@@ -417,9 +417,9 @@ is_valid_dates_for_term <- function(date_, term_id, term_sufx, campus_id){
 #'
 #' @param filename Excel filename (without path, e.g. "analytics_quad_concurrent_cours.xlsx")
 #' @return csv with 3 columns (course_id, subject_code, course_number)
+#' @importFrom readxl read_excel
 #' @export
 concurrent_csv <- function(filename = "analytics_quad_concurrent_courses.xlsx") {
-library(readxl)
 
   input_path  <- here::here("Data", filename)
   output_path <- here::here("Sandbox", sub("\\.xlsx$", ".csv", filename))

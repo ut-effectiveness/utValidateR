@@ -29,7 +29,8 @@ Imports:
     lubridate,
     stringr,
     magrittr,
-    readr
+    readr,
+    readxl
 Remotes: 
     ut-effectiveness/utValidateR
 Suggests: 

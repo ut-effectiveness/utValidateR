@@ -410,3 +410,30 @@ is_valid_dates_for_term <- function(date_, term_id, term_sufx, campus_id){
 
 }
 
+
+#' Generate CSV for analytics_quad_concurrent_cours (Rule- C11b)
+#'
+#' Reads Excel from Data folder, drops extra columns, and writes CSV to Sandbox folder.
+#'
+#' @param filename Excel filename (without path, e.g. "analytics_quad_concurrent_cours.xlsx")
+#' @return csv with 3 columns (course_id, subject_code, course_number)
+#' @export
+concurrent_csv <- function(filename = "analytics_quad_concurrent_courses.xlsx") {
+library(readxl)
+
+  input_path  <- here::here("Data", filename)
+  output_path <- here::here("Sandbox", sub("\\.xlsx$", ".csv", filename))
+
+  read_excel(input_path) %>%
+    select(-any_of(c("Institution", "Get Ed Code", "Title", "Core Code", "Core Title", "Reason"))) %>%
+    mutate(
+      course_id     = paste0(Prefix, "-", Number),
+      subject_code  = Prefix,
+      course_number = Number
+    ) %>%
+    select(course_id, subject_code, course_number) %>%
+    write_csv(output_path)
+}
+
+
+

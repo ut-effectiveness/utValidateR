@@ -14,7 +14,7 @@ Description: A collection of functions used by the Office of Institutional
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.0
+RoxygenNote: 7.3.2
 URL: https://github.com/ut-effectiveness/utValidateR
 BugReports: https://github.com/ut-effectiveness/utValidateR/issues
 Depends: 

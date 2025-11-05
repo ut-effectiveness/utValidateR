@@ -2,7 +2,7 @@
 
 # TODO: get these from a query, since they are subject to change
 # Concurrent list generated from analytics_quad_concurrent excl.
-concurrent_csv("analytics_quad_concurrent_courses.xlsx")
+concurrent_csv("analytics_quad_concurrent_course.xlsx")
 concurrent_list <- read.csv("sandbox/analytics_quad_concurrent_courses.csv")
 building_list <- read.csv("sandbox/analytics_quad_buildings.csv")
 

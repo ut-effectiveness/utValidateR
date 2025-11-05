@@ -427,9 +427,9 @@ concurrent_csv <- function(filename = "analytics_quad_concurrent_courses.xlsx") 
   read_excel(input_path) %>%
     select(-any_of(c("Institution", "Get Ed Code", "Title", "Core Code", "Core Title", "Reason"))) %>%
     mutate(
-      course_id     = paste0(Prefix, "-", Number),
-      subject_code  = Prefix,
-      course_number = Number
+      course_id     = as.character(paste0(Prefix, "-", Number)),
+      subject_code  = as.character(Prefix),
+      course_number = as.character(Number)
     ) %>%
     select(course_id, subject_code, course_number) %>%
     write_csv(output_path)

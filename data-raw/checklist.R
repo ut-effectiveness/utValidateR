@@ -197,7 +197,7 @@ rule_spec <- tribble(
   "C09", expr(section_status == "A" & is_valid_values(tolower(c_line_item), valid_c_line_items, missing_ok = TRUE)), # USHE rule
   "C10", expr(section_status == "A" & !is_missing_chr(campus_id)),
   "C11", expr(section_status == "A" & (campus_id %in% 'XXX') | !is_missing_chr(budget_code)),
-  "C11b", expr(section_status == "A" & (paste0(subject_code, "-", course_number) %in% concurrent_course_ids) | (budget_code %in% c('BC', 'SF'))),
+  "C11b", expr(section_status == "A" & (paste0(subject_code, "-", course_number) %in% concurrent_course_ids) | !(budget_code %in% c('BC', 'SF'))),
   "C12", expr(section_status == "A" &
                 is_valid_values(c_delivery_method,
                               valid_ushe_instruction_method_codes,

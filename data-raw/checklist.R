@@ -459,6 +459,7 @@ rule_spec <- tribble(
   "UTS03", expr(!is.na(college_id)),
   "UTS04", expr(!is.na(department_id)),
   "UTS05", expr(!is_missing_chr(high_school_code)),
+  "UTS06", expr(is_degree_intent_consistent_program(student_type_code, primary_program_code)),
   "UTG01", expr(as.numeric(substr(graduated_term_id, 1, 4)) == as.numeric(lubridate::year(graduation_date))),
   "UTG02", expr(as.numeric(graduated_academic_year_code) == as.numeric(graduation_academic_year_check)),
   "UTG03", expr(is_valid_graduation_date(graduation_date)),

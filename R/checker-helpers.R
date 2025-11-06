@@ -410,6 +410,39 @@ is_valid_dates_for_term <- function(date_, term_id, term_sufx, campus_id){
 
 }
 
+#' Helper function for validating program prefix consistency
+#' @describeIn is_degree_intent_consistent_program checks whether a student's primary program code prefix is consistent with
+#' their student type
+#' @param student_type_code Student type code (e.g., "H", "P", "1", "C", "R", "F", "T")
+#' @param primary_program_code Program code string (e.g., "ND-HSCE", "MS-DS", "BS-ACCT")
+#' @return
+#' @export
+is_degree_intent_consistent_program <- function(student_type_code, primary_program_code) {
+  st   <- student_type_code
+  prog <- primary_program_code
+
+  starts_with_any <- function(x, prefixes) {
+    purrr::map_lgl(x, ~ !is.na(.x) && any(startsWith(.x, prefixes)))
+  }
+
+  is_HP    <- st %in% c("H","P")
+  is_15    <- st %in% as.character(1:5)
+  is_CRFT  <- st %in% c("C","R","F","T")
+
+  prog_ND  <- starts_with_any(prog, c("ND-"))
+  prog_M   <- starts_with_any(prog, c("M"))        # MASTER family
+  prog_AB  <- starts_with_any(prog, c("A","B"))    # ASSOC/ BACHELOR families
+
+  out <- rep(TRUE, length(st))
+
+  out[is_HP]   <- !is.na(prog[is_HP]) & prog_ND[is_HP]
+  out[is_15]   <- !is.na(prog[is_15]) & prog_M[is_15]
+  out[is_CRFT] <- !is.na(prog[is_CRFT]) & prog_AB[is_CRFT]
+
+  out
+
+}
+
 
 #' Generate CSV for analytics_quad_concurrent_cours (Rule- C11b)
 #'

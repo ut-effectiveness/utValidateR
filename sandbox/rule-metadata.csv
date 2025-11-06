@@ -364,3 +364,4 @@ UTS02,invalid pell awarded to highschool students,Database,Failure,Julie Stender
 UTS03,Enrolled student is missing College from supplemental tables,Database,Failure,Julie Stender,,gorsdav_activity_date,gorsdav_value,UTS03
 UTS04,Enrolled student is missing Department from supplemental tables,Database,Warning,Julie Stender,,gorsdav_activity_date,gorsdav_value,UTS04
 UTS05,Missing HS code,Database,Failure,Julie Stender,,sorhsch_activity_date,sorhsch_activity_date,UTS05
+UTS06,Program prefix inconsistent with student type,Database,Failure,n,,primary_program_code,primary_program_code,UTS06

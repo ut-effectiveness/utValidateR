@@ -430,8 +430,8 @@ is_degree_intent_consistent_program <- function(student_type_code, primary_progr
   is_CRFT  <- st %in% c("C","R","F","T")
 
   prog_ND  <- starts_with_any(prog, c("ND-"))
-  prog_M   <- starts_with_any(prog, c("M"))        # MASTER family
-  prog_AB  <- starts_with_any(prog, c("A","B"))    # ASSOC/ BACHELOR families
+  prog_M   <- starts_with_any(prog, c("M", "O", "GR"))
+  prog_AB  <- starts_with_any(prog, c("A","B"))
 
   out <- rep(TRUE, length(st))
 

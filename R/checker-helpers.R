@@ -395,7 +395,7 @@ is_missing_space <- function(space, start_time, meet_days) {
 
 
 #' Helper function for valid date for term
-#' @describeIn #todo
+#' @describeIn is_valid_dates_for_term Validates if a given date aligns with the term, suffix, and campus ID criteria.
 #' @param date_ Date would be either start term or end term
 #' @param term_id It is the year with suffix
 #' @param term_sufx It is the suffix only
@@ -409,4 +409,64 @@ is_valid_dates_for_term <- function(date_, term_id, term_sufx, campus_id){
     campus_id == 'XXX'
 
 }
+
+#' Helper function for validating program prefix consistency
+#' @describeIn is_degree_intent_consistent_program checks whether a student's primary program code prefix is consistent with
+#' their student type
+#' @param student_type_code Student type code (e.g., "H", "P", "1", "C", "R", "F", "T")
+#' @param primary_program_code Program code string (e.g., "ND-HSCE", "MS-DS", "BS-ACCT")
+#' @return
+#' @export
+is_degree_intent_consistent_program <- function(student_type_code, primary_program_code) {
+  st   <- student_type_code
+  prog <- primary_program_code
+
+  starts_with_any <- function(x, prefixes) {
+    purrr::map_lgl(x, ~ !is.na(.x) && any(startsWith(.x, prefixes)))
+  }
+
+  is_HP    <- st %in% c("H","P")
+  is_15    <- st %in% as.character(1:5)
+  is_CRFT  <- st %in% c("C","R","F","T")
+
+  prog_ND  <- starts_with_any(prog, c("ND-"))
+  prog_M   <- starts_with_any(prog, c("M", "O", "GR"))
+  prog_AB  <- starts_with_any(prog, c("A","B"))
+
+  out <- rep(TRUE, length(st))
+
+  out[is_HP]   <- !is.na(prog[is_HP]) & prog_ND[is_HP]
+  out[is_15]   <- !is.na(prog[is_15]) & prog_M[is_15]
+  out[is_CRFT] <- !is.na(prog[is_CRFT]) & prog_AB[is_CRFT]
+
+  out
+
+}
+
+
+#' Generate CSV for analytics_quad_concurrent_cours (Rule- C11b)
+#'
+#' Reads Excel from Data folder, drops extra columns, and writes CSV to Sandbox folder.
+#'
+#' @param filename Excel filename (without path, e.g. "analytics_quad_concurrent_cours.xlsx")
+#' @return csv with 3 columns (course_id, subject_code, course_number)
+#' @importFrom readxl read_excel
+#' @export
+concurrent_csv <- function(filename = "analytics_quad_concurrent_courses.xlsx") {
+
+  input_path  <- here::here("Data", filename)
+  output_path <- here::here("Sandbox", sub("\\.xlsx$", ".csv", filename))
+
+  read_excel(input_path) %>%
+    select(-any_of(c("Institution", "Get Ed Code", "Title", "Core Code", "Core Title", "Reason"))) %>%
+    mutate(
+      course_id     = as.character(paste0(Prefix, "-", Number)),
+      subject_code  = as.character(Prefix),
+      course_number = as.character(Number)
+    ) %>%
+    select(course_id, subject_code, course_number) %>%
+    write_csv(output_path)
+}
+
+
 

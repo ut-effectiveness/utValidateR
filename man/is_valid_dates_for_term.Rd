@@ -18,3 +18,8 @@ is_valid_dates_for_term(date_, term_id, term_sufx, campus_id)
 \description{
 Helper function for valid date for term
 }
+\section{Functions}{
+\itemize{
+\item \code{is_valid_dates_for_term()}: Validates if a given date aligns with the term, suffix, and campus ID criteria.
+
+}}

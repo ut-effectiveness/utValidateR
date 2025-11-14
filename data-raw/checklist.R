@@ -99,7 +99,7 @@ rule_spec <- tribble(
                                missing_ok = FALSE)),
   "S18b", expr(!(s_reg_status %in% c("HS", "FH", "FF", "TU", "CS", "RS") & s_level %in% c("GN","GG")) |
                  (s_reg_status %in% c("NG","TG","CG","RG") & s_level %in% c("FR", "SO", "JR", "SR", "UG"))),
-  "S19a", expr(is_valid_values(primary_degree_id, valid_degree_ids)),
+  "S19a", expr(is_valid_values(ipeds_award_level_code, valid_ipeds_degree_award_levels, missing_ok = TRUE)),
   "S20a", expr(is_valid_credits(institutional_cumulative_credits_earned, missing_ok = TRUE)),
   "S24a", expr(is_valid_credits(transfer_cumulative_credits_earned, missing_ok = TRUE)),
   "S21",  expr(!is.na(institutional_cumulative_gpa)), # USHE rule
@@ -204,6 +204,7 @@ rule_spec <- tribble(
   "UTC01", expr(is_valid_values(instruction_method_code,
                                 valid_instruction_method_codes,
                                 missing_ok = TRUE)),
+  "UTC02", expr(!(section_status == "C" & class_size > 0)),
   "C13", expr(is_valid_values(program_type, valid_program_types, missing_ok = TRUE)),
   "C13a", expr(TODO("USHE check on perkins program types. Requires a query?")),
   "C13c", expr(TODO("USHE check on perkins budget codes. Need query for perkins codes?")),
@@ -312,7 +313,7 @@ rule_spec <- tribble(
   "G15a", expr(is_valid_credits(total_cumulative_clep_credits_earned, missing_ok = TRUE)),
   "G22a", expr(is_valid_credits(total_cumulative_credits_attempted_other_sources, missing_ok = TRUE)),
   "G23a", expr(is_valid_credits(transfer_cumulative_credits_earned, missing_ok = TRUE)),
-  "G17a", expr(is_valid_values(degree_id, valid_degree_ids)),
+  "G17a", expr(is_valid_values(ipeds_award_level_code, valid_ipeds_degree_award_levels, missing_ok = TRUE)),
   "G21e", expr(ssn %in% TODO("Need a way to bring in students table for comparing (same as G02b)")),
   "G03e", expr(nchar(g_first) <= 15), # USHE rule
   "G03g", expr(nchar(g_middle) <= 15), # USHE rule
@@ -328,9 +329,10 @@ rule_spec <- tribble(
   "G15b", expr(g_remedial_hrs <= 60), #USHE rule
   "G16a", expr(is_valid_values(previous_degree_type, valid_previous_degree_types)),
   "G18a", expr(is.na(primary_program_id) |
-    is.numeric(required_credits) &
+                 is.numeric(required_credits) &
                  !is.na(required_credits) &
-                 required_credits >= 0 ),
+                 required_credits >= 0  &
+                 overall_cumulative_credits_earned  >= required_credits),
   "G19a", expr(!is_utah_county(first_admit_county_code) | !is_missing_chr(high_school_code)),
   "G21a", expr(is_valid_student_id(sis_student_id)),
   "G21b", expr(is_valid_student_id(sis_student_id)), # Redundant unless I can assume banner_id format
@@ -456,6 +458,7 @@ rule_spec <- tribble(
   "UTS03", expr(!is.na(college_id)),
   "UTS04", expr(!is.na(department_id)),
   "UTS05", expr(!is_missing_chr(high_school_code)),
+  "UTS06", expr(is_degree_intent_consistent_program(student_type_code, primary_program_code)),
   "UTG01", expr(as.numeric(substr(graduated_term_id, 1, 4)) == as.numeric(lubridate::year(graduation_date))),
   "UTG02", expr(as.numeric(graduated_academic_year_code) == as.numeric(graduation_academic_year_check)),
   "UTG03", expr(is_valid_graduation_date(graduation_date)),

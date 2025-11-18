@@ -300,6 +300,7 @@ S34c,missing ssid for Utah HS students,Database,Failure,Julie Stender,NULL SSID 
 S34d,missing ssid for concurrent students,Database,Failure,Julie Stender,NULL SSID for CE Students,goradid_activity_date,"goradid_additional_id, banner.sabsupl_stat_code_admit, banner.sgbstdn_styp_code",S34d
 S34e,missing ssid for first time freshman and highschool students,Database,Warning,Julie Stender,"Please provide as many SSIDs as possible. Our hope is for every freshmen
 --AND high school student FROM Utah to have an SSID.",goradid_activity_date,"goradid_additional_id, banner.sgbstdn_styp_code",S34e
+S34f,missing ssid for high school students,Database,Failure,Julie Stender,"Flags high school students (student type 'H') with missing SSIDs. All HS students should have an SSID recorded for data completeness.",goradid_activity_date,NA,S34f
 S35a,invalid student id,Database,Failure,Julie Stender,There should be a valid institutionally assigned ID for all records.,spriden_activity_date,banner.spriden_id,S35a
 S35b,invalid student id,Database,Failure,Julie Stender,Changed to look for Alpha Characters at the start of the banner id,spriden_activity_date,banner.spriden_id,S35b
 S35c,invalid alpha in student id,USHE,Failure,NA,Wrong Alpha in Banner IDs. There should be a valid institutionally assigned ID for all records.,NA,banner.spriden_id,S35c

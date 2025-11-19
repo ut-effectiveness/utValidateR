@@ -355,9 +355,7 @@ SC14a,Invalid CRN,Database,Failure,Vicki Shurtz,SC_CRN Invalid,ssbsect_activity_
 SC14b,Missing CRN,Database,Failure,Vicki Shurtz,Missing Courses Reference Number,ssbsect_activity_date,banner.ssbsesct_crn,SC14b
 SC15b,"Course type, program type and course level alignement (Invalid U)",Database,Failure,Julie Stender,SC_CR_Type = U Invalid,scrlevl_acitivy_date,scrlevl_levl_code,SC15b
 SC15c,"Course type, program type and course level alignement (Invalid G)",Database,Failure,Julie Stender,SC_CR_Type = G Invalid,scrlevl_acitivy_date,scrlevl_levl_code,SC15c
-UTSC01,"Invalid CE High School Code",Database,Failure,Julie Stender,
-Concurrent-enrollment courses must originate from valid Utah high schools,
-ssrsccd_activity_date,banner.ssrsccd_sccd_code, banner.sorhsch_sgbi_code,UTSC01
+UTSC01,Budget code + HS code alignment for UT CE courses,Database,Failure,Julie Stender,NA,ssrsccd_activity_date,"banner.ssrsccd_sccd_code, sorhsch_sgbi_code, sgbstdn_styp_code",UTSC01
 UTC01,invalid delivery method,Database,Failure,Vicki Shurtz,Checking for valid values IN instruction_method_code,ssbsect_activity_date,banner.ssbsect_insm_code,C12
 UTC02,Canceled course with enrollments,Database,Failure,Vickie Shurtz,,ssbsect_activity_date,ssbsect_activity_date,UTC02
 UTGR01,Term and Graduation Date don't align,Database,Failure,Julie Stender,,shrdgmr_activity_date,shrdgmr_activity_date,UTG01

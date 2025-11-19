@@ -300,7 +300,7 @@ S34c,missing ssid for Utah HS students,Database,Failure,Julie Stender,NULL SSID 
 S34d,missing ssid for concurrent students,Database,Failure,Julie Stender,NULL SSID for CE Students,goradid_activity_date,"goradid_additional_id, banner.sabsupl_stat_code_admit, banner.sgbstdn_styp_code",S34d
 S34e,missing ssid for first time freshman and highschool students,Database,Warning,Julie Stender,"Please provide as many SSIDs as possible. Our hope is for every freshmen
 --AND high school student FROM Utah to have an SSID.",goradid_activity_date,"goradid_additional_id, banner.sgbstdn_styp_code",S34e
-S34f,missing ssid for high school students,Database,Failure,Julie Stender,Flags high school students (student type 'H') with missing SSIDs,goradid_activity_date,"goradid_additional_id, banner.sgbstdn_styp_code",S34f
+UTS08,missing ssid for high school students,Database,Failure,Julie Stender,Flags high school students (student type 'H') with missing SSIDs,goradid_activity_date,"goradid_additional_id, banner.sgbstdn_styp_code",UTS08
 S35a,invalid student id,Database,Failure,Julie Stender,There should be a valid institutionally assigned ID for all records.,spriden_activity_date,banner.spriden_id,S35a
 S35b,invalid student id,Database,Failure,Julie Stender,Changed to look for Alpha Characters at the start of the banner id,spriden_activity_date,banner.spriden_id,S35b
 S35c,invalid alpha in student id,USHE,Failure,NA,Wrong Alpha in Banner IDs. There should be a valid institutionally assigned ID for all records.,NA,banner.spriden_id,S35c
@@ -324,7 +324,7 @@ S47c,invalid major due to non-alpha characters,Database,Failure,Julie Stender,S_
 S48a,invalid college due to non-alpha characters,Database,Failure,Julie Stender,S_College with Non-Alpha characters,sgbstdn_activity_date,"banner.sgbstdn_coll_code_1, banner.sgbstdn_coll_code_2",S46b
 S49a,missing second major with second cip code,Database,Failure,Julie Stender,Missing Second CIP or Major,sgbstdn_activity_date,banner.sgbstdn_majr_code_2,S49a
 S49b,invalid major due to non-alpha characters,Database,Failure,Julie Stender,S_Major with Non-Alpha characters,sgbstdn_activity_date,"banner.sgbstdn_majr_code_1, banner.sgbstdn_majr_code_2",S47c
-S50,invalid ssid format,Database,Failure, NA,G_Inst Unknown,NA,NA, S50
+UTS07,invalid ssid format,Database,Failure, NA,G_Inst Unknown,NA,NA, UTS07
 SC01a,institution id unknown,USHE,Failure,NA,G_Inst Unknown,NA,NA,S01a
 SC01a,missing instituion,USHE,Failure,NA,G_Inst NULL,NA,NA,G01b
 SC02a,"missing ushe_academic_year, version_id, season",USHE,Failure,NA,Wrong year/term/extract in submission files,NA,n/a,S02a
@@ -367,3 +367,6 @@ UTS03,Enrolled student is missing College from supplemental tables,Database,Fail
 UTS04,Enrolled student is missing Department from supplemental tables,Database,Warning,Julie Stender,,gorsdav_activity_date,gorsdav_value,UTS04
 UTS05,Missing HS code,Database,Failure,Julie Stender,,sorhsch_activity_date,sorhsch_activity_date,UTS05
 UTS06,Program prefix inconsistent with student type,Database,Failure,n,,primary_program_code,primary_program_code,UTS06
+UTSC01,Invalid CE High School Code,Database,Failure,Julie Stender,
+Concurrent-enrollment courses must originate from valid Utah high schools,
+ssrsccd_activity_date,"banner.ssrsccd_sccd_code, banner.sorhsch_sgbi_code",UTSC01

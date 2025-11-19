@@ -154,7 +154,6 @@ rule_spec <- tribble(
   "S34e", expr(!is.na(student_id) |
                  (!is_hs_type(student_type_code) &
                     !is_freshmen_type(student_type_code))),
-  "S34f", expr(!(is.na(ssid) & is_hs_type(student_type_code))),
   "S35a", expr(is_valid_student_id(student_id)),
   "S35b", expr(is_valid_student_id(student_id)), # TODO: redundant with S35a? Seems to be relevant for banner IDs only
   "S35c", expr(is_alpha_chr(substring(s_banner_id, 1, 1))),
@@ -187,7 +186,6 @@ rule_spec <- tribble(
   "S49a", expr(is_missing_chr(secondary_major_cip_code) | !is_missing_chr(secondary_major_desc)),
   "S49b", expr(matches_regex(secondary_major_desc, "^[a-zA-Z' \\- & /]*$", #alpha plus space, apostrophe, hyphen, ampersand, forward slash
                              missing_ok = TRUE)),
-  "S50", expr(is.na(ssid) | nchar(ssid) == 7 & stringr::str_detect(ssid, "^(1|2)")),
   "C00",  expr(!is_duplicated(cbind(term_id, subject_code, course_number, section_number))),
   "C04a", expr(nchar(course_number) != 3 | nchar(course_number) != 2 | nchar(course_number) != 1),
   "C04c", expr(!stringr::str_detect(course_number, "^[89]")),
@@ -461,10 +459,13 @@ rule_spec <- tribble(
   "UTS04", expr(!is.na(department_id)),
   "UTS05", expr(!is_missing_chr(high_school_code)),
   "UTS06", expr(is_degree_intent_consistent_program(student_type_code, primary_program_code)),
+  "UTS07", expr(is.na(ssid) | nchar(ssid) == 7 & stringr::str_detect(ssid, "^(1|2)")),
+  "UTS08", expr(!(is.na(ssid) & is_hs_type(student_type_code))),
   "UTG01", expr(as.numeric(substr(graduated_term_id, 1, 4)) == as.numeric(lubridate::year(graduation_date))),
   "UTG02", expr(as.numeric(graduated_academic_year_code) == as.numeric(graduation_academic_year_check)),
   "UTG03", expr(is_valid_graduation_date(graduation_date)),
-  "UTG04", expr(as.numeric(graduation_term_year_check) == as.numeric(graduated_academic_year_code))
+  "UTG04", expr(as.numeric(graduation_term_year_check) == as.numeric(graduated_academic_year_code)),
+  "UTSC01", expr(!(budget_code %in% c("BC", "SF") & !(startsWith(high_school_code, "45") | high_school_code == "484870")))
 )
 
 

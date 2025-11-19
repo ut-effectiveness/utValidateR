@@ -465,7 +465,10 @@ rule_spec <- tribble(
   "UTG02", expr(as.numeric(graduated_academic_year_code) == as.numeric(graduation_academic_year_check)),
   "UTG03", expr(is_valid_graduation_date(graduation_date)),
   "UTG04", expr(as.numeric(graduation_term_year_check) == as.numeric(graduated_academic_year_code)),
-  "UTSC01", expr(!(budget_code %in% c("BC", "SF") & !(startsWith(high_school_code, "45") | high_school_code == "484870")))
+  "UTSC01", expr(
+    !(budget_code %in% c("BC", "SF") &
+        !(startsWith(high_school_code, "45") | high_school_code == "484870"))
+  )
 )
 
 
@@ -474,6 +477,7 @@ rule_spec <- tribble(
 #' @param rule rule name, e.g. "S00b"
 get_ushe_file <- function(rule) {
   out <- case_when(
+    grepl("^UTSC", rule) ~ "Student Course",
     grepl("^SC", rule) ~ "Student Course",
     grepl("^S[0-9]", rule) ~ "Student",
     grepl("^C", rule) ~ "Course",
@@ -482,7 +486,6 @@ get_ushe_file <- function(rule) {
     grepl("^R", rule) ~ "Rooms",
     grepl("^UTS", rule) ~ "Student",
     grepl("^UTC", rule) ~ "Course",
-    grepl("^UTSC", rule) ~ "Student Course",
     grepl("^UTG", rule) ~ "Graduation",
     TRUE ~ NA_character_
     )

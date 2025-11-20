@@ -120,6 +120,13 @@ aux_info <- list(
 
   valid_ipeds_degree_award_levels = c("2", "7", "3", "1B", "1A", "5", "6", "8", "18"), #S19 & G17
 
+  primary_valid_programs = c("BS-NURS-P", "BS-DHYG-P", "BS-MLS-P", "AAS-MLS", "BS-BU", "BS-PSY",
+    "BS-ASOC", "BIS-INDV", "BS-INTS"), #UTS09
+
+  second_valid_programs <- c(
+    "AAS-ADN", "AAS-DHYG", "AAS-MLS", "BS-BU", "BS-ASOC", "BS-PSY", "AS-GENED"
+  ), #UTS09
+
   # Inventories
   building_inventory = building_list$building_number, #C19c and others, TODO: get from a query
   rooms_inventory = c(building_list$building_number) #C19d and others, TODO: get from a query

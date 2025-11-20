@@ -123,7 +123,7 @@ aux_info <- list(
   primary_valid_programs = c("BS-NURS-P", "BS-DHYG-P", "BS-MLS-P", "AAS-MLS", "BS-BU", "BS-PSY",
     "BS-ASOC", "BIS-INDV", "BS-INTS"), #UTS09
 
-  second_valid_programs <- c(
+  second_valid_programs = c(
     "AAS-ADN", "AAS-DHYG", "AAS-MLS", "BS-BU", "BS-ASOC", "BS-PSY", "AS-GENED"
   ), #UTS09
 

@@ -415,7 +415,7 @@ is_valid_dates_for_term <- function(date_, term_id, term_sufx, campus_id){
 #' their student type
 #' @param student_type_code Student type code (e.g., "H", "P", "1", "C", "R", "F", "T")
 #' @param primary_program_code Program code string (e.g., "ND-HSCE", "MS-DS", "BS-ACCT")
-#' @return
+#' @return A logical vector indicating whether each record's program prefix
 #' @export
 is_degree_intent_consistent_program <- function(student_type_code, primary_program_code) {
   st   <- student_type_code

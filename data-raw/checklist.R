@@ -465,6 +465,7 @@ rule_spec <- tribble(
       cur_prgm  %in% primary_valid_programs |
       cur_prgm_2 %in% second_valid_programs
   ),
+  "UTS10", expr(entry_action != "HS" | is.na(cur_prgm) | cur_prgm %in% c("ND-CONC", "ND-SA", "ND-CE", "ND-ACE")),
   "UTG01", expr(as.numeric(substr(graduated_term_id, 1, 4)) == as.numeric(lubridate::year(graduation_date))),
   "UTG02", expr(as.numeric(graduated_academic_year_code) == as.numeric(graduation_academic_year_check)),
   "UTG03", expr(is_valid_graduation_date(graduation_date)),

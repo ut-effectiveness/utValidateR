@@ -205,6 +205,10 @@ rule_spec <- tribble(
                                 valid_instruction_method_codes,
                                 missing_ok = TRUE)),
   "UTC02", expr(!(section_status == "C" & class_size > 0)),
+  "UTC03", expr(!(subject_code != "CED" & enrollment != 0 & schedule_code %in% c("LEC", "LEX") &
+                     (lab_hours > 0 | other_hours > 0))),
+  "UTC04", expr(!(subject_code != "CED" & enrollment != 0 & schedule_code %in% c("LAB", "LBC", "ACT") &
+        (other_hours > 0 | lecture_hours > 0))),
   "C13", expr(is_valid_values(program_type, valid_program_types, missing_ok = TRUE)),
   "C13a", expr(TODO("USHE check on perkins program types. Requires a query?")),
   "C13c", expr(TODO("USHE check on perkins budget codes. Need query for perkins codes?")),
@@ -472,9 +476,7 @@ rule_spec <- tribble(
   "UTG04", expr(as.numeric(graduation_term_year_check) == as.numeric(graduated_academic_year_code)),
   "UTSC01", expr(
     !(budget_code %in% c("BC", "SF") &
-        !(startsWith(high_school_code, "45") | high_school_code == "484870"))),
-  "UTSC02", expr(!(subject_code != "CED" & enrollment != 0 & schedule_code %in% c("LEC", "LEX") &
-        (lab_hours > 0 | other_hours > 0)))
+        !(startsWith(high_school_code, "45") | high_school_code == "484870")))
 )
 
 

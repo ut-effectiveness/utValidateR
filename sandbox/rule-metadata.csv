@@ -372,6 +372,7 @@ UTC11,Evening courses are in the correct section series,Database,Failure,Julie S
 UTC12,Flags missing or invalid budget codes,Database,Failure,Julie Stender,NA,ssrsccd_activity_date,"ssbsect_crn, ssbsect_term_code, budget_code",UTC12
 UTC13,High school courses use correct budget codes,Database,Failure,Julie Stender,NA,ssrsccd_activity_date,"budget_code, section_number, ssbsect_term_code, ssbsect_crn",UTC13
 UTC14,Validates budget-related online courses,Database,Failure,Julie Stender,NA,NA,NA,UTC14
+UTC15,Validates self-support online course configuration,Database,Failure,Julie Stender,NA,ssbsect_activity_date,"budget_code, campus_code, section_number, instruction_method",UTC15
 UTGR01,Term and Graduation Date don't align,Database,Failure,Julie Stender,,shrdgmr_activity_date,shrdgmr_activity_date,UTG01
 UTGR02,Academic Year and Graduation Date don't align,Database,Failure,Julie Stender,,shrdgmr_activity_date,shrdgmr_activity_date,UTG02
 UTGR03,Is valid graduation date,Database,Failure,Julie Stender,,shrdgmr_activity_date,shrdgmr_activity_date,UTG03

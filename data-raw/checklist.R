@@ -234,6 +234,9 @@ rule_spec <- tribble(
   "UTC14", expr(!(!is.na(budget_code) & stringr::str_detect(budget_code, "^B") &
            !is.na(campus_code) & !is.na(instruction_method) &
         ((campus_code != "O01" & instruction_method == "I") | (campus_code %in% c("O01", "UOS") & instruction_method != "I")))),
+  "UTC15", expr(is.na(budget_code) | !stringr::str_detect(budget_code, "^S") |
+      is.na(campus_code) | is.na(section_number) | is.na(instruction_method) |
+      is_self_support_online_valid(campus_code, section_number, instruction_method)),
   "C13", expr(is_valid_values(program_type, valid_program_types, missing_ok = TRUE)),
   "C13a", expr(TODO("USHE check on perkins program types. Requires a query?")),
   "C13c", expr(TODO("USHE check on perkins budget codes. Need query for perkins codes?")),

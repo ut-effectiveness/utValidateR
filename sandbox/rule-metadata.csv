@@ -362,6 +362,7 @@ UTC01,invalid delivery method,Database,Failure,Vicki Shurtz,Checking for valid v
 UTC02,Canceled course with enrollments,Database,Failure,Vickie Shurtz,,ssbsect_activity_date,ssbsect_activity_date,UTC02
 UTC03,Lecture schedule types (LEC/LEX) only have lecture hours,Database,Failure,Julie Stender,NA,ssbsect_activity_date,"banner.ssbsect_schd_code, banner.ssbsect_enrl, banner.ssbsect_subj_code, banner.ssbsect_crse_numb",UTC03
 UTC04,Lab schedule types (LAB/LBC/ACT) only have lab hours,Database,Failure,Julie Stender,NA,ssbsect_activity_date,"banner.ssbsect_schd_code, banner.ssbsect_enrl, banner.ssbsect_subj_code, banner.ssbsect_crse_numb, lab_hours, lecture_hours, other_hours",UTC04
+UTC05,LAB sections have non-zero credit hours,Database,Failure,Julie Stender,NA,schd_check_03_activity_date,ssbsect_schd_code,UTC05
 UTGR01,Term and Graduation Date don't align,Database,Failure,Julie Stender,,shrdgmr_activity_date,shrdgmr_activity_date,UTG01
 UTGR02,Academic Year and Graduation Date don't align,Database,Failure,Julie Stender,,shrdgmr_activity_date,shrdgmr_activity_date,UTG02
 UTGR03,Is valid graduation date,Database,Failure,Julie Stender,,shrdgmr_activity_date,shrdgmr_activity_date,UTG03

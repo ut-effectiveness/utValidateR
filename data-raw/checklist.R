@@ -211,6 +211,9 @@ rule_spec <- tribble(
         !is.na(enrollment)     & enrollment != 0 &
         !is.na(schedule_code)  & schedule_code %in% c("LAB", "LBC", "ACT") &
         ((!is.na(other_hours)   & other_hours > 0) | (!is.na(lecture_hours) & lecture_hours > 0)))),
+  "UTC05", expr(!(subject_code != "CED" &
+        !is.na(enrollment) & enrollment != 0 & schedule_code == "LAB" &
+          !is.na(credit_hours) & credit_hours != 0)),
   "C13", expr(is_valid_values(program_type, valid_program_types, missing_ok = TRUE)),
   "C13a", expr(TODO("USHE check on perkins program types. Requires a query?")),
   "C13c", expr(TODO("USHE check on perkins budget codes. Need query for perkins codes?")),

@@ -205,8 +205,10 @@ rule_spec <- tribble(
                                 valid_instruction_method_codes,
                                 missing_ok = TRUE)),
   "UTC02", expr(!(section_status == "C" & class_size > 0)),
-  "UTC03", expr(!(subject_code != "CED" & enrollment != 0 & schedule_code %in% c("LEC", "LEX") &
-                     (lab_hours > 0 | other_hours > 0))),
+  "UTC03", expr(!(subject_code != "CED" & !is.na(enrollment) & enrollment != 0 &
+        schedule_code %in% c("LEC", "LEX") &
+        ((!is.na(lab_hours)   & lab_hours > 0) |
+            (!is.na(other_hours) & other_hours > 0)))),
   "UTC04", expr(!(!is.na(subject_code)   & subject_code != "CED" &
         !is.na(enrollment)     & enrollment != 0 &
         !is.na(schedule_code)  & schedule_code %in% c("LAB", "LBC", "ACT") &

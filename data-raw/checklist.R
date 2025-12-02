@@ -231,6 +231,9 @@ rule_spec <- tribble(
             (!(budget_code %in% valid_budget_codes))))),
   "UTC13", expr(!(active_ind == "A" & subject_code != "CED" & ((budget_code %in% c("BC", "SF")) !=
             stringr::str_detect(section_number, "V|S\\^|S|X|J")))),
+  "UTC14", expr(!(!is.na(budget_code) & stringr::str_detect(budget_code, "^B") &
+           !is.na(campus_code) & !is.na(instruction_method) &
+        ((campus_code != "O01" & instruction_method == "I") | (campus_code %in% c("O01", "UOS") & instruction_method != "I")))),
   "C13", expr(is_valid_values(program_type, valid_program_types, missing_ok = TRUE)),
   "C13a", expr(TODO("USHE check on perkins program types. Requires a query?")),
   "C13c", expr(TODO("USHE check on perkins budget codes. Need query for perkins codes?")),

@@ -229,6 +229,8 @@ rule_spec <- tribble(
                     !stringr::str_detect(section_number, "^[579]"))),
   "UTC12", expr(!(subject_code != "CED" & ((active_ind == "A" & is.na(budget_code)) |
             (!(budget_code %in% valid_budget_codes))))),
+  "UTC13", expr(!(active_ind == "A" & subject_code != "CED" & ((budget_code %in% c("BC", "SF")) !=
+            stringr::str_detect(section_number, "V|S\\^|S|X|J")))),
   "C13", expr(is_valid_values(program_type, valid_program_types, missing_ok = TRUE)),
   "C13a", expr(TODO("USHE check on perkins program types. Requires a query?")),
   "C13c", expr(TODO("USHE check on perkins budget codes. Need query for perkins codes?")),

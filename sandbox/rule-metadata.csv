@@ -364,7 +364,7 @@ UTC03,Lecture schedule types (LEC/LEX) only have lecture hours,Database,Failure,
 UTC04,Lab schedule types (LAB/LBC/ACT) only have lab hours,Database,Failure,Julie Stender,NA,ssbsect_activity_date,"banner.ssbsect_schd_code, banner.ssbsect_enrl, banner.ssbsect_subj_code, banner.ssbsect_crse_numb, lab_hours, lecture_hours, other_hours",UTC04
 UTC05,LAB sections have non-zero credit hours,Database,Failure,Julie Stender,NA,activity_date,ssbsect_schd_code,UTC05
 UTC06,Flags LBC sections missing credit hours (invalid zero-credit setup),Database,Failure,Julie Stender,NA,ssbsect_activity_date,"ssbsect_crn, ssbsect_term_code",UTC06
-
+UTC07,Flags LEL sections missing lecture or lab hours while having other hours,Database,Failure,Julie Stender,NA,ssbsect_activity_date,"ssbsect_crn, ssbsect_term_code",UTC07
 UTGR01,Term and Graduation Date don't align,Database,Failure,Julie Stender,,shrdgmr_activity_date,shrdgmr_activity_date,UTG01
 UTGR02,Academic Year and Graduation Date don't align,Database,Failure,Julie Stender,,shrdgmr_activity_date,shrdgmr_activity_date,UTG02
 UTGR03,Is valid graduation date,Database,Failure,Julie Stender,,shrdgmr_activity_date,shrdgmr_activity_date,UTG03

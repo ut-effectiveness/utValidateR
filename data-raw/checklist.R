@@ -218,6 +218,8 @@ rule_spec <- tribble(
           !is.na(credit_hours) & credit_hours != 0)),
   "UTC06", expr(!(subject_code != "CED" & !is.na(enrollment) & enrollment != 0 &
         schedule_code == "LBC" & is.na(credit_hours))),
+  "UTC07", expr(!(subject_code != "CED" & !is.na(enrollment) & enrollment != 0 & schedule_code == "LEL" &
+        (is.na(credit_hours) | is.na(lab_hours)) & !is.na(other_hours))),
   "C13", expr(is_valid_values(program_type, valid_program_types, missing_ok = TRUE)),
   "C13a", expr(TODO("USHE check on perkins program types. Requires a query?")),
   "C13c", expr(TODO("USHE check on perkins budget codes. Need query for perkins codes?")),

@@ -207,8 +207,10 @@ rule_spec <- tribble(
   "UTC02", expr(!(section_status == "C" & class_size > 0)),
   "UTC03", expr(!(subject_code != "CED" & enrollment != 0 & schedule_code %in% c("LEC", "LEX") &
                      (lab_hours > 0 | other_hours > 0))),
-  "UTC04", expr(!(subject_code != "CED" & enrollment != 0 & schedule_code %in% c("LAB", "LBC", "ACT") &
-        (other_hours > 0 | lecture_hours > 0))),
+  "UTC04", expr(!(!is.na(subject_code)   & subject_code != "CED" &
+        !is.na(enrollment)     & enrollment != 0 &
+        !is.na(schedule_code)  & schedule_code %in% c("LAB", "LBC", "ACT") &
+        ((!is.na(other_hours)   & other_hours > 0) | (!is.na(lecture_hours) & lecture_hours > 0)))),
   "C13", expr(is_valid_values(program_type, valid_program_types, missing_ok = TRUE)),
   "C13a", expr(TODO("USHE check on perkins program types. Requires a query?")),
   "C13c", expr(TODO("USHE check on perkins budget codes. Need query for perkins codes?")),

@@ -127,7 +127,7 @@ aux_info <- list(
     "AAS-ADN", "AAS-DHYG", "AAS-MLS", "BS-BU", "BS-ASOC", "BS-PSY", "AS-GENED"
   ), #UTS09
 
-  valid_budget_codes <- c("BA","BC","BU","BV","BY","SD","SF","SM","SP","SQ"), #UTC12
+  valid_budget_codes = c("BA","BC","BU","BV","BY","SD","SF","SM","SP","SQ"), #UTC12
 
   # Inventories
   building_inventory = building_list$building_number, #C19c and others, TODO: get from a query

@@ -227,6 +227,8 @@ rule_spec <- tribble(
   "UTC10", expr(!(is.na(program_type) & subject_code != "CED")),
   "UTC11", expr(!(active_ind == "A" & !is.na(start_time_1) & start_time_1 > "1700" &
                     !stringr::str_detect(section_number, "^[579]"))),
+  "UTC12", expr(!(subject_code != "CED" & ((active_ind == "A" & is.na(budget_code)) |
+            (!(budget_code %in% valid_budget_codes))))),
   "C13", expr(is_valid_values(program_type, valid_program_types, missing_ok = TRUE)),
   "C13a", expr(TODO("USHE check on perkins program types. Requires a query?")),
   "C13c", expr(TODO("USHE check on perkins budget codes. Need query for perkins codes?")),

@@ -367,7 +367,8 @@ UTC06,LBC sections missing credit hours (invalid zero-credit setup),Database,Fai
 UTC07,LEL sections missing lecture or lab hours while having other hours,Database,Failure,Julie Stender,NA,ssbsect_activity_date,"ssbsect_crn, ssbsect_term_code",UTC07
 UTC08,Non-lecture schedule types carrying lecture hours,Database,Failure,Julie Stender,NA,ssbsect_activity_date,"ssbsect_crn, ssbsect_term_code",UTC08
 UTC09,Non-lab schedule types carrying lab hours,Database,Failure,Julie Stender,NA,ssbsect_activity_date,"ssbsect_crn, ssbsect_term_code",UTC09
-UTC10,Flags courses with missing program types,Database,Failure,Julie Stender,NA,ssbsect_activity_date,"ssbsect_crn, ssbsect_term_code",UTC10
+UTC10,Courses with missing program types,Database,Failure,Julie Stender,NA,ssbsect_activity_date,"ssbsect_crn, ssbsect_term_code",UTC10
+UTC11,Evening courses are in the correct section series,Databse,Failure,Julie Stender,NA,ssbsect_activity_date,"ssbsect_crn, ssbsect_term_code",UTC11
 UTGR01,Term and Graduation Date don't align,Database,Failure,Julie Stender,,shrdgmr_activity_date,shrdgmr_activity_date,UTG01
 UTGR02,Academic Year and Graduation Date don't align,Database,Failure,Julie Stender,,shrdgmr_activity_date,shrdgmr_activity_date,UTG02
 UTGR03,Is valid graduation date,Database,Failure,Julie Stender,,shrdgmr_activity_date,shrdgmr_activity_date,UTG03

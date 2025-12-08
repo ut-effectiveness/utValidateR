@@ -370,7 +370,7 @@ UTC09,Non-lab schedule types carrying lab hours,Database,Failure,Julie Stender,N
 UTC10,Courses with missing program types,Database,Failure,Julie Stender,NA,ssbsect_activity_date,"ssbsect_crn, ssbsect_term_code",UTC10
 UTC11,Evening courses are in the correct section series,Database,Failure,Julie Stender,NA,ssbsect_activity_date,"ssbsect_crn, ssbsect_term_code",UTC11
 UTC12,Flags missing or invalid budget codes,Database,Failure,Julie Stender,NA,ssrsccd_activity_date,"ssbsect_crn, ssbsect_term_code, budget_code",UTC12
-UTC13,High school courses use correct budget codes,Database,Failure,Julie Stender,NA,ssrsccd_activity_date,"budget_code, section_number, ssbsect_term_code, ssbsect_crn",UTC13
+UTC13,High school courses use correct budget codes,Database,Failure,Julie Stender,NA,ssrsccd_activity_date,ssrsccd,UTC13
 UTC14,Validates budget-related online courses,Database,Failure,Julie Stender,NA,NA,NA,UTC14
 UTC15,Validates self-support online course configuration,Database,Failure,Julie Stender,NA,ssbsect_activity_date,"budget_code, campus_code, section_number, instruction_method",UTC15
 UTC16,Courses with no room specified,Database,Failure,Julie Stender,NA,ssrmeet_activity_date,banner.ssrmeet,UTC16

@@ -357,7 +357,7 @@ SC14a,Invalid CRN,Database,Failure,Vicki Shurtz,SC_CRN Invalid,ssbsect_activity_
 SC14b,Missing CRN,Database,Failure,Vicki Shurtz,Missing Courses Reference Number,ssbsect_activity_date,banner.ssbsesct_crn,SC14b
 SC15b,"Course type, program type and course level alignement (Invalid U)",Database,Failure,Julie Stender,SC_CR_Type = U Invalid,scrlevl_acitivy_date,scrlevl_levl_code,SC15b
 SC15c,"Course type, program type and course level alignement (Invalid G)",Database,Failure,Julie Stender,SC_CR_Type = G Invalid,scrlevl_acitivy_date,scrlevl_levl_code,SC15c
-UTSC01,CE-funded students (BC/SF) have a Utah high school code (45… or 484870),Database,Failure,Julie Stender,NA,ssrsccd_activity_date,"banner.ssrsccd_sccd_code, sorhsch_sgbi_code, sgbstdn_styp_code",UTSC01
+UTSC01,Concurrent budget code misalignment with HS code,Database,Failure,Julie Stender,NA,ssrsccd_activity_date,"banner.ssrsccd_sccd_code, sorhsch_sgbi_code, sgbstdn_styp_code",UTSC01
 UTC01,invalid delivery method,Database,Failure,Vicki Shurtz,Checking for valid values IN instruction_method_code,ssbsect_activity_date,banner.ssbsect_insm_code,C12
 UTC02,Canceled course with enrollments,Database,Failure,Vickie Shurtz,,ssbsect_activity_date,ssbsect_activity_date,UTC02
 UTC03,Lecture schedule types (LEC/LEX) only have lecture hours,Database,Failure,Julie Stender,NA,ssbsect_activity_date,"banner.ssbsect_schd_code, banner.ssbsect_enrl, banner.ssbsect_subj_code, banner.ssbsect_crse_numb",UTC03

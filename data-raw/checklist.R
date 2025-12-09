@@ -497,14 +497,14 @@ rule_spec <- tribble(
   "UTS08", expr(!(is.na(ssid) & is_hs_type(student_type_code))),
   "UTS09", expr(is.na(cur_prgm_2) |
       cur_prgm  %in% primary_valid_programs |
-      cur_prgm_2 %in% second_valid_programs
-  ),
+      cur_prgm_2 %in% second_valid_programs),
   "UTS10", expr(entry_action != "HS" | is.na(cur_prgm) | cur_prgm %in% c("ND-CONC", "ND-SA", "ND-CE", "ND-ACE")),
   "UTS11", expr(!(first_admit_country_code %in% "US") | !is_missing_chr(first_admit_county_code)),
   "UTS12", expr(!(first_admit_country_code %in% "US") | !is_missing_chr(first_admit_state_code)),
   "UTS13", expr(!(first_admit_state_code %in% "UT") | !is_missing_chr(first_admit_county_code)),
   "UTS14", expr(!(first_admit_state_code %in% "UT") | !is_missing_chr(first_admit_country_code)),
   "UTS15", expr(!(age < 20) | !is_missing_chr(high_school_code)),
+  "UTS16", expr(!(birth_date >= high_school_grad_date)),
   "UTG01", expr(as.numeric(substr(graduated_term_id, 1, 4)) == as.numeric(lubridate::year(graduation_date))),
   "UTG02", expr(as.numeric(graduated_academic_year_code) == as.numeric(graduation_academic_year_check)),
   "UTG03", expr(is_valid_graduation_date(graduation_date)),

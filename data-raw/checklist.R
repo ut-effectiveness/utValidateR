@@ -501,6 +501,7 @@ rule_spec <- tribble(
   ),
   "UTS10", expr(entry_action != "HS" | is.na(cur_prgm) | cur_prgm %in% c("ND-CONC", "ND-SA", "ND-CE", "ND-ACE")),
   "UTS11", expr(!(first_admit_country_code %in% "US") | !is_missing_chr(first_admit_county_code)),
+  "UTS12", expr(!(first_admit_country_code %in% "US") | !is_missing_chr(first_admit_state_code)),
   "UTG01", expr(as.numeric(substr(graduated_term_id, 1, 4)) == as.numeric(lubridate::year(graduation_date))),
   "UTG02", expr(as.numeric(graduated_academic_year_code) == as.numeric(graduation_academic_year_check)),
   "UTG03", expr(is_valid_graduation_date(graduation_date)),

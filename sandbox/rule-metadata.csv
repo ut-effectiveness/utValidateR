@@ -328,6 +328,9 @@ UTS08,missing ssid for high school students,Database,Failure,Julie Stender,Flags
 UTS09,Verifies that students enrolled in a second program are in valid and recognized programs,Database,Failure,Julie Stender,"Ensures that students with a second program have valid program codes",sorlcur_activity_date,"sorlcur_program, sorlcur_program2",UTS09
 UTS10,HS students not enrolled in required non-degree programs,Database,Failure,Julie Stender,NA,"sorlcur_activity_date","entry_action, cur_prgm",UTS10
 UTS11,Missing County,Database,Failure,Julie Stender,"Flags records where admit_country = 'US' and admit_county is missing",sabsupl_activity_date,"banner.sabsupl_cnty_code_admit",UTS11
+UTS12,Missing State (US admits),Database,Failure,Julie Stender,
+"Flags records where admit_country = 'US' and admit_state is missing",
+sabsupl_activity_date,"banner.sabsupl_stat_code_admit",UTS12
 SC01a,institution id unknown,USHE,Failure,NA,G_Inst Unknown,NA,NA,S01a
 SC01a,missing instituion,USHE,Failure,NA,G_Inst NULL,NA,NA,G01b
 SC02a,"missing ushe_academic_year, version_id, season",USHE,Failure,NA,Wrong year/term/extract in submission files,NA,n/a,S02a

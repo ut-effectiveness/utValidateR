@@ -504,6 +504,7 @@ rule_spec <- tribble(
   "UTS12", expr(!(first_admit_country_code %in% "US") | !is_missing_chr(first_admit_state_code)),
   "UTS13", expr(!(first_admit_state_code %in% "UT") | !is_missing_chr(first_admit_county_code)),
   "UTS14", expr(!(first_admit_state_code %in% "UT") | !is_missing_chr(first_admit_country_code)),
+  "UTS15", expr(!(age < 20) | !is_missing_chr(high_school_code)),
   "UTG01", expr(as.numeric(substr(graduated_term_id, 1, 4)) == as.numeric(lubridate::year(graduation_date))),
   "UTG02", expr(as.numeric(graduated_academic_year_code) == as.numeric(graduation_academic_year_check)),
   "UTG03", expr(is_valid_graduation_date(graduation_date)),

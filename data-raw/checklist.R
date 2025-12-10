@@ -510,6 +510,9 @@ rule_spec <- tribble(
   "UTS19", expr(!((citz_code != "5" & admit_state == "AS") | (citz_code == "5" & admit_state != "AS"))),
   "UTS20", expr(!(citz_code == "4" & (admit_state != "UT" | !stringr::str_detect(high_school_code, "^45")))),
   "UTS21", expr(is.na(age) || (age > 10 & age < 100)),
+  "UTS22", expr(!(((citz_code != "2" & !is.na(visa_type)) | (citz_code == "2" & is.na(visa_type)) |
+          (!citz_code %in% c("2","3") & !is.na(visa_type)) | (citz_code == "2" & is.na(visa_type))) &
+        (visa_expire_date > Sys.Date() | is.na(visa_expire_date)))),
 
   "UTG01", expr(as.numeric(substr(graduated_term_id, 1, 4)) == as.numeric(lubridate::year(graduation_date))),
   "UTG02", expr(as.numeric(graduated_academic_year_code) == as.numeric(graduation_academic_year_check)),

@@ -506,6 +506,7 @@ rule_spec <- tribble(
   "UTS15", expr(!(age < 20) | !is_missing_chr(high_school_code)),
   "UTS16", expr(!(birth_date >= high_school_grad_date)),
   "UTS17", expr(is_valid_ssn_legacy(ssn)),
+  "UTS18", expr(!(is_missing_chr(high_school_grad_date) & !(student_type %in% c("P", "1", "2", "3", "5")))),
   "UTG01", expr(as.numeric(substr(graduated_term_id, 1, 4)) == as.numeric(lubridate::year(graduation_date))),
   "UTG02", expr(as.numeric(graduated_academic_year_code) == as.numeric(graduation_academic_year_check)),
   "UTG03", expr(is_valid_graduation_date(graduation_date)),

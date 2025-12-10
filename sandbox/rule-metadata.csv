@@ -333,8 +333,10 @@ UTS13,Utah applicant missing county,Database,Failure,Julie Stender,Flags records
 UTS14,Utah applicant missing country,Database,Failure,Julie Stender,Flags records where admit_state = 'UT' and admit_country is missing,sabsupl_activity_date,banner.sabsupl_natn_code_admit,UTS14
 UTS15,Missing HS code for students under 20,Database,Failure,Julie Stender,Flags records where age < 20 and high_school_code is missing,sorhsch_activity_date,banner.sorhsch_sbgi_code,UTS15
 UTS16,DOB must be before HS graduation date,Database,Failure,Julie Stender,Flags records where birth_date >= high_school_grad_date,sorhsch_activity_date,"banner.sorhsch_graduation_date, banner.spbpers_birth_date",UTS16
-UTS17,Bad SSN format,Database,Failure,Julie Stender,Flags records with invalid SSN format,spbpers_activity_date,banner.spbpers_ssn,UTS17
+UTS17,Bad SSN format,Database,Failure,checklist.R like you did above,Flags records with invalid SSN format,spbpers_activity_date,banner.spbpers_ssn,UTS17
 UTS18,Missing HS graduation date,Database,Failure,Julie Stender,Flags records where high_school_grad_date is missing for student types other than P,1,2,3,5,sorhsch_activity_date,banner.sorhsch_graduation_date,UTS18
+UTS19,Incorrect citizenship code for US non-citizen nationals,Database,Failure,Julie Stender,Flags records where citz_code and admit_state are inconsistent for US non-citizen nationals,spbpers_activity_date,banner.spbpers_citz_code,UTS19
+
 SC01a,institution id unknown,USHE,Failure,NA,G_Inst Unknown,NA,NA,S01a
 SC01a,missing instituion,USHE,Failure,NA,G_Inst NULL,NA,NA,G01b
 SC02a,"missing ushe_academic_year, version_id, season",USHE,Failure,NA,Wrong year/term/extract in submission files,NA,n/a,S02a

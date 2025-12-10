@@ -336,6 +336,7 @@ UTS16,DOB must be before HS graduation date,Database,Failure,Julie Stender,Flags
 UTS17,Bad SSN format,Database,Failure,checklist.R like you did above,Flags records with invalid SSN format,spbpers_activity_date,banner.spbpers_ssn,UTS17
 UTS18,Missing HS graduation date,Database,Failure,Julie Stender,Flags records where high_school_grad_date is missing for student types other than P,1,2,3,5,sorhsch_activity_date,banner.sorhsch_graduation_date,UTS18
 UTS19,Incorrect citizenship code for US non-citizen nationals,Database,Failure,Julie Stender,Flags records where citz_code and admit_state are inconsistent for US non-citizen nationals,spbpers_activity_date,banner.spbpers_citz_code,UTS19
+UTS20,Undocumented students must have in-state HS,Database,Failure,Julie Stender,Flags undocumented students whose admit_state is not UT or whose high_school_code does not indicate a Utah high school,spbpers_activity_date,banner.spbpers_citz_code,UTS20
 
 SC01a,institution id unknown,USHE,Failure,NA,G_Inst Unknown,NA,NA,S01a
 SC01a,missing instituion,USHE,Failure,NA,G_Inst NULL,NA,NA,G01b

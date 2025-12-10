@@ -495,6 +495,54 @@ is_self_support_online_valid <- function(campus_code, section_number, instructio
 }
 
 
+#' Helper function for validating SSN formats according to Legacy Audit rules
+#'
+#' @description
+#' `is_valid_ssn_legacy()` implements exactly and only the validation logic
+#' used in the Legacy Audit Report for identifying invalid Social Security Numbers.The check includes:
+#'
+#' Known invalid SSNs (e.g., 078051120, 123456789)
+#' SSNs in the restricted range 987654320–987654329
+#' SSNs beginning with 000 or 666
+#' SSNs where positions 4–5 equal 00 or positions 6–9 equal 0000
+#' SSNs containing lowercase alphabetic characters
+#' SSNs shorter than 9 characters.
+#'
+#' @param x A character vector of SSNs.
+#' @param missing_ok Logical
+#'
+#' @return A logical vector: `TRUE` for SSNs that meet the validity rules
+#' @export
+is_valid_ssn_legacy <- function(x, missing_ok = TRUE) {
+
+  # Legacy invalid conditions
+  bad <- (
+    !is.na(x) & (
+      # preserve the legacy logic EXACTLY
+      (stringr::str_starts(x, "9", negate = TRUE) &
+         x >= "987654320" & x <= "987654329") |
+        x %in% c("078051120", "111111111", "123456789", "219099999") |
+        stringr::str_starts(x, "000") |
+        stringr::str_starts(x, "666") |
+        stringr::str_sub(x, 4, 5) == "00" |
+        stringr::str_sub(x, 6, 9) == "0000" |
+        stringr::str_detect(x, "[a-z]") |
+        stringr::str_length(x) < 9
+    )
+  )
+
+  # convert "bad" into utValidateR's TRUE = valid
+  out <- !bad
+
+  # handle missing the same way legacy does
+  if (missing_ok) {
+    out | is.na(x)
+  } else {
+    out & !is.na(x)
+  }
+}
+
+
 #' Generate CSV for analytics_quad_concurrent_cours (Rule- C11b)
 #'
 #' Reads Excel from Data folder, drops extra columns, and writes CSV to Sandbox folder.

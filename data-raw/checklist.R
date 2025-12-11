@@ -493,8 +493,7 @@ rule_spec <- tribble(
   "UTS04", expr(!is.na(department_id)),
   "UTS05", expr(!is_missing_chr(high_school_code)),
   "UTS06", expr(is_degree_intent_consistent_program(student_type_code, primary_program_code)),
-  #"UTS07", expr(is.na(ssid) | nchar(ssid) == 7 & stringr::str_detect(ssid, "^(1|2)")),
-  "UTS07", expr(is.na(ssid) || (nchar(ssid) == 7 && stringr::str_detect(ssid, "^(1|2)"))),
+  "UTS07", expr(is.na(ssid) | nchar(ssid) == 7 & stringr::str_detect(ssid, "^(1|2)")),
   "UTS08", expr(!(is.na(ssid) & is_hs_type(student_type_code))),
   "UTS09", expr(is.na(cur_prgm_2) |
       cur_prgm  %in% primary_valid_programs |

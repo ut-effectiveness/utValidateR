@@ -323,7 +323,7 @@ S47c,invalid major due to non-alpha characters,Database,Failure,Julie Stender,S_
 S48a,invalid college due to non-alpha characters,Database,Failure,Julie Stender,S_College with Non-Alpha characters,sgbstdn_activity_date,"banner.sgbstdn_coll_code_1, banner.sgbstdn_coll_code_2",S46b
 S49a,missing second major with second cip code,Database,Failure,Julie Stender,Missing Second CIP or Major,sgbstdn_activity_date,banner.sgbstdn_majr_code_2,S49a
 S49b,invalid major due to non-alpha characters,Database,Failure,Julie Stender,S_Major with Non-Alpha characters,sgbstdn_activity_date,"banner.sgbstdn_majr_code_1, banner.sgbstdn_majr_code_2",S47c
-UTS07,invalid ssid format,Database,Failure, NA,G_Inst Unknown,NA,NA, UTS07
+UTS07,Invalid SSID format,Database,Failure,Julie Stender,Flags SSIDs that are not 7 digits long or do not begin with 1 or 2,goradid_activity_date,banner.goradid_additional_id,UTS07
 UTS08,missing ssid for high school students,Database,Failure,Julie Stender,Flags high school students (student type 'H') with missing SSIDs,goradid_activity_date,"goradid_additional_id, banner.sgbstdn_styp_code",UTS08
 UTS09,Verifies that students enrolled in a second program are in valid and recognized programs,Database,Failure,Julie Stender,"Ensures that students with a second program have valid program codes",sorlcur_activity_date,"sorlcur_program, sorlcur_program2",UTS09
 UTS10,HS students not enrolled in required non-degree programs,Database,Failure,Julie Stender,NA,"sorlcur_activity_date","entry_action, cur_prgm",UTS10

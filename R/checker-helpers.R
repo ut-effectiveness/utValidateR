@@ -444,57 +444,6 @@ is_degree_intent_consistent_program <- function(student_type_code, primary_progr
 }
 
 
-#' Helper function for validating self-support online course configuration
-#'
-#' @describeIn is_self_support_online_valid Checks whether a self-support section (budget code
-#' beginning with "S") has a campus, section-number pattern, and instruction method configuration
-#' consistent with institutional rules for online and self-support courses.
-#'
-#' @param campus_code Campus code associated with the section (e.g., "O01", "UOS", "UT", etc.)
-#' @param section_number self-support course patterns (e.g., "4010", "410", "212", etc.)
-#' @param instruction_method Instruction method code (e.g., "I" for Internet, or other modality codes).
-#'
-#' @return A logical vector where `TRUE` indicates that the section's configuration
-#' @export
-is_self_support_online_valid <- function(campus_code, section_number, instruction_method) {
-
- violates_rule <- (
-    # Non-online campus, 4xx self-support, coded as Internet
-    (campus_code != "O01" &
-       stringr::str_detect(section_number, "^4") &
-       instruction_method == "I") |
-
-      # Online campus (O01/UOS), 4xx self-support, NOT coded as Internet
-      (campus_code %in% c("O01", "UOS") &
-         stringr::str_detect(section_number, "^4") &
-         instruction_method != "I") |
-
-      # O01, NOT 4xx section, but coded as Internet
-      (campus_code == "O01" &
-         !stringr::str_detect(section_number, "^4") &
-         instruction_method == "I") |
-
-      # Non-O01, NOT 4xx, but coded as Internet
-      (campus_code != "O01" &
-         !stringr::str_detect(section_number, "^4") &
-         instruction_method == "I") |
-
-      # O01/UOS, NOT 4xx, but coded as Internet
-      (campus_code %in% c("O01", "UOS") &
-         !stringr::str_detect(section_number, "^4") &
-         instruction_method == "I") |
-
-      # O01/UOS, section_number has no “4” anywhere, and NOT Internet
-      (campus_code %in% c("O01", "UOS") &
-         !stringr::str_detect(section_number, "4") &
-         instruction_method != "I")
-  )
-
- violates_rule[is.na(violates_rule)] <- FALSE
-  !violates_rule
-}
-
-
 #' Helper function for validating SSN formats according to Legacy Audit rules
 #'
 #' @description

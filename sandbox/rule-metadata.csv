@@ -329,7 +329,6 @@ UTS08,missing ssid for high school students,Database,Failure,Julie Stender,Flags
 UTS09,Verifies that students enrolled in a second program are in valid and recognized programs,Database,Failure,Julie Stender,"Ensures that students with a second program have valid program codes",sorlcur_activity_date,"sorlcur_program, sorlcur_program2",UTS09
 UTS10,HS students not enrolled in required non-degree programs,Database,Failure,Julie Stender,NA,"sorlcur_activity_date",banner.sorlcur_student_typ,UTS10
 UTS12,Missing State (US admits),Database,Failure,Julie Stender,"Flags records where admit_country = 'US' and admit_state is missing",sabsupl_activity_date,"banner.sabsupl_stat_code_admit",UTS12
-UTS13,Utah applicant missing county,Database,Failure,Julie Stender,Flags records where admit_state = 'UT' and admit_county is missing,sabsupl_activity_date,banner.sabsupl_cnty_code_admit,UTS13
 UTS14,Utah applicant missing country,Database,Failure,Julie Stender,Flags records where admit_state = 'UT' and admit_country is missing,sabsupl_activity_date,banner.sabsupl_natn_code_admit,UTS14
 UTS15,Missing HS code for students under 20,Database,Failure,Julie Stender,Flags records where age < 20 and high_school_code is missing,sorhsch_activity_date,banner.sorhsch_sbgi_code,UTS15
 UTS16,DOB must be before HS graduation date,Database,Failure,Julie Stender,Flags records where birth_date >= high_school_grad_date,sorhsch_activity_date,"banner.sorhsch_graduation_date, banner.spbpers_birth_date",UTS16

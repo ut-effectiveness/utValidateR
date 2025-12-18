@@ -497,7 +497,6 @@ rule_spec <- tribble(
   "UTS10", expr(student_type != "HS" | is.na(cur_prgm) | cur_prgm %in% c("ND-CONC", "ND-SA", "ND-CE", "ND-ACE", "ND-DUAL")),
   "UTS12", expr(!(first_admit_country_code %in% "US") | !is_missing_chr(first_admit_state_code)),
   "UTS14", expr(!is_missing_chr(first_admit_country_code)),
-  "UTS15", expr(!(age < 20) | !is_missing_chr(high_school_code)),
   "UTS16", expr(!(birth_date >= high_school_grad_date)),
   "UTS17", expr(is_valid_ssn_legacy(ssn)),
   "UTS18", expr(!(is_missing_chr(high_school_grad_date) & !(student_type %in% c("P", "1", "2", "3", "5")))),

@@ -207,6 +207,7 @@ rule_spec <- tribble(
   "UTC02", expr(!(section_status == "C" & class_size > 0)),
   "UTC03", expr(!(subject_code != "CED" & !is.na(enrollment) & enrollment != 0 &
         schedule_code %in% c("LEC", "LEX") &
+          !is.na(lecture_hours) &
         ((!is.na(lab_hours)   & lab_hours > 0) |
             (!is.na(other_hours) & other_hours > 0)))),
   "UTC04", expr(!(!is.na(subject_code)   & subject_code != "CED" &

@@ -231,10 +231,15 @@ rule_spec <- tribble(
   # "UTC13", expr(!(active_ind == "A" & subject_code != "CED" & ((budget_code %in% c("BC", "SF")) !=
   #           stringr::str_detect(section_number, "V|S\\^|S|X|J")))),
 
-  "UTC13", expr(!(active_ind == "A" & subject_code != "CED" &
-      !is_missing_chr(budget_code) &                             # avoid C11 overlap
-      !(paste0(subject_code, "-", course_number) %in% concurrent_course_ids) &  # avoid C11b overlap
-      ((budget_code %in% c("BC", "SF")) != stringr::str_detect(section_number, "V|S\\^|S|X|J"))
+  "UTC13", expr(!(
+    active_ind == "A" &
+      subject_code != "CED" &
+      ((budget_code %in% c("BC","SF")) != stringr::str_detect(section_number, "V|S\\^|S|X|J")) &
+      # only keep if NOT already caught by C11 (i.e., C11 passes)
+      ((campus_id %in% "XXX") | !is_missing_chr(budget_code)) &
+      # only keep if NOT already caught by C11b (i.e., C11b passes)
+      ((paste0(subject_code, "-", course_number) %in% concurrent_course_ids) |
+         !(budget_code %in% c("BC","SF")))
   )),
   "UTC14", expr(!(!is.na(budget_code) & stringr::str_detect(budget_code, "^B") &
            !is.na(campus_code) & !is.na(instruction_method) &

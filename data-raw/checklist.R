@@ -128,7 +128,7 @@ rule_spec <- tribble(
 
   "S23a", expr(s_level %in% c("GN", "GG") | as.numeric(s_cum_gpa_grad) %in% c(0, NA)),
   "S25a", expr(toupper(full_time_part_time_code) %in% c("P", "F")),
-  "S26a", expr(!is.na(s_age) & s_age > 0 & s_age <= 125),
+  "S26a", expr(!is.na(age) & age > 0 & age <= 125),
   "S26b", expr(TODO("Not relevant to compare age to birthdate since we only have birthdate?")),
   "S27a", expr((first_admit_country_code %in% "US") | !is_us_state(first_admit_state_code)),
   "S27b", expr(!(first_admit_country_code %in% "US" &
@@ -153,7 +153,7 @@ rule_spec <- tribble(
   "S34d", expr(!is.na(student_id) | !(budget_code %in% c("BC", "SF"))),# TODO: UTSC01 and S34d should be part of student. But budget code is duplicating rows in student sql.
   "S34e", expr(!is.na(student_id) |
                  (!is_hs_type(student_type_code) &
-                    !is_freshmen_type(student_type_code))),
+                    !is_freshmen_type(student_type_code))), #TODO: This is not working as per USHE guideline. Need to revisit it.
   "S35a", expr(is_valid_student_id(student_id)),
   "S35b", expr(is_valid_student_id(student_id)), # TODO: redundant with S35a? Seems to be relevant for banner IDs only
   "S35c", expr(is_alpha_chr(substring(s_banner_id, 1, 1))),

@@ -228,8 +228,14 @@ rule_spec <- tribble(
   "UTC10", expr(!(is.na(program_type) & subject_code != "CED")),
   "UTC12", expr(!(subject_code != "CED" & ((active_ind == "A" & is.na(budget_code)) |
             (!(budget_code %in% valid_budget_codes))))),
-  "UTC13", expr(!(active_ind == "A" & subject_code != "CED" & ((budget_code %in% c("BC", "SF")) !=
-            stringr::str_detect(section_number, "V|S\\^|S|X|J")))),
+  # "UTC13", expr(!(active_ind == "A" & subject_code != "CED" & ((budget_code %in% c("BC", "SF")) !=
+  #           stringr::str_detect(section_number, "V|S\\^|S|X|J")))),
+
+  "UTC13", expr(!(active_ind == "A" & subject_code != "CED" &
+      !is_missing_chr(budget_code) &                             # avoid C11 overlap
+      !(paste0(subject_code, "-", course_number) %in% concurrent_course_ids) &  # avoid C11b overlap
+      ((budget_code %in% c("BC", "SF")) != stringr::str_detect(section_number, "V|S\\^|S|X|J"))
+  )),
   "UTC14", expr(!(!is.na(budget_code) & stringr::str_detect(budget_code, "^B") &
            !is.na(campus_code) & !is.na(instruction_method) &
         ((campus_code != "O01" & instruction_method == "I") | (campus_code %in% c("O01", "UOS") & instruction_method != "I")))),

@@ -144,13 +144,13 @@ rule_spec <- tribble(
   "S31a", expr(s_inst %in% c("5220","5221","3679","3676","63") | s_cum_membership %in% 0),
   "S32a", expr(is_valid_credits(total_cumulative_clep_credits_earned, missing_ok = TRUE)),
   "S33a", expr(is_valid_credits(total_cumulative_ap_credits_earned, missing_ok = TRUE)),
-  "S34a", expr(is_valid_student_id(student_id)),
-  "S34b", expr(is_valid_student_id(student_id) |
-                 !(is_hs_type(student_type_code) & first_admit_state_code == "UT")),
+  "S34a", expr(is.na(ssid) | (nchar(ssid) >= 7 & nchar(ssid) <= 9 & stringr::str_detect(ssid, "^[12]"))),
+  "S34b", expr(!(student_type == "H" & first_admit_state_code == "UT" & !is_missing_chr(ssid) &
+      (nchar(ssid) != 7 | !stringr::str_detect(ssid, "^[12]")))),
   "S34c", expr(!(is.na(student_id) &
                    first_admit_state_code == "UT" &
                    is_hs_type(student_type_code))),
-  "S34d", expr(!is.na(student_id) | !(budget_code %in% c("BC", "SF"))),
+  "S34d", expr(!is.na(student_id) | !(budget_code %in% c("BC", "SF"))),# TODO: UTSC01 and S34d should be part of student. But budget code is duplicating rows in student sql.
   "S34e", expr(!is.na(student_id) |
                  (!is_hs_type(student_type_code) &
                     !is_freshmen_type(student_type_code))),
@@ -228,9 +228,6 @@ rule_spec <- tribble(
   "UTC10", expr(!(is.na(program_type) & subject_code != "CED")),
   "UTC12", expr(!(subject_code != "CED" & ((active_ind == "A" & is.na(budget_code)) |
             (!(budget_code %in% valid_budget_codes))))),
-  # "UTC13", expr(!(active_ind == "A" & subject_code != "CED" & ((budget_code %in% c("BC", "SF")) !=
-  #           stringr::str_detect(section_number, "V|S\\^|S|X|J")))),
-
   "UTC13", expr(!(
     active_ind == "A" &
       subject_code != "CED" &
@@ -239,8 +236,7 @@ rule_spec <- tribble(
       ((campus_id %in% "XXX") | !is_missing_chr(budget_code)) &
       # only keep if NOT already caught by C11b (i.e., C11b passes)
       ((paste0(subject_code, "-", course_number) %in% concurrent_course_ids) |
-         !(budget_code %in% c("BC","SF")))
-  )),
+         !(budget_code %in% c("BC","SF"))))),
   "UTC14", expr(!(!is.na(budget_code) & stringr::str_detect(budget_code, "^B") &
            !is.na(campus_code) & !is.na(instruction_method) &
         ((campus_code != "O01" & instruction_method == "I") | (campus_code %in% c("O01", "UOS") & instruction_method != "I")))),

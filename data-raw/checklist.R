@@ -147,7 +147,7 @@ rule_spec <- tribble(
   "S34a", expr(is.na(ssid) | (nchar(ssid) >= 7 & nchar(ssid) <= 9 & stringr::str_detect(ssid, "^[12]"))),
   "S34b", expr(!(student_type == "H" & first_admit_state_code == "UT" & !is_missing_chr(ssid) &
       (nchar(ssid) != 7 | !stringr::str_detect(ssid, "^[12]")))),
-  "S34c", expr(!(is.na(student_id) &
+  "S34c", expr(!(is.na(ssid) &
                    first_admit_state_code == "UT" &
                    is_hs_type(student_type_code))),
   "S34d", expr(!is.na(student_id) | !(budget_code %in% c("BC", "SF"))),# TODO: UTSC01 and S34d should be part of student. But budget code is duplicating rows in student sql.

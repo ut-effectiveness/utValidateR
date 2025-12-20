@@ -279,7 +279,7 @@ S23c,invalid institutional cumulative gpa format,Database,Failure,Julie Stender,
 S23d,missing GPA at end of term,USHE,Failure,NA,UGrads without UGrad GPA,shrtgpa_activity_date,banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa),S21b
 S24a,invalid credit format,Database,Failure,Julie Stender,S_CUM_HRS_UGrad wrong format,shrtgpa_activity_date,banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),S20a
 S25a,missing part-time/full-time status,Database,Failure,Julie Stender,Part-time/Full-time Should be a value for each student.,NA,sum(banner.sfrstcr_credit_hr),S25a
-S26a,invalid age format,USHE,Failure,NA,wrong format,NA,banner.spbpers_birth_date,S26a
+S26a,invalid age format,Database,Failure,Julie Stender,wrong format,spbpers_activity_date,banner.spbpers_birth_date,S26a
 S26b,age and birthdate do not align,Database,Failure,Julie Stender,Checking s_age vs calculated age by birthdate. Plus or Minus 1 year buffer.,spbpers_activity_date,banner.spbpers_birth_date,S26b
 S27a,US state codes do not align with country code,Database,Failure,Jerhett Jerman,"Country origin codes WHERE there is a state code within US, but the country is not ''US''.",sabsupl_activity_date,banner.sabsupl_natn_code_admit,S27a
 S27b,State and county do not align with country code (US),Database,Failure,Jerhett Jerman,"state AND county code point outside of US, but the country code is ''US''",sabsupl_activity_date,banner.sabsupl_natn_code_admit,S27b

@@ -206,25 +206,25 @@ rule_spec <- tribble(
                                 missing_ok = TRUE)),
   "UTC02", expr(!(section_status == "C" & class_size > 0)),
   "UTC03", expr(!(subject_code != "CED" & !is.na(class_size) & class_size != 0 &
-        schedule_code %in% c("LEC", "LEX") &
+        section_format_type_code %in% c("LEC", "LEX") &
           !is.na(lecture_hours) &
         ((!is.na(lab_hours)   & lab_hours > 0) |
             (!is.na(other_hours) & other_hours > 0)))),
   "UTC04", expr(!(!is.na(subject_code)   & subject_code != "CED" &
         !is.na(class_size)     & class_size != 0 &
-        !is.na(schedule_code)  & schedule_code %in% c("LAB", "LBC", "ACT") &
+        !is.na(section_format_type_code)  & section_format_type_code %in% c("LAB", "LBC", "ACT") &
         ((!is.na(other_hours)   & other_hours > 0) | (!is.na(lecture_hours) & lecture_hours > 0)))),
   "UTC05", expr(!(subject_code != "CED" &
-        !is.na(class_size) & class_size != 0 & schedule_code == "LAB" &
+        !is.na(class_size) & class_size != 0 & section_format_type_code == "LAB" &
           !is.na(credit_hours) & credit_hours != 0)),
   "UTC06", expr(!(subject_code != "CED" & !is.na(class_size) & class_size != 0 &
-        schedule_code == "LBC" & is.na(credit_hours))),
-  "UTC07", expr(!(subject_code != "CED" & !is.na(class_size) & class_size != 0 & schedule_code == "LEL" &
+        section_format_type_code == "LBC" & is.na(credit_hours))),
+  "UTC07", expr(!(subject_code != "CED" & !is.na(class_size) & class_size != 0 & section_format_type_code == "LEL" &
         (is.na(credit_hours) | is.na(lab_hours)) & !is.na(other_hours))),
   "UTC08", expr(!(subject_code != "CED" & !is.na(class_size) & class_size != 0 &
-        !(schedule_code %in% c("LEC", "LEX", "LEL")) & !is.na(lecture_hours) & lecture_hours > 0)),
+        !(section_format_type_code %in% c("LEC", "LEX", "LEL")) & !is.na(lecture_hours) & lecture_hours > 0)),
   "UTC09", expr(!(subject_code != "CED" & !is.na(class_size) & class_size != 0 &
-        !(schedule_code %in% c("LAB", "LBC", "LEL", "ACT")) & !is.na(lab_hours) & lab_hours > 0)),
+        !(section_format_type_code %in% c("LAB", "LBC", "LEL", "ACT")) & !is.na(lab_hours) & lab_hours > 0)),
   "UTC10", expr(!(is.na(program_type) & subject_code != "CED")),
   "UTC12", expr(!(subject_code != "CED" & ((active_ind == "A" & is.na(budget_code)) |
             (!(budget_code %in% valid_budget_codes))))),

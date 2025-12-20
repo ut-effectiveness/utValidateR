@@ -241,7 +241,7 @@ rule_spec <- tribble(
            !is.na(campus_code) & !is.na(instruction_method_code) &
         ((campus_code != "O01" & instruction_method_code == "I") | (campus_code %in% c("O01", "UOS") & instruction_method_code != "I")))),
   "UTC16", expr(!(!(instruction_method_code %in% c("I", "E")) & !(building_number_1 %in% c("VIRT", "ONLINE")) &
-        !is.na(building_number_1) & is.na(room_code_1))),
+        !is.na(building_number_1) & is.na(meet_room_number_1))),
   "C13", expr(is_valid_values(program_type, valid_program_types, missing_ok = FALSE)),
   "C13a", expr(TODO("USHE check on perkins program types. Requires a query?")),
   "C13c", expr(TODO("USHE check on perkins budget codes. Need query for perkins codes?")),

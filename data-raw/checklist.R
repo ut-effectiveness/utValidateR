@@ -238,8 +238,8 @@ rule_spec <- tribble(
       ((paste0(subject_code, "-", course_number) %in% concurrent_course_ids) |
          !(budget_code %in% c("BC","SF"))))),
   "UTC14", expr(!(!is.na(budget_code) & stringr::str_detect(budget_code, "^B") &
-           !is.na(campus_code) & !is.na(instruction_method_code) &
-        ((campus_code != "O01" & instruction_method_code == "I") | (campus_code %in% c("O01", "UOS") & instruction_method_code != "I")))),
+           !is.na(campus_id) & !is.na(instruction_method_code) &
+        ((campus_id != "O01" & instruction_method_code == "I") | (campus_id %in% c("O01", "UOS") & instruction_method_code != "I")))),
   "UTC16", expr(!(!(instruction_method_code %in% c("I", "E")) & !(building_number_1 %in% c("VIRT", "ONLINE")) &
         !is.na(building_number_1) & is.na(meet_room_number_1))),
   "C13", expr(is_valid_values(program_type, valid_program_types, missing_ok = FALSE)),

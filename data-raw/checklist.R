@@ -506,11 +506,11 @@ rule_spec <- tribble(
   "UTS14", expr(!is_missing_chr(first_admit_country_code)),
   "UTS16", expr(!(birth_date >= high_school_grad_date)),
   "UTS17", expr(is_valid_ssn_legacy(ssn)),
-  "UTS19", expr(!((citz_code != "5" & admit_state == "AS") | (citz_code == "5" & admit_state != "AS"))),
-  "UTS20", expr(!(citz_code == "4" & (admit_state != "UT" | !stringr::str_detect(high_school_code, "^45")))),
+  "UTS19", expr(!((us_citizenship_code != "5" & admit_state == "AS") | (us_citizenship_code == "5" & admit_state != "AS"))),
+  "UTS20", expr(!(us_citizenship_code == "4" & (admit_state != "UT" | !stringr::str_detect(high_school_code, "^45")))),
   "UTS21", expr(is.na(age) || (age > 10 & age < 100)),
-  "UTS22", expr(!(((citz_code != "2" & !is.na(visa_type)) | (citz_code == "2" & is.na(visa_type)) |
-          (!citz_code %in% c("2","3") & !is.na(visa_type)) | (citz_code == "2" & is.na(visa_type))) &
+  "UTS22", expr(!(((us_citizenship_code != "2" & !is.na(visa_type)) | (us_citizenship_code == "2" & is.na(visa_type)) |
+          (!us_citizenship_code %in% c("2","3") & !is.na(visa_type)) | (us_citizenship_code == "2" & is.na(visa_type))) &
         (visa_expire_date > Sys.Date() | is.na(visa_expire_date)))),
 
   "UTG01", expr(as.numeric(substr(graduated_term_id, 1, 4)) == as.numeric(lubridate::year(graduation_date))),

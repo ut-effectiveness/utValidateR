@@ -145,7 +145,7 @@ rule_spec <- tribble(
   "S32a", expr(is_valid_credits(total_cumulative_clep_credits_earned, missing_ok = TRUE)),
   "S33a", expr(is_valid_credits(total_cumulative_ap_credits_earned, missing_ok = TRUE)),
   "S34a", expr(is.na(ssid) | (nchar(ssid) >= 7 & nchar(ssid) <= 9 & stringr::str_detect(ssid, "^[12]"))),
-  "S34b", expr(!(student_type == "H" & first_admit_state_code == "UT" & !is_missing_chr(ssid) &
+  "S34b", expr(!(student_type_code == "H" & first_admit_state_code == "UT" & !is_missing_chr(ssid) &
       (nchar(ssid) != 7 | !stringr::str_detect(ssid, "^[12]")))),
   "S34c", expr(!(is.na(ssid) &
                    first_admit_state_code == "UT" &
@@ -501,13 +501,13 @@ rule_spec <- tribble(
   "UTS09", expr(is.na(cur_prgm_2) |
       cur_prgm  %in% primary_valid_programs |
       cur_prgm_2 %in% second_valid_programs),
-  "UTS10", expr(student_type != "HS" | is.na(cur_prgm) | cur_prgm %in% c("ND-CONC", "ND-SA", "ND-CE", "ND-ACE", "ND-DUAL")),
+  "UTS10", expr(student_type_code != "HS" | is.na(cur_prgm) | cur_prgm %in% c("ND-CONC", "ND-SA", "ND-CE", "ND-ACE", "ND-DUAL")),
   "UTS12", expr(!(first_admit_country_code %in% "US") | !is_missing_chr(first_admit_state_code)),
   "UTS14", expr(!is_missing_chr(first_admit_country_code)),
   "UTS16", expr(!(birth_date >= high_school_grad_date)),
   "UTS17", expr(is_valid_ssn_legacy(ssn)),
-  "UTS19", expr(!((us_citizenship_code != "5" & admit_state == "AS") | (us_citizenship_code == "5" & admit_state != "AS"))),
-  "UTS20", expr(!(us_citizenship_code == "4" & (admit_state != "UT" | !stringr::str_detect(high_school_code, "^45")))),
+  "UTS19", expr(!((us_citizenship_code != "5" & first_admit_state_code == "AS") | (us_citizenship_code == "5" & first_admit_state_code != "AS"))),
+  "UTS20", expr(!(us_citizenship_code == "4" & (first_admit_state_code != "UT" | !stringr::str_detect(high_school_code, "^45")))),
   "UTS21", expr(is.na(age) || (age > 10 & age < 100)),
   "UTS22", expr(!(((us_citizenship_code != "2" & !is.na(visa_type)) | (us_citizenship_code == "2" & is.na(visa_type)) |
           (!us_citizenship_code %in% c("2","3") & !is.na(visa_type)) | (us_citizenship_code == "2" & is.na(visa_type))) &

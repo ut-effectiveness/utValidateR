@@ -246,9 +246,7 @@ rule_spec <- tribble(
   "C13a", expr(TODO("USHE check on perkins program types. Requires a query?")),
   "C13c", expr(TODO("USHE check on perkins budget codes. Need query for perkins codes?")),
   "C14a", expr(c_credit_ind %in% c("C", "N")), # USHE check
-  "C14b", expr(!(c_credit_ind %in% "N" &
-                   c_extract %in% "3" &
-                   !(c_instruct_type %in% "LAB"))), #USHE check now
+  "C14b", expr(!(subject_code == "CED" & section_format_type_code != "LAB")), #USHE check now
   "C14c", expr(c_instruct_type %in% "LAB" |
                  c_program_type %in% c("P", "V") |
                  c_budget_code %in% c("BV", "SQ") |

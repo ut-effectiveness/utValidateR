@@ -518,7 +518,7 @@ rule_spec <- tribble(
   "UTG04", expr(as.numeric(graduation_term_year_check) == as.numeric(graduated_academic_year_code)),
   "UTSC01", expr(
     !(budget_code %in% c("BC", "SF") &
-        !(startsWith(high_school_code, "45") | high_school_code == "484870")))
+        !(startsWith(latest_high_school_code, "45") | latest_high_school_code == "484870")))
 )
 
 

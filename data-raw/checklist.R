@@ -496,9 +496,6 @@ rule_spec <- tribble(
   "UTS06", expr(is_degree_intent_consistent_program(student_type_code, primary_program_code)),
   "UTS07", expr(is.na(ssid) | nchar(ssid) == 7 & stringr::str_detect(ssid, "^(1|2)")),
   "UTS08", expr(!(is.na(ssid) & is_hs_type(student_type_code))),
-  "UTS09", expr(is.na(cur_prgm_2) |
-      cur_prgm  %in% primary_valid_programs |
-      cur_prgm_2 %in% second_valid_programs),
   "UTS10", expr(student_type_code != "HS" | is.na(cur_prgm) | cur_prgm %in% c("ND-CONC", "ND-SA", "ND-CE", "ND-ACE", "ND-DUAL")),
   "UTS12", expr(!(first_admit_country_code %in% "US") | !is_missing_chr(first_admit_state_code)),
   "UTS14", expr(!is_missing_chr(first_admit_country_code)),

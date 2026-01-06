@@ -221,8 +221,10 @@ rule_spec <- tribble(
         section_format_type_code == "LBC" & is.na(course_max_credits))),
   "UTC07", expr(!(subject_code != "CED" & !is.na(class_size) & class_size != 0 & section_format_type_code == "LEL" &
         (is.na(course_max_credits) | is.na(lab_hours)) & !is.na(other_hours))),
-  "UTC08", expr(!(subject_code != "CED" & !is.na(class_size) & class_size != 0 &
-        !(section_format_type_code %in% c("LEC", "LEX", "LEL")) & !is.na(lecture_hours) & lecture_hours > 0)),
+  "UTC08", expr(!(subject_code != "CED" &
+                    class_size != 0 &
+                    !(section_format_type_code %in% c("LEC","LEX","LEL")) &
+                    lecture_hours > 0)),
   "UTC09", expr(!(subject_code != "CED" & !is.na(class_size) & class_size != 0 &
         !(section_format_type_code %in% c("LAB", "LBC", "LEL", "ACT")) & !is.na(lab_hours) & lab_hours > 0)),
   "UTC10", expr(!(is.na(program_type) & subject_code != "CED")),

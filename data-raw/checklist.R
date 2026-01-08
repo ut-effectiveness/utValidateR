@@ -204,7 +204,7 @@ rule_spec <- tribble(
   "UTC01", expr(is_valid_values(instruction_method_code,
                                 valid_instruction_method_codes,
                                 missing_ok = TRUE)),
-  "UTC02", expr(!(section_status == "C" & class_size > 0)),
+  "UTC02", expr(!(active_ind == "C" & class_size > 0)),
   "UTC03", expr(!(subject_code != "CED" & !is.na(class_size) & class_size != 0 &
         section_format_type_code %in% c("LEC", "LEX") &
           !is.na(lecture_hours) &

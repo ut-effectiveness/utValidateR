@@ -338,6 +338,7 @@ UTS20,Undocumented students must have in-state HS,Database,Failure,Julie Stender
 UTS21,Age outside normal range,Database,Failure,Julie Stender,Flags students whose age is less than or equal to 10 or greater than or equal to 100,sorhsch_activity_date,banner.sorhsch_graduation_date,UTS21
 UTS22,Invalid Visa Type or Citizenship Code,Database,Failure,Julie Stender,"Flags mismatches between visa type, citizenship code, and visa expiration",spbpers_activity_date,banner.gorvisa_vtyp_code,UTS22
 UTS23,"Identifies students with no program listed, excluding those in community education courses",Database,Failure,Julie Stender,"Flags students with a missing program code who are not non-credit (NC) students",sorlcur_activity_date,banner.sorlcur_program,UTS23
+UTS24,Duplicate High School Records,Database,Failure,Julie Stender,Flags students with more than one NON-missing high school code record,sorhsch_activity_date,banner.sorhsch.sorhsch_sbgi_code,UTS24
 
 SC01a,institution id unknown,USHE,Failure,NA,G_Inst Unknown,NA,NA,S01a
 SC01a,missing instituion,USHE,Failure,NA,G_Inst NULL,NA,NA,G01b

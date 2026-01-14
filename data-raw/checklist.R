@@ -510,6 +510,7 @@ rule_spec <- tribble(
           (!us_citizenship_code %in% c("2","3") & !is.na(visa_type)) | (us_citizenship_code == "2" & is.na(visa_type))) &
         (visa_expire_date > Sys.Date() | is.na(visa_expire_date)))),
   "UTS23", expr(!(is_missing_chr(cur_prgm) & level_id != "NC")),
+  "UTS24", expr(is.na(banner_hs_nonmissing_count) | banner_hs_nonmissing_count <= 1),
 
   "UTG01", expr(as.numeric(substr(graduated_term_id, 1, 4)) == as.numeric(lubridate::year(graduation_date))),
   "UTG02", expr(as.numeric(graduated_academic_year_code) == as.numeric(graduation_academic_year_check)),

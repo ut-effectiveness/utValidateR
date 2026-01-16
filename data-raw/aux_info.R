@@ -129,6 +129,9 @@ aux_info <- list(
 
   valid_budget_codes = c("BA","BC","BU","BV","BY","SD","SF","SM","SP","SQ"), #UTC12
 
+  # Section formats that do NOT require a room number
+  no_room_required_section_formats = c("MUN", "MUM", "ACT", "ENS", "SGP"), #UTC16
+
   # Inventories
   building_inventory = building_list$building_number, #C19c and others, TODO: get from a query
   rooms_inventory = c(building_list$building_number) #C19d and others, TODO: get from a query

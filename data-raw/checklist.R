@@ -228,7 +228,7 @@ rule_spec <- tribble(
   "UTC09", expr(!(subject_code != "CED" & !is.na(class_size) & class_size != 0 &
         !(section_format_type_code %in% c("LAB", "LBC", "LEL", "ACT")) & !is.na(lab_hours) & lab_hours > 0)),
   "UTC10", expr(!(is.na(program_type) & subject_code != "CED")),
-  "UTC12", expr(campus_id %in% "XXX" | utValidateR::is_missing_chr(budget_code) | !(budget_code %in% valid_budget_codes)),
+  "UTC12", expr(!(campus_id != "XXX" & (utValidateR::is_missing_chr(budget_code) | !(budget_code %in% valid_budget_codes)))),
   "UTC13", expr(!(
     active_ind == "A" &
       subject_code != "CED" &

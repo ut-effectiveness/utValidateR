@@ -307,7 +307,9 @@ is_alpha_chr <- function(x, missing_ok = TRUE) {
 
 #' Checker for missing character values
 #'
-#' @describeIn is_alpha_chr returns TRUE for NA or empty-string values
+#' @describeIn is_missing_chr returns TRUE for NA or empty-string values
+#' @param x A character vector
+#' @return Logical vector
 #' @export
 is_missing_chr <- function(x) {
   # Per sql code, x is missing if null (NA) or empty string.

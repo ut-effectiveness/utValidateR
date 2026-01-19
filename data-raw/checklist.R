@@ -506,9 +506,9 @@ rule_spec <- tribble(
   "UTS19", expr(!((us_citizenship_code != "5" & first_admit_state_code == "AS") | (us_citizenship_code == "5" & first_admit_state_code != "AS"))),
   "UTS20", expr(!(us_citizenship_code == "4" & (first_admit_state_code != "UT" | !stringr::str_detect(high_school_code, "^45")))),
   "UTS21", expr(is.na(age) || (age > 10 & age < 100)),
-  "UTS22", expr(!(((us_citizenship_code != "2" & !is.na(visa_type)) | (us_citizenship_code == "2" & is.na(visa_type)) |
-          (!us_citizenship_code %in% c("2","3") & !is.na(visa_type)) | (us_citizenship_code == "2" & is.na(visa_type))) &
-        (visa_expire_date > Sys.Date() | is.na(visa_expire_date)))),
+  # "UTS22", expr(!(((us_citizenship_code != "2" & !is.na(visa_type)) | (us_citizenship_code == "2" & is.na(visa_type)) |
+  #         (!us_citizenship_code %in% c("2","3") & !is.na(visa_type)) | (us_citizenship_code == "2" & is.na(visa_type))) &
+  #       (visa_expire_date > Sys.Date() | is.na(visa_expire_date)))),
   "UTS23", expr(!(is_missing_chr(cur_prgm) & level_id != "NC")),
   "UTS24", expr(is.na(banner_hs_nonmissing_count) | banner_hs_nonmissing_count <= 1),
 

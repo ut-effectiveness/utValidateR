@@ -150,7 +150,7 @@ rule_spec <- tribble(
   "S34c", expr(!(is.na(ssid) &
                    first_admit_state_code == "UT" &
                    is_hs_type(student_type_code))),
-  "S34d", expr(!is.na(student_id) | !(budget_code %in% c("BC", "SF"))),# TODO: UTSC01 and S34d should be part of student. But budget code is duplicating rows in student sql.
+  "S34d", expr(!is.na(student_id) | !(budget_code %in% c("BC", "SF"))),
   "S34e", expr(!is.na(student_id) |
                  (!is_hs_type(student_type_code) &
                     !is_freshmen_type(student_type_code))), #TODO: This is not working as per USHE guideline. Need to revisit it.

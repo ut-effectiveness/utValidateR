@@ -233,7 +233,7 @@ rule_spec <- tribble(
       subject_code != "CED" &
       ((budget_code %in% c("BC","SF")) != stringr::str_detect(section_number, "V|S\\^|S|X|J")) &
       # only keep if NOT already caught by C11 (i.e., C11 passes)
-      ((campus_id %in% "XXX") | !is_missing_chr(budget_code)) &
+      ((campus_id %in% "XXX") | !utValidateR::is_missing_chr(budget_code)) &
       # only keep if NOT already caught by C11b (i.e., C11b passes)
       ((paste0(subject_code, "-", course_number) %in% concurrent_course_ids) |
          !(budget_code %in% c("BC","SF"))))),

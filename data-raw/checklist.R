@@ -81,7 +81,7 @@ rule_spec <- tribble(
   "G07f", expr(g_ethnic_w %in% c("W", NA)),
 
   "S15a", expr(is_valid_values(s_regent_res, c("R", "N", "A", "M", "G"))), #USHE check
-  "UTS01", expr(is_valid_values(residency_code, c("R", "N", "A", "M", "G", "C", "H"))),
+  "UTS01", expr(is_valid_values(residency_code, c("R", "N", "A", "M", "G", "C", "H", "B"))),
   "S16a", expr(is_valid_values(primary_major_cip_code, valid_cip_codes)),
   "S17a", expr(is_valid_values(s_reg_status, valid_s_reg_statuses, missing_ok = FALSE)), # USHE check
   "S17b", expr(!((s_reg_status %in% c("CS","HS","FF","FH","TU")) &
@@ -128,7 +128,7 @@ rule_spec <- tribble(
 
   "S23a", expr(s_level %in% c("GN", "GG") | as.numeric(s_cum_gpa_grad) %in% c(0, NA)),
   "S25a", expr(toupper(full_time_part_time_code) %in% c("P", "F")),
-  "S26a", expr(!is.na(s_age) & s_age > 0 & s_age <= 125),
+  "S26a", expr(!is.na(age) & age > 0 & age <= 125),
   "S26b", expr(TODO("Not relevant to compare age to birthdate since we only have birthdate?")),
   "S27a", expr((first_admit_country_code %in% "US") | !is_us_state(first_admit_state_code)),
   "S27b", expr(!(first_admit_country_code %in% "US" &
@@ -144,16 +144,16 @@ rule_spec <- tribble(
   "S31a", expr(s_inst %in% c("5220","5221","3679","3676","63") | s_cum_membership %in% 0),
   "S32a", expr(is_valid_credits(total_cumulative_clep_credits_earned, missing_ok = TRUE)),
   "S33a", expr(is_valid_credits(total_cumulative_ap_credits_earned, missing_ok = TRUE)),
-  "S34a", expr(is_valid_student_id(student_id)),
-  "S34b", expr(is_valid_student_id(student_id) |
-                 !(is_hs_type(student_type_code) & first_admit_state_code == "UT")),
-  "S34c", expr(!(is.na(student_id) &
+  "S34a", expr(is.na(ssid) | (nchar(ssid) >= 7 & nchar(ssid) <= 9 & stringr::str_detect(ssid, "^[12]"))),
+  "S34b", expr(!(student_type_code == "H" & first_admit_state_code == "UT" & !is_missing_chr(ssid) &
+      (nchar(ssid) != 7 | !stringr::str_detect(ssid, "^[12]")))),
+  "S34c", expr(!(is.na(ssid) &
                    first_admit_state_code == "UT" &
                    is_hs_type(student_type_code))),
   "S34d", expr(!is.na(student_id) | !(budget_code %in% c("BC", "SF"))),
   "S34e", expr(!is.na(student_id) |
                  (!is_hs_type(student_type_code) &
-                    !is_freshmen_type(student_type_code))),
+                    !is_freshmen_type(student_type_code))), #TODO: This is not working as per USHE guideline. Need to revisit it.
   "S35a", expr(is_valid_student_id(student_id)),
   "S35b", expr(is_valid_student_id(student_id)), # TODO: redundant with S35a? Seems to be relevant for banner IDs only
   "S35c", expr(is_alpha_chr(substring(s_banner_id, 1, 1))),
@@ -204,14 +204,50 @@ rule_spec <- tribble(
   "UTC01", expr(is_valid_values(instruction_method_code,
                                 valid_instruction_method_codes,
                                 missing_ok = TRUE)),
-  "UTC02", expr(!(section_status == "C" & class_size > 0)),
-  "C13", expr(is_valid_values(program_type, valid_program_types, missing_ok = TRUE)),
+  "UTC02", expr(!(active_ind == "C" & class_size > 0)),
+  "UTC03", expr(!(subject_code != "CED" & !is.na(class_size) & class_size != 0 &
+        section_format_type_code %in% c("LEC", "LEX") &
+          !is.na(lecture_hours) &
+        ((!is.na(lab_hours)   & lab_hours > 0) |
+            (!is.na(other_hours) & other_hours > 0)))),
+  "UTC04", expr(!(!is.na(subject_code)   & subject_code != "CED" &
+        !is.na(class_size)     & class_size != 0 &
+        !is.na(section_format_type_code)  & section_format_type_code %in% c("LAB", "LBC", "ACT") &
+        ((!is.na(other_hours)   & other_hours > 0) | (!is.na(lecture_hours) & lecture_hours > 0)))),
+  "UTC05", expr(!(subject_code != "CED" &
+        !is.na(class_size) & class_size != 0 & section_format_type_code == "LAB" &
+          !is.na(course_max_credits) & course_max_credits != 0)),
+  "UTC06", expr(!(subject_code != "CED" & !is.na(class_size) & class_size != 0 &
+        section_format_type_code == "LBC" & is.na(course_max_credits))),
+  "UTC07", expr(!(subject_code != "CED" & !is.na(class_size) & class_size != 0 & section_format_type_code == "LEL" &
+        (is.na(course_max_credits) | is.na(lab_hours)) & !is.na(other_hours))),
+  "UTC08", expr(!(subject_code != "CED" &
+                    class_size != 0 &
+                    !(section_format_type_code %in% c("LEC","LEX","LEL")) &
+                    lecture_hours > 0)),
+  "UTC09", expr(!(subject_code != "CED" & !is.na(class_size) & class_size != 0 &
+        !(section_format_type_code %in% c("LAB", "LBC", "LEL", "ACT")) & !is.na(lab_hours) & lab_hours > 0)),
+  "UTC12", expr(!(campus_id != "XXX" & (utValidateR::is_missing_chr(budget_code) | !(budget_code %in% valid_budget_codes)))),
+  "UTC13", expr(!(
+    active_ind == "A" &
+      subject_code != "CED" &
+      ((budget_code %in% c("BC","SF")) != stringr::str_detect(section_number, "V|S\\^|S|X|J")) &
+      # only keep if NOT already caught by C11 (i.e., C11 passes)
+      ((campus_id %in% "XXX") | !utValidateR::is_missing_chr(budget_code)) &
+      # only keep if NOT already caught by C11b (i.e., C11b passes)
+      ((paste0(subject_code, "-", course_number) %in% concurrent_course_ids) |
+         !(budget_code %in% c("BC","SF"))))),
+  "UTC14", expr(!(!is.na(budget_code) & stringr::str_detect(budget_code, "^B") &
+           !is.na(campus_id) & !is.na(instruction_method_code) &
+        ((campus_id != "O01" & instruction_method_code == "I") | (campus_id %in% c("O01", "UOS") & instruction_method_code != "I")))),
+  "UTC16", expr(!(!(instruction_method_code %in% c("I", "E")) & !(building_number_1 %in% c("VIRT", "ONLINE")) &
+        !is.na(building_number_1) & is.na(meet_room_number_1) &
+        !(section_format_type_code %in% no_room_required_section_formats))),
+  "C13", expr(is_valid_values(program_type, valid_program_types, missing_ok = FALSE)),
   "C13a", expr(TODO("USHE check on perkins program types. Requires a query?")),
   "C13c", expr(TODO("USHE check on perkins budget codes. Need query for perkins codes?")),
   "C14a", expr(c_credit_ind %in% c("C", "N")), # USHE check
-  "C14b", expr(!(c_credit_ind %in% "N" &
-                   c_extract %in% "3" &
-                   !(c_instruct_type %in% "LAB"))), #USHE check now
+  "C14b", expr(!(subject_code == "CED" & section_format_type_code != "LAB")),
   "C14c", expr(c_instruct_type %in% "LAB" |
                  c_program_type %in% c("P", "V") |
                  c_budget_code %in% c("BV", "SQ") |
@@ -459,10 +495,29 @@ rule_spec <- tribble(
   "UTS04", expr(!is.na(department_id)),
   "UTS05", expr(!is_missing_chr(high_school_code)),
   "UTS06", expr(is_degree_intent_consistent_program(student_type_code, primary_program_code)),
+  "UTS07", expr(is.na(ssid) | nchar(ssid) == 7 & stringr::str_detect(ssid, "^(1|2)")),
+  "UTS08", expr(!(is.na(ssid) & utValidateR::is_hs_type(student_type_code))),
+  "UTS10", expr(student_type_code != "HS" | is.na(cur_prgm) | cur_prgm %in% c("ND-CONC", "ND-SA", "ND-CE", "ND-ACE", "ND-DUAL")),
+  "UTS12", expr(!(first_admit_country_code %in% "US") | !is_missing_chr(first_admit_state_code)),
+  "UTS14", expr(!is_missing_chr(first_admit_country_code)),
+  "UTS16", expr(!(birth_date >= high_school_graduation_date)),
+  "UTS17", expr(is_valid_ssn_legacy(ssn)),
+  "UTS19", expr(!((us_citizenship_code != "5" & first_admit_state_code == "AS") | (us_citizenship_code == "5" & first_admit_state_code != "AS"))),
+  "UTS20", expr(!(us_citizenship_code == "4" & (first_admit_state_code != "UT" | !stringr::str_detect(high_school_code, "^45")))),
+  "UTS21", expr(is.na(age) || (age > 10 & age < 100)),
+  # "UTS22", expr(!(((us_citizenship_code != "2" & !is.na(visa_type)) | (us_citizenship_code == "2" & is.na(visa_type)) |
+  #         (!us_citizenship_code %in% c("2","3") & !is.na(visa_type)) | (us_citizenship_code == "2" & is.na(visa_type))) &
+  #       (visa_expire_date > Sys.Date() | is.na(visa_expire_date)))),
+  "UTS23", expr(!(is_missing_chr(cur_prgm) & level_id != "NC")),
+  "UTS24", expr(is.na(banner_hs_nonmissing_count) | banner_hs_nonmissing_count <= 1),
+
   "UTG01", expr(as.numeric(substr(graduated_term_id, 1, 4)) == as.numeric(lubridate::year(graduation_date))),
   "UTG02", expr(as.numeric(graduated_academic_year_code) == as.numeric(graduation_academic_year_check)),
   "UTG03", expr(is_valid_graduation_date(graduation_date)),
-  "UTG04", expr(as.numeric(graduation_term_year_check) == as.numeric(graduated_academic_year_code))
+  "UTG04", expr(as.numeric(graduation_term_year_check) == as.numeric(graduated_academic_year_code)),
+  "UTSC01", expr(
+    !(budget_code %in% c("BC", "SF") &
+        !(startsWith(latest_high_school_code, "45") | latest_high_school_code == "484870")))
 )
 
 
@@ -471,6 +526,7 @@ rule_spec <- tribble(
 #' @param rule rule name, e.g. "S00b"
 get_ushe_file <- function(rule) {
   out <- case_when(
+    grepl("^UTSC", rule) ~ "Student Course",
     grepl("^SC", rule) ~ "Student Course",
     grepl("^S[0-9]", rule) ~ "Student",
     grepl("^C", rule) ~ "Course",
@@ -479,7 +535,6 @@ get_ushe_file <- function(rule) {
     grepl("^R", rule) ~ "Rooms",
     grepl("^UTS", rule) ~ "Student",
     grepl("^UTC", rule) ~ "Course",
-    grepl("^UTSC", rule) ~ "Student Course",
     grepl("^UTG", rule) ~ "Graduation",
     TRUE ~ NA_character_
     )

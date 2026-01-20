@@ -2,12 +2,9 @@
 % Please edit documentation in R/checker-helpers.R
 \name{is_alpha_chr}
 \alias{is_alpha_chr}
-\alias{is_missing_chr}
 \title{Checks that a character vector is alpha-only (plus apostrophe)}
 \usage{
 is_alpha_chr(x, missing_ok = TRUE)
-
-is_missing_chr(x)
 }
 \arguments{
 \item{x}{Character vector}
@@ -16,11 +13,4 @@ is_missing_chr(x)
 }
 \description{
 Checks that a character vector is alpha-only (plus apostrophe)
-
-Checker for missing character values
 }
-\section{Functions}{
-\itemize{
-\item \code{is_missing_chr()}: returns TRUE for NA or empty-string values
-
-}}

@@ -44,7 +44,7 @@ C13,invalid program type and missing program type,Database,Failure,Samira Hall,C
 C13a,invalid program type against perkins list,USHE,Failure,NA,checks validity of c_program_type against perkins list.,NA,banner.scbsupp_occs_code,C13a
 C13c,invalid budget code again perkins list,USHE,Failure,NA,"checks for courses allowed on perkins list, but not currently coded to vocational",NA,banner.scbsupp_occs_code,C13c
 C14a,invalid credit indicator,USHE,Failure,NA,Checking for valid values for c_credit_ind.,NA,banner.scrlevl_levl_code = 'NC',C14a
-C14b,credit indicator and section format type do not align,USHE,Failure,NA,NON-CREDIT COURSES IN 3RD WEEK,ssbsect_activity_date,"banner.ssbsect_schd_code, banner.scrlevl_levl_code = 'NC'",C14b
+C14b,credit indicator and section format type do not align,USHE,Failure,Vicki Shurtz,No noncredit crs in 3wk,ssbsect_activity_date,banner.ssbsect_schd_code,C14b
 C14c,invalid non-credit class based on program type and budget code,USHE,Failure,NA,Only Labs and Vocational non-credit classes can be submitted,scbsupp_activity_date,"banner.scbsupp_occs_code, banner.scrlevl_levl_code = 'NC', banner.ssbsect_schd_code",C14c
 C15a,missing start time,Database,Failure,Vicki Shurtz,Courses Start Time conditionally required,ssrmeet_activity_date,banner.ssrmeet_begin_time,C15a
 C16a,missing end time,Database,Failure,Vicki Shurtz,Courses Stop Time conditionally required,ssrmeet_activity_date,banner.ssrmeet_end_time,C16a
@@ -279,7 +279,7 @@ S23c,invalid institutional cumulative gpa format,Database,Failure,Julie Stender,
 S23d,missing GPA at end of term,USHE,Failure,NA,UGrads without UGrad GPA,shrtgpa_activity_date,banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa),S21b
 S24a,invalid credit format,Database,Failure,Julie Stender,S_CUM_HRS_UGrad wrong format,shrtgpa_activity_date,banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),S20a
 S25a,missing part-time/full-time status,Database,Failure,Julie Stender,Part-time/Full-time Should be a value for each student.,NA,sum(banner.sfrstcr_credit_hr),S25a
-S26a,invalid age format,USHE,Failure,NA,wrong format,NA,banner.spbpers_birth_date,S26a
+S26a,invalid age format,Database,Failure,Julie Stender,wrong format,spbpers_activity_date,banner.spbpers_birth_date,S26a
 S26b,age and birthdate do not align,Database,Failure,Julie Stender,Checking s_age vs calculated age by birthdate. Plus or Minus 1 year buffer.,spbpers_activity_date,banner.spbpers_birth_date,S26b
 S27a,US state codes do not align with country code,Database,Failure,Jerhett Jerman,"Country origin codes WHERE there is a state code within US, but the country is not ''US''.",sabsupl_activity_date,banner.sabsupl_natn_code_admit,S27a
 S27b,State and county do not align with country code (US),Database,Failure,Jerhett Jerman,"state AND county code point outside of US, but the country code is ''US''",sabsupl_activity_date,banner.sabsupl_natn_code_admit,S27b
@@ -323,6 +323,23 @@ S47c,invalid major due to non-alpha characters,Database,Failure,Julie Stender,S_
 S48a,invalid college due to non-alpha characters,Database,Failure,Julie Stender,S_College with Non-Alpha characters,sgbstdn_activity_date,"banner.sgbstdn_coll_code_1, banner.sgbstdn_coll_code_2",S46b
 S49a,missing second major with second cip code,Database,Failure,Julie Stender,Missing Second CIP or Major,sgbstdn_activity_date,banner.sgbstdn_majr_code_2,S49a
 S49b,invalid major due to non-alpha characters,Database,Failure,Julie Stender,S_Major with Non-Alpha characters,sgbstdn_activity_date,"banner.sgbstdn_majr_code_1, banner.sgbstdn_majr_code_2",S47c
+UTS07,Invalid SSID format,Database,Failure,Julie Stender,Flags SSIDs that are not 7 digits long or do not begin with 1 or 2,goradid_activity_date,banner.goradid_additional_id,UTS07
+
+UTS08,missing ssid for high school students,Database,Failure,Julie Stender,Flags high school students (student type 'H') with missing SSIDs,goradid_activity_date,"banner.goradid_additional_id,sgbstdn_styp_code",UTS08
+UTS10,HS students not enrolled in required non-degree programs,Database,Failure,Julie Stender,NA,"sorlcur_activity_date",banner.sorlcur_student_typ,UTS10
+UTS12,Missing State (US admits),Database,Failure,Julie Stender,"Flags records where admit_country = 'US' and admit_state is missing",sabsupl_activity_date,"banner.sabsupl_stat_code_admit",UTS12
+UTS14,Utah applicant missing country,Database,Failure,Julie Stender,Flags records where admit_state = 'UT' and admit_country is missing,sabsupl_activity_date,banner.sabsupl_natn_code_admit,UTS14
+UTS15,Missing HS code for students under 20,Database,Failure,Julie Stender,Flags records where age < 20 and high_school_code is missing,sorhsch_activity_date,banner.sorhsch_sbgi_code,UTS15
+UTS16,DOB must be before HS graduation date,Database,Failure,Julie Stender,Flags records where birth_date >= high_school_grad_date,sorhsch_activity_date,"banner.sorhsch_graduation_date, banner.spbpers_birth_date",UTS16
+UTS17,Invalid SSN format,Database,Failure,checklist.R like you did above,Flags records with invalid SSN format,spbpers_activity_date,banner.spbpers_ssn,UTS17
+UTS18,Missing HS graduation date,Database,Failure,Julie Stender,"Flags records where high_school_grad_date is missing for student types other than P,1,2,3,5",sorhsch_activity_date,banner.sorhsch_graduation_date,UTS18
+UTS19,Incorrect citizenship code for US non-citizen nationals,Database,Failure,Julie Stender,Flags records where citz_code and admit_state are inconsistent for US non-citizen nationals,spbpers_activity_date,banner.spbpers_citz_code,UTS19
+UTS20,Undocumented students must have in-state HS,Database,Failure,Julie Stender,Flags undocumented students whose admit_state is not UT or whose high_school_code does not indicate a Utah high school,spbpers_activity_date,banner.spbpers_citz_code,UTS20
+UTS21,Age outside normal range,Database,Failure,Julie Stender,Flags students whose age is less than or equal to 10 or greater than or equal to 100,sorhsch_activity_date,banner.sorhsch_graduation_date,UTS21
+UTS22,Invalid Visa Type or Citizenship Code,Database,Failure,Julie Stender,"Flags mismatches between visa type, citizenship code, and visa expiration",spbpers_activity_date,banner.gorvisa_vtyp_code,UTS22
+UTS23,"Identifies students with no program listed, excluding those in community education courses",Database,Failure,Julie Stender,"Flags students with a missing program code who are not non-credit (NC) students",sorlcur_activity_date,banner.sorlcur_program,UTS23
+UTS24,Duplicate High School Records,Database,Failure,Julie Stender,Flags students with more than one NON-missing high school code record,sorhsch_activity_date,banner.sorhsch.sorhsch_sbgi_code,UTS24
+
 SC01a,institution id unknown,USHE,Failure,NA,G_Inst Unknown,NA,NA,S01a
 SC01a,missing instituion,USHE,Failure,NA,G_Inst NULL,NA,NA,G01b
 SC02a,"missing ushe_academic_year, version_id, season",USHE,Failure,NA,Wrong year/term/extract in submission files,NA,n/a,S02a
@@ -353,8 +370,20 @@ SC14a,Invalid CRN,Database,Failure,Vicki Shurtz,SC_CRN Invalid,ssbsect_activity_
 SC14b,Missing CRN,Database,Failure,Vicki Shurtz,Missing Courses Reference Number,ssbsect_activity_date,banner.ssbsesct_crn,SC14b
 SC15b,"Course type, program type and course level alignement (Invalid U)",Database,Failure,Julie Stender,SC_CR_Type = U Invalid,scrlevl_acitivy_date,scrlevl_levl_code,SC15b
 SC15c,"Course type, program type and course level alignement (Invalid G)",Database,Failure,Julie Stender,SC_CR_Type = G Invalid,scrlevl_acitivy_date,scrlevl_levl_code,SC15c
+UTSC01,Concurrent budget code misalignment with HS code,Database,Failure,Julie Stender,NA,ssrsccd_activity_date,"banner.ssrsccd_sccd_code, sorhsch_sgbi_code, sgbstdn_styp_code",UTSC01
 UTC01,invalid delivery method,Database,Failure,Vicki Shurtz,Checking for valid values IN instruction_method_code,ssbsect_activity_date,banner.ssbsect_insm_code,C12
 UTC02,Canceled course with enrollments,Database,Failure,Vickie Shurtz,,ssbsect_activity_date,ssbsect_activity_date,UTC02
+UTC03,Lecture schedule types (LEC/LEX) only have lecture hours,Database,Failure,Julie Stender,NA,ssbsect_activity_date,"banner.ssbsect_schd_code, banner.ssbsect_enrl, banner.ssbsect_subj_code, banner.ssbsect_crse_numb",UTC03
+UTC04,Lab schedule types (LAB/LBC/ACT) only have lab hours,Database,Failure,Julie Stender,NA,ssbsect_activity_date,"banner.ssbsect_schd_code, banner.ssbsect_enrl, banner.ssbsect_subj_code, banner.ssbsect_crse_numb, lab_hours, lecture_hours, other_hours",UTC04
+UTC05,LAB sections have non-zero credit hours,Database,Failure,Julie Stender,NA,activity_date,ssbsect_schd_code,UTC05
+UTC06,LBC sections missing credit hours (invalid zero-credit setup),Database,Failure,Julie Stender,NA,ssbsect_activity_date,"ssbsect_crn, ssbsect_term_code",UTC06
+UTC07,LEL sections missing lecture or lab hours while having other hours,Database,Failure,Julie Stender,NA,ssbsect_activity_date,"ssbsect_crn, ssbsect_term_code",UTC07
+UTC08,Non-lecture schedule types carrying lecture hours,Database,Failure,Julie Stender,NA,ssbsect_activity_date,"ssbsect_crn, ssbsect_term_code",UTC08
+UTC09,Non-lab schedule types carrying lab hours,Database,Failure,Julie Stender,NA,ssbsect_activity_date,"ssbsect_crn, ssbsect_term_code",UTC09
+UTC12,Missing or invalid budget codes,Database,Failure,Julie Stender,NA,ssrsccd_activity_date,banner.ssrsccd_sccd_code,UTC12
+UTC13,High school courses use correct budget codes,Database,Failure,Julie Stender,NA,ssrsccd_activity_date,ssrsccd,UTC13
+UTC14,Validates budget-related online courses,Database,Failure,Julie Stender,NA,NA,ssrsccd,UTC14
+UTC16,Courses with no room specified,Database,Failure,Julie Stender,NA,ssrmeet_activity_date,banner.ssrmeet,UTC16
 UTGR01,Term and Graduation Date don't align,Database,Failure,Julie Stender,,shrdgmr_activity_date,shrdgmr_activity_date,UTG01
 UTGR02,Academic Year and Graduation Date don't align,Database,Failure,Julie Stender,,shrdgmr_activity_date,shrdgmr_activity_date,UTG02
 UTGR03,Is valid graduation date,Database,Failure,Julie Stender,,shrdgmr_activity_date,shrdgmr_activity_date,UTG03

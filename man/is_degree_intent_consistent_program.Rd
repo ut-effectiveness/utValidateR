@@ -11,6 +11,9 @@ is_degree_intent_consistent_program(student_type_code, primary_program_code)
 
 \item{primary_program_code}{Program code string (e.g., "ND-HSCE", "MS-DS", "BS-ACCT")}
 }
+\value{
+A logical vector indicating whether each record's program prefix
+}
 \description{
 Helper function for validating program prefix consistency
 }

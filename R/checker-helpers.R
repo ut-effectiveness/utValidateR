@@ -307,7 +307,9 @@ is_alpha_chr <- function(x, missing_ok = TRUE) {
 
 #' Checker for missing character values
 #'
-#' @describeIn is_alpha_chr returns TRUE for NA or empty-string values
+#' @describeIn is_missing_chr returns TRUE for NA or empty-string values
+#' @param x A character vector
+#' @return Logical vector
 #' @export
 is_missing_chr <- function(x) {
   # Per sql code, x is missing if null (NA) or empty string.
@@ -415,7 +417,7 @@ is_valid_dates_for_term <- function(date_, term_id, term_sufx, campus_id){
 #' their student type
 #' @param student_type_code Student type code (e.g., "H", "P", "1", "C", "R", "F", "T")
 #' @param primary_program_code Program code string (e.g., "ND-HSCE", "MS-DS", "BS-ACCT")
-#' @return
+#' @return A logical vector indicating whether each record's program prefix
 #' @export
 is_degree_intent_consistent_program <- function(student_type_code, primary_program_code) {
   st   <- student_type_code
@@ -441,6 +443,54 @@ is_degree_intent_consistent_program <- function(student_type_code, primary_progr
 
   out
 
+}
+
+
+#' Helper function for validating SSN formats according to Legacy Audit rules
+#'
+#' @description
+#' `is_valid_ssn_legacy()` implements exactly and only the validation logic
+#' used in the Legacy Audit Report for identifying invalid Social Security Numbers.The check includes:
+#'
+#' Known invalid SSNs (e.g., 078051120, 123456789)
+#' SSNs in the restricted range 987654320–987654329
+#' SSNs beginning with 000 or 666
+#' SSNs where positions 4–5 equal 00 or positions 6–9 equal 0000
+#' SSNs containing lowercase alphabetic characters
+#' SSNs shorter than 9 characters.
+#'
+#' @param x A character vector of SSNs.
+#' @param missing_ok Logical
+#'
+#' @return A logical vector: `TRUE` for SSNs that meet the validity rules
+#' @export
+is_valid_ssn_legacy <- function(x, missing_ok = TRUE) {
+
+  # Legacy invalid conditions
+  bad <- (
+    !is.na(x) & (
+      # preserve the legacy logic EXACTLY
+      (stringr::str_starts(x, "9", negate = TRUE) &
+         x >= "987654320" & x <= "987654329") |
+        x %in% c("078051120", "111111111", "123456789", "219099999") |
+        stringr::str_starts(x, "000") |
+        stringr::str_starts(x, "666") |
+        stringr::str_sub(x, 4, 5) == "00" |
+        stringr::str_sub(x, 6, 9) == "0000" |
+        stringr::str_detect(x, "[a-z]") |
+        stringr::str_length(x) < 9
+    )
+  )
+
+  # convert "bad" into utValidateR's TRUE = valid
+  out <- !bad
+
+  # handle missing the same way legacy does
+  if (missing_ok) {
+    out | is.na(x)
+  } else {
+    out & !is.na(x)
+  }
 }
 
 

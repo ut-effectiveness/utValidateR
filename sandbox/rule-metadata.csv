@@ -380,7 +380,6 @@ UTC06,LBC sections missing credit hours (invalid zero-credit setup),Database,Fai
 UTC07,LEL sections missing lecture or lab hours while having other hours,Database,Failure,Julie Stender,NA,ssbsect_activity_date,"ssbsect_crn, ssbsect_term_code",UTC07
 UTC08,Non-lecture schedule types carrying lecture hours,Database,Failure,Julie Stender,NA,ssbsect_activity_date,"ssbsect_crn, ssbsect_term_code",UTC08
 UTC09,Non-lab schedule types carrying lab hours,Database,Failure,Julie Stender,NA,ssbsect_activity_date,"ssbsect_crn, ssbsect_term_code",UTC09
-UTC10,Courses with missing program types,Database,Failure,Julie Stender,NA,ssbsect_activity_date,"ssbsect_crn, ssbsect_term_code",UTC10
 UTC12,Flags missing or invalid budget codes,Database,Failure,Julie Stender,NA,ssrsccd_activity_date,banner.ssrsccd_sccd_code,UTC12
 UTC13,High school courses use correct budget codes,Database,Failure,Julie Stender,NA,ssrsccd_activity_date,ssrsccd,UTC13
 UTC14,Validates budget-related online courses,Database,Failure,Julie Stender,NA,NA,ssrsccd,UTC14

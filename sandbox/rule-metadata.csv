@@ -236,7 +236,7 @@ S12A,invalid birthdate,Database,Failure,Julie Stender,Checks for invalid birth d
 S12B,invalid birthdate formating of YYYYMMDD,USHE,Failure,NA,Checks for valid date format YYYYMMDD,NA,banner.spbpers_birth_date,S12B
 S12C,age over 100,Database,Failure,Julie Stender,Birth date older than 100 years,spbpers_activity_date,banner.spbpers_birth_date,S12C
 S13,missing or invalid gender,Database,Failure,Julie Stender,Please resolve any missing OR invalid values,spbpers_activity_date,banner.spbpers_sex,S13
-S13a,gender change after census,USHE,Warning,NA,GENDER CHANGED BASED ON 3RD WEEK DATA,NA,banner.spbpers_sex,S13a
+S13a,gender change after census,Database,Failure,Julie Stender,GENDER CHANGED BASED ON 3RD WEEK DATA,spbpers_activity_date,banner.spbpers_sex,S13a
 S13b,gender change after previous term,USHE,Warning,NA,Gender change from last instance,NA,banner.spbpers_sex,S13b
 S14a,invalid ethnicity code (Asian),USHE,Failure,NA,Ethnicity Asian Please resolve any invalid codes.,NA,dsc.ipeds_ethnicity,S14a
 S14b,invalid ethnicity code (Black),USHE,Failure,NA,Ethnicity Black Please resolve any invalid codes.,NA,dsc.ipeds_ethnicity,S14b

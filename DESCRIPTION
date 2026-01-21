@@ -4,6 +4,7 @@ Version: 0.1.2
 Authors@R: c(
     person("Matt", "Nickodemus", , "mattnickodemus@gmail.com", role = c("aut")),
     person("Craig", "Demke", , "craig.demke@utahtech.edu", role = c("aut", "cre")),
+    person("MK", "Hassan", , "craig.demke@utahtech.edu", role = c("cre")),
     person("Mark", "Hagemann", , "mhagemann@eab.com", role = c("aut")),
     person("Utah Tech University", role = c("cph", "fnd"))
     )

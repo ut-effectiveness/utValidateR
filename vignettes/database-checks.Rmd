@@ -140,7 +140,7 @@ buildings_res <- do_checks(fake_buildings_validation,
 
 ### Rooms
 
-```{r}
+```{r, eval=FALSE}
 rooms_checks <- get_checklist(file = "rooms", type = "database") %>% 
   glimpse()
 

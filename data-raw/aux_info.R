@@ -1,6 +1,8 @@
 ## code to prepare `aux_info` dataset goes here
 
 # TODO: get these from a query, since they are subject to change
+# Concurrent list generated from analytics_quad_concurrent excl.
+concurrent_csv("analytics_quad_concurrent_course.xlsx")
 concurrent_list <- read.csv("sandbox/analytics_quad_concurrent_courses.csv")
 building_list <- read.csv("sandbox/analytics_quad_buildings.csv")
 
@@ -86,7 +88,7 @@ aux_info <- list(
 
   ut_highschools = ut_highschools,
 
-  valid_degree_ids = degree_types$degree_type, #S19a
+  #valid_degree_ids = degree_types$degree_type, #S19a
 
   valid_previous_degree_types = previous_degree_types, #G16a
 
@@ -115,6 +117,20 @@ aux_info <- list(
   valid_student_type_codes = c('N','2','R','C','T','3','P','H','0','5','1','F','S'),
 
   valid_campus_ids = campus_ids,
+
+  valid_ipeds_degree_award_levels = c("2", "7", "3", "1B", "1A", "5", "6", "8", "18"), #S19 & G17
+
+  primary_valid_programs = c("BS-NURS-P", "BS-DHYG-P", "BS-MLS-P", "AAS-MLS", "BS-BU", "BS-PSY",
+    "BS-ASOC", "BIS-INDV", "BS-INTS"), #UTS09
+
+  second_valid_programs = c(
+    "AAS-ADN", "AAS-DHYG", "AAS-MLS", "BS-BU", "BS-ASOC", "BS-PSY", "AS-GENED"
+  ), #UTS09
+
+  valid_budget_codes = c("BA","BC","BU","BV","BY","SD","SF","SM","SP","SQ"), #UTC12
+
+  # Section formats that do NOT require a room number
+  no_room_required_section_formats = c("MUN", "MUM", "ACT", "ENS", "SGP"), #UTC16
 
   # Inventories
   building_inventory = building_list$building_number, #C19c and others, TODO: get from a query

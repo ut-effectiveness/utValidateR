@@ -1,0 +1,164 @@
+---
+title: "Development Workflow"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{development_workflow}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(utValidateR)
+```
+
+## Where do I start?
+
+Look in data_raw/checklist.R and search for your **check**, e.g. (S34a)
+
+There could be scenarios where you may need to use more than one of these error checks. Answering the following question orientated to the correct file or function.
+
+-   is it a new check?
+
+-   is the check look like it is checking the correct data point?
+
+-   does the current check use a helper function?
+
+-   is there a unit test for this check?
+
+-   is the data point a part of the Aux data?
+
+-   is there an issue with the meta data (Database vs USHE rule)?
+
+-   is there a data-file as part of this check (currently on student-file)?
+
+## Error Check Types
+
+1.  When new test datasets are added, the `get_test_data()` function will need to be modified, as well as `get_col_spec()` and potentially other functions in R/testdata.R. (Note that this currently only accommodates student-file checks, which is the only currently available test dataset.)
+
+2.  The output of `compare_rule_output()` should make clear the reason for test data not matching the specified rule's output from `do_checks()`. Remedying the mismatch could require making changes in one of several places:
+
+    (A) If the test data is in error, then the relevant csv should be modified in inst/testdata/, e.g. by changing the "Expected value" column or by changing the relevant columns referenced in the `expr` column of the `compare_rule_output()` result.
+
+    (B) If the R expression in the `expr` column is in error, then this should be modified in the relevant row of `rule_spec` in data-raw/checklist.R. Once changes have been made, `source()` this script to update the `checklist` object included in the package
+
+    (C) If the R expression calls another R function that is in error, e.g. `is_valid_act_score()`, then that function should be updated in R/checker-helpers.R. Any relevant unit tests should also be updated/improved in tests/testthat/.
+
+    (D) If the R code is correct, but values referenced in `aux_info` are in error (e.g. `valid_final_grades`) then these should be modified in data-raw/aux_info.R. Once changes have been made, the full aux_info.R script should be run (e.g. via `source()`) to ensure the data object is updated in the package.
+
+    (E) If the metadata for the rule is misspecified, e.g. it is labeled a Database rule when it should be a USHE rule, this should be remedied in the data-raw/metadata.R script. Running this script will regenerate sandbox/rule-metadata.R, and thereafter running the data-raw/checklist.R script will update the metadata in the `checklist` package object. (Admittedly this workflow is a little half-baked and could use revision; it was a relatively late addition that was required to accommodate anticipated changes to the State Report Data Inventory file.)
+
+## File structure for each Type of Error Check
+
+```         
+ Error Check Type | utValidateR Files 
+                  ├── R/  
+                  │   └── do_checks.R 
+         2        │       └── fct do_checks.R
+                  │   └── compare-output.R 
+       2, 2A      │       └── fct compare_rule_output() 
+         2C       │    └── checker-helprs.R
+                  │    └── testdata.R
+         1        │       └── fct get_col_spec()
+         1        │       └── fct get_test_data()
+                  ├── data_raw/
+         2B       │   └── checklist.R,
+         2B       │       └── rule_spec (a bunch of fcts)
+         2D       │   └── aux_info.R
+         2E       │   └── metadata.R
+                  ├── test/
+                  │   └── testthat/
+         2C       │       └── test-dochecks.R
+         2C       │       └── test-checker-helpers.R
+                  ├── inst/  
+                  │   └── testdata/
+       2A, 2C     │       └── student_unit_test.csv
+                  ├── sandbox/  
+         2E           └── rule-metadata.R
+```
+
+## Example
+
+***S34a needed to look for ssid id instead of student_id***
+
+Scenario 1: wrong data point being checked. - For example you may need to add/change a check. This may require a change in `fct rule_spec` which may use a **checker-helprs.R** function and the data in **student_unit_test.csv** would need to be altered as well.
+
+-   In this case you would change and check all the files associated with **2B and 2C**.
+
+### Spot to change 1
+
+-   Error Check Type 2B
+
+-   File: data-raw/checklist.R
+
+-   Added line 147
+
+```{r, eval=FALSE}
+# change from  
+"S34a", expr(is_valid_student_id(ssid)),
+
+# change to
+  "S34a", expr(is_valid_ssid(ssid)),
+```
+
+The problem here is there is no function `is_valid_ssid()`. So we make one
+
+### Spot to change 2
+
+-   Error Check Type 2C
+
+-   File: R/checker-helpers.R
+
+-   Added lines 176:182
+
+```{r, eval=FALSE}
+#' @describeIn is_valid_values ssid, and begin with 1 or 2 and length of 7
+#' @export
+is_valid_ssid_id <- function(x) {
+  !is_missing_chr(x) &
+    nchar(x) == 7 &
+    (stringr::str_starts(x, "1") |
+       stringr::str_starts(x, "2"))
+}
+```
+
+So how do we know this will work? We will make a unit-test.
+
+### Spot to change 3
+
+-   Error Check Type 2C
+
+-   File: tests/testthat/test-checker-helpers.R
+
+-   Added lines 285:290
+
+```{r, eval=FALSE}
+test_that("is_valid_ssid works", {
+  message("TODO: Checking to see if this works")
+  input <- c("1234567", "2345678", "3456789", "23", "12", "",   NA)
+  out1  <- c(TRUE, TRUE, FALSE, FALSE, FALSE, FALSE,  FALSE)
+  expect_equal(is_valid_ssid(input), out1)
+})
+```
+
+You can run your unit test to make sure it works.
+
+Now we only need to update .csv data that has the data check.
+
+### Spot to change 4
+
+-   Error Check Type 2C
+
+-   File inst/testdata/student_unit_test.csv
+
+-   Added data in row 63
+
+| row | USHE element | USHE rule | Expected value | ssn         | ssid    |
+|-----|:-------------|:----------|:---------------|:------------|:--------|
+| 63  | S34          | S34A      | fail           | 348-61-4856 | 3354960 |

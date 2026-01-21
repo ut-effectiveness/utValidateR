@@ -67,15 +67,21 @@
 #'
 #' @format A data frame with 7,102 rows and 10 variables:
 #' \describe{
-#'    \item{room_acitivity_date}{}
+#'    \item{building_activity_date}{}
+#'    \item{building_construction_year}{}
+#'    \item{building_number}{}
+#'    \item{buildings_id}{}
+#'    \item{room_activity_date}{}
 #'    \item{room_area}{}
 #'    \item{room_disabled_access}{}
+#'    \item{room_group1_code}{}
 #'    \item{room_name}{}
 #'    \item{room_number}{}
 #'    \item{room_prorated}{}
 #'    \item{room_prorated_area}{}
 #'    \item{room_stations}{}
 #'    \item{room_use_code}{}
+#'    \item{room_use_code_group}{}
 #'    \item{rooms_id}{}
 #' }
 #' @source The script for creating this data set is in the dev folder
@@ -146,12 +152,14 @@
 #'    \item{primary_major_cip_code}{}
 #'    \item{primary_major_college_desc}{}
 #'    \item{primary_major_desc}{}
+#'    \item{primary_program_id}{}
 #'    \item{required_credits}{}
 #'    \item{season}{}
 #'    \item{shrdgmr_activity_date}{}
 #'    \item{shrtgpa_activity_date}{}
 #'    \item{sis_student_id}{}
 #'    \item{sis_system_id}{}
+#'    \item{sorhsch_activity_date}{}
 #'    \item{ssn}{}
 #'    \item{total_cumulative_ap_credits_earned}{}
 #'    \item{total_cumulative_clep_credits_earned}{}

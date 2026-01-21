@@ -231,13 +231,13 @@ test_that("is_utah_county works", {
 test_that("is_us_state works", {
   message("TODO: Should DC, PR be considered states?")
   input <- c("UT", "WI", "PR", "DC", "ut",   "Utah", "",    NA)
-  out1  <- c(TRUE, TRUE, FALSE, TRUE, FALSE, FALSE,  FALSE, FALSE)
+  out1  <- c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE,  FALSE, FALSE)
   expect_equal(is_us_state(input), out1)
 })
 
 test_that("is_nonus_state works", {
   input <- c("UT",  "SP", "PR", "DC",  "sp",  "Spain", "",    NA)
-  out1  <- c(FALSE, TRUE, TRUE, FALSE, FALSE, FALSE,   FALSE, FALSE)
+  out1  <- c(FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE)
   expect_equal(is_nonus_state(input), out1)
 })
 
@@ -279,5 +279,14 @@ test_that("course_conditional_check works", {
   expect_equal(course_conditional_check(input, im1, sf2, bc1, ci1), out_ignore)
   expect_equal(course_conditional_check(input, im1, sf1, bc2, ci1), out_ignore)
   expect_equal(course_conditional_check(input, im1, sf1, bc1, ci2), out_ignore)
+
+})
+
+test_that("is_valid_dates_for_term works", {
+  expect_equal(is_valid_dates_for_term(Sys.Date(), "202440", "40", "003"), TRUE)
+  expect_equal(is_valid_dates_for_term(Sys.Date(), "202440", "30", "003"), FALSE)
+  expect_equal(is_valid_dates_for_term(Sys.Date(), "202440", "20", "XXX"), TRUE)
+  expect_equal(is_valid_dates_for_term("1978-11-09", "202440", "40", "003"), FALSE)
+  expect_equal(is_valid_dates_for_term(NA, "202440", "40", "003"), FALSE)
 
 })

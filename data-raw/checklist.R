@@ -52,7 +52,8 @@ rule_spec <- tribble(
   "S12b", expr(is.na(s_birth_dt) | is.Date(s_birth_dt)), # USHE rule
   "S12c", expr(age_in_range(birth_date, 0, 100)),
   "S13", expr(toupper(gender_code) %in% c("M", "F")),
-  "S13a", expr(TODO('USHE rule for "gender change after census"')),
+  "S13a", expr(is.na(gender_code) | is.na(gender_census_ref) |
+                              toupper(gender_code) == toupper(gender_census_ref)),
   "S13b", expr(TODO('USHE rule for "gender change after previous term"')),
   "S14a", expr(s_ethnic_a %in% c("A", NA)),
   "S14b", expr(s_ethnic_b %in% c("B", NA)),

@@ -245,15 +245,18 @@ rule_spec <- tribble(
         !is.na(building_number_1) & is.na(meet_room_number_1) &
         !(section_format_type_code %in% no_room_required_section_formats))),
   "C13", expr(is_valid_values(program_type, valid_program_types, missing_ok = FALSE)),
-  "C13a", expr(TODO("USHE check on perkins program types. Requires a query?")),
-  "C13c", expr(TODO("USHE check on perkins budget codes. Need query for perkins codes?")),
+  "C13a", expr(!(version_id == "3" & program_type %in% c("V", "P") & !(c_inst %in% c("3676", "3677")) &
+        !is_on_perkins_list)),
+  "C13c", expr(!(is_on_perkins_list %in% TRUE & !(program_type %in% c("P", "V")) & !(c_inst %in% c("3676", "3677")))),
   "C14a", expr(c_credit_ind %in% c("C", "N")), # USHE check
   "C14b", expr(!(subject_code == "CED" & section_format_type_code != "LAB")),
-  "C14c", expr(c_instruct_type %in% "LAB" |
-                 c_program_type %in% c("P", "V") |
-                 c_budget_code %in% c("BV", "SQ") |
-                 paste(c_crs_sbj, c_crs_num) %in% TODO("Need Reference.dbo.ETPL for code lookup") |
-                 !(c_extract %in% "E")),
+  "C14c", expr(!(
+    credit_indicator %in% "N" &  # course_level_id?
+      version_id %in% "E" &      # equivalent of c_extract
+      instruction_type != "LAB" & # not sure yet
+      !(program_type %in% c("P","V")) &
+      !(budget_code %in% c("BV","SQ")) &
+      !(is_on_etpl_list %in% TRUE))), # Need to find etpl list
   "C15a", expr(!is_missing_chr(meet_start_time_1) | is.na(meet_days_1)),
   "C23a", expr(!is_missing_chr(meet_start_time_2) | is.na(meet_days_2)),
   "C31a", expr(!is_missing_chr(meet_start_time_3) | is.na(meet_days_3)),
@@ -317,9 +320,10 @@ rule_spec <- tribble(
                  (class_size == 0) |
                  (nchar(instructor_employee_id) == 8 &
                     grepl("^[0-9]", instructor_employee_id))),
-  "C42c", expr(is_missing_chr(c_instruct_id) |
-                 !grepl("^[a-zA-Z\\']", c_instruct_id) |
-                 is_valid_values(substring(c_instruct_id, 1, 1), valid_i_banner)), # TODO: valid_i_banner needs a query
+  "C42c", expr(!(
+    !is_missing_chr(instructor_employee_id) &
+      matches_regex(trimws(instructor_employee_id), "^[A-Za-z]") &
+      !(substr(trimws(instructor_employee_id), 1, 1) %in% valid_instructor_alpha_prefixes))), # TODO: valid_i_banner list is needed to build valid_instructor_alpha_prefixes
   "C43a", expr(!is_missing_chr(instructor_name) | (class_size == 0)),
   "C43c", expr(is_alpha_chr(c_instruct_name) | !(c_extract %in% "3")),
   "C44", expr(!is_missing_chr(section_format_type_code)),

@@ -155,8 +155,8 @@ rule_spec <- tribble(
   "S34e", expr(!is.na(student_id) |
                  (!is_hs_type(student_type_code) &
                     !is_freshmen_type(student_type_code))), #TODO: This is not working as per USHE guideline. Need to revisit it.
-  #"S35a", expr(!utValidateR::is_missing_chr(student_id) & nchar(student_id) == 9),
-  #"S35b", expr(is.na(student_id) | (student_id != "" & stringr::str_detect(student_id, "^[A-Za-z]"))),
+  "S35a", expr(!utValidateR::is_missing_chr(s_banner_id) & nchar(s_banner_id) == 9),
+  "S35b", expr(is.na(s_banner_id) | (s_banner_id != "" & stringr::str_detect(s_banner_id, "^[A-Za-z]"))),
   "S35c", expr(is_alpha_chr(substring(s_banner_id, 1, 1))),
   "G21c", expr(is_alpha_chr(substring(g_banner_id, 1, 1))),
   "SC13c", expr(is_alpha_chr(substring(sc_banner_id, 1, 1))),

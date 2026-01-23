@@ -142,6 +142,8 @@ aux_info <- list(
 
   c_inst = c("3671"),
 
+  valid_perkins_list = valid_perkins_list,
+
   # Inventories
   building_inventory = building_list$building_number, #C19c and others, TODO: get from a query
   rooms_inventory = c(building_list$building_number) #C19d and others, TODO: get from a query

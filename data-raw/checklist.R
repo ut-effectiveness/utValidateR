@@ -246,7 +246,7 @@ rule_spec <- tribble(
         !(section_format_type_code %in% no_room_required_section_formats))),
   "C13", expr(is_valid_values(program_type, valid_program_types, missing_ok = FALSE)),
   "C13a", expr(!(version_id == "3" & program_type %in% c("V", "P") & !(c_inst %in% c("3676", "3677")) &
-        !is_on_perkins_list)),
+              !(paste0(stringr::str_trim(subject_code), stringr::str_trim(course_number)) %in% valid_perkins_list))),
   "C13c", expr(!(is_on_perkins_list %in% TRUE & !(program_type %in% c("P", "V")) & !(c_inst %in% c("3676", "3677")))),
   "C14a", expr(c_credit_ind %in% c("C", "N")), # USHE check
   "C14b", expr(!(subject_code == "CED" & section_format_type_code != "LAB")),
@@ -332,11 +332,11 @@ rule_spec <- tribble(
   "C45a", expr(is_alpha_chr(college_id)),
   "C46", expr(!is_missing_chr(academic_department_id)),
   "C46a", expr(is_alpha_chr(academic_department_id, missing_ok = TRUE)),
-  "C47b", expr(is_valid_values(c_gen_ed, valid_gened_codes, missing_ok = FALSE)), # USHE rule TODO: needs gened codes (query)
+  "C47b", expr(is_missing_chr(c_gen_ed) | is_valid_values(c_gen_ed, valid_gened_codes)), # USHE rule TODO: needs gened codes (query)
   "C48a", expr(is_valid_values(c_dest_site, valid_highschools)), #USHE rule
   "C49a", expr(!is.na(class_size) & class_size != 0),
   "C49b", expr(is.na(class_size) | class_size >= 0 & class_size <= 9999),
-  "C49c", expr(TODO("USHE rule comparing enrolled students to class size (involving group by/COUNT)")),
+  "C49c", expr(is.na(class_size) | (count_sc_id == class_size)),   #USHE rule comparing enrolled students to class size (involving group by/COUNT)
   "C51a", expr(c_level %in% c("R", "U", "G")), # USHE check
   "C51b", expr(c_crs %in% c("MATH", "MAT", "ENGL", "RDG", "WRTG", "ESL") |
                 !(c_level %in% "R")), # Ignoring complex edge-case logic

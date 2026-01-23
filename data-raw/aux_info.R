@@ -25,6 +25,14 @@ ut_highschools <- highschools %>%
   filter(HS_State == "UT") %>%
   pull(HS_ACT_Code)
 
+# Perkins list
+perkins <- readxl::read_excel("sandbox/2025-26 MASTER CTE COURSE LIST - UT.xlsx")
+valid_perkins_list <- perkins %>%
+  mutate(perkins_list = paste0(stringr::str_trim(Prefix),
+                               stringr::str_trim(Crs_Num))) %>%
+  pull(perkins_list)
+
+
 # Campus IDs from file--supplied by Justin
 campus_ids <- scan("sandbox/valid_campus_ids.txt", what = character(0))
 
@@ -131,6 +139,8 @@ aux_info <- list(
 
   # Section formats that do NOT require a room number
   no_room_required_section_formats = c("MUN", "MUM", "ACT", "ENS", "SGP"), #UTC16
+
+  c_inst = c("3671"),
 
   # Inventories
   building_inventory = building_list$building_number, #C19c and others, TODO: get from a query

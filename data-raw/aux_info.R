@@ -142,6 +142,8 @@ aux_info <- list(
 
   c_inst = c("3671"),
 
+  valid_gen_ed_codes = c("C", "QL", "AI", "FA", "HU", "SS", "LS", "PS", "ID", "IR", "DV", "CL", "FL"),
+
   valid_perkins_list = valid_perkins_list,
 
   # Inventories

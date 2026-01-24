@@ -102,7 +102,7 @@ C45,missing college,Database,Failure,Julie Stender,There should be a college for
 C45a,invalid college due to non-alpha characters,Database,Failure,Julie Stender,S_College with Non-Alpha characters,sgbstdn_activity_date,"banner.sgbstdn_coll_code_1, banner.sgbstdn_coll_code_2",S46b
 C46,missing department code,Database,Failure,Julie Stender,Department exists,scbcrse_activity_date,banner.scbcrse_dept_code,C46
 C46a,invalid department due to non-alpha characters,Database,Failure,Julie Stender,C_Dept Should only contain Alpha,scbcrse_activity_date,banner.scbcrse_dept_code,C46a
-C47b,invalid gen ed format,USHE,Failure,NA,Check for valid c_gen_ed values,NA,banner.ssrattr_attr_code,C47b
+C47b,invalid gen ed format,Database,Failure,Julie Stender,Check for valid c_gen_ed values,NA,banner.ssrattr_attr_code,C47b
 C48a,missing destination type,USHE,Failure,NA,"C_Dest_Site if not null or blank, make sure it is in Reference.dbo.Highschools",NA,"banner.ssrsccd_sccd_code, banner.ssbsect_schd_code, banner.ssbsect_insm_code",C48a
 C49a,missing class size,USHE,Failure,NA,C49A FTL Missing Class Size,ssbsect_activity_date,banner.ssbsect_enrl,C49a
 C49b,invalid class size,Database,Failure,Vicki Shurtz,C_Class_Size Invalid,ssbsect_activity_date,banner.ssbsect_enrl,C49b

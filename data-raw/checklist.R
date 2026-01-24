@@ -333,7 +333,7 @@ rule_spec <- tribble(
   "C45a", expr(is_alpha_chr(college_id)),
   "C46", expr(!is_missing_chr(academic_department_id)),
   "C46a", expr(is_alpha_chr(academic_department_id, missing_ok = TRUE)),
-  "C47b", expr(is_missing_chr(c_gen_ed) | is_valid_values(c_gen_ed, valid_gened_codes)), # USHE rule TODO: needs gened codes (query)
+  "C47b", expr(is_missing_chr(c_gen_ed) | is_valid_values(c_gen_ed, valid_gen_ed_codes)), # USHE rule TODO: needs gened codes (query)
   "C48a", expr(is_valid_values(c_dest_site, valid_highschools)), #USHE rule
   "C49a", expr(!is.na(class_size) & class_size != 0),
   "C49b", expr(is.na(class_size) | class_size >= 0 & class_size <= 9999),

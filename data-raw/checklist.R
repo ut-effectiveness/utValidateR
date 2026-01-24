@@ -322,9 +322,9 @@ rule_spec <- tribble(
                  (nchar(instructor_employee_id) == 8 &
                     grepl("^[0-9]", instructor_employee_id))),
   "C42c", expr(!(
-    !is_missing_chr(instructor_employee_id) &
-      matches_regex(trimws(instructor_employee_id), "^[A-Za-z]") &
-      !(substr(trimws(instructor_employee_id), 1, 1) %in% valid_instructor_alpha_prefixes))), # TODO: valid_i_banner list is needed to build valid_instructor_alpha_prefixes
+    !is_missing_chr(c_instruct_id) &
+      matches_regex(trimws(c_instruct_id), "^[A-Za-z]") &
+      toupper(substr(trimws(c_instruct_id), 1, 1)) != "D")), # valid_i_banner id is "D" for Utah Tech
   "C43a", expr(!is_missing_chr(instructor_name) | (class_size == 0)),
   "C43c", expr(is_alpha_chr(c_instruct_name) | !(c_extract %in% "3")),
   "C44", expr(!is_missing_chr(section_format_type_code)),

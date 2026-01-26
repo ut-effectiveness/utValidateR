@@ -337,7 +337,7 @@ rule_spec <- tribble(
   "C48a", expr(is_valid_values(c_dest_site, valid_highschools)), #USHE rule
   "C49a", expr(!is.na(class_size) & class_size != 0),
   "C49b", expr(is.na(class_size) | class_size >= 0 & class_size <= 9999),
-  "C49c", expr(is.na(class_size) | (count_sc_id == class_size)),   #USHE rule comparing enrolled students to class size (involving group by/COUNT)
+  "C49c", expr(is.na(class_size) | is.na(count_sc_id) | (count_sc_id == class_size)), #USHE rule comparing enrolled students to class size (involving group by/COUNT)
   "C51a", expr(c_level %in% c("R", "U", "G")), # USHE check
   "C51b", expr(c_crs %in% c("MATH", "MAT", "ENGL", "RDG", "WRTG", "ESL") |
                 !(c_level %in% "R")), # Ignoring complex edge-case logic

@@ -106,8 +106,8 @@ C47b,invalid gen ed format,Database,Failure,Julie Stender,Check for valid c_gen_
 C48a,missing destination type,USHE,Failure,NA,"C_Dest_Site if not null or blank, make sure it is in Reference.dbo.Highschools",NA,"banner.ssrsccd_sccd_code, banner.ssbsect_schd_code, banner.ssbsect_insm_code",C48a
 C49a,missing class size,USHE,Failure,NA,C49A FTL Missing Class Size,ssbsect_activity_date,banner.ssbsect_enrl,C49a
 C49b,invalid class size,Database,Failure,Vicki Shurtz,C_Class_Size Invalid,ssbsect_activity_date,banner.ssbsect_enrl,C49b
-C49c,class size and enrolled students don't align,USHE,Failure,NA,C_CLASS_SIZE Number of Students Enrolled,NA,banner.ssbsect_enrl,C49c
-C51a,invalid class level or missing class level,USHE,Failure,NA,C_LEVEL classes,NA,banner.scrlevl_levl_code,C51a
+C49c,class size and enrolled students don't align,Database,Failure,NA,C_CLASS_SIZE Number of Students Enrolled,NA,banner.ssbsect_enrl,C49c
+C51a,invalid class level or missing class level,USHE,Failure,Vicki Shurtz,C_LEVEL classes,NA,banner.scrlevl_levl_code,C51a
 C51b,invalid remedial level,USHE,Failure,NA,C_LEVEL remedial,NA,banner.scrlevl_levl_code,C51b
 C52a,missing course reference number,Database,Failure,Vicki Shurtz,Missing Course Reference Number,ssbsect_activity_date,banner.ssbsect_crn,C52a
 C52b,invalid course reference number,Database,Failure,Vicki Shurtz,Invalid Course Reference Number,ssbsect_activity_date,banner.ssbsect_crn,C52b

@@ -252,30 +252,25 @@ rule_spec <- tribble(
   "C14a", expr(c_credit_ind %in% c("C", "N")), # USHE check
   "C14b", expr(!(subject_code == "CED" & section_format_type_code != "LAB")),
   "C14c", expr(!(
-    credit_indicator %in% "N" &  # course_level_id?
+    credit_indicator %in% "N" &  # course_level_id
       version_id %in% "E" &      # equivalent of c_extract
       instruction_type != "LAB" & # not sure yet
       !(program_type %in% c("P","V")) &
       !(budget_code %in% c("BV","SQ")) &
-      !(is_on_etpl_list %in% TRUE))), # Need to find etpl list
+      !(is_on_etpl_list %in% TRUE))),
   "C15a", expr(!is_missing_chr(meet_start_time_1) | is.na(meet_days_1)),
   "C23a", expr(!is_missing_chr(meet_start_time_2) | is.na(meet_days_2)),
   "C31a", expr(!is_missing_chr(meet_start_time_3) | is.na(meet_days_3)),
   "C16a", expr(!is_missing_chr(meet_end_time_1) | is.na(meet_days_1)),
   "C24a", expr(!is_missing_chr(meet_end_time_2) | is.na(meet_days_2)),
   "C32a", expr(!is_missing_chr(meet_end_time_3) | is.na(meet_days_3)),
-  "C17a", expr(!is_missing_chr(c_days) |
-                 c_delivery_method %in% c("C", "I", "V", "Y") |
-                 c_budget_code %in% "SF" |
-                 !(c_extract %in% "3")) , # USHE check, TODO: add site-type (query) condition?
-  "C25a", expr(!is_missing_chr(c_days2) |
-                 c_delivery_method %in% c("C", "I", "V", "Y") |
-                 c_budget_code %in% "SF" |
-                 !(c_extract %in% "3")) , # USHE check, TODO: add site-type (query) condition?
-  "C33a", expr(!is_missing_chr(c_days3) |
-                 c_delivery_method %in% c("C", "I", "V", "Y") |
-                 c_budget_code %in% "SF" |
-                 !(c_extract %in% "3")) , # USHE check, TODO: add site-type (query) condition?
+  "C17a", expr(!is_missing_chr(meet_days_1) | instruction_method_code %in% c("C", "I", "V", "Y") |
+                 budget_code %in% "SF" | !(version_id %in% "3") | !(section_format_type_code %in% c("LEC", "LEL", "LAB")) |
+      !(room_use_code_1 %in% c("110", "210")) | !(campus_id %in% aux_info$space_utilize_site_types)) , # USHE check, TODO: add site-type (query) condition?
+  "C25a", expr(is_missing_chr(trimws(meet_days_2)) | !is_missing_chr(trimws(meet_days_1)) |
+      (campus_id %in% "V")) , # USHE check, TODO: add site-type (query) condition?
+  "C33a", expr(is_missing_chr(trimws(meet_days_3)) | (!is_missing_chr(trimws(meet_days_2)) &
+         !is_missing_chr(trimws(meet_days_1))) | (campus_id %in% "V" & meet_building_id_1 %in% "V")), # USHE check, TODO: add site-type (query) condition?
   "C18", expr(is.na(meet_building_id_1) | !equivalent(meet_building_id_1, building_number_1)),
   "C26", expr(is.na(meet_building_id_2) | !equivalent(meet_building_id_2, building_number_2)),
   "C34", expr(is.na(meet_building_id_3) | !equivalent(meet_building_id_3, building_number_3)),
@@ -333,7 +328,7 @@ rule_spec <- tribble(
   "C45a", expr(is_alpha_chr(college_id)),
   "C46", expr(!is_missing_chr(academic_department_id)),
   "C46a", expr(is_alpha_chr(academic_department_id, missing_ok = TRUE)),
-  "C47b", expr(is_missing_chr(c_gen_ed) | is_valid_values(c_gen_ed, valid_gen_ed_codes)), # USHE rule TODO: needs gened codes (query)
+  "C47b", expr(is_missing_chr(c_gen_ed) | is_valid_values(c_gen_ed, valid_gen_ed_codes)),
   "C48a", expr(is_valid_values(c_dest_site, valid_highschools)), #USHE rule
   "C49a", expr(!is.na(class_size) & class_size != 0),
   "C49b", expr(is.na(class_size) | class_size >= 0 & class_size <= 9999),
@@ -349,7 +344,14 @@ rule_spec <- tribble(
   "R01a", expr(!is_missing_chr(r_inst)),
   "G02a", expr(!is_missing_chr(s_id) & !is_missing_chr(s_id)), # USHE Rule
   "G02b", expr(sis_student_id %in% TODO("Need a way to bring in students table for comparing")),
-  "G12a", expr(is_valid_credits(overall_cumulative_credits_earned, missing_ok = TRUE)), # TODO: verify mapping of rules to fields
+  "G12a", expr(
+    !(
+      is_missing_chr(trimws(g_trans_total)) |
+        nchar(trimws(g_trans_total)) > 6 |
+        as.numeric(g_trans_total) < 0 |
+        matches_regex(g_trans_total, "[^0-9.]")
+    )
+  ), # TODO: verify mapping of rules to fields
   "G13a", expr(is_valid_credits(required_credits)),
   "G14a", expr(is_valid_credits(total_cumulative_ap_credits_earned, missing_ok = TRUE)),
   "G15a", expr(is_valid_credits(total_cumulative_clep_credits_earned, missing_ok = TRUE)),

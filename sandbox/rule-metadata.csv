@@ -48,7 +48,7 @@ C14b,credit indicator and section format type do not align,USHE,Failure,Vicki Sh
 C14c,invalid non-credit class based on program type and budget code,USHE,Failure,NA,Only Labs and Vocational non-credit classes can be submitted,scbsupp_activity_date,"banner.scbsupp_occs_code, banner.scrlevl_levl_code = 'NC', banner.ssbsect_schd_code",C14c
 C15a,missing start time,Database,Failure,Vicki Shurtz,Courses Start Time conditionally required,ssrmeet_activity_date,banner.ssrmeet_begin_time,C15a
 C16a,missing end time,Database,Failure,Vicki Shurtz,Courses Stop Time conditionally required,ssrmeet_activity_date,banner.ssrmeet_end_time,C16a
-C17a,missing course meeting days,USHE,Failure,NA,Courses Days conditionally required,NA,"banner.ssrmeet_sun_day, etc...",C17a
+C17a,missing course meeting days,Databse,Failure,Vicki Shurtz,Courses Days conditionally required,NA,banner.ssrmeet_sun_day,C17a
 C18,building name and number are the same,Database,Failure,Vicki Shurtz,BLDG Name and number are the same,ssrmeet_activity_date,"banner.ssrmeet_bldg_code, space_utlz.building_detail.bldg_number",C18
 C18a,missing building name,Database,Failure,Vicki Shurtz,BLDG SName conditionally Required,ssrmeet_activity_date,banner.ssrmeet_bldg_code,C18a
 C19a,missing building number,Database,Failure,Vicki Shurtz,BLDG NUM conditionally required,bldg_activity_date,space_utlz.building_detail.bldg_number,C19a
@@ -60,7 +60,7 @@ C22a,invalid room use type,Database,Failure,Vicki Shurtz,Checking for valid valu
 C22b,missing room use type,Database,Failure,Vicki Shurtz,C_Room_type3 Missing,room_activity_date,space_utlz.rooms_detail.room_use_code,C22b
 C23a,missing start time,Database,Failure,Vicki Shurtz,Courses Start Time conditionally required,ssrmeet_activity_date,banner.ssrmeet_begin_time,C15a
 C24a,missing end time,Database,Failure,Vicki Shurtz,Courses Stop Time conditionally required,ssrmeet_activity_date,banner.ssrmeet_end_time,C16a
-C25a,missing course meeting days,USHE,Failure,NA,Courses Days conditionally required,NA,"banner.ssrmeet_sun_day, etc...",C17a
+C25a,missing course meeting days when meet days 1 is present,Database,Failure,Vicki Shurtz,Courses Days conditionally required,NA,banner.ssrmeet_sun_day,C17a
 C26,building name and number are the same,Database,Failure,Vicki Shurtz,BLDG Name and number are the same,ssrmeet_activity_date,"banner.ssrmeet_bldg_code, space_utlz.building_detail.bldg_number",C18
 C26a,missing building name,Database,Failure,Vicki Shurtz,BLDG SName conditionally Required,ssrmeet_activity_date,banner.ssrmeet_bldg_code,C18a
 C27a,missing building number,Database,Failure,Vicki Shurtz,BLDG NUM conditionally required,bldg_activity_date,space_utlz.building_detail.bldg_number,C19a
@@ -72,7 +72,7 @@ C30a,invalid room use type,Database,Failure,Vicki Shurtz,Checking for valid valu
 C30b,missing room use type,Database,Failure,Vicki Shurtz,C_Room_type3 Missing,room_activity_date,space_utlz.rooms_detail.room_use_code,C22b
 C31a,missing start time,Database,Failure,Vicki Shurtz,Courses Start Time conditionally required,ssrmeet_activity_date,banner.ssrmeet_begin_time,C15a
 C32a,missing end time,Database,Failure,Vicki Shurtz,Courses Stop Time conditionally required,ssrmeet_activity_date,banner.ssrmeet_end_time,C16a
-C33a,missing course meeting days,USHE,Failure,NA,Courses Days conditionally required,NA,"banner.ssrmeet_sun_day, etc...",C17a
+C33a,missing course meeting days,Databse,Failure,Vicki Shurtz,Courses Days conditionally required,NA,banner.ssrmeet_sun_day,C17a
 C34,building name and number are the same,Database,Failure,Vicki Shurtz,BLDG Name and number are the same,ssrmeet_activity_date,"banner.ssrmeet_bldg_code, space_utlz.building_detail.bldg_number",C18
 C34a,missing building name,Database,Failure,Vicki Shurtz,BLDG SName conditionally Required,ssrmeet_activity_date,banner.ssrmeet_bldg_code,C18a
 C35a,missing building number,Database,Failure,Vicki Shurtz,BLDG NUM conditionally required,bldg_activity_date,space_utlz.building_detail.bldg_number,C19a
@@ -146,7 +146,7 @@ G09b,missing cip code,Database,Failure,Julie Stender,Declared Major CIP codes Th
 G10a,missing degree type,Database,Failure,Julie Stender,G_Deg_Type Missing,shrdgmr_activity_date,banner.shrdgmr_degc_code,G10a
 G10b,invalid degree type,USHE,Failure,NA,DEG_Type Invalid,shrdgmr_activity_date,banner.shrdgmr_degc_code,G10b
 G11a,invalid institutional cumulative gpa format,Database,Failure,Julie Stender,S_CUM_GPA_UGRAD wrong format,shrtgpa_activity_date,banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa),S21a
-G12a,invalid credit format,Database,Failure,Julie Stender,S_CUM_HRS_UGrad wrong format,shrtgpa_activity_date,banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),S20a
+G12a,invalid credit format,Database,Failure,Julie Stender,S_CUM_HRS_UGrad wrong format,shrtgpa_activity_date,banner.shrlgpa_hours_earned,S20a
 G12b,Transfer hours over 300 credits,USHE,Failure,NA,G_Trans_Total seems excessive when over 300.0,shrtgpa_activity_date,sum(shrtgpa_hours_earned),G12b
 G13a,invalid credit format,Database,Failure,Julie Stender,S_CUM_HRS_UGrad wrong format,gorsdav_activity_date,banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),S20a
 G13b,Graduation hours 1.5 times required hours,USHE,Warning,NA,G_Grad_HRS seems excessive when over 1.5 * g_req_hrs_deg,shrtgpa_activity_date,(sum(shrtgpa_hours_earned),G13b

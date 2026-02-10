@@ -383,7 +383,7 @@ rule_spec <- tribble(
   "G21d", expr(!is_duplicated(cbind(g_banner_id,
                                     graduation_date, primary_major_cip_code, degree_id,
                                     ipeds_award_level_code, primary_major_id))),
-  "G24a", expr(is_valid_year(graduated_academic_year_code, missing_ok = FALSE)), # TODO: should verify matching some reference year
+  "G24a", expr(!is.na(g_fis_year)), # TODO: should verify matching some reference year
   "G25a", expr(is_valid_values(season, valid_seasons)),
   "G28a", expr(!is_missing_chr(degree_desc)),
   "SC03", expr(!is.na(sc_id) & !is.na(sc_id)), # USHE Rule
@@ -422,7 +422,7 @@ rule_spec <- tribble(
   "SC13b", expr(is_valid_student_id(student_id)), # Redundant unless I can assume banner_id format
   "SC14a", expr(is_valid_course_reference_number(course_reference_number)),
   "SC14b", expr(!is_missing_chr(course_reference_number)),
-  "SC15b", expr(TODO("Database rule--how to get cr_type equivalent, how do sql values translate?")),
+  "SC15b", expr(!(course_level_id %in% "UG" & c_level != derive_c_level(course_level_id, course_number, subject_code))),
   "SC15c", expr(TODO("Database rule--how to get cr_type equivalent, how do sql values translate?")),
   "B02a", expr(!is_missing_chr(building_location_code) & !is_missing_chr(building_location_desc)),
   "B02b", expr(is_valid_values(building_location_code, valid_building_location_codes)),

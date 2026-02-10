@@ -380,7 +380,7 @@ rule_spec <- tribble(
   "G19a", expr(!is_utah_county(first_admit_county_code) | !is_missing_chr(high_school_code)),
   "G21a", expr(is_valid_student_id(sis_student_id)),
   "G21b", expr(is_valid_student_id(sis_student_id)), # Redundant unless I can assume banner_id format
-  "G21d", expr(!is_duplicated(cbind(sis_student_id,
+  "G21d", expr(!is_duplicated(cbind(g_banner_id,
                                     graduation_date, primary_major_cip_code, degree_id,
                                     ipeds_award_level_code, primary_major_id))),
   "G24a", expr(is_valid_year(graduated_academic_year_code, missing_ok = FALSE)), # TODO: should verify matching some reference year

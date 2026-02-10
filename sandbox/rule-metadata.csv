@@ -162,7 +162,7 @@ G20a,invalid ssid,Database,Failure,Julie Stender,S_SSID is invalid,goradid_activ
 G21a,invalid student id,Database,Failure,Julie Stender,There should be a valid institutionally assigned ID for all records.,spriden_activity_date,banner.spriden_id,S35a
 G21b,invalid student id,Database,Failure,Julie Stender,Changed to look for Alpha Characters at the start of the banner id,spriden_activity_date,banner.spriden_id,S35b
 G21c,invalid alpha in student id,USHE,Failure,NA,Wrong Alpha in Banner IDs. There should be a valid institutionally assigned ID for all records.,NA,banner.spriden_id,S35c
-G21d,duplicate graduation records,Database,Failure,Julie Stender,check for duplicate graduation records.,NA,NA,G21d
+G21d,duplicate graduation records,Database,Failure,Julie Stender,check for duplicate graduation records,NA,banner.spriden_id,G21d
 G21e,graduation id is not in students table,Database,Failure,Julie Stender,ID from graduation file is not in students file,"spbpers_activity_date, spriden_activity_date","banner.spbpers_ssn, banner.spriden_id",G02b
 G22a,invalid credit format,Database,Failure,Julie Stender,S_CUM_HRS_UGrad wrong format,shrtgpa_activity_date,banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),S20a
 G23a,invalid credit format,Database,Failure,Julie Stender,S_CUM_HRS_UGrad wrong format,shrtgpa_activity_date,banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),S20a

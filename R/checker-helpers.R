@@ -472,7 +472,7 @@ derive_c_level <- function(course_level_id, course_number, subject_code) {
 
   ifelse(
     course_level_id %in% "UG" &
-      !is.na(course_number) & course_number < 1000L &
+      !is.na(course_number) & course_number < '1000' &
       subject_code %in% c("MATH", "ENGL", "ESL"),
     "R",
     "U"

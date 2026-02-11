@@ -269,8 +269,8 @@ rule_spec <- tribble(
       !(room_use_code_1 %in% c("110", "210")) | !(campus_id %in% aux_info$space_utilize_site_types)) , # USHE check, TODO: add site-type (query) condition?
   "C25a", expr(is_missing_chr(trimws(meet_days_2)) | !is_missing_chr(trimws(meet_days_1)) |
       (campus_id %in% "V")) , # USHE check, TODO: add site-type (query) condition?
-  "C33a", expr(is_missing_chr(trimws(meet_days_3)) | (!is_missing_chr(trimws(meet_days_2)) &
-         !is_missing_chr(trimws(meet_days_1))) | (campus_id %in% "V" & meet_building_id_1 %in% "V")), # USHE check, TODO: add site-type (query) condition?
+  "C33a", expr(utValidateR::is_missing_chr(trimws(meet_days_3)) | (!utValidateR::is_missing_chr(trimws(meet_days_2)) &
+         !utValidateR::is_missing_chr(trimws(meet_days_1))) | (campus_id %in% "V" & meet_building_id_1 %in% "V")), # USHE check, TODO: add site-type (query) condition?
   "C18", expr(is.na(meet_building_id_1) | !equivalent(meet_building_id_1, building_number_1)),
   "C26", expr(is.na(meet_building_id_2) | !equivalent(meet_building_id_2, building_number_2)),
   "C34", expr(is.na(meet_building_id_3) | !equivalent(meet_building_id_3, building_number_3)),
@@ -428,7 +428,7 @@ rule_spec <- tribble(
   "B02b", expr(is_valid_values(building_location_code, valid_building_location_codes)),
   "B03a", expr(!is_missing_chr(building_ownership_code)),
   "B03b", expr(is_valid_values(building_ownership_code, valid_ownership_codes)),
-  "B04a", expr(!is_missing_chr(building_construction_year)), # TODO: Should this be a different year (b_year in ushe)?
+  "B04a", expr(!is_missing_chr(building_construction_year)),
   "B05a", expr(!is_missing_chr(building_name)),
   "B06a", expr(!is_missing_chr(building_number)),
   "B06b", expr(!is_duplicated(building_number)),

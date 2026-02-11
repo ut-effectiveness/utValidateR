@@ -72,7 +72,7 @@ C30a,invalid room use type,Database,Failure,Vicki Shurtz,Checking for valid valu
 C30b,missing room use type,Database,Failure,Vicki Shurtz,C_Room_type3 Missing,room_activity_date,space_utlz.rooms_detail.room_use_code,C22b
 C31a,missing start time,Database,Failure,Vicki Shurtz,Courses Start Time conditionally required,ssrmeet_activity_date,banner.ssrmeet_begin_time,C15a
 C32a,missing end time,Database,Failure,Vicki Shurtz,Courses Stop Time conditionally required,ssrmeet_activity_date,banner.ssrmeet_end_time,C16a
-C33a,missing course meeting days,USHE,Failure,Vicki Shurtz,Courses Days conditionally required,NA,banner.ssrmeet_sun_day,C33a
+C33a,missing course meeting days,Databse,Failure,Vicki Shurtz,Courses Days conditionally required,NA,banner.ssrmeet_sun_day,C33a
 C34,building name and number are the same,Database,Failure,Vicki Shurtz,BLDG Name and number are the same,ssrmeet_activity_date,"banner.ssrmeet_bldg_code, space_utlz.building_detail.bldg_number",C18
 C34a,missing building name,Database,Failure,Vicki Shurtz,BLDG SName conditionally Required,ssrmeet_activity_date,banner.ssrmeet_bldg_code,C18a
 C35a,missing building number,Database,Failure,Vicki Shurtz,BLDG NUM conditionally required,bldg_activity_date,space_utlz.building_detail.bldg_number,C19a

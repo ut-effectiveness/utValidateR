@@ -267,10 +267,10 @@ rule_spec <- tribble(
   "C17a", expr(!is_missing_chr(meet_days_1) | instruction_method_code %in% c("C", "I", "V", "Y") |
                  budget_code %in% "SF" | !(version_id %in% "3") | !(section_format_type_code %in% c("LEC", "LEL", "LAB")) |
       !(room_use_code_1 %in% c("110", "210")) | !(campus_id %in% aux_info$space_utilize_site_types)) , # USHE check, TODO: add site-type (query) condition?
-  "C25a", expr(is_missing_chr(trimws(meet_days_2)) | !is_missing_chr(trimws(meet_days_1)) |
+  "C25a", expr(utValidateR::is_missing_chr(trimws(meet_days_2)) | !utValidateR::is_missing_chr(trimws(meet_days_1)) |
       (campus_id %in% "V")) , # USHE check, TODO: add site-type (query) condition?
   "C33a", expr(utValidateR::is_missing_chr(trimws(meet_days_3)) | (!utValidateR::is_missing_chr(trimws(meet_days_2)) &
-         !utValidateR::is_missing_chr(trimws(meet_days_1))) | (campus_id %in% "V" & meet_building_id_1 %in% "V")), # USHE check, TODO: add site-type (query) condition?
+         !utValidateR::is_missing_chr(trimws(meet_days_1))) | (campus_id %in% "V" & meet_building_id_1 %in% "V")), # USHE check, TODO: the rule s not showing up. in the app
   "C18", expr(is.na(meet_building_id_1) | !equivalent(meet_building_id_1, building_number_1)),
   "C26", expr(is.na(meet_building_id_2) | !equivalent(meet_building_id_2, building_number_2)),
   "C34", expr(is.na(meet_building_id_3) | !equivalent(meet_building_id_3, building_number_3)),

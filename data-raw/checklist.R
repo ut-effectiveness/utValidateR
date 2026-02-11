@@ -422,7 +422,7 @@ rule_spec <- tribble(
   "SC13b", expr(is_valid_student_id(student_id)), # Redundant unless I can assume banner_id format
   "SC14a", expr(is_valid_course_reference_number(course_reference_number)),
   "SC14b", expr(!is_missing_chr(course_reference_number)),
-  "SC15b", expr(!(sc_cr_type == "U" & !c_level %in% c("R", "U"))),
+  "SC15b", expr(!(course_level_id == "U" & !c_level %in% c("R", "U"))),
   "SC15c", expr(!(course_level_id %in% "G" & !is.na(c_level) & c_level != "G")),
   "B02a", expr(!is_missing_chr(building_location_code) & !is_missing_chr(building_location_desc)),
   "B02b", expr(is_valid_values(building_location_code, valid_building_location_codes)),

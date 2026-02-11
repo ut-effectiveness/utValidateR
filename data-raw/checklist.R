@@ -422,8 +422,8 @@ rule_spec <- tribble(
   "SC13b", expr(is_valid_student_id(student_id)), # Redundant unless I can assume banner_id format
   "SC14a", expr(is_valid_course_reference_number(course_reference_number)),
   "SC14b", expr(!is_missing_chr(course_reference_number)),
-  "SC15b", expr(!(course_level_id %in% "UG" & c_level != derive_c_level(course_level_id, course_number, subject_code))),
-  "SC15c", expr(TODO("Database rule--how to get cr_type equivalent, how do sql values translate?")),
+  "SC15b", expr(!(sc_cr_type == "U" & !c_level %in% c("R", "U"))),
+  "SC15c", expr(!(course_level_id %in% "G" & !is.na(c_level) & c_level != "G")),
   "B02a", expr(!is_missing_chr(building_location_code) & !is_missing_chr(building_location_desc)),
   "B02b", expr(is_valid_values(building_location_code, valid_building_location_codes)),
   "B03a", expr(!is_missing_chr(building_ownership_code)),
@@ -446,8 +446,9 @@ rule_spec <- tribble(
   "B11c", expr((!is.na(building_cost_replacement) & building_cost_replacement > 3.5e6) |
                  !is_missing_chr(building_condition_code)),
   "B12a", expr(!is_missing_chr(building_area_gross)),
-  "B12b", expr(!is.na(as.numeric(building_area_gross)) &
-                 as.numeric(building_area_gross) > 0), # TODO: condition on ownership and aux?
+  "B12b", expr(!(building_area_gross %in% "0" &
+                   building_ownership_code %in% "O" &
+                   building_auxiliary %in% "N")),
   "B12c", expr(TODO('Needs a summary of rooms data "Gross area less than sum of rooms in building"')),
   "B14a", expr(is.na(building_cost_replacement) |
                  building_cost_replacement <= 3.5e6 | !

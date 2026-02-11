@@ -445,7 +445,7 @@ is_degree_intent_consistent_program <- function(student_type_code, primary_progr
 
 }
 
-#' Helper function for deriving course level classification (C-51)
+#' Helper function for deriving course level classification
 #'
 #' @description
 #' `derive_c_level()` implements exactly and only the classification logic

@@ -264,9 +264,9 @@ rule_spec <- tribble(
   "C16a", expr(!is_missing_chr(meet_end_time_1) | is.na(meet_days_1)),
   "C24a", expr(!is_missing_chr(meet_end_time_2) | is.na(meet_days_2)),
   "C32a", expr(!is_missing_chr(meet_end_time_3) | is.na(meet_days_3)),
-  "C17a", expr(!is_missing_chr(meet_days_1) | instruction_method_code %in% c("C", "I", "V", "Y") |
-                 budget_code %in% "SF" | !(version_id %in% "3") | !(section_format_type_code %in% c("LEC", "LEL", "LAB")) |
-      !(room_use_code_1 %in% c("110", "210")) | !(campus_id %in% aux_info$space_utilize_site_types)),
+  "C17a", expr(!((is.na(trimws(meet_days_1)) | trimws(meet_days_1) == "") &
+         !(instruction_method_code %in% c("C","I","V","Y")) & (section_format_type_code %in% c("LEC","LEL","LAB")) &
+         (budget_code != "SF") & (room_use_code_1 %in% c("110","210")) & (version_id == "3"))),
   "C25a", expr(utValidateR::is_missing_chr(trimws(meet_days_2)) | !utValidateR::is_missing_chr(trimws(meet_days_1)) |
       (campus_id == "V")) , # USHE check, TODO: add site-type (query) condition?
   "C33a", expr(!(!(is.na(trimws(meet_days_3)) | trimws(meet_days_3) == "") &

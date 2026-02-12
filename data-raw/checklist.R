@@ -154,7 +154,7 @@ rule_spec <- tribble(
   "S34d", expr(!is.na(student_id) | !(budget_code %in% c("BC", "SF"))),
   "S34e", expr(!is.na(student_id) |
                  (!is_hs_type(student_type_code) &
-                    !is_freshmen_type(student_type_code))), #TODO: This is not working as per USHE guideline. Need to revisit it.
+                    !is_freshmen_type(student_type_code))),
   "S35a", expr(!utValidateR::is_missing_chr(s_banner_id) & nchar(s_banner_id) == 9),
   "S35b", expr(is.na(s_banner_id) | (s_banner_id != "" & stringr::str_detect(s_banner_id, "^[A-Za-z]"))),
   "S35c", expr(is_alpha_chr(substring(s_banner_id, 1, 1))),
@@ -266,9 +266,9 @@ rule_spec <- tribble(
   "C32a", expr(!is_missing_chr(meet_end_time_3) | is.na(meet_days_3)),
   "C17a", expr(!is_missing_chr(meet_days_1) | instruction_method_code %in% c("C", "I", "V", "Y") |
                  budget_code %in% "SF" | !(version_id %in% "3") | !(section_format_type_code %in% c("LEC", "LEL", "LAB")) |
-      !(room_use_code_1 %in% c("110", "210")) | !(campus_id %in% aux_info$space_utilize_site_types)) , # USHE check, TODO: add site-type (query) condition?
+      !(room_use_code_1 %in% c("110", "210")) | !(campus_id %in% aux_info$space_utilize_site_types)),
   "C25a", expr(utValidateR::is_missing_chr(trimws(meet_days_2)) | !utValidateR::is_missing_chr(trimws(meet_days_1)) |
-      (campus_id %in% "V")) , # USHE check, TODO: add site-type (query) condition?
+      (campus_id == "V")) , # USHE check, TODO: add site-type (query) condition?
   "C33a", expr(!(!(is.na(trimws(meet_days_3)) | trimws(meet_days_3) == "") &
       ((is.na(trimws(meet_days_2)) | trimws(meet_days_2) == "") |
           (is.na(trimws(meet_days_1)) | trimws(meet_days_1) == "")) &
@@ -385,7 +385,7 @@ rule_spec <- tribble(
   "G21d", expr(!is_duplicated(cbind(g_banner_id,
                                     graduation_date, primary_major_cip_code, degree_id,
                                     ipeds_award_level_code, primary_major_id))),
-  "G24a", expr(!is.na(g_fis_year)), # TODO: should verify matching some reference year
+  "G24a", expr(!(is.na(g_fis_year) | trimws(g_fis_year) == "" | !grepl("^\\d{4}$", trimws(g_fis_year)))),
   "G25a", expr(is_valid_values(season, valid_seasons)),
   "G28a", expr(!is_missing_chr(degree_desc)),
   "SC03", expr(!is.na(sc_id) & !is.na(sc_id)), # USHE Rule

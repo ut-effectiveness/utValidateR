@@ -445,40 +445,6 @@ is_degree_intent_consistent_program <- function(student_type_code, primary_progr
 
 }
 
-#' Helper function for deriving course level classification
-#'
-#' @description
-#' `derive_c_level()` implements exactly and only the classification logic
-#' defined in the Legacy Audit Report for determining course level (`C_LEVEL`).
-#'
-#' The logic mirrors the legacy CASE statement:
-#'
-#' - If the course is undergraduate level (`course_level_id == "UG"`)
-#' - AND the course number is below 1000
-#' - AND the subject is one of MATH, ENGL, or ESL
-#'
-#' Then the course is classified as remedial (`"R"`).
-#' All other cases are classified as undergraduate (`"U"`).
-#'
-#' @param course_level_id A character vector representing the course level
-#'   identifier (e.g., "UG").
-#' @param course_number A character or numeric vector of course numbers.
-#' @param subject_code A character vector of course subject codes.
-#'
-#' @return A character vector with values `"R"` or `"U"` representing the
-#'   derived course level classification.
-#' @export
-derive_c_level <- function(course_level_id, course_number, subject_code) {
-
-  ifelse(
-    course_level_id %in% "UG" &
-      !is.na(course_number) & course_number < '1000' &
-      subject_code %in% c("MATH", "ENGL", "ESL"),
-    "R",
-    "U"
-  )
-}
-
 
 #' Helper function for validating SSN formats according to Legacy Audit rules
 #'

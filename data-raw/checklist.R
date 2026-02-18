@@ -471,7 +471,7 @@ rule_spec <- tribble(
   "R08a", expr(!is_missing_chr(room_use_code) | str_detect(room_number, "ROOF") | str_detect(room_number, "FIELD")),
   "R08b", expr(is_valid_values(room_use_code, valid_room_use_codes, missing_ok = TRUE)),
   "R08d", expr(!(room_use_code %in% c("250", "255"))),
-  "R09a", expr(!is_missing_chr(room_name)),
+  #"R09a", expr(!is_missing_chr(room_name)),   #Removed on 4/23/2021 by USHE
   "R10a", expr(!(room_use_code %in% c("110", "210", "230")) | !is_missing_chr(room_stations)),
   "R10b", expr(!(room_use_code %in% c("110", "210", "230") &
                    room_stations == "0" &

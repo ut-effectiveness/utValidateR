@@ -365,7 +365,7 @@ course_conditional_check <- function(x,
   data("aux_info", package = "utValidateR", envir = environment())
   isbad <- is_missing_chr(trimws(x)) &
     !(instruction_method_code %in% c("C", "I", "V", "Y")) &
-    section_format_type_code %in% c('LEV', 'LEX', 'LES', 'INS', 'STU', 'LBC', 'LBS', 'LBC') &
+    section_format_type_code %in% c('LEV', 'LEX', 'LES', 'INS', 'STU', 'LBC', 'LBS') &
     !(budget_code %in% "SF") &
     is_valid_values(campus_id, aux_info$valid_campus_ids)
 

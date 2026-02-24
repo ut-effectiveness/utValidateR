@@ -32,6 +32,17 @@ valid_perkins_list <- perkins %>%
                                stringr::str_trim(Crs_Num))) %>%
   pull(perkins_list)
 
+# ETPL list
+etpl <- read.csv("sandbox/reference.dbo.ETPL.txt", sep="|", stringsAsFactors = FALSE)
+etpl_course_ids <- etpl %>%
+  filter(ETPL_Inst_Code == "3671", Inactive == "N") %>%
+  transmute(etpl_key = ETPL_CIP_USHE %>%
+              stringr::str_trim() %>%
+              stringr::str_replace_all("\\s+", " ") %>%
+              stringr::str_to_upper()) %>%
+  filter(stringr::str_detect(etpl_key, "^[A-Z]{2,5} \\d{4}$")) %>%
+  distinct(etpl_key) %>%
+  pull(etpl_key)
 
 # Campus IDs from file--supplied by Justin
 campus_ids <- scan("sandbox/valid_campus_ids.txt", what = character(0))
@@ -145,6 +156,8 @@ aux_info <- list(
   valid_gen_ed_codes = c("C", "QL", "AI", "FA", "HU", "SS", "LS", "PS", "ID", "IR", "DV", "CL", "FL"),
 
   valid_perkins_list = valid_perkins_list,
+
+  etpl_course_ids = etpl_course_ids,
 
   # Inventories
   building_inventory = building_list$building_number, #C19c and others, TODO: get from a query

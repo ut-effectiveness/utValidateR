@@ -252,8 +252,8 @@ rule_spec <- tribble(
   "C14a", expr(c_credit_ind %in% c("C", "N")), # USHE check
   "C14b", expr(!(subject_code == "CED" & section_format_type_code != "LAB")),
   "C14c", expr(!(
-    credit_indicator %in% "N" &
-      version_id %in% "E" &
+    course_level_id %in% c("CE", "NC") &
+      version_id == "3" &
       section_format_type_code != "LAB" &
       !(program_type %in% c("P","V")) &
       !(budget_code %in% c("BV","SQ")) &

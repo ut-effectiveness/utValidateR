@@ -45,7 +45,7 @@ C13a,invalid program type against perkins list,Database,Failure,Samira Hall,chec
 C13c,invalid budget code against perkins list,Database,Failure,Samira Hall,"checks for courses allowed on perkins list, but not currently coded to vocational",NA,banner.scbsupp_occs_code,C13c
 C14a,invalid credit indicator,USHE,Failure,NA,Checking for valid values for c_credit_ind.,NA,banner.scrlevl_levl_code = 'NC',C14a
 C14b,credit indicator and section format type do not align,Database,Failure,Vicki Shurtz,No noncredit crs in 3wk,ssbsect_activity_date,banner.ssbsect_schd_code,C14b
-C14c,invalid non-credit class based on program type and budget code,Database,Failure,NA,Only Labs and Vocational non-credit classes can be submitted,scbsupp_activity_date,banner.ssbsect_schd_code,C14c
+C14c,invalid non-credit class based on program type and budget code,USHE,Failure,NA,Only Labs and Vocational non-credit classes can be submitted,scbsupp_activity_date,"banner.scbsupp_occs_code, banner.ssbsect_schd_code,C14c
 C15a,missing start time,Database,Failure,Vicki Shurtz,Courses Start Time conditionally required,ssrmeet_activity_date,banner.ssrmeet_begin_time,C15a
 C16a,missing end time,Database,Failure,Vicki Shurtz,Courses Stop Time conditionally required,ssrmeet_activity_date,banner.ssrmeet_end_time,C16a
 C17a,missing course meeting days,Database,Failure,Vicki Shurtz,Courses Days conditionally required,NA,banner.ssrmeet_sun_day,C17a

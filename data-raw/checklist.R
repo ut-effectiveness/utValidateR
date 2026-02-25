@@ -256,8 +256,8 @@ rule_spec <- tribble(
       version_id == "3" &
       section_format_type_code != "LAB" &
       !(program_type %in% c("P","V")) &
-      !(budget_code %in% c("BV","SQ")) &
-      !(paste0(toupper(subject_code), " ", course_number) %in% etpl_course_ids))),
+      !(budget_code %in% c("BV","SQ")))),
+      #!(paste0(toupper(subject_code), " ", course_number) %in% etpl_course_ids))),
   "C15a", expr(!is_missing_chr(meet_start_time_1) | is.na(meet_days_1)),
   "C23a", expr(!is_missing_chr(meet_start_time_2) | is.na(meet_days_2)),
   "C31a", expr(!is_missing_chr(meet_start_time_3) | is.na(meet_days_3)),

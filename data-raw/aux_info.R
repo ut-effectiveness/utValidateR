@@ -2,8 +2,8 @@
 
 # TODO: get these from a query, since they are subject to change
 # Concurrent list generated from analytics_quad_concurrent excl.
-concurrent_csv("analytics_quad_concurrent_course.xlsx")
-concurrent_list <- read.csv("sandbox/analytics_quad_concurrent_courses.csv")
+#concurrent_csv("analytics_quad_concurrent_course.xlsx")
+#concurrent_list <- read.csv("sandbox/analytics_quad_concurrent_courses.csv")
 building_list <- read.csv("sandbox/analytics_quad_buildings.csv")
 
 # ISO country codes from csv
@@ -31,6 +31,14 @@ valid_perkins_list <- perkins %>%
   mutate(perkins_list = paste0(stringr::str_trim(Prefix),
                                stringr::str_trim(Crs_Num))) %>%
   pull(perkins_list)
+
+# Concurrent course ID list
+concurrent <- readxl::read_excel(here::here("sandbox", "analytics_quad_concurrent_course.xlsx"))
+
+valid_concurrent_list<- concurrent %>%
+  mutate(course_id = as.character(paste0(Prefix, "-", Number))) %>%
+  pull(course_id)
+
 
 # ETPL list
 etpl <- read.csv("sandbox/reference.dbo.ETPL.txt", sep="|", stringsAsFactors = FALSE)
@@ -103,7 +111,7 @@ aux_info <- list(
   non_concurrent_highschools = c("459050","459100","459150","459200","459300",
                                  "459400","459500","459000"), #SC12b
 
-  concurrent_course_ids = concurrent_list$course_id, #C11b
+  concurrent_course_ids = valid_concurrent_list, #C11b
 
   ut_highschools = ut_highschools,
 

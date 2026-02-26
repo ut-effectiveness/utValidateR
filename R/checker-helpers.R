@@ -494,29 +494,3 @@ is_valid_ssn_legacy <- function(x, missing_ok = TRUE) {
 }
 
 
-#' Generate CSV for analytics_quad_concurrent_cours (Rule- C11b)
-#'
-#' Reads Excel from Data folder, drops extra columns, and writes CSV to Sandbox folder.
-#'
-#' @param filename Excel filename (without path, e.g. "analytics_quad_concurrent_cours.xlsx")
-#' @return csv with 3 columns (course_id, subject_code, course_number)
-#' @importFrom readxl read_excel
-#' @export
-concurrent_csv <- function(filename = "analytics_quad_concurrent_courses.xlsx") {
-
-  input_path  <- here::here("Data", filename)
-  output_path <- here::here("Sandbox", sub("\\.xlsx$", ".csv", filename))
-
-  read_excel(input_path) %>%
-    select(-any_of(c("Institution", "Get Ed Code", "Title", "Core Code", "Core Title", "Reason"))) %>%
-    mutate(
-      course_id     = as.character(paste0(Prefix, "-", Number)),
-      subject_code  = as.character(Prefix),
-      course_number = as.character(Number)
-    ) %>%
-    select(course_id, subject_code, course_number) %>%
-    write_csv(output_path)
-}
-
-
-

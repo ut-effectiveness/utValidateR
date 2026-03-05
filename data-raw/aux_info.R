@@ -163,6 +163,10 @@ aux_info <- list(
 
   valid_gen_ed_codes = c("C", "QL", "AI", "FA", "HU", "SS", "LS", "PS", "ID", "IR", "DV", "CL", "FL"),
 
+  valid_utah_county_codes <- c(
+    "001","003","005","007","009","011","013","015","017","019","021","023","025","027","029","031",
+    "033","035","037","039","041","043","045","047","049","051","053","055","057","030","097","099"),
+
   valid_perkins_list = valid_perkins_list,
 
   etpl_course_ids = etpl_course_ids,

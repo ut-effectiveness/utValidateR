@@ -44,7 +44,7 @@ rule_spec <- tribble(
                  (is.na(us_citizenship_code) & ipeds_race_ethnicity == "Non-Resident Alien") |
                  ((us_citizenship_code != 2) & ipeds_race_ethnicity == "Non-Resident Alien") |
                  (us_citizenship_code == 2 & (ipeds_race_ethnicity != "Non-Resident Alien")))),
-  "S10a", expr(!is_missing_chr(first_admit_county_code)), # TODO verify I don't need to check code validity
+  "S10a", expr(county_origin %in% valid_utah_county_codes),
   "S11a", expr(is_utah_county(first_admit_county_code) |
                  !(first_admit_state_code %in% "UT")),
   "S12", expr(!is.na(birth_date)),

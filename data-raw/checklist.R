@@ -151,8 +151,8 @@ rule_spec <- tribble(
   "S34c", expr(!(is.na(ssid) &
                    first_admit_state_code == "UT" &
                    is_hs_type(student_type_code))),
-  "S34d", expr(!is.na(student_id) | !(budget_code %in% c("BC", "SF"))),
-  "S34e", expr(!is.na(student_id) |
+  "S34d", expr(!is.na(ssid) | !(budget_code %in% c("BC", "SF"))),
+  "S34e", expr(!is.na(ssid) |
                  (!is_hs_type(student_type_code) &
                     !is_freshmen_type(student_type_code))),
   "S35a", expr(!utValidateR::is_missing_chr(s_banner_id) & nchar(s_banner_id) == 9),
@@ -266,11 +266,11 @@ rule_spec <- tribble(
          !(instruction_method_code %in% c("C","I","V","Y")) & (section_format_type_code %in% c("LEC","LEL","LAB")) &
          (budget_code != "SF") & (room_use_code_1 %in% c("110","210")) & (version_id == "3"))),
   "C25a", expr(utValidateR::is_missing_chr(trimws(meet_days_2)) | !utValidateR::is_missing_chr(trimws(meet_days_1)) |
-      (c_site_type == "V")) , # USHE check, TODO: add site-type (query) condition?
+      (ushe_c_site_type == "V")) , # USHE check, TODO: add site-type (query) condition?
   "C33a", expr(!(!(is.na(trimws(meet_days_3)) | trimws(meet_days_3) == "") &
       ((is.na(trimws(meet_days_2)) | trimws(meet_days_2) == "") |
           (is.na(trimws(meet_days_1)) | trimws(meet_days_1) == "")) &
-      !(c_site_type == "V" & c_site_type2 == "V"))), # USHE check, TODO: the rule s not showing up. in the app
+      !(ushe_c_site_type == "V" & ushe_c_site_type2 == "V"))), # USHE check, TODO: the rule s not showing up. in the app
   "C18", expr(is.na(meet_building_id_1) | !equivalent(meet_building_id_1, building_number_1)),
   "C26", expr(is.na(meet_building_id_2) | !equivalent(meet_building_id_2, building_number_2)),
   "C34", expr(is.na(meet_building_id_3) | !equivalent(meet_building_id_3, building_number_3)),
@@ -328,7 +328,7 @@ rule_spec <- tribble(
   "C45a", expr(is_alpha_chr(college_id)),
   "C46", expr(!is_missing_chr(academic_department_id)),
   "C46a", expr(is_alpha_chr(academic_department_id, missing_ok = TRUE)),
-  "C47b", expr(is_missing_chr(c_gen_ed) | is_valid_values(c_gen_ed, valid_gen_ed_codes)),
+  "C47b", expr(is_missing_chr(ushe_c_gen_ed) | is_valid_values(ushe_c_gen_ed, valid_gen_ed_codes)),
   "C48a", expr(is_valid_values(c_dest_site, valid_highschools)), #USHE rule
   "C49a", expr(!is.na(class_size) & class_size != 0),
   "C49b", expr(is.na(class_size) | class_size >= 0 & class_size <= 9999),

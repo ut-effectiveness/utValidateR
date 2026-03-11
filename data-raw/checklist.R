@@ -243,10 +243,10 @@ rule_spec <- tribble(
         !is.na(building_number_1) & is.na(meet_room_number_1) &
         !(section_format_type_code %in% no_room_required_section_formats))),
   "C13", expr(is_valid_values(program_type, valid_program_types, missing_ok = FALSE)),
-  "C13a", expr(!(version_id == "3" & program_type %in% c("V", "P") & !(c_inst %in% c("3676", "3677")) &
-              !(paste0(stringr::str_trim(subject_code), stringr::str_trim(course_number)) %in% valid_perkins_list))),
+  "C13a", expr(!(version_id == "3" & program_type %in% c("V", "P") &
+                   !(paste0(stringr::str_trim(subject_code), stringr::str_trim(course_number)) %in% valid_perkins_list))),
   "C13c", expr(!((paste0(stringr::str_trim(subject_code), stringr::str_trim(course_number)) %in% valid_perkins_list)
-                 & !(program_type %in% c("P", "V")) & !(c_inst %in% c("3676", "3677")))),
+                 & !(program_type %in% c("P", "V")))),
   "C14a", expr(c_credit_ind %in% c("C", "N")), # USHE check
   "C14b", expr(!(subject_code == "CED" & section_format_type_code != "LAB")),
   "C14c", expr(!(

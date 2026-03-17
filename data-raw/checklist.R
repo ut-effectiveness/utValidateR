@@ -328,7 +328,7 @@ rule_spec <- tribble(
   "C45a", expr(is_alpha_chr(college_id)),
   "C46", expr(!is_missing_chr(academic_department_id)),
   "C46a", expr(is_alpha_chr(academic_department_id, missing_ok = TRUE)),
-  "C47b", expr(is_missing_chr(ushe_c_gen_ed) | is_valid_values(ushe_c_gen_ed, valid_gen_ed_codes)),
+  "C47b", expr(is_missing_chr(ushe_c_gen_ed) | ushe_c_gen_ed %in% valid_gen_ed_codes),
   "C48a", expr(is_valid_values(c_dest_site, valid_highschools)), #USHE rule
   "C49a", expr(!is.na(class_size) & class_size != 0),
   "C49b", expr(is.na(class_size) | class_size >= 0 & class_size <= 9999),

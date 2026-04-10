@@ -270,7 +270,7 @@ rule_spec <- tribble(
   "C33a", expr(!(!(is.na(trimws(meet_days_3)) | trimws(meet_days_3) == "") &
       ((is.na(trimws(meet_days_2)) | trimws(meet_days_2) == "") |
           (is.na(trimws(meet_days_1)) | trimws(meet_days_1) == "")) &
-      !(ushe_c_site_type == "V" & ushe_c_site_type2 == "V"))), # USHE check, TODO: the rule s not showing up. in the app
+      !(ushe_c_site_type == "V" & ushe_c_site_type2 == "V"))),
   "C18", expr(is.na(meet_building_id_1) | !equivalent(meet_building_id_1, building_number_1)),
   "C26", expr(is.na(meet_building_id_2) | !equivalent(meet_building_id_2, building_number_2)),
   "C34", expr(is.na(meet_building_id_3) | !equivalent(meet_building_id_3, building_number_3)),

@@ -266,7 +266,7 @@ rule_spec <- tribble(
          !(instruction_method_code %in% c("C","I","V","Y")) & (section_format_type_code %in% c("LEC","LEL","LAB")) &
          (budget_code != "SF") & (room_use_code_1 %in% c("110","210")) & (version_id == "3"))),
   "C25a", expr(utValidateR::is_missing_chr(trimws(meet_days_2)) | !utValidateR::is_missing_chr(trimws(meet_days_1)) |
-      (ushe_c_site_type == "V")),
+      (ushe_c_site_type == "V")) ,
   "C33a", expr(!(!(is.na(trimws(meet_days_3)) | trimws(meet_days_3) == "") &
       ((is.na(trimws(meet_days_2)) | trimws(meet_days_2) == "") |
           (is.na(trimws(meet_days_1)) | trimws(meet_days_1) == "")) &

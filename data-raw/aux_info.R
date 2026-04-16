@@ -27,10 +27,10 @@ ut_highschools <- highschools %>%
 
 # Perkins list
 perkins <- readxl::read_excel("sandbox/2025-26 MASTER CTE COURSE LIST - UT.xlsx")
-valid_perkins_list <- perkins %>%
-  mutate(perkins_list = paste0(stringr::str_trim(Prefix),
-                               stringr::str_trim(Crs_Num))) %>%
-  pull(perkins_list)
+valid_perkins_list <- perkins
+  #mutate(perkins_list = paste0(stringr::str_trim(Prefix),
+     #                          stringr::str_trim(Crs_Num)))
+  #pull(perkins_list)
 
 # Concurrent course ID list
 concurrent <- readxl::read_excel(here::here("sandbox", "analytics_quad_concurrent_course.xlsx"))
@@ -167,7 +167,7 @@ aux_info <- list(
     "001","003","005","007","009","011","013","015","017","019","021","023","025","027","029","031",
     "033","035","037","039","041","043","045","047","049","051","053","055","057","030","097","099"),
 
-  valid_perkins_list = valid_perkins_list,
+  valid_perkins_list = valid_perkins_list$Crs_Num,
 
   etpl_course_ids = etpl_course_ids,
 

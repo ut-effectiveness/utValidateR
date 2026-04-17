@@ -126,7 +126,6 @@ G03f,middle name with non-alpha characters,Database,Warning,Julie Stender,S_Midd
 G03g,middle name too long,USHE,Failure,NA,G_Middle too long,spriden_activity_date,banner.spriden_mi,G03g
 G03h,previous suffix last name with non-alpha characters,Database,Warning,Julie Stender,S_Suffix name with Non-Alpha characters,spbpers_activity_date,banner.spbpers_name_suffix,S07d
 G03i,suffix too long,USHE,Failure,NA,G_Suffix name too long,spbpers_activity_date,banner.spbpers_name_suffix,G03i
-G04a,missing county code,Database,Failure,Jerhett Jerman,There should be a county origin for every record,sabsupl_activity_date,banner.sabsupl_cnty_code_admit,S10a
 G05,missing birthdates,Database,Failure,Julie Stender,There should be a birth date for every record,spbpers_activity_date,banner.spbpers_birth_date,S12
 G05a,invalid birthdate,Database,Failure,Julie Stender,Checks for invalid birth date year equal to current year or future years,spbpers_activity_date,banner.spbpers_birth_date,S12A
 G06a,missing or invalid gender,Database,Failure,Julie Stender,Please resolve any missing OR invalid values,spbpers_activity_date,banner.spbpers_sex,S13

@@ -445,6 +445,36 @@ is_degree_intent_consistent_program <- function(student_type_code, primary_progr
 
 }
 
+#' Normalize Utah county codes to 3-digit format
+#'
+#' @description Cleans and standardizes county codes by removing non-numeric values,
+#' stripping leading zeros, and padding to a 3-digit character format.
+#' Values such as "False" and "True" are treated as missing.
+#'
+#' @param x A character or numeric vector containing county codes.
+#'
+#' @return A character vector of 3-digit county codes (e.g., "099"),
+#' or NA for invalid or non-numeric inputs.
+#'
+#' @examples
+#' normalize_utah_county(c("00099", "99", "False", NA))
+#' # Returns: "099" "099" NA NA
+#'
+#' @export
+normalize_utah_county <- function(x) {
+  x_chr <- as.character(x)
+
+  # Remove obvious junk
+  x_chr[x_chr %in% c("False", "True")] <- NA
+
+  # Extract digits, strip leading zeros, then re-pad to 3 digits
+  cleaned <- stringr::str_extract(x_chr, "\\d+") %>%
+    stringr::str_replace("^0+", "") %>%
+    stringr::str_pad(width = 3, side = "left", pad = "0")
+
+  cleaned
+}
+
 
 #' Helper function for validating SSN formats according to Legacy Audit rules
 #'

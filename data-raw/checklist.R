@@ -245,7 +245,7 @@ rule_spec <- tribble(
         !is.na(building_number_1) & is.na(meet_room_number_1) &
         !(section_format_type_code %in% no_room_required_section_formats))),
   "C13", expr(is_valid_values(program_type, valid_program_types, missing_ok = FALSE)),
-  "C13a", expr(!(version_id == "3" & program_type %in% c("V", "P") &
+  "C13a", expr(!(version_desc == "End of Term" & program_type_eot %in% c("V", "P") &
                    !(paste0(stringr::str_trim(subject_code), stringr::str_trim(course_number)) %in% valid_perkins_list))),
   "C13c", expr(!((paste0(stringr::str_trim(subject_code), stringr::str_trim(course_number)) %in% valid_perkins_list)
                  & !(program_type %in% c("P", "V")))),
@@ -253,9 +253,9 @@ rule_spec <- tribble(
   "C14b", expr(!(subject_code == "CED" & section_format_type_code != "LAB")),
   "C14c", expr(!(
     course_level_id %in% c("CE", "NC") &
-      version_id == "3" &
+      version_desc == "End of Term" &
       section_format_type_code != "LAB" &
-      !(program_type %in% c("P","V")) &
+      !(program_type_eot %in% c("P","V")) &
       !(budget_code %in% c("BV","SQ")))),
       #!(paste0(toupper(subject_code), " ", course_number) %in% etpl_course_ids))),
   "C15a", expr(!is_missing_chr(meet_start_time_1) | is.na(meet_days_1)),
@@ -266,7 +266,7 @@ rule_spec <- tribble(
   "C32a", expr(!is_missing_chr(meet_end_time_3) | is.na(meet_days_3)),
   "C17a", expr(!((is.na(trimws(meet_days_1)) | trimws(meet_days_1) == "") &
          !(instruction_method_code %in% c("C","I","V","Y")) & (section_format_type_code %in% c("LEC","LEL","LAB")) &
-         (budget_code != "SF") & (room_use_code_1 %in% c("110","210")) & (version_id == "3"))),
+         (budget_code != "SF") & (room_use_code_1 %in% c("110","210")) & (version_desc == "End of Term"))),
   "C25a", expr(utValidateR::is_missing_chr(trimws(meet_days_2)) | !utValidateR::is_missing_chr(trimws(meet_days_1)) |
       (ushe_c_site_type == "V")) ,
   "C33a", expr(!(!(is.na(trimws(meet_days_3)) | trimws(meet_days_3) == "") &
@@ -506,7 +506,7 @@ rule_spec <- tribble(
   "UTS04", expr(!is.na(department_id)),
   "UTS05", expr(!is_missing_chr(high_school_code)),
   "UTS06", expr(is_degree_intent_consistent_program(student_type_code, primary_program_code)),
-  "UTS07", expr(is.na(ssid) | nchar(ssid) == 7 & stringr::str_detect(ssid, "^(1|2)")),
+  #"UTS07", expr(is.na(ssid) | nchar(ssid) == 7 & stringr::str_detect(ssid, "^(1|2)")), #Legacy audit internal rule. This is being covered by S34a.
   "UTS08", expr(!(is.na(ssid) & utValidateR::is_hs_type(student_type_code))),
   "UTS10", expr(student_type_code != "HS" | is.na(cur_prgm) | cur_prgm %in% c("ND-CONC", "ND-SA", "ND-CE", "ND-ACE", "ND-DUAL")),
   "UTS12", expr(!(first_admit_country_code %in% "US") | !is_missing_chr(first_admit_state_code)),

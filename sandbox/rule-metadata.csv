@@ -308,7 +308,7 @@ S38a,invalid act test score format,Database,Failure,Julie Stender,S_ACT wrong fo
 S39a,invalid act test score format,Database,Failure,Julie Stender,S_ACT wrong format,sortest_activity_date,banner.sortest_test_score,S36a
 S40a,invalid act test score format,Database,Failure,Julie Stender,S_ACT wrong format,sortest_activity_date,banner.sortest_test_score,S36a
 S41a,invalid act test score format,Database,Failure,Julie Stender,S_ACT wrong format,sortest_activity_date,banner.sortest_test_score,S36a
-S42a,missing HS graduation date,Database,Failure,Julie Stender,High School Grad Date required where s_reg_status = FH,sorhsch_activity_date,banner.sorhsch_graduation_date,S42a
+S42a,Missing HS Grad Date for FH (UT only),Database,Failure,Julie Stender,High School Grad Date required where s_reg_status = FH,sorhsch_activity_date,banner.sorhsch_graduation_date,S42a
 S43b,invalid institutional cumulative gpa format,Database,Failure,Julie Stender,S_CUM_GPA_UGRAD wrong format,shrtgpa_activity_date,banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa),S21a
 S43c,cumulative gpa matches term gpa based on certain student types,USHE,Warning,NA,S_CUM_GPA_UGRAD = S_TERM_GPA,NA,round(sum(shrtgpa_quality_points) / sum(shrtgpa_gpa_hours),S43c
 S44c,invalid pell awarded to highschool students,USHE,Failure,NA,HS students should not have pell,rpratrm_activity_date,banner.rpratrm_offer_amt,S44c

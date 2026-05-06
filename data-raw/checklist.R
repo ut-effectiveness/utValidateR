@@ -148,15 +148,15 @@ rule_spec <- tribble(
   "S32a", expr(is_valid_credits(total_cumulative_clep_credits_earned, missing_ok = TRUE)),
   "S33a", expr(is_valid_credits(total_cumulative_ap_credits_earned, missing_ok = TRUE)),
   "S34a", expr(is.na(ssid) | (nchar(ssid) >= 7 & nchar(ssid) <= 9 & stringr::str_detect(ssid, "^[12]"))),
-  "S34b", expr(!(student_type_code == "H" & first_admit_state_code == "UT" & !is_missing_chr(ssid) &
+  "S34b", expr(!(s_reg_status == "HS" & first_admit_state_code == "UT" & !is_missing_chr(ssid) &
       (nchar(ssid) != 7 | !stringr::str_detect(ssid, "^[12]")))),
   "S34c", expr(!(is.na(ssid) &
                    first_admit_state_code == "UT" &
-                   is_hs_type(student_type_code))),
+                   is_hs_type(s_reg_status))),
   "S34d", expr(!is.na(ssid) | !(budget_code %in% c("BC", "SF"))),
   "S34e", expr(!is.na(ssid) |
-                 (!is_hs_type(student_type_code) &
-                    !is_freshmen_type(student_type_code))),
+                 (!is_hs_type(s_reg_status) &
+                    !is_freshmen_type(s_reg_status))),
   "S35a", expr(!utValidateR::is_missing_chr(s_banner_id) & nchar(s_banner_id) == 9),
   "S35b", expr(is.na(s_banner_id) | (s_banner_id != "" & stringr::str_detect(s_banner_id, "^[A-Za-z]"))),
   "S35c", expr(is_alpha_chr(substring(s_banner_id, 1, 1))),
@@ -168,13 +168,14 @@ rule_spec <- tribble(
   "S39a", expr(is_valid_act_score(act_math_score)),
   "S40a", expr(is_valid_act_score(act_reading_score)),
   "S41a", expr(is_valid_act_score(act_science_score)),
-  "S42a", expr(!is.na(high_school_graduation_date)),
+  "S42a", expr(!(s_reg_status == "FH" & first_admit_state_code == "UT") |
+      !is.na(high_school_graduation_date)),
   "S43c", expr((s_term_gpa == s_cum_gpa_ugrad) |
                (s_reg_status %in% c("FF", "FH", "TU", "TG")) |
                (s_level == "FR")), # USHE rule
-  "S44c", expr(!is_hs_type(student_type_code) |
+  "S44c", expr(!is_hs_type(s_reg_status) |
                  (!(is_pell_eligible %in% TRUE) & !(is_pell_awarded %in% TRUE))), #USHE check
-  "UTS02", expr(!is_hs_type(student_type_code) | !(is_pell_awarded %in% TRUE)),
+  "UTS02", expr(!is_hs_type(s_reg_status) | !(is_pell_awarded %in% TRUE)),
   "S44d", expr(s_pell %in% c("E", "R") | !(s_extract %in% "e")),
   "S45c", expr(s_bia %in% "B" | !(s_extract %in% "e")),
   "S46a", expr(!is_missing_chr(primary_major_college_id)),
@@ -505,10 +506,10 @@ rule_spec <- tribble(
   "UTS03", expr(!is.na(college_id)),
   "UTS04", expr(!is.na(department_id)),
   "UTS05", expr(!is_missing_chr(high_school_code)),
-  "UTS06", expr(is_degree_intent_consistent_program(student_type_code, primary_program_code)),
+  "UTS06", expr(is_degree_intent_consistent_program(s_reg_status, primary_program_code)),
   #"UTS07", expr(is.na(ssid) | nchar(ssid) == 7 & stringr::str_detect(ssid, "^(1|2)")), #Legacy audit internal rule. This is being covered by S34a.
-  "UTS08", expr(!(is.na(ssid) & utValidateR::is_hs_type(student_type_code))),
-  "UTS10", expr(student_type_code != "HS" | is.na(cur_prgm) | cur_prgm %in% c("ND-CONC", "ND-SA", "ND-CE", "ND-ACE", "ND-DUAL")),
+  "UTS08", expr(!(is.na(ssid) & utValidateR::is_hs_type(s_reg_status))),
+  "UTS10", expr(s_reg_status != "HS" | is.na(cur_prgm) | cur_prgm %in% c("ND-CONC", "ND-SA", "ND-CE", "ND-ACE", "ND-DUAL")),
   "UTS12", expr(!(first_admit_country_code %in% "US") | !is_missing_chr(first_admit_state_code)),
   "UTS14", expr(!is_missing_chr(first_admit_country_code)),
   "UTS16", expr(!(birth_date >= high_school_graduation_date)),

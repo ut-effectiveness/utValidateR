@@ -91,7 +91,7 @@ C40c,valid start date and end date format (Spring),Database,Failure,Julie Stende
 C41a,missing course title,Database,Failure,Julie Stender,C_Title is null or missing,scbcrse_activity_date,banner.scbcrse_title,C41a
 C41b,invalid title format,USHE,Failure,NA,C_Title needs a minimum of 2 alpha characters together,NA,banner.scbcrse_title,C41b
 C41d,invalid title format,USHE,Failure,NA,C_Title special charaters not allowed,NA,banner.scbcrse_title,C41d
-C42a,missing instructor,Database,Failure,Vicki Shurtz,C_Instruct_ID is null or missing,spriden_activity_date,banner.spriden_id,C42a
+C42a,missing instructor ID,Database,Failure,Vicki Shurtz,C_Instruct_ID is null or missing,spriden_activity_date,banner.spriden_id,C42a
 C42b,invalid instructor id format,Database,Failure,Julie Stender,"C_Instruct_ID is 9 Characters, so should be using an Alpha character to start, this makes sure it is not Instructors SSN",spriden_activity_date,banner.spriden_id,C42b
 C42c,Instructor ID starts with an invalid institutional alpha prefix,Database,Failure,Julie Stender,C_Instruct_ID is using the wrong institutional assigned alpha characters,NA,banner.spriden_id,C42c
 C43a,missing instructor name,Database,Failure,Vicki Shurtz,C_Instruct_Name is null or missing,spriden_activity_date,banner.spriden_first_name,C43a

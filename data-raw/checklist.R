@@ -246,17 +246,16 @@ rule_spec <- tribble(
         !is.na(building_number_1) & is.na(meet_room_number_1) &
         !(section_format_type_code %in% no_room_required_section_formats))),
   "C13", expr(is_valid_values(program_type, valid_program_types, missing_ok = FALSE)),
-  "C13a", expr(!(version_desc == "End of Term" & program_type_eot %in% c("V", "P") &
-                   !(paste0(stringr::str_trim(subject_code), stringr::str_trim(course_number)) %in% valid_perkins_list))),
+  "C13a", expr(!(program_type %in% c("V", "P") & !(paste0(stringr::str_trim(subject_code),
+                                                          stringr::str_trim(course_number)) %in% valid_perkins_list))),
   "C13c", expr(!((paste0(stringr::str_trim(subject_code), stringr::str_trim(course_number)) %in% valid_perkins_list)
                  & !(program_type %in% c("P", "V")))),
   "C14a", expr(c_credit_ind %in% c("C", "N")), # USHE check
   "C14b", expr(!(subject_code == "CED" & section_format_type_code != "LAB")),
   "C14c", expr(!(
     course_level_id %in% c("CE", "NC") &
-      version_desc == "End of Term" &
       section_format_type_code != "LAB" &
-      !(program_type_eot %in% c("P","V")) &
+      !(program_type %in% c("P","V")) &
       !(budget_code %in% c("BV","SQ")))),
       #!(paste0(toupper(subject_code), " ", course_number) %in% etpl_course_ids))),
   "C15a", expr(!is_missing_chr(meet_start_time_1) | is.na(meet_days_1)),

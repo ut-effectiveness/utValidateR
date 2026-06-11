@@ -346,14 +346,18 @@ rule_spec <- tribble(
   "R01a", expr(!is_missing_chr(r_inst)),
   "G02a", expr(!is_missing_chr(s_id) & !is_missing_chr(s_id)), # USHE Rule
   "G02b", expr(sis_student_id %in% TODO("Need a way to bring in students table for comparing")),
-  "G12a", expr(
+  "G12a", expr({
+    g_trans_total_trim <- trimws(g_trans_total)
+    g_trans_total_num <- as.numeric(g_trans_total_trim)
+
     !(
-      is_missing_chr(trimws(g_trans_total)) |
-        nchar(trimws(g_trans_total)) > 6 |
-        as.numeric(g_trans_total) < 0 |
-        matches_regex(g_trans_total, "[^0-9.]")
+      is_missing_chr(g_trans_total_trim) |
+        nchar(g_trans_total_trim) > 6 |
+        is.na(g_trans_total_num) |
+        g_trans_total_num < 0 |
+        !matches_regex(g_trans_total_trim, "^[0-9]*\\.?[0-9]+$")
     )
-  ), # TODO: verify mapping of rules to fields
+  }), # TODO: verify mapping of rules to fields
   "G13a", expr(is_valid_credits(required_credits)),
   "G14a", expr(is_valid_credits(total_cumulative_ap_credits_earned, missing_ok = TRUE)),
   "G15a", expr(is_valid_credits(total_cumulative_clep_credits_earned, missing_ok = TRUE)),

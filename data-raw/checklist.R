@@ -147,9 +147,9 @@ rule_spec <- tribble(
   "S31a", expr(s_inst %in% c("5220","5221","3679","3676","63") | s_cum_membership %in% 0),
   "S32a", expr(is_valid_credits(total_cumulative_clep_credits_earned, missing_ok = TRUE)),
   "S33a", expr(is_valid_credits(total_cumulative_ap_credits_earned, missing_ok = TRUE)),
-  "S34a", expr(is.na(ssid) | (nchar(ssid) >= 7 & nchar(ssid) <= 9 & stringr::str_detect(ssid, "^[12]"))),
+  "S34a", expr(is.na(ssid) | (nchar(ssid) >= 7 & nchar(ssid) <= 9 & stringr::str_detect(ssid, "^[123]"))),
   "S34b", expr(!(s_reg_status == "HS" & first_admit_state_code == "UT" & !is_missing_chr(ssid) &
-      (nchar(ssid) != 7 | !stringr::str_detect(ssid, "^[12]")))),
+      (nchar(ssid) != 7 | !stringr::str_detect(ssid, "^[123]")))),
   "S34c", expr(!(is.na(ssid) &
                    first_admit_state_code == "UT" &
                    is_hs_type(s_reg_status))),
@@ -510,7 +510,7 @@ rule_spec <- tribble(
   "UTS04", expr(!is.na(department_id)),
   "UTS05", expr(!is_missing_chr(high_school_code)),
   "UTS06", expr(is_degree_intent_consistent_program(s_reg_status, primary_program_code)),
-  #"UTS07", expr(is.na(ssid) | nchar(ssid) == 7 & stringr::str_detect(ssid, "^(1|2)")), #Legacy audit internal rule. This is being covered by S34a.
+  #"UTS07", expr(is.na(ssid) | nchar(ssid) == 7 & stringr::str_detect(ssid, "^(1|2|3)")), #Legacy audit internal rule. This is being covered by S34a.
   "UTS08", expr(!(is.na(ssid) & utValidateR::is_hs_type(s_reg_status))),
   "UTS10", expr(s_reg_status != "HS" | is.na(cur_prgm) | cur_prgm %in% c("ND-CONC", "ND-SA", "ND-CE", "ND-ACE", "ND-DUAL")),
   "UTS12", expr(!(first_admit_country_code %in% "US") | !is_missing_chr(first_admit_state_code)),

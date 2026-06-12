@@ -397,7 +397,7 @@ rule_spec <- tribble(
   "SC05a", expr(!is_missing_chr(course_number)),
   "SC06a", expr(!is_missing_chr(section_number)),
   "SC07a", expr(is_valid_credits(attempted_credits)),
-  #"SC08a", expr(is_valid_credits(earned_credits)),
+  "SC08a", expr(is_valid_credits(earned_credits)),
   "SC09a", expr(is_valid_credits(contact_hours, missing_ok = TRUE)),
   "SC11a", expr(is_valid_credits(sc_membership_hrs)),
   "SC08b", expr(is.na(earned_credits) | earned_credits == 0 |

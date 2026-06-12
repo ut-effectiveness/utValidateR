@@ -300,12 +300,12 @@ rule_spec <- tribble(
   "C22b", expr(course_conditional_check(room_use_code_1, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_1)),
   "C30b", expr(course_conditional_check(room_use_code_2, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_2)),
   "C38b", expr(course_conditional_check(room_use_code_3, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_3)),
-  #"C39a", expr(is_valid_dates_for_term(meet_start_date, term_id, "30", campus_id)) , # Summer
-  #"C39b", expr(is_valid_dates_for_term(meet_start_date, term_id, "40", campus_id)) , # Fall
-  #"C39c", expr(is_valid_dates_for_term(meet_start_date, term_id, "20", campus_id)) , # Spring
-  #"C40a", expr(is_valid_dates_for_term(meet_end_date, term_id, "30", campus_id)), # Summer
-  #"C40b", expr(is_valid_dates_for_term(meet_end_date, term_id, "40", campus_id)), # Fall
-  #"C40c", expr(is_valid_dates_for_term(meet_end_date, term_id, "20", campus_id)), # Spring
+  "C39a", expr(is_valid_dates_for_term(meet_start_date, term_id, "30", campus_id)) , # Summer
+  "C39b", expr(is_valid_dates_for_term(meet_start_date, term_id, "40", campus_id)) , # Fall
+  "C39c", expr(is_valid_dates_for_term(meet_start_date, term_id, "20", campus_id)) , # Spring
+  "C40a", expr(is_valid_dates_for_term(meet_end_date, term_id, "30", campus_id)), # Summer
+  "C40b", expr(is_valid_dates_for_term(meet_end_date, term_id, "40", campus_id)), # Fall
+  "C40c", expr(is_valid_dates_for_term(meet_end_date, term_id, "20", campus_id)), # Spring
   "C41a", expr(!is_missing_chr(course_title)),
   "C41b", expr(is_missing_chr(c_title) |
                  grepl("[a-zA-Z]{2}", c_title) |
@@ -397,7 +397,7 @@ rule_spec <- tribble(
   "SC05a", expr(!is_missing_chr(course_number)),
   "SC06a", expr(!is_missing_chr(section_number)),
   "SC07a", expr(is_valid_credits(attempted_credits)),
-  "SC08a", expr(is_valid_credits(earned_credits)),
+  #"SC08a", expr(is_valid_credits(earned_credits)),
   "SC09a", expr(is_valid_credits(contact_hours, missing_ok = TRUE)),
   "SC11a", expr(is_valid_credits(sc_membership_hrs)),
   "SC08b", expr(is.na(earned_credits) | earned_credits == 0 |

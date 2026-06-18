@@ -5,7 +5,8 @@
 \title{Returns the checklist for a given file and type}
 \usage{
 get_checklist(
-  file = c("student", "student course", "graduation", "course", "buildings", "rooms"),
+  file = c("student", "student course", "graduation", "course", "buildings", "rooms",
+    "program"),
   type = c("database", "ushe")
 )
 }

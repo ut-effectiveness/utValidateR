@@ -7,7 +7,7 @@
 #' @export
 get_checklist <- function(file = c("student", "student course",
                                    "graduation", "course",
-                                   "buildings", "rooms"),
+                                   "buildings", "rooms", "program"),
                           type = c("database", "ushe")) {
 
   file <- match.arg(file, several.ok = TRUE) # with several.ok, default is to include everything

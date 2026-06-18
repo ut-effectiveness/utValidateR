@@ -395,3 +395,4 @@ UTS05,Missing HS code,Database,Failure,Julie Stender,,sorhsch_activity_date,sorh
 UTS06,Program prefix inconsistent with student type,Database,Failure,n,,primary_program_code,primary_program_code,UTS06
 P00a,No program records found,Database,Failure,Julie Stender,Program file contains no records,smrprle_activity_date,banner.smrprle_program,P00a
 P02a,missing academic year,Database,Failure,Julie Stender,academic year missing,smrprle_activity_date,banner.smrprle_program,P02a
+P02b,invalid academic year,Database,Failure,Julie Stender,academic year Invalid,smrprle_activity_date,banner.smrprle_program,P02b

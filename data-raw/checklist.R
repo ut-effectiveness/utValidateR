@@ -535,8 +535,8 @@ rule_spec <- tribble(
         !(startsWith(latest_high_school_code, "45") | latest_high_school_code == "484870"))),
   "P00a", expr(program_record_count > 0),
   "P02a", expr(!is.na(academic_year) & trimws(as.character(academic_year)) != ""),
-  "P02b", expr(is_missing_chr(academic_year) | academic_year == ushe_academic_year
-  )
+  "P02b", expr(is_missing_chr(academic_year) | academic_year == ushe_academic_year),
+  "P03a", expr(!(is_missing_chr(cip_code) | cip_code %in% c("000000", "005000")))
 )
 
 

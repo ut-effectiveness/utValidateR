@@ -396,3 +396,4 @@ UTS06,Program prefix inconsistent with student type,Database,Failure,n,,primary_
 P00a,No program records found,Database,Failure,Julie Stender,Program file contains no records,smrprle_activity_date,banner.smrprle_program,P00a
 P02a,missing academic year,Database,Failure,Julie Stender,academic year missing,smrprle_activity_date,banner.smrprle_program,P02a
 P02b,invalid academic year,Database,Failure,Julie Stender,academic year Invalid,smrprle_activity_date,banner.smrprle_program,P02b
+P03a,invalid CIP code,Database,Failure,Julie Stender,CIP invalid,smrprle_activity_date,banner.stvmajr_cipc_code,P03a

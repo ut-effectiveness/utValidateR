@@ -48,9 +48,9 @@ etpl_course_ids <- etpl %>%
               stringr::str_trim() %>%
               stringr::str_replace_all("\\s+", " ") %>%
               stringr::str_to_upper())
-  # filter(stringr::str_detect(etpl_key, "^[A-Z]{2,5} \\d{4}$"))
-  # distinct(etpl_key)
-  #pull(etpl_key)
+  filter(stringr::str_detect(etpl_key, "^[A-Z]{2,5} \\d{4}$"))
+  distinct(etpl_key)
+  pull(etpl_key)
 
 # Campus IDs from file--supplied by Justin
 campus_ids <- scan("sandbox/valid_campus_ids.txt", what = character(0))

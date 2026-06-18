@@ -532,7 +532,8 @@ rule_spec <- tribble(
   "UTG04", expr(as.numeric(graduation_term_year_check) == as.numeric(graduated_academic_year_code)),
   "UTSC01", expr(
     !(budget_code %in% c("BC", "SF") &
-        !(startsWith(latest_high_school_code, "45") | latest_high_school_code == "484870")))
+        !(startsWith(latest_high_school_code, "45") | latest_high_school_code == "484870"))),
+  "P00a", expr(program_record_count > 0)
 )
 
 
@@ -548,9 +549,11 @@ get_ushe_file <- function(rule) {
     grepl("^G", rule) ~ "Graduation",
     grepl("^B", rule) ~ "Buildings",
     grepl("^R", rule) ~ "Rooms",
+    grepl("^P", rule) ~ "Program",
     grepl("^UTS", rule) ~ "Student",
     grepl("^UTC", rule) ~ "Course",
     grepl("^UTG", rule) ~ "Graduation",
+    grepl("^UTP", rule) ~ "Program",
     TRUE ~ NA_character_
     )
   out

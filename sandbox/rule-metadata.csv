@@ -41,14 +41,14 @@ C11,missing budget code,Database,Failure,Vicki Shurtz,Checking to ensure that bu
 C11b,budget code does not align with course and subject on concurrent enrolled master list from USHE,Database,Failure,Vicki Shurtz,Not on CEML,ssrsccd_activity_date,banner.ssrsccd_sccd_code,C11b
 C12,invalid delivery method,USHE,Failure,NA,Checking for valid values IN c_delivery_method.,ssbsect_activity_date,banner.ssbsect_insm_code,C12
 C13,invalid program type and missing program type,Database,Failure,Samira Hall,Checking for invalid program types.,NA,banner.scbsupp_occs_code,C13
-C13a,invalid program type against perkins list,USHE,Failure,NA,checks validity of c_program_type against perkins list.,NA,banner.scbsupp_occs_code,C13a
-C13c,invalid budget code again perkins list,USHE,Failure,NA,"checks for courses allowed on perkins list, but not currently coded to vocational",NA,banner.scbsupp_occs_code,C13c
+C13a,invalid program type against perkins list,Database,Failure,Samira Hall,"checks validity of program_type against perkins list",NA,banner.scbsupp_occs_code,C13a
+C13c,invalid budget code against perkins list,Database,Failure,Samira Hall,"checks for courses allowed on perkins list, but not currently coded to vocational",NA,banner.scbsupp_occs_code,C13c
 C14a,invalid credit indicator,USHE,Failure,NA,Checking for valid values for c_credit_ind.,NA,banner.scrlevl_levl_code = 'NC',C14a
-C14b,credit indicator and section format type do not align,USHE,Failure,Vicki Shurtz,No noncredit crs in 3wk,ssbsect_activity_date,banner.ssbsect_schd_code,C14b
-C14c,invalid non-credit class based on program type and budget code,USHE,Failure,NA,Only Labs and Vocational non-credit classes can be submitted,scbsupp_activity_date,"banner.scbsupp_occs_code, banner.scrlevl_levl_code = 'NC', banner.ssbsect_schd_code",C14c
+C14b,credit indicator and section format type do not align,Database,Failure,Vicki Shurtz,No noncredit crs in 3wk,ssbsect_activity_date,banner.ssbsect_schd_code,C14b
+C14c,invalid non-credit class based on program type and budget code,Database,Failure,NA,Only Labs and Vocational non-credit classes can be submitted,scbsupp_activity_date,"banner.scbsupp_occs_code, banner.ssbsect_schd_code",C14c
 C15a,missing start time,Database,Failure,Vicki Shurtz,Courses Start Time conditionally required,ssrmeet_activity_date,banner.ssrmeet_begin_time,C15a
 C16a,missing end time,Database,Failure,Vicki Shurtz,Courses Stop Time conditionally required,ssrmeet_activity_date,banner.ssrmeet_end_time,C16a
-C17a,missing course meeting days,USHE,Failure,NA,Courses Days conditionally required,NA,"banner.ssrmeet_sun_day, etc...",C17a
+C17a,missing course meeting days,Database,Failure,Vicki Shurtz,Courses Days conditionally required,NA,banner.ssrmeet_sun_day,C17a
 C18,building name and number are the same,Database,Failure,Vicki Shurtz,BLDG Name and number are the same,ssrmeet_activity_date,"banner.ssrmeet_bldg_code, space_utlz.building_detail.bldg_number",C18
 C18a,missing building name,Database,Failure,Vicki Shurtz,BLDG SName conditionally Required,ssrmeet_activity_date,banner.ssrmeet_bldg_code,C18a
 C19a,missing building number,Database,Failure,Vicki Shurtz,BLDG NUM conditionally required,bldg_activity_date,space_utlz.building_detail.bldg_number,C19a
@@ -60,7 +60,7 @@ C22a,invalid room use type,Database,Failure,Vicki Shurtz,Checking for valid valu
 C22b,missing room use type,Database,Failure,Vicki Shurtz,C_Room_type3 Missing,room_activity_date,space_utlz.rooms_detail.room_use_code,C22b
 C23a,missing start time,Database,Failure,Vicki Shurtz,Courses Start Time conditionally required,ssrmeet_activity_date,banner.ssrmeet_begin_time,C15a
 C24a,missing end time,Database,Failure,Vicki Shurtz,Courses Stop Time conditionally required,ssrmeet_activity_date,banner.ssrmeet_end_time,C16a
-C25a,missing course meeting days,USHE,Failure,NA,Courses Days conditionally required,NA,"banner.ssrmeet_sun_day, etc...",C17a
+C25a,Invalid meeting days sequence: Days2 present while Days1 is missing,Database,Failure,Vicki Shurtz,Courses Days conditionally required,NA,banner.ssrmeet_sun_day,C25a
 C26,building name and number are the same,Database,Failure,Vicki Shurtz,BLDG Name and number are the same,ssrmeet_activity_date,"banner.ssrmeet_bldg_code, space_utlz.building_detail.bldg_number",C18
 C26a,missing building name,Database,Failure,Vicki Shurtz,BLDG SName conditionally Required,ssrmeet_activity_date,banner.ssrmeet_bldg_code,C18a
 C27a,missing building number,Database,Failure,Vicki Shurtz,BLDG NUM conditionally required,bldg_activity_date,space_utlz.building_detail.bldg_number,C19a
@@ -72,7 +72,7 @@ C30a,invalid room use type,Database,Failure,Vicki Shurtz,Checking for valid valu
 C30b,missing room use type,Database,Failure,Vicki Shurtz,C_Room_type3 Missing,room_activity_date,space_utlz.rooms_detail.room_use_code,C22b
 C31a,missing start time,Database,Failure,Vicki Shurtz,Courses Start Time conditionally required,ssrmeet_activity_date,banner.ssrmeet_begin_time,C15a
 C32a,missing end time,Database,Failure,Vicki Shurtz,Courses Stop Time conditionally required,ssrmeet_activity_date,banner.ssrmeet_end_time,C16a
-C33a,missing course meeting days,USHE,Failure,NA,Courses Days conditionally required,NA,"banner.ssrmeet_sun_day, etc...",C17a
+C33a,Invalid meeting days sequence (Days3 present with missing Days1 or Days2),Database,Failure,Vicki Shurtz,Courses Days conditionally required,NA,banner.ssrmeet_sun_day,C33a
 C34,building name and number are the same,Database,Failure,Vicki Shurtz,BLDG Name and number are the same,ssrmeet_activity_date,"banner.ssrmeet_bldg_code, space_utlz.building_detail.bldg_number",C18
 C34a,missing building name,Database,Failure,Vicki Shurtz,BLDG SName conditionally Required,ssrmeet_activity_date,banner.ssrmeet_bldg_code,C18a
 C35a,missing building number,Database,Failure,Vicki Shurtz,BLDG NUM conditionally required,bldg_activity_date,space_utlz.building_detail.bldg_number,C19a
@@ -91,9 +91,9 @@ C40c,valid start date and end date format (Spring),Database,Failure,Julie Stende
 C41a,missing course title,Database,Failure,Julie Stender,C_Title is null or missing,scbcrse_activity_date,banner.scbcrse_title,C41a
 C41b,invalid title format,USHE,Failure,NA,C_Title needs a minimum of 2 alpha characters together,NA,banner.scbcrse_title,C41b
 C41d,invalid title format,USHE,Failure,NA,C_Title special charaters not allowed,NA,banner.scbcrse_title,C41d
-C42a,missing instructor,Database,Failure,Vicki Shurtz,C_Instruct_ID is null or missing,spriden_activity_date,banner.spriden_id,C42a
+C42a,missing instructor ID,Database,Failure,Vicki Shurtz,C_Instruct_ID is null or missing,spriden_activity_date,banner.spriden_id,C42a
 C42b,invalid instructor id format,Database,Failure,Julie Stender,"C_Instruct_ID is 9 Characters, so should be using an Alpha character to start, this makes sure it is not Instructors SSN",spriden_activity_date,banner.spriden_id,C42b
-C42c,invalid instructor id format,USHE,Failure,NA,C_Instruct_ID is using the wrong institutional assigned alpha characters,NA,banner.spriden_id,C42c
+C42c,Instructor ID starts with an invalid institutional alpha prefix,Database,Failure,Julie Stender,C_Instruct_ID is using the wrong institutional assigned alpha characters,NA,banner.spriden_id,C42c
 C43a,missing instructor name,Database,Failure,Vicki Shurtz,C_Instruct_Name is null or missing,spriden_activity_date,banner.spriden_first_name,C43a
 C43c,invalid instroctor name format,USHE,Failure,NA,C_Instruct_Name no special characters,NA,banner.spriden_first_name,C43c
 C44,missing instruction type,Database,Failure,Vicki Shurtz,C_instruct_type cannot be blank or NULL,ssbsect_activity_date,banner.ssbsect_schd_code,C44
@@ -102,12 +102,12 @@ C45,missing college,Database,Failure,Julie Stender,There should be a college for
 C45a,invalid college due to non-alpha characters,Database,Failure,Julie Stender,S_College with Non-Alpha characters,sgbstdn_activity_date,"banner.sgbstdn_coll_code_1, banner.sgbstdn_coll_code_2",S46b
 C46,missing department code,Database,Failure,Julie Stender,Department exists,scbcrse_activity_date,banner.scbcrse_dept_code,C46
 C46a,invalid department due to non-alpha characters,Database,Failure,Julie Stender,C_Dept Should only contain Alpha,scbcrse_activity_date,banner.scbcrse_dept_code,C46a
-C47b,invalid gen ed format,USHE,Failure,NA,Check for valid c_gen_ed values,NA,banner.ssrattr_attr_code,C47b
+C47b,invalid gen ed format,Database,Failure,Julie Stender,Check for valid c_gen_ed values,ssbsect_activity_date,banner.ssrattr_attr_code,C47b
 C48a,missing destination type,USHE,Failure,NA,"C_Dest_Site if not null or blank, make sure it is in Reference.dbo.Highschools",NA,"banner.ssrsccd_sccd_code, banner.ssbsect_schd_code, banner.ssbsect_insm_code",C48a
 C49a,missing class size,USHE,Failure,NA,C49A FTL Missing Class Size,ssbsect_activity_date,banner.ssbsect_enrl,C49a
 C49b,invalid class size,Database,Failure,Vicki Shurtz,C_Class_Size Invalid,ssbsect_activity_date,banner.ssbsect_enrl,C49b
-C49c,class size and enrolled students don't align,USHE,Failure,NA,C_CLASS_SIZE Number of Students Enrolled,NA,banner.ssbsect_enrl,C49c
-C51a,invalid class level or missing class level,USHE,Failure,NA,C_LEVEL classes,NA,banner.scrlevl_levl_code,C51a
+C49c,class size and enrolled students don't align,Database,Failure,NA,C_CLASS_SIZE Number of Students Enrolled,NA,banner.ssbsect_enrl,C49c
+C51a,invalid class level or missing class level,USHE,Failure,Vicki Shurtz,C_LEVEL classes,NA,banner.scrlevl_levl_code,C51a
 C51b,invalid remedial level,USHE,Failure,NA,C_LEVEL remedial,NA,banner.scrlevl_levl_code,C51b
 C52a,missing course reference number,Database,Failure,Vicki Shurtz,Missing Course Reference Number,ssbsect_activity_date,banner.ssbsect_crn,C52a
 C52b,invalid course reference number,Database,Failure,Vicki Shurtz,Invalid Course Reference Number,ssbsect_activity_date,banner.ssbsect_crn,C52b
@@ -126,7 +126,6 @@ G03f,middle name with non-alpha characters,Database,Warning,Julie Stender,S_Midd
 G03g,middle name too long,USHE,Failure,NA,G_Middle too long,spriden_activity_date,banner.spriden_mi,G03g
 G03h,previous suffix last name with non-alpha characters,Database,Warning,Julie Stender,S_Suffix name with Non-Alpha characters,spbpers_activity_date,banner.spbpers_name_suffix,S07d
 G03i,suffix too long,USHE,Failure,NA,G_Suffix name too long,spbpers_activity_date,banner.spbpers_name_suffix,G03i
-G04a,missing county code,Database,Failure,Jerhett Jerman,There should be a county origin for every record,sabsupl_activity_date,banner.sabsupl_cnty_code_admit,S10a
 G05,missing birthdates,Database,Failure,Julie Stender,There should be a birth date for every record,spbpers_activity_date,banner.spbpers_birth_date,S12
 G05a,invalid birthdate,Database,Failure,Julie Stender,Checks for invalid birth date year equal to current year or future years,spbpers_activity_date,banner.spbpers_birth_date,S12A
 G06a,missing or invalid gender,Database,Failure,Julie Stender,Please resolve any missing OR invalid values,spbpers_activity_date,banner.spbpers_sex,S13
@@ -146,7 +145,7 @@ G09b,missing cip code,Database,Failure,Julie Stender,Declared Major CIP codes Th
 G10a,missing degree type,Database,Failure,Julie Stender,G_Deg_Type Missing,shrdgmr_activity_date,banner.shrdgmr_degc_code,G10a
 G10b,invalid degree type,USHE,Failure,NA,DEG_Type Invalid,shrdgmr_activity_date,banner.shrdgmr_degc_code,G10b
 G11a,invalid institutional cumulative gpa format,Database,Failure,Julie Stender,S_CUM_GPA_UGRAD wrong format,shrtgpa_activity_date,banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa),S21a
-G12a,invalid credit format,Database,Failure,Julie Stender,S_CUM_HRS_UGrad wrong format,shrtgpa_activity_date,banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),S20a
+G12a,invalid transfer credit format,Database,Failure,Julie Stender,S_CUM_HRS_UGrad wrong format,shrtgpa_activity_date,banner.shrlgpa_hours_earned,S20a
 G12b,Transfer hours over 300 credits,USHE,Failure,NA,G_Trans_Total seems excessive when over 300.0,shrtgpa_activity_date,sum(shrtgpa_hours_earned),G12b
 G13a,invalid credit format,Database,Failure,Julie Stender,S_CUM_HRS_UGrad wrong format,gorsdav_activity_date,banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),S20a
 G13b,Graduation hours 1.5 times required hours,USHE,Warning,NA,G_Grad_HRS seems excessive when over 1.5 * g_req_hrs_deg,shrtgpa_activity_date,(sum(shrtgpa_hours_earned),G13b
@@ -162,7 +161,7 @@ G20a,invalid ssid,Database,Failure,Julie Stender,S_SSID is invalid,goradid_activ
 G21a,invalid student id,Database,Failure,Julie Stender,There should be a valid institutionally assigned ID for all records.,spriden_activity_date,banner.spriden_id,S35a
 G21b,invalid student id,Database,Failure,Julie Stender,Changed to look for Alpha Characters at the start of the banner id,spriden_activity_date,banner.spriden_id,S35b
 G21c,invalid alpha in student id,USHE,Failure,NA,Wrong Alpha in Banner IDs. There should be a valid institutionally assigned ID for all records.,NA,banner.spriden_id,S35c
-G21d,duplicate graduation records,Database,Failure,Julie Stender,check for duplicate graduation records.,NA,NA,G21d
+G21d,duplicate graduation records,Database,Failure,Julie Stender,check for duplicate graduation records,NA,banner.spriden_id,G21d
 G21e,graduation id is not in students table,Database,Failure,Julie Stender,ID from graduation file is not in students file,"spbpers_activity_date, spriden_activity_date","banner.spbpers_ssn, banner.spriden_id",G02b
 G22a,invalid credit format,Database,Failure,Julie Stender,S_CUM_HRS_UGrad wrong format,shrtgpa_activity_date,banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),S20a
 G23a,invalid credit format,Database,Failure,Julie Stender,S_CUM_HRS_UGrad wrong format,shrtgpa_activity_date,banner.shrlgpa_hours_earned or SUM(banner.shrtgpa_hours_earned),S20a
@@ -236,8 +235,8 @@ S12A,invalid birthdate,Database,Failure,Julie Stender,Checks for invalid birth d
 S12B,invalid birthdate formating of YYYYMMDD,USHE,Failure,NA,Checks for valid date format YYYYMMDD,NA,banner.spbpers_birth_date,S12B
 S12C,age over 100,Database,Failure,Julie Stender,Birth date older than 100 years,spbpers_activity_date,banner.spbpers_birth_date,S12C
 S13,missing or invalid gender,Database,Failure,Julie Stender,Please resolve any missing OR invalid values,spbpers_activity_date,banner.spbpers_sex,S13
-S13a,gender change after census,USHE,Warning,NA,GENDER CHANGED BASED ON 3RD WEEK DATA,NA,banner.spbpers_sex,S13a
-S13b,gender change after previous term,USHE,Warning,NA,Gender change from last instance,NA,banner.spbpers_sex,S13b
+S13a,gender change after census,Database,Failure,Julie Stender,GENDER CHANGED BASED ON 3RD WEEK DATA,spbpers_activity_date,banner.spbpers_sex,S13a
+S13b,gender change after previous term,Database,Failure,Julie Stender,Gender change from last instance,NA,banner.spbpers_sex,S13b
 S14a,invalid ethnicity code (Asian),USHE,Failure,NA,Ethnicity Asian Please resolve any invalid codes.,NA,dsc.ipeds_ethnicity,S14a
 S14b,invalid ethnicity code (Black),USHE,Failure,NA,Ethnicity Black Please resolve any invalid codes.,NA,dsc.ipeds_ethnicity,S14b
 S14h,invalid ethnicity code (Hispanic),USHE,Failure,NA,Ethnicity Hispanic Please resolve any invalid codes,NA,dsc.ipeds_ethnicity,S14h
@@ -297,11 +296,11 @@ S33a,invalid AP wrong format,Database,Failure,Julie Stender,S_Total_AP wrong for
 S34a,invalid ssid,Database,Failure,Julie Stender,S_SSID is invalid,goradid_activity_date,goradid_additional_id,S34a
 S34b,ssid does not align with student type and state code,Database,Failure,Julie Stender,Bad SSID for Reg Status of HS and State of UT,goradid_activity_date,"goradid_additional_id, banner.sabsupl_stat_code_admit, banner.sgbstdn_styp_code",S34b
 S34c,missing ssid for Utah HS students,Database,Failure,Julie Stender,NULL SSID for HS Count,goradid_activity_date,"goradid_additional_id, banner.sabsupl_stat_code_admit, banner.sgbstdn_styp_code",S34c
-S34d,missing ssid for concurrent students,Database,Failure,Julie Stender,NULL SSID for CE Students,goradid_activity_date,"goradid_additional_id, banner.sabsupl_stat_code_admit, banner.sgbstdn_styp_code",S34d
+S34d,missing ssid for concurrent students,Database,Failure,Julie Stender,SSID for CE Students,goradid_activity_date,"goradid_additional_id, banner.sabsupl_stat_code_admit, banner.sgbstdn_styp_code",S34d
 S34e,missing ssid for first time freshman and highschool students,Database,Warning,Julie Stender,"Please provide as many SSIDs as possible. Our hope is for every freshmen
 --AND high school student FROM Utah to have an SSID.",goradid_activity_date,"goradid_additional_id, banner.sgbstdn_styp_code",S34e
-S35a,invalid student id,Database,Failure,Julie Stender,There should be a valid institutionally assigned ID for all records.,spriden_activity_date,banner.spriden_id,S35a
-S35b,invalid student id,Database,Failure,Julie Stender,Changed to look for Alpha Characters at the start of the banner id,spriden_activity_date,banner.spriden_id,S35b
+S35a,Banner ID missing or not 9 digits,Database,Failure,Julie Stender,There should be a valid institutionally assigned ID for all records.,spriden_activity_date,banner.spriden_id,S35a
+S35b,Banner ID must start with an alphabetic character,Database,Failure,Julie Stender,Changed to look for Alpha Characters at the start of the banner id,spriden_activity_date,banner.spriden_id,S35b
 S35c,invalid alpha in student id,USHE,Failure,NA,Wrong Alpha in Banner IDs. There should be a valid institutionally assigned ID for all records.,NA,banner.spriden_id,S35c
 S36a,invalid act test score format,Database,Failure,Julie Stender,S_ACT wrong format,sortest_activity_date,banner.sortest_test_score,S36a
 S37a,missing cip code,USHE,Failure,NA,Declared Major CIP codes There should be a s_curr_cip for each record.,stvmajr_activity_date,banner.stvmajr_cipc_code,S16a
@@ -309,7 +308,7 @@ S38a,invalid act test score format,Database,Failure,Julie Stender,S_ACT wrong fo
 S39a,invalid act test score format,Database,Failure,Julie Stender,S_ACT wrong format,sortest_activity_date,banner.sortest_test_score,S36a
 S40a,invalid act test score format,Database,Failure,Julie Stender,S_ACT wrong format,sortest_activity_date,banner.sortest_test_score,S36a
 S41a,invalid act test score format,Database,Failure,Julie Stender,S_ACT wrong format,sortest_activity_date,banner.sortest_test_score,S36a
-S42a,missing HS graduation date,Database,Failure,Julie Stender,High School Grad Date required where s_reg_status = FH,sorhsch_activity_date,banner.sorhsch_graduation_date,S42a
+S42a,Missing HS Grad Date for FH (UT only),Database,Failure,Julie Stender,High School Grad Date required where s_reg_status = FH,sorhsch_activity_date,banner.sorhsch_graduation_date,S42a
 S43b,invalid institutional cumulative gpa format,Database,Failure,Julie Stender,S_CUM_GPA_UGRAD wrong format,shrtgpa_activity_date,banner.shrlgpa_gpa or SUM(banner.shrtgpa_gpa),S21a
 S43c,cumulative gpa matches term gpa based on certain student types,USHE,Warning,NA,S_CUM_GPA_UGRAD = S_TERM_GPA,NA,round(sum(shrtgpa_quality_points) / sum(shrtgpa_gpa_hours),S43c
 S44c,invalid pell awarded to highschool students,USHE,Failure,NA,HS students should not have pell,rpratrm_activity_date,banner.rpratrm_offer_amt,S44c

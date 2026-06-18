@@ -365,7 +365,7 @@ course_conditional_check <- function(x,
   data("aux_info", package = "utValidateR", envir = environment())
   isbad <- is_missing_chr(trimws(x)) &
     !(instruction_method_code %in% c("C", "I", "V", "Y")) &
-    section_format_type_code %in% c('LEV', 'LEX', 'LES', 'INS', 'STU', 'LBC', 'LBS', 'LBC') &
+    section_format_type_code %in% c('LEV', 'LEX', 'LES', 'INS', 'STU', 'LBC', 'LBS') &
     !(budget_code %in% "SF") &
     is_valid_values(campus_id, aux_info$valid_campus_ids)
 
@@ -445,6 +445,36 @@ is_degree_intent_consistent_program <- function(student_type_code, primary_progr
 
 }
 
+#' Normalize Utah county codes to 3-digit format
+#'
+#' @description Cleans and standardizes county codes by removing non-numeric values,
+#' stripping leading zeros, and padding to a 3-digit character format.
+#' Values such as "False" and "True" are treated as missing.
+#'
+#' @param x A character or numeric vector containing county codes.
+#'
+#' @return A character vector of 3-digit county codes (e.g., "099"),
+#' or NA for invalid or non-numeric inputs.
+#'
+#' @examples
+#' normalize_utah_county(c("00099", "99", "False", NA))
+#' # Returns: "099" "099" NA NA
+#'
+#' @export
+normalize_utah_county <- function(x) {
+  x_chr <- as.character(x)
+
+  # Remove obvious junk
+  x_chr[x_chr %in% c("False", "True")] <- NA
+
+  # Extract digits, strip leading zeros, then re-pad to 3 digits
+  cleaned <- stringr::str_extract(x_chr, "\\d+") %>%
+    stringr::str_replace("^0+", "") %>%
+    stringr::str_pad(width = 3, side = "left", pad = "0")
+
+  cleaned
+}
+
 
 #' Helper function for validating SSN formats according to Legacy Audit rules
 #'
@@ -492,31 +522,5 @@ is_valid_ssn_legacy <- function(x, missing_ok = TRUE) {
     out & !is.na(x)
   }
 }
-
-
-#' Generate CSV for analytics_quad_concurrent_cours (Rule- C11b)
-#'
-#' Reads Excel from Data folder, drops extra columns, and writes CSV to Sandbox folder.
-#'
-#' @param filename Excel filename (without path, e.g. "analytics_quad_concurrent_cours.xlsx")
-#' @return csv with 3 columns (course_id, subject_code, course_number)
-#' @importFrom readxl read_excel
-#' @export
-concurrent_csv <- function(filename = "analytics_quad_concurrent_courses.xlsx") {
-
-  input_path  <- here::here("Data", filename)
-  output_path <- here::here("Sandbox", sub("\\.xlsx$", ".csv", filename))
-
-  read_excel(input_path) %>%
-    select(-any_of(c("Institution", "Get Ed Code", "Title", "Core Code", "Core Title", "Reason"))) %>%
-    mutate(
-      course_id     = as.character(paste0(Prefix, "-", Number)),
-      subject_code  = as.character(Prefix),
-      course_number = as.character(Number)
-    ) %>%
-    select(course_id, subject_code, course_number) %>%
-    write_csv(output_path)
-}
-
 
 

@@ -2,8 +2,8 @@
 
 # TODO: get these from a query, since they are subject to change
 # Concurrent list generated from analytics_quad_concurrent excl.
-concurrent_csv("analytics_quad_concurrent_course.xlsx")
-concurrent_list <- read.csv("sandbox/analytics_quad_concurrent_courses.csv")
+#concurrent_csv("analytics_quad_concurrent_course.xlsx")
+#concurrent_list <- read.csv("sandbox/analytics_quad_concurrent_courses.csv")
 building_list <- read.csv("sandbox/analytics_quad_buildings.csv")
 
 # ISO country codes from csv
@@ -24,6 +24,33 @@ highschools <- read.csv("sandbox/highschools.txt", sep = "|")
 ut_highschools <- highschools %>%
   filter(HS_State == "UT") %>%
   pull(HS_ACT_Code)
+
+# Perkins list
+perkins <- readxl::read_excel("sandbox/2025-26 MASTER CTE COURSE LIST - UT.xlsx")
+valid_perkins_list <- perkins %>%
+  mutate(perkins_list = paste0(stringr::str_trim(Prefix),
+                               stringr::str_trim(Crs_Num))) %>%
+  pull(perkins_list)
+
+# Concurrent course ID list
+concurrent <- readxl::read_excel(here::here("sandbox", "analytics_quad_concurrent_course.xlsx"))
+
+valid_concurrent_list<- concurrent %>%
+  mutate(course_id = as.character(paste0(Prefix, "-", Number))) %>%
+  pull(course_id)
+
+
+# ETPL list
+etpl <- read.csv("sandbox/reference.dbo.ETPL.txt", sep="|", stringsAsFactors = FALSE)
+etpl_course_ids <- etpl %>%
+  filter(ETPL_Inst_Code == "3671", Inactive == "N") %>%
+   transmute(etpl_key = ETPL_CIP_USHE %>%
+              stringr::str_trim() %>%
+              stringr::str_replace_all("\\s+", " ") %>%
+              stringr::str_to_upper())
+  filter(stringr::str_detect(etpl_key, "^[A-Z]{2,5} \\d{4}$"))
+  distinct(etpl_key)
+  pull(etpl_key)
 
 # Campus IDs from file--supplied by Justin
 campus_ids <- scan("sandbox/valid_campus_ids.txt", what = character(0))
@@ -84,7 +111,7 @@ aux_info <- list(
   non_concurrent_highschools = c("459050","459100","459150","459200","459300",
                                  "459400","459500","459000"), #SC12b
 
-  concurrent_course_ids = concurrent_list$course_id, #C11b
+  concurrent_course_ids = valid_concurrent_list, #C11b
 
   ut_highschools = ut_highschools,
 
@@ -131,6 +158,18 @@ aux_info <- list(
 
   # Section formats that do NOT require a room number
   no_room_required_section_formats = c("MUN", "MUM", "ACT", "ENS", "SGP"), #UTC16
+
+  c_inst = c("3671"),
+
+  valid_gen_ed_codes = c("C", "QL", "AI", "FA", "HU", "SS", "LS", "PS", "ID", "IR", "DV", "CL", "FL"),
+
+  valid_utah_county_codes = c(
+    "001","003","005","007","009","011","013","015","017","019","021","023","025","027","029","031",
+    "033","035","037","039","041","043","045","047","049","051","053","055","057","030","097","099"),
+
+  valid_perkins_list = valid_perkins_list,
+
+  etpl_course_ids = etpl_course_ids,
 
   # Inventories
   building_inventory = building_list$building_number, #C19c and others, TODO: get from a query

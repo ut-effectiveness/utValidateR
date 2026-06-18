@@ -44,7 +44,9 @@ rule_spec <- tribble(
                  (is.na(us_citizenship_code) & ipeds_race_ethnicity == "Non-Resident Alien") |
                  ((us_citizenship_code != 2) & ipeds_race_ethnicity == "Non-Resident Alien") |
                  (us_citizenship_code == 2 & (ipeds_race_ethnicity != "Non-Resident Alien")))),
-  "S10a", expr(!is_missing_chr(first_admit_county_code)), # TODO verify I don't need to check code validity
+  "S10a", expr(
+    {county_clean <- normalize_utah_county(first_admit_county_code)
+      !is.na(county_clean) & county_clean %in% valid_utah_county_codes}),
   "S11a", expr(is_utah_county(first_admit_county_code) |
                  !(first_admit_state_code %in% "UT")),
   "S12", expr(!is.na(birth_date)),
@@ -52,8 +54,9 @@ rule_spec <- tribble(
   "S12b", expr(is.na(s_birth_dt) | is.Date(s_birth_dt)), # USHE rule
   "S12c", expr(age_in_range(birth_date, 0, 100)),
   "S13", expr(toupper(gender_code) %in% c("M", "F")),
-  "S13a", expr(TODO('USHE rule for "gender change after census"')),
-  "S13b", expr(TODO('USHE rule for "gender change after previous term"')),
+  "S13a", expr(is.na(gender_code) | is.na(gender_census_ref) |
+                              toupper(gender_code) == toupper(gender_census_ref)),
+  "S13b", expr(is.na(gender_prev_term_ref) | (toupper(gender_code) == toupper(gender_prev_term_ref))),
   "S14a", expr(s_ethnic_a %in% c("A", NA)),
   "S14b", expr(s_ethnic_b %in% c("B", NA)),
   "S14h", expr(s_ethnic_h %in% c("H", NA)),
@@ -144,18 +147,18 @@ rule_spec <- tribble(
   "S31a", expr(s_inst %in% c("5220","5221","3679","3676","63") | s_cum_membership %in% 0),
   "S32a", expr(is_valid_credits(total_cumulative_clep_credits_earned, missing_ok = TRUE)),
   "S33a", expr(is_valid_credits(total_cumulative_ap_credits_earned, missing_ok = TRUE)),
-  "S34a", expr(is.na(ssid) | (nchar(ssid) >= 7 & nchar(ssid) <= 9 & stringr::str_detect(ssid, "^[12]"))),
-  "S34b", expr(!(student_type_code == "H" & first_admit_state_code == "UT" & !is_missing_chr(ssid) &
-      (nchar(ssid) != 7 | !stringr::str_detect(ssid, "^[12]")))),
+  "S34a", expr(is.na(ssid) | (nchar(ssid) >= 7 & nchar(ssid) <= 9 & stringr::str_detect(ssid, "^[123]"))),
+  "S34b", expr(!(s_reg_status == "HS" & first_admit_state_code == "UT" & !is_missing_chr(ssid) &
+      (nchar(ssid) != 7 | !stringr::str_detect(ssid, "^[123]")))),
   "S34c", expr(!(is.na(ssid) &
                    first_admit_state_code == "UT" &
-                   is_hs_type(student_type_code))),
-  "S34d", expr(!is.na(student_id) | !(budget_code %in% c("BC", "SF"))),
-  "S34e", expr(!is.na(student_id) |
-                 (!is_hs_type(student_type_code) &
-                    !is_freshmen_type(student_type_code))), #TODO: This is not working as per USHE guideline. Need to revisit it.
-  "S35a", expr(is_valid_student_id(student_id)),
-  "S35b", expr(is_valid_student_id(student_id)), # TODO: redundant with S35a? Seems to be relevant for banner IDs only
+                   is_hs_type(s_reg_status))),
+  "S34d", expr(!is.na(ssid) | !(budget_code %in% c("BC", "SF"))),
+  "S34e", expr(!is.na(ssid) |
+                 (!is_hs_type(s_reg_status) &
+                    !is_freshmen_type(s_reg_status))),
+  "S35a", expr(!utValidateR::is_missing_chr(s_banner_id) & nchar(s_banner_id) == 9),
+  "S35b", expr(is.na(s_banner_id) | (s_banner_id != "" & stringr::str_detect(s_banner_id, "^[A-Za-z]"))),
   "S35c", expr(is_alpha_chr(substring(s_banner_id, 1, 1))),
   "G21c", expr(is_alpha_chr(substring(g_banner_id, 1, 1))),
   "SC13c", expr(is_alpha_chr(substring(sc_banner_id, 1, 1))),
@@ -165,13 +168,14 @@ rule_spec <- tribble(
   "S39a", expr(is_valid_act_score(act_math_score)),
   "S40a", expr(is_valid_act_score(act_reading_score)),
   "S41a", expr(is_valid_act_score(act_science_score)),
-  "S42a", expr(!is.na(high_school_graduation_date)),
+  "S42a", expr(!(s_reg_status == "FH" & first_admit_state_code == "UT") |
+      !is.na(high_school_graduation_date)),
   "S43c", expr((s_term_gpa == s_cum_gpa_ugrad) |
                (s_reg_status %in% c("FF", "FH", "TU", "TG")) |
                (s_level == "FR")), # USHE rule
-  "S44c", expr(!is_hs_type(student_type_code) |
+  "S44c", expr(!is_hs_type(s_reg_status) |
                  (!(is_pell_eligible %in% TRUE) & !(is_pell_awarded %in% TRUE))), #USHE check
-  "UTS02", expr(!is_hs_type(student_type_code) | !(is_pell_awarded %in% TRUE)),
+  "UTS02", expr(!is_hs_type(s_reg_status) | !(is_pell_awarded %in% TRUE)),
   "S44d", expr(s_pell %in% c("E", "R") | !(s_extract %in% "e")),
   "S45c", expr(s_bia %in% "B" | !(s_extract %in% "e")),
   "S46a", expr(!is_missing_chr(primary_major_college_id)),
@@ -232,9 +236,7 @@ rule_spec <- tribble(
     active_ind == "A" &
       subject_code != "CED" &
       ((budget_code %in% c("BC","SF")) != stringr::str_detect(section_number, "V|S\\^|S|X|J")) &
-      # only keep if NOT already caught by C11 (i.e., C11 passes)
       ((campus_id %in% "XXX") | !utValidateR::is_missing_chr(budget_code)) &
-      # only keep if NOT already caught by C11b (i.e., C11b passes)
       ((paste0(subject_code, "-", course_number) %in% concurrent_course_ids) |
          !(budget_code %in% c("BC","SF"))))),
   "UTC14", expr(!(!is.na(budget_code) & stringr::str_detect(budget_code, "^B") &
@@ -244,33 +246,33 @@ rule_spec <- tribble(
         !is.na(building_number_1) & is.na(meet_room_number_1) &
         !(section_format_type_code %in% no_room_required_section_formats))),
   "C13", expr(is_valid_values(program_type, valid_program_types, missing_ok = FALSE)),
-  "C13a", expr(TODO("USHE check on perkins program types. Requires a query?")),
-  "C13c", expr(TODO("USHE check on perkins budget codes. Need query for perkins codes?")),
+  "C13a", expr(!(program_type %in% c("V", "P") & !(paste0(stringr::str_trim(subject_code),
+                                                          stringr::str_trim(course_number)) %in% valid_perkins_list))),
+  "C13c", expr(!((paste0(stringr::str_trim(subject_code), stringr::str_trim(course_number)) %in% valid_perkins_list)
+                 & !(program_type %in% c("P", "V")))),
   "C14a", expr(c_credit_ind %in% c("C", "N")), # USHE check
   "C14b", expr(!(subject_code == "CED" & section_format_type_code != "LAB")),
-  "C14c", expr(c_instruct_type %in% "LAB" |
-                 c_program_type %in% c("P", "V") |
-                 c_budget_code %in% c("BV", "SQ") |
-                 paste(c_crs_sbj, c_crs_num) %in% TODO("Need Reference.dbo.ETPL for code lookup") |
-                 !(c_extract %in% "E")),
+  "C14c", expr(!(
+    course_level_id %in% c("CE", "NC") &
+      section_format_type_code != "LAB" &
+      !(program_type %in% c("P","V")) &
+      !(budget_code %in% c("BV","SQ")))),
+      #!(paste0(toupper(subject_code), " ", course_number) %in% etpl_course_ids))),
   "C15a", expr(!is_missing_chr(meet_start_time_1) | is.na(meet_days_1)),
   "C23a", expr(!is_missing_chr(meet_start_time_2) | is.na(meet_days_2)),
   "C31a", expr(!is_missing_chr(meet_start_time_3) | is.na(meet_days_3)),
   "C16a", expr(!is_missing_chr(meet_end_time_1) | is.na(meet_days_1)),
   "C24a", expr(!is_missing_chr(meet_end_time_2) | is.na(meet_days_2)),
   "C32a", expr(!is_missing_chr(meet_end_time_3) | is.na(meet_days_3)),
-  "C17a", expr(!is_missing_chr(c_days) |
-                 c_delivery_method %in% c("C", "I", "V", "Y") |
-                 c_budget_code %in% "SF" |
-                 !(c_extract %in% "3")) , # USHE check, TODO: add site-type (query) condition?
-  "C25a", expr(!is_missing_chr(c_days2) |
-                 c_delivery_method %in% c("C", "I", "V", "Y") |
-                 c_budget_code %in% "SF" |
-                 !(c_extract %in% "3")) , # USHE check, TODO: add site-type (query) condition?
-  "C33a", expr(!is_missing_chr(c_days3) |
-                 c_delivery_method %in% c("C", "I", "V", "Y") |
-                 c_budget_code %in% "SF" |
-                 !(c_extract %in% "3")) , # USHE check, TODO: add site-type (query) condition?
+  "C17a", expr(!((is.na(trimws(meet_days_1)) | trimws(meet_days_1) == "") &
+         !(instruction_method_code %in% c("C","I","V","Y")) & (section_format_type_code %in% c("LEC","LEL","LAB")) &
+         (budget_code != "SF") & (room_use_code_1 %in% c("110","210")) & (version_desc == "End of Term"))),
+  "C25a", expr(utValidateR::is_missing_chr(trimws(meet_days_2)) | !utValidateR::is_missing_chr(trimws(meet_days_1)) |
+      (ushe_c_site_type == "V")) ,
+  "C33a", expr(!(!(is.na(trimws(meet_days_3)) | trimws(meet_days_3) == "") &
+      ((is.na(trimws(meet_days_2)) | trimws(meet_days_2) == "") |
+          (is.na(trimws(meet_days_1)) | trimws(meet_days_1) == "")) &
+      !(ushe_c_site_type == "V" & ushe_c_site_type2 == "V"))),
   "C18", expr(is.na(meet_building_id_1) | !equivalent(meet_building_id_1, building_number_1)),
   "C26", expr(is.na(meet_building_id_2) | !equivalent(meet_building_id_2, building_number_2)),
   "C34", expr(is.na(meet_building_id_3) | !equivalent(meet_building_id_3, building_number_3)),
@@ -298,12 +300,12 @@ rule_spec <- tribble(
   "C22b", expr(course_conditional_check(room_use_code_1, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_1)),
   "C30b", expr(course_conditional_check(room_use_code_2, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_2)),
   "C38b", expr(course_conditional_check(room_use_code_3, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_3)),
-  "C39a", expr(is_valid_dates_for_term(meet_start_date, term_id, "30", campus_id)) , # Summer
-  "C39b", expr(is_valid_dates_for_term(meet_start_date, term_id, "40", campus_id)) , # Fall
-  "C39c", expr(is_valid_dates_for_term(meet_start_date, term_id, "20", campus_id)) , # Spring
-  "C40a", expr(is_valid_dates_for_term(meet_end_date, term_id, "30", campus_id)), # Summer
-  "C40b", expr(is_valid_dates_for_term(meet_end_date, term_id, "40", campus_id)), # Fall
-  "C40c", expr(is_valid_dates_for_term(meet_end_date, term_id, "20", campus_id)), # Spring
+  # "C39a", expr(is_valid_dates_for_term(meet_start_date, term_id, "30", campus_id)) , # Summer
+  # "C39b", expr(is_valid_dates_for_term(meet_start_date, term_id, "40", campus_id)) , # Fall
+  # "C39c", expr(is_valid_dates_for_term(meet_start_date, term_id, "20", campus_id)) , # Spring
+  # "C40a", expr(is_valid_dates_for_term(meet_end_date, term_id, "30", campus_id)), # Summer
+  # "C40b", expr(is_valid_dates_for_term(meet_end_date, term_id, "40", campus_id)), # Fall
+  # "C40c", expr(is_valid_dates_for_term(meet_end_date, term_id, "20", campus_id)), # Spring
   "C41a", expr(!is_missing_chr(course_title)),
   "C41b", expr(is_missing_chr(c_title) |
                  grepl("[a-zA-Z]{2}", c_title) |
@@ -316,9 +318,10 @@ rule_spec <- tribble(
                  (class_size == 0) |
                  (nchar(instructor_employee_id) == 8 &
                     grepl("^[0-9]", instructor_employee_id))),
-  "C42c", expr(is_missing_chr(c_instruct_id) |
-                 !grepl("^[a-zA-Z\\']", c_instruct_id) |
-                 is_valid_values(substring(c_instruct_id, 1, 1), valid_i_banner)), # TODO: valid_i_banner needs a query
+  "C42c", expr(!(
+    !is_missing_chr(c_instruct_id) &
+      matches_regex(trimws(c_instruct_id), "^[A-Za-z]") &
+      toupper(substr(trimws(c_instruct_id), 1, 1)) != "D")), # valid_i_banner id is "D" for Utah Tech
   "C43a", expr(!is_missing_chr(instructor_name) | (class_size == 0)),
   "C43c", expr(is_alpha_chr(c_instruct_name) | !(c_extract %in% "3")),
   "C44", expr(!is_missing_chr(section_format_type_code)),
@@ -327,11 +330,11 @@ rule_spec <- tribble(
   "C45a", expr(is_alpha_chr(college_id)),
   "C46", expr(!is_missing_chr(academic_department_id)),
   "C46a", expr(is_alpha_chr(academic_department_id, missing_ok = TRUE)),
-  "C47b", expr(is_valid_values(c_gen_ed, valid_gened_codes, missing_ok = FALSE)), # USHE rule TODO: needs gened codes (query)
+  "C47b", expr(is.na(ushe_c_gen_ed) | ushe_c_gen_ed == "" | ushe_c_gen_ed %in% valid_gen_ed_codes),
   "C48a", expr(is_valid_values(c_dest_site, valid_highschools)), #USHE rule
   "C49a", expr(!is.na(class_size) & class_size != 0),
   "C49b", expr(is.na(class_size) | class_size >= 0 & class_size <= 9999),
-  "C49c", expr(TODO("USHE rule comparing enrolled students to class size (involving group by/COUNT)")),
+  "C49c", expr(is.na(class_size) | is.na(count_sc_id) | (count_sc_id == class_size)), #USHE rule comparing enrolled students to class size (involving group by/COUNT)
   "C51a", expr(c_level %in% c("R", "U", "G")), # USHE check
   "C51b", expr(c_crs %in% c("MATH", "MAT", "ENGL", "RDG", "WRTG", "ESL") |
                 !(c_level %in% "R")), # Ignoring complex edge-case logic
@@ -343,7 +346,18 @@ rule_spec <- tribble(
   "R01a", expr(!is_missing_chr(r_inst)),
   "G02a", expr(!is_missing_chr(s_id) & !is_missing_chr(s_id)), # USHE Rule
   "G02b", expr(sis_student_id %in% TODO("Need a way to bring in students table for comparing")),
-  "G12a", expr(is_valid_credits(overall_cumulative_credits_earned, missing_ok = TRUE)), # TODO: verify mapping of rules to fields
+  "G12a", expr({
+    g_trans_total_trim <- trimws(g_trans_total)
+    g_trans_total_num <- as.numeric(g_trans_total_trim)
+
+    !(
+      is_missing_chr(g_trans_total_trim) |
+        nchar(g_trans_total_trim) > 6 |
+        is.na(g_trans_total_num) |
+        g_trans_total_num < 0 |
+        !matches_regex(g_trans_total_trim, "^[0-9]*\\.?[0-9]+$")
+    )
+  }), # TODO: verify mapping of rules to fields
   "G13a", expr(is_valid_credits(required_credits)),
   "G14a", expr(is_valid_credits(total_cumulative_ap_credits_earned, missing_ok = TRUE)),
   "G15a", expr(is_valid_credits(total_cumulative_clep_credits_earned, missing_ok = TRUE)),
@@ -372,10 +386,10 @@ rule_spec <- tribble(
   "G19a", expr(!is_utah_county(first_admit_county_code) | !is_missing_chr(high_school_code)),
   "G21a", expr(is_valid_student_id(sis_student_id)),
   "G21b", expr(is_valid_student_id(sis_student_id)), # Redundant unless I can assume banner_id format
-  "G21d", expr(!is_duplicated(cbind(sis_student_id,
+  "G21d", expr(!is_duplicated(cbind(g_banner_id,
                                     graduation_date, primary_major_cip_code, degree_id,
                                     ipeds_award_level_code, primary_major_id))),
-  "G24a", expr(is_valid_year(graduated_academic_year_code, missing_ok = FALSE)), # TODO: should verify matching some reference year
+  "G24a", expr(!(is.na(g_fis_year) | trimws(g_fis_year) == "" | !grepl("^\\d{4}$", trimws(g_fis_year)))),
   "G25a", expr(is_valid_values(season, valid_seasons)),
   "G28a", expr(!is_missing_chr(degree_desc)),
   "SC03", expr(!is.na(sc_id) & !is.na(sc_id)), # USHE Rule
@@ -383,7 +397,7 @@ rule_spec <- tribble(
   "SC05a", expr(!is_missing_chr(course_number)),
   "SC06a", expr(!is_missing_chr(section_number)),
   "SC07a", expr(is_valid_credits(attempted_credits)),
-  "SC08a", expr(is_valid_credits(earned_credits)),
+  #"SC08a", expr(is_valid_credits(earned_credits)),
   "SC09a", expr(is_valid_credits(contact_hours, missing_ok = TRUE)),
   "SC11a", expr(is_valid_credits(sc_membership_hrs)),
   "SC08b", expr(is.na(earned_credits) | earned_credits == 0 |
@@ -414,13 +428,13 @@ rule_spec <- tribble(
   "SC13b", expr(is_valid_student_id(student_id)), # Redundant unless I can assume banner_id format
   "SC14a", expr(is_valid_course_reference_number(course_reference_number)),
   "SC14b", expr(!is_missing_chr(course_reference_number)),
-  "SC15b", expr(TODO("Database rule--how to get cr_type equivalent, how do sql values translate?")),
-  "SC15c", expr(TODO("Database rule--how to get cr_type equivalent, how do sql values translate?")),
+  "SC15b", expr(!(course_level_id == "U" & !c_level %in% c("R", "U"))),
+  "SC15c", expr(!(course_level_id %in% "G" & !is.na(c_level) & c_level != "G")),
   "B02a", expr(!is_missing_chr(building_location_code) & !is_missing_chr(building_location_desc)),
   "B02b", expr(is_valid_values(building_location_code, valid_building_location_codes)),
   "B03a", expr(!is_missing_chr(building_ownership_code)),
   "B03b", expr(is_valid_values(building_ownership_code, valid_ownership_codes)),
-  "B04a", expr(!is_missing_chr(building_construction_year)), # TODO: Should this be a different year (b_year in ushe)?
+  "B04a", expr(!is_missing_chr(building_construction_year)),
   "B05a", expr(!is_missing_chr(building_name)),
   "B06a", expr(!is_missing_chr(building_number)),
   "B06b", expr(!is_duplicated(building_number)),
@@ -438,8 +452,9 @@ rule_spec <- tribble(
   "B11c", expr((!is.na(building_cost_replacement) & building_cost_replacement > 3.5e6) |
                  !is_missing_chr(building_condition_code)),
   "B12a", expr(!is_missing_chr(building_area_gross)),
-  "B12b", expr(!is.na(as.numeric(building_area_gross)) &
-                 as.numeric(building_area_gross) > 0), # TODO: condition on ownership and aux?
+  "B12b", expr(!(building_area_gross %in% "0" &
+                   building_ownership_code %in% "O" &
+                   building_auxiliary %in% "N")),
   "B12c", expr(TODO('Needs a summary of rooms data "Gross area less than sum of rooms in building"')),
   "B14a", expr(is.na(building_cost_replacement) |
                  building_cost_replacement <= 3.5e6 | !
@@ -460,7 +475,7 @@ rule_spec <- tribble(
   "R08a", expr(!is_missing_chr(room_use_code) | str_detect(room_number, "ROOF") | str_detect(room_number, "FIELD")),
   "R08b", expr(is_valid_values(room_use_code, valid_room_use_codes, missing_ok = TRUE)),
   "R08d", expr(!(room_use_code %in% c("250", "255"))),
-  "R09a", expr(!is_missing_chr(room_name)),
+  #"R09a", expr(!is_missing_chr(room_name)),   #Removed on 4/23/2021 by USHE
   "R10a", expr(!(room_use_code %in% c("110", "210", "230")) | !is_missing_chr(room_stations)),
   "R10b", expr(!(room_use_code %in% c("110", "210", "230") &
                    room_stations == "0" &
@@ -494,10 +509,10 @@ rule_spec <- tribble(
   "UTS03", expr(!is.na(college_id)),
   "UTS04", expr(!is.na(department_id)),
   "UTS05", expr(!is_missing_chr(high_school_code)),
-  "UTS06", expr(is_degree_intent_consistent_program(student_type_code, primary_program_code)),
-  "UTS07", expr(is.na(ssid) | nchar(ssid) == 7 & stringr::str_detect(ssid, "^(1|2)")),
-  "UTS08", expr(!(is.na(ssid) & utValidateR::is_hs_type(student_type_code))),
-  "UTS10", expr(student_type_code != "HS" | is.na(cur_prgm) | cur_prgm %in% c("ND-CONC", "ND-SA", "ND-CE", "ND-ACE", "ND-DUAL")),
+  "UTS06", expr(is_degree_intent_consistent_program(s_reg_status, primary_program_code)),
+  #"UTS07", expr(is.na(ssid) | nchar(ssid) == 7 & stringr::str_detect(ssid, "^(1|2|3)")), #Legacy audit internal rule. This is being covered by S34a.
+  "UTS08", expr(!(is.na(ssid) & utValidateR::is_hs_type(s_reg_status))),
+  "UTS10", expr(s_reg_status != "HS" | is.na(cur_prgm) | cur_prgm %in% c("ND-CONC", "ND-SA", "ND-CE", "ND-ACE", "ND-DUAL")),
   "UTS12", expr(!(first_admit_country_code %in% "US") | !is_missing_chr(first_admit_state_code)),
   "UTS14", expr(!is_missing_chr(first_admit_country_code)),
   "UTS16", expr(!(birth_date >= high_school_graduation_date)),
@@ -509,7 +524,7 @@ rule_spec <- tribble(
   #         (!us_citizenship_code %in% c("2","3") & !is.na(visa_type)) | (us_citizenship_code == "2" & is.na(visa_type))) &
   #       (visa_expire_date > Sys.Date() | is.na(visa_expire_date)))),
   "UTS23", expr(!(is_missing_chr(cur_prgm) & level_id != "NC")),
-  "UTS24", expr(is.na(banner_hs_nonmissing_count) | banner_hs_nonmissing_count <= 1),
+  "UTS24", expr(is.na(hs_transcript_count) | hs_transcript_count <= 1),
 
   "UTG01", expr(as.numeric(substr(graduated_term_id, 1, 4)) == as.numeric(lubridate::year(graduation_date))),
   "UTG02", expr(as.numeric(graduated_academic_year_code) == as.numeric(graduation_academic_year_check)),

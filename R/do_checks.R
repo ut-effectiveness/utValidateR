@@ -43,7 +43,7 @@ do_checks <- function(df_tocheck, checklist, aux_info, verbose = FALSE) {
   # must be an environment to be passed to the env argument in rlang::eval_tidy()
   if (is.list(aux_info))
     aux_info <- new_environment(data = aux_info,
-                                parent = caller_env()) # Is this the right parent? Does it matter?
+                                parent = caller_env())
 
   # Remove checks that do not have needed information
   checklist <- verify_columns_present(df_tocheck = df_tocheck,

@@ -533,7 +533,8 @@ rule_spec <- tribble(
   "UTSC01", expr(
     !(budget_code %in% c("BC", "SF") &
         !(startsWith(latest_high_school_code, "45") | latest_high_school_code == "484870"))),
-  "P00a", expr(program_record_count > 0)
+  "P00a", expr(program_record_count > 0),
+  "P02a", expr(!is.na(academic_year) & trimws(as.character(academic_year)) != ""),
 )
 
 

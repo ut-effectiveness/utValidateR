@@ -147,6 +147,8 @@ aux_info <- list(
 
   valid_ipeds_degree_award_levels = c("2", "7", "3", "1B", "1A", "5", "6", "8", "18"), #S19 & G17
 
+  valid_ipeds_award_levels_prog = c("1A", "1B", "2", "3", "4", "5", "6", "7", "8", "17", "18", "19"), #P04a
+
   primary_valid_programs = c("BS-NURS-P", "BS-DHYG-P", "BS-MLS-P", "AAS-MLS", "BS-BU", "BS-PSY",
     "BS-ASOC", "BIS-INDV", "BS-INTS"), #UTS09
 

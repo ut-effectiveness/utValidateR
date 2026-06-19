@@ -538,7 +538,7 @@ rule_spec <- tribble(
   "P02b", expr(is_missing_chr(academic_year) | academic_year == ushe_academic_year),
   "P03a", expr(!(is_missing_chr(cip_code) | cip_code %in% c("000000", "005000"))),
   "P03b", expr(cip_code %in% valid_cip_codes),
-  "P04a", expr(!is_missing_chr(ipeds_award_level_code) & ipeds_award_level_code %in% valid_ipeds_award_levels)
+  "P04a", expr(!is_missing_chr(ipeds_award_level_code) & ipeds_award_level_code %in% valid_ipeds_award_levels_prog)
 )
 
 

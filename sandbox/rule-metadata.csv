@@ -42,7 +42,7 @@ C11b,budget code does not align with course and subject on concurrent enrolled m
 C12,invalid delivery method,USHE,Failure,NA,Checking for valid values IN c_delivery_method.,ssbsect_activity_date,banner.ssbsect_insm_code,C12
 C13,invalid program type and missing program type,Database,Failure,Samira Hall,Checking for invalid program types.,NA,banner.scbsupp_occs_code,C13
 C13a,invalid program type against perkins list,Database,Failure,Samira Hall,"checks validity of program_type against perkins list",NA,banner.scbsupp_occs_code,C13a
-C13c,invalid budget code against perkins list,Database,Failure,Samira Hall,"checks for courses allowed on perkins list, but not currently coded to vocational",NA,banner.scbsupp_occs_code,C13c
+C13c,invalid program type against perkins list,Database,Failure,Samira Hall,"checks for courses allowed on perkins list, but not currently coded to vocational",NA,banner.scbsupp_occs_code,C13c
 C14a,invalid credit indicator,USHE,Failure,NA,Checking for valid values for c_credit_ind.,NA,banner.scrlevl_levl_code = 'NC',C14a
 C14b,credit indicator and section format type do not align,Database,Failure,Vicki Shurtz,No noncredit crs in 3wk,ssbsect_activity_date,banner.ssbsect_schd_code,C14b
 C14c,invalid non-credit class based on program type and budget code,Database,Failure,NA,Only Labs and Vocational non-credit classes can be submitted,scbsupp_activity_date,"banner.scbsupp_occs_code, banner.ssbsect_schd_code",C14c
@@ -381,7 +381,7 @@ UTC08,Non-lecture schedule types carrying lecture hours,Database,Failure,Julie S
 UTC09,Non-lab schedule types carrying lab hours,Database,Failure,Julie Stender,NA,ssbsect_activity_date,"ssbsect_crn, ssbsect_term_code",UTC09
 UTC12,Missing or invalid budget codes,Database,Failure,Julie Stender,NA,ssrsccd_activity_date,banner.ssrsccd_sccd_code,UTC12
 UTC13,High school courses use correct budget codes,Database,Failure,Julie Stender,NA,ssrsccd_activity_date,ssrsccd,UTC13
-UTC14,Validates budget-related online courses,Database,Failure,Julie Stender,NA,NA,ssrsccd,UTC14
+UTC14,Validates budget code aligning with online course delivery,Database,Failure,Julie Stender,NA,NA,ssrsccd,UTC14
 UTC16,Courses with no room specified,Database,Failure,Julie Stender,NA,ssrmeet_activity_date,banner.ssrmeet,UTC16
 UTGR01,Term and Graduation Date don't align,Database,Failure,Julie Stender,,shrdgmr_activity_date,shrdgmr_activity_date,UTG01
 UTGR02,Academic Year and Graduation Date don't align,Database,Failure,Julie Stender,,shrdgmr_activity_date,shrdgmr_activity_date,UTG02

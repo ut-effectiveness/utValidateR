@@ -190,7 +190,7 @@ rule_spec <- tribble(
   "S49a", expr(is_missing_chr(secondary_major_cip_code) | !is_missing_chr(secondary_major_desc)),
   "S49b", expr(matches_regex(secondary_major_desc, "^[a-zA-Z' \\- & /]*$", #alpha plus space, apostrophe, hyphen, ampersand, forward slash
                              missing_ok = TRUE)),
-  "C00",  expr(!is_duplicated(cbind(term_id, subject_code, course_number, section_number))),
+  "C00",  expr(!is_duplicated(cbind(subject_code, course_number, section_number))),
   "C04a", expr(nchar(course_number) != 3 | nchar(course_number) != 2 | nchar(course_number) != 1),
   "C04c", expr(!stringr::str_detect(course_number, "^[89]")),
   "C04d", expr(!stringr::str_detect(substring(course_number, 1, 4), "[a-zA-Z]")),

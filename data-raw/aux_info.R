@@ -169,6 +169,10 @@ aux_info <- list(
     "001","003","005","007","009","011","013","015","017","019","021","023","025","027","029","031",
     "033","035","037","039","041","043","045","047","049","051","053","055","057","030","097","099"),
 
+  valid_degree_types = c("TCER", "ACER", "AA", "AAS", "AC", "APE", "APS", "AS", "ASB", "ASN", "BA", "BAS",
+                         "BAT", "BFA", "BIAD", "BID", "BIS", "BLA", "BM", "BMCM", "BME", "BS", "BSN", "BSW",
+                         "SAAS", "SBAC"),
+
   valid_perkins_list = valid_perkins_list,
 
   etpl_course_ids = etpl_course_ids,

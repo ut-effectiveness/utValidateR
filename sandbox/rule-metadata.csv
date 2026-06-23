@@ -400,3 +400,4 @@ P03a,missing CIP code,Database,Failure,Julie Stender,CIP missing,smrprle_activit
 P03b,invalid CIP code,Database,Failure,Julie Stender,CIP Invalid,smrprle_activity_date,banner.stvmajr_cipc_code,P03b
 P04a,invalid degree level,Database,Failure,Julie Stender,Invalid Degree Level,smrprle_activity_date,banner.smrprle_degc_code,P04a
 P05a,missing degree type for associate and bachelor programs,Database,Failure,Julie Stender,Degree Type Missiing,smrprle_activity_date,banner.smrprle_degc_code,P05a
+P05b,missing degree type for degree levels other than associate and bachelor,Database,Failure,Julie Stender,Degree Type Missing,smrprle_activity_date,banner.smrprle_degc_code,P05b

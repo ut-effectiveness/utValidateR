@@ -393,12 +393,14 @@ UTS03,Enrolled student is missing College from supplemental tables,Database,Fail
 UTS04,Enrolled student is missing Department from supplemental tables,Database,Warning,Julie Stender,,gorsdav_activity_date,gorsdav_value,UTS04
 UTS05,Missing HS code,Database,Failure,Julie Stender,,sorhsch_activity_date,sorhsch_activity_date,UTS05
 UTS06,Program prefix inconsistent with student type,Database,Failure,n,,primary_program_code,primary_program_code,UTS06
-P00a,No program records found,Database,Failure,Julie Stender,Program file contains no records,smrprle_activity_date,banner.smrprle_program,P00a
-P02a,missing academic year,Database,Failure,Julie Stender,academic year missing,smrprle_activity_date,banner.smrprle_program,P02a
-P02b,invalid academic year,Database,Failure,Julie Stender,academic year Invalid,smrprle_activity_date,banner.smrprle_program,P02b
-P03a,missing CIP code,Database,Failure,Julie Stender,CIP missing,smrprle_activity_date,banner.stvmajr_cipc_code,P03a
-P03b,invalid CIP code,Database,Failure,Julie Stender,CIP Invalid,smrprle_activity_date,banner.stvmajr_cipc_code,P03b
-P04a,invalid degree level,Database,Failure,Julie Stender,Invalid Degree Level,smrprle_activity_date,banner.smrprle_degc_code,P04a
-P05a,missing degree type for associate and bachelor programs,Database,Failure,Julie Stender,Degree Type Missiing,smrprle_activity_date,banner.smrprle_degc_code,P05a
-P05b,missing degree type for degree levels other than associate and bachelor,Database,Failure,Julie Stender,Degree Type Missing,smrprle_activity_date,banner.smrprle_degc_code,P05b
-P05c,invalid degree type where degree level is 3 or 5,Database,Failure,Julie Stender,Degree type not in valid list when degree is 3 or 5,smrprle_activity_date,banner.smrprle_degc_code,P05c
+PF00a,No program records found,Database,Failure,Julie Stender,Program file contains no records,smrprle_activity_date,banner.smrprle_program,PF00a
+PF02a,missing academic year,Database,Failure,Julie Stender,academic year missing,smrprle_activity_date,banner.smrprle_program,PF02a
+PF02b,invalid academic year,Database,Failure,Julie Stender,academic year Invalid,smrprle_activity_date,banner.smrprle_program,PF02b
+PF03a,missing CIP code,Database,Failure,Julie Stender,CIP missing,smrprle_activity_date,banner.stvmajr_cipc_code,PF03a
+PF03b,invalid CIP code,Database,Failure,Julie Stender,CIP Invalid,smrprle_activity_date,banner.stvmajr_cipc_code,PF03b
+PF04a,invalid degree level,Database,Failure,Julie Stender,Invalid Degree Level,smrprle_activity_date,banner.smrprle_degc_code,PF04a
+PF05a,missing degree type for associate and bachelor programs,Database,Failure,Julie Stender,Degree Type Missiing,smrprle_activity_date,banner.smrprle_degc_code,PF05a
+PF05b,missing degree type for degree levels other than associate and bachelor,Database,Failure,Julie Stender,Degree Type Missing,smrprle_activity_date,banner.smrprle_degc_code,PF05b
+PF05c,invalid degree type where degree level is 3 or 5,Database,Failure,Julie Stender,Degree type not in valid list when degree is 3 or 5,smrprle_activity_date,banner.smrprle_degc_code,PF05c
+PF05d,invalid degree type where degree level is not 3 or 5,Database,Failure,Julie Stender,Deg Typ Inval,smrprle_activity_date,pf_deg_type,PF05d
+

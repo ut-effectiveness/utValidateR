@@ -533,15 +533,17 @@ rule_spec <- tribble(
   "UTSC01", expr(
     !(budget_code %in% c("BC", "SF") &
         !(startsWith(latest_high_school_code, "45") | latest_high_school_code == "484870"))),
-  "P00a", expr(program_record_count > 0),
-  "P02a", expr(!is.na(academic_year) & trimws(as.character(academic_year)) != ""),
-  "P02b", expr(is_missing_chr(academic_year) | academic_year == ushe_academic_year),
-  "P03a", expr(!(is_missing_chr(cip_code) | cip_code %in% c("000000", "005000"))),
-  "P03b", expr(cip_code %in% valid_cip_codes),
-  "P04a", expr(!is_missing_chr(ipeds_award_level_code) & ipeds_award_level_code %in% valid_ipeds_award_levels_prog),
-  "P05a", expr(!(ipeds_award_level_code %in% c("3", "5") & is_missing_chr(pf_degree_type))),
-  "P05b", expr(!(!(ipeds_award_level_code %in% c("3", "5")) & is_missing_chr(pf_degree_type))),
-  "P05c", expr(!(pf_deg_level %in% c("3", "5") & !(pf_deg_type %in% valid_degree_types)))
+  "PF00a", expr(program_record_count > 0),
+  "PF02a", expr(!is.na(academic_year) & trimws(as.character(academic_year)) != ""),
+  "PF02b", expr(is_missing_chr(academic_year) | academic_year == ushe_academic_year),
+  "PF03a", expr(!(is_missing_chr(cip_code) | cip_code %in% c("000000", "005000"))),
+  "PF03b", expr(cip_code %in% valid_cip_codes),
+  "PF04a", expr(!is_missing_chr(ipeds_award_level_code) & ipeds_award_level_code %in% valid_ipeds_award_levels_prog),
+  "PF05a", expr(!(ipeds_award_level_code %in% c("3", "5") & is_missing_chr(pf_degree_type))),
+  "PF05b", expr(!(!(ipeds_award_level_code %in% c("3", "5")) & is_missing_chr(pf_degree_type))),
+  "PF05c", expr(!(pf_degree_type %in% c("3", "5") & !(pf_degree_type %in% valid_degree_types))),
+  # "PF05d", expr(!(!(ipeds_award_level_code %in% c("3", "5")) & !(pf_degree_type %in% valid_degree_types) & #This needs a review for valid graduation degree type list
+  #       !(pf_degree_type %in% valid_recent_graduation_degree_types)))
 )
 
 
@@ -557,7 +559,7 @@ get_ushe_file <- function(rule) {
     grepl("^G", rule) ~ "Graduation",
     grepl("^B", rule) ~ "Buildings",
     grepl("^R", rule) ~ "Rooms",
-    grepl("^P", rule) ~ "Program",
+    grepl("^PF", rule) ~ "Program",
     grepl("^UTS", rule) ~ "Student",
     grepl("^UTC", rule) ~ "Course",
     grepl("^UTG", rule) ~ "Graduation",

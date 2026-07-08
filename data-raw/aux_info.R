@@ -53,7 +53,7 @@ etpl_course_ids <- etpl %>%
   pull(etpl_key)
 
 # # Degree type levels from USHE PF-05 reference table "reference.dbo.Degree_Type"
-valid_degree_type <- read.csv("sandbox/degree_type_levels.csv")
+degree_type_levels <- read.csv("sandbox/degree_type_levels.csv")
 
 # Campus IDs from file--supplied by Justin
 campus_ids <- scan("sandbox/valid_campus_ids.txt", what = character(0))

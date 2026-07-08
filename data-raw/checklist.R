@@ -541,11 +541,11 @@ rule_spec <- tribble(
   "PF04a", expr(!is_missing_chr(ipeds_award_level_code) & ipeds_award_level_code %in% valid_ipeds_award_levels_prog),
   "PF05a", expr(!(ipeds_award_level_code %in% c("3", "5") & is_missing_chr(pf_degree_type))),
   "PF05b", expr(!(!(ipeds_award_level_code %in% c("3", "5")) & is_missing_chr(pf_degree_type))),
-  "PF05c", expr(!(ipeds_award_level_code %in% c("3", "5") & !(pf_degree_type %in% valid_degree_type_levels$valid_degree_types))),
+  "PF05c", expr(!(ipeds_award_level_code %in% c("3", "5") & !(pf_degree_type %in% valid_degree_types))),
   # "PF05d", expr(!(!(ipeds_award_level_code %in% c("3", "5")) & !(pf_degree_type %in% valid_degree_types) & #This needs a review for valid graduation degree type list
   #       !(pf_degree_type %in% valid_recent_graduation_degree_types))),
-  "P05E", expr({ref_level <- valid_degree_type_levels$degree_level[
-      match( pf_deg_type, valid_degree_type_levels$valid_degree_types)]
+  "P05E", expr({ref_level <- valid_degree_levels[
+      match( pf_deg_type, valid_degree_types)]
     is.na(ref_level) | is_valid_pf_degree_level_match(ipeds_award_level_code, ref_level)})
 )
 

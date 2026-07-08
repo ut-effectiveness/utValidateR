@@ -172,7 +172,9 @@ aux_info <- list(
     "001","003","005","007","009","011","013","015","017","019","021","023","025","027","029","031",
     "033","035","037","039","041","043","045","047","049","051","053","055","057","030","097","099"),
 
-  valid_degree_type_levels = degree_type_levels, #PF
+  valid_degree_types = degree_type_levels$valid_degree_types, #PF
+
+  valid_degree_levels = degree_type_levels$degree_level,
 
   valid_perkins_list = valid_perkins_list,
 

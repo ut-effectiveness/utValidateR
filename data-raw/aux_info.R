@@ -52,6 +52,9 @@ etpl_course_ids <- etpl %>%
   distinct(etpl_key) %>%
   pull(etpl_key)
 
+# # Degree type levels from USHE PF-05 reference table "reference.dbo.Degree_Type"
+valid_degree_type <- read.csv("sandbox/degree_type_levels.csv")
+
 # Campus IDs from file--supplied by Justin
 campus_ids <- scan("sandbox/valid_campus_ids.txt", what = character(0))
 
@@ -169,9 +172,7 @@ aux_info <- list(
     "001","003","005","007","009","011","013","015","017","019","021","023","025","027","029","031",
     "033","035","037","039","041","043","045","047","049","051","053","055","057","030","097","099"),
 
-  valid_degree_types = c("TCER", "ACER", "AA", "AAS", "AC", "APE", "APS", "AS", "ASB", "ASN", "BA", "BAS",
-                         "BAT", "BFA", "BIAD", "BID", "BIS", "BLA", "BM", "BMCM", "BME", "BS", "BSN", "BSW",
-                         "SAAS", "SBAC"),
+  valid_degree_type_levels = degree_type_levels, #PF
 
   valid_perkins_list = valid_perkins_list,
 

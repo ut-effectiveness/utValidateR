@@ -345,6 +345,7 @@ is_us_state <- function(state) {
   state %in% us_states
 }
 
+
 #' @describeIn is_utah_county Checks whether a state code is not in USA
 #'
 #' @param state first_admit_state_code
@@ -521,6 +522,27 @@ is_valid_ssn_legacy <- function(x, missing_ok = TRUE) {
   } else {
     out & !is.na(x)
   }
+}
+
+#' @title validate degree level mapping for programs audit
+#' @description `is_valid_pf_degree_level_match` Validates degree type aligns with degree level
+#'
+#' @param ipeds_award_level_code IPEDS award level code
+#' @param degree_level Degree level associated with the degree type
+#' @return Logical vector
+#' @export
+is_valid_pf_degree_level_match <- function(ipeds_award_level_code, degree_level) {
+  dplyr::case_when(
+    ipeds_award_level_code %in% c("1A", "1B", "2", "4") ~ degree_level == "Certificate",
+    ipeds_award_level_code == "3" ~ degree_level == "Associate",
+    ipeds_award_level_code == "5" ~ degree_level == "Bachelors",
+    ipeds_award_level_code == "6" ~ degree_level == "Post Bachelors",
+    ipeds_award_level_code == "7" ~ degree_level == "Masters",
+    ipeds_award_level_code == "8" ~ degree_level == "Post Masters",
+    ipeds_award_level_code %in% c("17", "18", "19") ~
+      degree_level %in% c("Doctorate", "Professional"),
+    TRUE ~ TRUE
+  )
 }
 
 

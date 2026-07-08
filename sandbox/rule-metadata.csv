@@ -403,4 +403,5 @@ PF05a,missing degree type for associate and bachelor programs,Database,Failure,J
 PF05b,missing degree type for degree levels other than associate and bachelor,Database,Failure,Julie Stender,Degree Type Missing,smrprle_activity_date,banner.smrprle_degc_code,PF05b
 PF05c,invalid degree type where degree level is 3 or 5,Database,Failure,Julie Stender,Degree type not in valid list when degree is 3 or 5,smrprle_activity_date,banner.smrprle_degc_code,PF05c
 PF05d,invalid degree type where degree level is not 3 or 5,Database,Failure,Julie Stender,Deg Typ Inval,smrprle_activity_date,pf_deg_type,PF05d
+PF05e,degree type does not match degree level,Database,Failure,Julie Stender,Deg Type Deg Level,smrprle_activity_date,banner.smrprle_degc_code,PF05e
 

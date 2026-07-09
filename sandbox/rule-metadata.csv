@@ -409,6 +409,6 @@ PF06b,PF_Perkins not N or Y,Database,Failure,Joy Lindsay,NA,smrprle_activity_dat
 PF07a,PF_TE Technical Education missing,Database,Failure,Joy Lindsay,NA,smrprle_activity_date,NA,PF07a
 PF07b,PF_TE Technical Education not N or Y,Database,Failure,Joy Lindsay,NA,smrprle_activity_date,NA,PF07b
 PF07c,"PF_TE only USU, SNOW, and SLCC can have Y",Database,Failure,Joy Lindsay,NA,smrprle_activity_date,NA,PF07c
-
+PF07d,PF_TE Y requires ipeds award level code 1A, 1B, or 2,Database,Failure,Julie Stender,NA,smrprle_activity_date,banner.smrprle_degc_code,PF07d
 
 

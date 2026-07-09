@@ -548,7 +548,8 @@ rule_spec <- tribble(
         match(pf_degree_type, valid_degree_types)])),
   "PF06a", expr(!is_missing_chr(pf_perkins)),
   "PF06b", expr(pf_perkins %in% c("N", "Y")),
-  "PF07A", expr(!is_missing_chr(pf_te))
+  "PF07a", expr(!is_missing_chr(pf_te)),
+  "PF07b", expr(pf_te %in% c("N", "Y"))
 )
 
 

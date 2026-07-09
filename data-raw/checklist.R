@@ -549,7 +549,8 @@ rule_spec <- tribble(
   "PF06a", expr(!is_missing_chr(pf_perkins)),
   "PF06b", expr(pf_perkins %in% c("N", "Y")),
   "PF07a", expr(!is_missing_chr(pf_te)),
-  "PF07b", expr(pf_te %in% c("N", "Y"))
+  "PF07b", expr(pf_te %in% c("N", "Y")),
+  "PF07c", expr(!(pf_te == "Y" & !(c_inst %in% c("3677", "3679", "5220", "5221")))) #using c_inst in place of pf_inst
 )
 
 

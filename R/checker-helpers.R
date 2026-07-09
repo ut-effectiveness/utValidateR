@@ -536,6 +536,11 @@ is_valid_pf_degree_level_match <- function(ipeds_award_level_code, degree_level)
     ipeds_award_level_code %in% c("1A", "1B", "2", "4") ~ degree_level == "Certificate",
     ipeds_award_level_code == "3" ~ degree_level == "Associate",
     ipeds_award_level_code == "5" ~ degree_level == "Bachelors",
+    ipeds_award_level_code == "6" ~ degree_level == "Post Bachelors",
+    ipeds_award_level_code == "7" ~ degree_level == "Masters",
+    ipeds_award_level_code == "8" ~ degree_level == "Post Masters",
+    ipeds_award_level_code %in% c("17", "18", "19") ~
+      degree_level %in% c("Doctorate", "Professional"),
     TRUE ~ TRUE
   )
 }

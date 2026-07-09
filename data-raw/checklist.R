@@ -544,9 +544,8 @@ rule_spec <- tribble(
   "PF05c", expr(!(ipeds_award_level_code %in% c("3", "5") & !(pf_degree_type %in% valid_degree_types))),
   # "PF05d", expr(!(!(ipeds_award_level_code %in% c("3", "5")) & !(pf_degree_type %in% valid_degree_types) & #This needs a review for valid graduation degree type list
   #       !(pf_degree_type %in% valid_recent_graduation_degree_types))),
-  "PF05e", expr({ref_level <- valid_degree_levels[
-      match( pf_degree_type, valid_degree_types)]
-    is.na(ref_level) | is_valid_pf_degree_level_match(ipeds_award_level_code, ref_level)})
+  "PF05e", expr(is_valid_pf_degree_level_match(ipeds_award_level_code, valid_degree_levels[
+        match(pf_degree_type, valid_degree_types)]))
 )
 
 

@@ -546,7 +546,8 @@ rule_spec <- tribble(
   #       !(pf_degree_type %in% valid_recent_graduation_degree_types))),
   "PF05e", expr(is_valid_pf_degree_level_match(ipeds_award_level_code, valid_degree_levels[
         match(pf_degree_type, valid_degree_types)])),
-  "PF06a", expr(!is_missing_chr(pf_perkins))
+  "PF06a", expr(!is_missing_chr(pf_perkins)),
+  "PF06b", expr(pf_perkins %in% c("N", "Y"))
 )
 
 

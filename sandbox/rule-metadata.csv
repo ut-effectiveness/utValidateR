@@ -405,3 +405,5 @@ PF05c,invalid degree type where degree level is 3 or 5,Database,Failure,Julie St
 PF05d,invalid degree type where degree level is not 3 or 5,Database,Failure,Julie Stender,Deg Typ Inval,smrprle_activity_date,pf_deg_type,PF05d
 PF05e,degree type does not match degree level,Database,Failure,Julie Stender,Deg Type Deg Level,smrprle_activity_date,banner.smrprle_degc_code,PF05e
 PF06a,PF_Perkins missing,Database,Failure,Joy Lindsay,NA,smrprle_activity_date,NA,PF06a
+PF06b,PF_Perkins not N or Y,Database,Failure,Joy Lindsay,NA,smrprle_activity_date,NA,PF06b
+

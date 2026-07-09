@@ -195,6 +195,15 @@ is_valid_credits <- function(x, missing_ok = FALSE) {
   out
 }
 
+#' @describeIn is_valid_values credits_earned
+#' @export
+is_valid_pf_credit_hours <- function(x) {
+  is.numeric(x) &
+    !is.na(x) &
+    x >= 0 &
+    x < 100000
+}
+
 #' @describeIn is_valid_values character-valued credits (min_credits and max_credits)
 #' @export
 is_valid_credits_chr <- function(x) {

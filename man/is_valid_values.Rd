@@ -9,6 +9,7 @@
 \alias{is_valid_student_id}
 \alias{is_valid_previous_id}
 \alias{is_valid_credits}
+\alias{is_valid_pf_credit_hours}
 \alias{is_valid_credits_chr}
 \alias{is_valid_gpa}
 \alias{is_valid_occupancy}
@@ -31,6 +32,8 @@ is_valid_student_id(x)
 is_valid_previous_id(x)
 
 is_valid_credits(x, missing_ok = FALSE)
+
+is_valid_pf_credit_hours(x)
 
 is_valid_credits_chr(x)
 
@@ -67,6 +70,8 @@ Checks whether input matches a vector of values
 \item \code{is_valid_previous_id()}: previous_student_id
 
 \item \code{is_valid_credits()}: credits_earned
+
+\item \code{is_valid_pf_credit_hours()}: credits_earned
 
 \item \code{is_valid_credits_chr()}: character-valued credits (min_credits and max_credits)
 

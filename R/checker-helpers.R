@@ -204,6 +204,14 @@ is_valid_pf_credit_hours <- function(x) {
     x < 100000
 }
 
+#' @describeIn is_valid_values PF credit hours ending in .0 or .5
+#' @export
+is_valid_pf_credit_increment <- function(x) {
+  is.numeric(x) &
+    !is.na(x) &
+    abs((x * 2) - round(x * 2)) < .Machine$double.eps^0.5
+}
+
 #' @describeIn is_valid_values character-valued credits (min_credits and max_credits)
 #' @export
 is_valid_credits_chr <- function(x) {

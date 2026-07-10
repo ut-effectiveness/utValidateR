@@ -414,5 +414,7 @@ PF08a,Invalid min Required Credit Hours format,Database,Failure,Julie Stender,NA
 PF08b,PF_Credit_HRS must end in .0 or .5,Database,Failure,Julie Stender,NA,smrprle_activity_date,banner.gorsdav_value,PF08b
 PF09a,PF_PPA Program Participation Agreement missing,Database,Failure,Joy Lindsay,Hard coded to N per USHE Program File specification,smrprle_activity_date,NA,PF09a
 PF09b,PF_PPA Program Participation Agreement not N or Y,Database,Failure,Joy Lindsay,Hard coded to N in SQL per audit instruction,smrprle_activity_date,NA,PF09b
+PF10a,PF_Major missing,Database,Failure,Julie Stender,NA,smrprle_activity_date,banner.stvmajr_desc,PF10a
+
 
 

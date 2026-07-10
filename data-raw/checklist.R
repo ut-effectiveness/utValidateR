@@ -555,7 +555,8 @@ rule_spec <- tribble(
   "PF08a", expr(is_valid_pf_credit_hours(pf_credit_hours)),
   "PF08b", expr(is_valid_pf_credit_increment(pf_credit_hours)),
   "PF09a", expr(!is_missing_chr(pf_ppa)),
-  "PF09b", expr(pf_ppa %in% c("N", "Y"))
+  "PF09b", expr(pf_ppa %in% c("N", "Y")),
+  "PF10a", expr(!is_missing_chr(major_id))
 )
 
 

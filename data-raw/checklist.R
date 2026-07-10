@@ -553,7 +553,9 @@ rule_spec <- tribble(
   "PF07c", expr(!(pf_te == "Y" & !(c_inst %in% c("3677", "3679", "5220", "5221")))), #using c_inst in place of pf_inst
   "PF07d", expr( pf_te != "Y" | ipeds_award_level_code %in% c("1A", "1B", "2")),
   "PF08a", expr(is_valid_pf_credit_hours(pf_credit_hours)),
-  "PF08b", expr(is_valid_pf_credit_increment(pf_credit_hrs))
+  "PF08b", expr(is_valid_pf_credit_increment(pf_credit_hours)),
+  "PF09a", expr(!is_missing_chr(pf_ppa)),
+  "PF09b", expr(pf_ppa %in% c("N", "Y"))
 )
 
 

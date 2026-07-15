@@ -42,7 +42,7 @@ C11b,budget code does not align with course and subject on concurrent enrolled m
 C12,invalid delivery method,USHE,Failure,NA,Checking for valid values IN c_delivery_method.,ssbsect_activity_date,banner.ssbsect_insm_code,C12
 C13,invalid program type and missing program type,Database,Failure,Samira Hall,Checking for invalid program types.,NA,banner.scbsupp_occs_code,C13
 C13a,invalid program type against perkins list,Database,Failure,Samira Hall,"checks validity of program_type against perkins list",NA,banner.scbsupp_occs_code,C13a
-C13c,invalid budget code against perkins list,Database,Failure,Samira Hall,"checks for courses allowed on perkins list, but not currently coded to vocational",NA,banner.scbsupp_occs_code,C13c
+C13c,Course on Perkins list must have Program Type P or V,Database,Failure,Samira Hall,"checks for courses allowed on perkins list, but not currently coded to vocational",NA,banner.scbsupp_occs_code,C13c
 C14a,invalid credit indicator,USHE,Failure,NA,Checking for valid values for c_credit_ind.,NA,banner.scrlevl_levl_code = 'NC',C14a
 C14b,credit indicator and section format type do not align,Database,Failure,Vicki Shurtz,No noncredit crs in 3wk,ssbsect_activity_date,banner.ssbsect_schd_code,C14b
 C14c,invalid non-credit class based on program type and budget code,Database,Failure,NA,Only Labs and Vocational non-credit classes can be submitted,scbsupp_activity_date,"banner.scbsupp_occs_code, banner.ssbsect_schd_code",C14c
@@ -54,7 +54,7 @@ C18a,missing building name,Database,Failure,Vicki Shurtz,BLDG SName conditionall
 C19a,missing building number,Database,Failure,Vicki Shurtz,BLDG NUM conditionally required,bldg_activity_date,space_utlz.building_detail.bldg_number,C19a
 C19c,building number not in building table,USHE,Failure,NA,BLDG NUM not in Building Inventory,bldg_activity_date,space_utlz.building_detail.bldg_number,C19c
 C19d,building number not in rooms inventory,USHE,Failure,NA,BLDG NUM not in Rooms Inventory,bldg_activity_date,space_utlz.building_detail.bldg_number,C19d
-C20a,building room is missing,Database,Failure,Vicki Shurtz,BLDG Room conditionally required,ssrmeet_activity_date,banner.ssrmeet_room_code,C20a
+C20a,Room number is conditionally required for qualifying instructional sections at active space-utilizing sites,Database,Failure,Vicki Shurtz,BLDG Room conditionally required,ssrmeet_activity_date,banner.ssrmeet_room_code,C20a
 C21a,invalid room max occupancy,Database,Failure,Vicki Shurtz,C_Room_Max Invalid,ssbsect_activity_date,banner.ssbsect_max_enrl,C21a
 C22a,invalid room use type,Database,Failure,Vicki Shurtz,Checking for valid values for c_room_type3,room_activity_date,space_utlz.rooms_detail.room_use_code,C22a
 C22b,missing room use type,Database,Failure,Vicki Shurtz,C_Room_type3 Missing,room_activity_date,space_utlz.rooms_detail.room_use_code,C22b

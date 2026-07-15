@@ -288,7 +288,13 @@ rule_spec <- tribble(
   "C19d", expr(building_number_1 %in% rooms_inventory),
   "C27d", expr(building_number_2 %in% rooms_inventory),
   "C35d", expr(building_number_3 %in% rooms_inventory),
-  "C20a", expr(course_conditional_check(meet_room_number_1, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_1)),
+  "C20a", expr(!(
+      is_missing_chr(meet_room_number_1) &
+        !(instruction_method_code %in% c("C", "I", "V", "Y")) &
+        section_format_type_code %in% c("LEC", "LEL", "LAB") &
+        budget_code != "SF" &
+        room_use_code_1 %in% c("110", "210") &
+        ushe_c_site_type %in% space_utilizing_site_types)),
   "C28a", expr(course_conditional_check(meet_room_number_2, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_2)),
   "C36a", expr(course_conditional_check(meet_room_number_3, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_3)),
   "C21a", expr(is_valid_occupancy(room_max_occupancy_1) | is.na(meet_room_number_1)),

@@ -47,9 +47,9 @@ etpl_course_ids <- etpl %>%
    transmute(etpl_key = ETPL_CIP_USHE %>%
               stringr::str_trim() %>%
               stringr::str_replace_all("\\s+", " ") %>%
-              stringr::str_to_upper())
-  filter(stringr::str_detect(etpl_key, "^[A-Z]{2,5} \\d{4}$"))
-  distinct(etpl_key)
+              stringr::str_to_upper()) %>%
+  filter(stringr::str_detect(etpl_key, "^[A-Z]{2,5} \\d{4}$")) %>%
+  distinct(etpl_key) %>%
   pull(etpl_key)
 
 # Campus IDs from file--supplied by Justin

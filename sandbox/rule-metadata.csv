@@ -339,6 +339,7 @@ UTS22,Invalid Visa Type or Citizenship Code,Database,Failure,Julie Stender,"Flag
 UTS23,"Identifies students with no program listed, excluding those in community education courses",Database,Failure,Julie Stender,"Flags students with a missing program code who are not non-credit (NC) students",sorlcur_activity_date,banner.sorlcur_program,UTS23
 UTS24,Duplicate High School Records,Database,Failure,Julie Stender,Flags students with more than one NON-missing high school code record,sorhsch_activity_date,banner.sorhsch.sorhsch_sbgi_code,UTS24
 UTS25a,Online program student with international student coding,Database,Failure,Julie Stender,"Online program students should not have citizenship code 2, F1/J1 visa, or ISF/IEX tuition rate code.",sgbstdn_activity_date,"banner.gorvisa_vtyp_code, sgbstdn_rate_code",UTS25a
+UTS25b,Student with visa should have citizenship code 2 or no visa,Database,Failure,Julie Stender,"Students with a visa should have citizenship code 2 or no visa.",spbpers_activity_date,banner.gorvisa_vtyp_code,UTS25b
 
 SC01a,institution id unknown,USHE,Failure,NA,G_Inst Unknown,NA,NA,S01a
 SC01a,missing instituion,USHE,Failure,NA,G_Inst NULL,NA,NA,G01b

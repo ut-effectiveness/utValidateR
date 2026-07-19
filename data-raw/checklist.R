@@ -535,14 +535,10 @@ rule_spec <- tribble(
   #       (visa_expire_date > Sys.Date() | is.na(visa_expire_date)))),
   "UTS23", expr(!(is_missing_chr(cur_prgm) & level_id != "NC")),
   "UTS24", expr(is.na(hs_transcript_count) | hs_transcript_count <= 1),
-  "UTS25a", expr(!(
-    is_online_program_student %in% TRUE &
-      (
-        us_citizenship_code %in% "2" |
-          visa_type %in% c("F1", "J1") |
-          rate_code %in% c("ISF", "IEX")
-      )
-  )),
+  "UTS25a", expr(!(is_online_program_student %in% TRUE &
+      (us_citizenship_code %in% "2" | visa_type %in% c("F1", "J1") | rate_code %in% c("ISF", "IEX")))),
+  "UTS25b", expr(!(is_online_program_student %in% FALSE & !is_missing_chr(visa_type) &
+                     !(us_citizenship_code %in% "2"))),
 
   "UTG01", expr(as.numeric(substr(graduated_term_id, 1, 4)) == as.numeric(lubridate::year(graduation_date))),
   "UTG02", expr(as.numeric(graduated_academic_year_code) == as.numeric(graduation_academic_year_check)),

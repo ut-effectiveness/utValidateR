@@ -276,10 +276,14 @@ rule_spec <- tribble(
   "C18", expr(is.na(meet_building_id_1) | !equivalent(meet_building_id_1, building_number_1)),
   "C26", expr(is.na(meet_building_id_2) | !equivalent(meet_building_id_2, building_number_2)),
   "C34", expr(is.na(meet_building_id_3) | !equivalent(meet_building_id_3, building_number_3)),
-  "C18a", expr(course_conditional_check(meet_building_id_1, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_1)),
+  "C18a", expr(!(is_missing_chr(meet_building_id_1) & !(instruction_method_code %in% c("C", "I", "V", "Y")) &
+        section_format_type_code %in% c("LEC", "LEL", "LAB") & budget_code != "SF" &
+        room_use_code_1 %in% c("110", "210") & ushe_c_site_type %in% space_utilizing_site_types)),
+  "C19a", expr(!(is_missing_chr(building_number_1) & !(instruction_method_code %in% c("C", "I", "V", "Y")) &
+        section_format_type_code %in% c("LEC", "LEL", "LAB") & budget_code != "SF" & room_use_code_1 %in% c("110", "210") &
+        ushe_c_site_type %in% space_utilizing_site_types)),
   "C26a", expr(course_conditional_check(meet_building_id_2, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_2)),
   "C34a", expr(course_conditional_check(meet_building_id_3, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_3)),
-  "C19a", expr(course_conditional_check(building_number_1, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_1)),
   "C27a", expr(course_conditional_check(building_number_2, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_2)),
   "C35a", expr(course_conditional_check(building_number_3, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_3)),
   "C19c", expr(building_number_1 %in% building_inventory),

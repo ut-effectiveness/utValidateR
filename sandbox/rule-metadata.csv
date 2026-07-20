@@ -63,7 +63,7 @@ C24a,missing end time,Database,Failure,Vicki Shurtz,Courses Stop Time conditiona
 C25a,Invalid meeting days sequence: Days2 present while Days1 is missing,Database,Failure,Vicki Shurtz,Courses Days conditionally required,NA,banner.ssrmeet_sun_day,C25a
 C26,building name and number are the same,Database,Failure,Vicki Shurtz,BLDG Name and number are the same,ssrmeet_activity_date,"banner.ssrmeet_bldg_code, space_utlz.building_detail.bldg_number",C18
 C26a,missing building name,Database,Failure,Vicki Shurtz,BLDG SName conditionally Required,ssrmeet_activity_date,banner.ssrmeet_bldg_code,C18a
-C27a,missing building number,Database,Failure,Vicki Shurtz,BLDG NUM conditionally required,bldg_activity_date,space_utlz.building_detail.bldg_number,C19a
+C27a,Building Number for the second scheduled meeting location is conditionally required,Database,Failure,Vicki Shurtz,BLDG NUM conditionally required,bldg_activity_date,space_utlz.building_detail.bldg_number,C19a
 C27c,building number not in building table,USHE,Failure,NA,BLDG NUM not in Building Inventory,bldg_activity_date,space_utlz.building_detail.bldg_number,C19c
 C27d,building number not in rooms inventory,USHE,Failure,NA,BLDG NUM not in Rooms Inventory,bldg_activity_date,space_utlz.building_detail.bldg_number,C19d
 C28a,building room is missing,Database,Failure,Vicki Shurtz,BLDG Room conditionally required,ssrmeet_activity_date,banner.ssrmeet_room_code,C20a
@@ -384,7 +384,7 @@ UTC08,Non-lecture schedule types carrying lecture hours,Database,Failure,Julie S
 UTC09,Non-lab schedule types carrying lab hours,Database,Failure,Julie Stender,NA,ssbsect_activity_date,"ssbsect_crn, ssbsect_term_code",UTC09
 UTC12,Missing or invalid budget codes,Database,Failure,Julie Stender,NA,ssrsccd_activity_date,banner.ssrsccd_sccd_code,UTC12
 UTC13,High school courses use correct budget codes,Database,Failure,Julie Stender,NA,ssrsccd_activity_date,ssrsccd,UTC13
-UTC14,Validates budget-related online courses,Database,Failure,Julie Stender,NA,NA,ssrsccd,UTC14
+UTC14,Validates if instruction method is consistent with campus for budget-related courses,Database,Failure,Julie Stender,NA,NA,ssrsccd,UTC14
 UTC16,Courses with no room specified,Database,Failure,Julie Stender,NA,ssrmeet_activity_date,banner.ssrmeet,UTC16
 UTGR01,Term and Graduation Date don't align,Database,Failure,Julie Stender,,shrdgmr_activity_date,shrdgmr_activity_date,UTG01
 UTGR02,Academic Year and Graduation Date don't align,Database,Failure,Julie Stender,,shrdgmr_activity_date,shrdgmr_activity_date,UTG02

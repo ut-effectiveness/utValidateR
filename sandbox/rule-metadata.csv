@@ -262,7 +262,7 @@ S17h,invalid student type enrolled in concurrent classes,USHE,Failure,NA,Traditi
 S17i,invalid student type enrolled in concurrent classes,USHE,Failure,NA,Traditional students attending concurrent enrollment classes.,sgbstdn_activity_date,banner.sgbstdn_styp_code,S17h
 S17j,student type change after census,USHE,Warning,NA,REGISTRATION STATUS CHANGED BASED ON 3RD WEEK DATA,NA,banner.sgbstdn_styp_code,S17j
 S17k,First Time Freshman in HS under 16,USHE,Warning,NA,First-time Student under 16.,NA,banner.sgbstdn_styp_code,S17k
-S18a,missing class level,Database,Failure,Julie Stender,There should be a valid level for each student.,NA,class function in banner,S18a
+S18a,missing class level,Database,Failure,Julie Stender,There should be a valid level for each student.,NA,banner.sgrclsr_clas_code,S18a
 S18b,UG student types cannot be graduate class levels,USHE,Failure,NA,"Class Level vs. Registration Status a student registered as Undgergrad cannot be grad class level
 --or a student registered as grad connot be an undergrad class level",NA,class function in banner,S18b
 S19a,invalid IPEDS Award Level,Database,Failure,NA,There should be a degree intent for each student.,sgbstdn_activity_date,banner.sgbstdn_degc_code_1,S19a

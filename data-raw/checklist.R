@@ -527,7 +527,7 @@ rule_spec <- tribble(
   "UTS14", expr(!is_missing_chr(first_admit_country_code)),
   "UTS16", expr(!(birth_date >= high_school_graduation_date)),
   "UTS17", expr(is_valid_ssn_legacy(ssn)),
-  "UTS18", expr(!(is_missing_chr(high_school_graduation_date) & !(student_type %in% c("P", "1", "2", "3", "5")))),
+  "UTS18", expr(!(is_missing_chr(high_school_graduation_date) & !(student_type_code %in% c("P", "1", "2", "3", "5")))),
   "UTS19", expr(!((us_citizenship_code != "5" & first_admit_state_code == "AS") | (us_citizenship_code == "5" & first_admit_state_code != "AS"))),
   "UTS20", expr(!(us_citizenship_code == "4" & (first_admit_state_code != "UT" | !stringr::str_detect(high_school_code, "^45")))),
   "UTS21", expr(is.na(age) || (age > 10 & age < 100)),

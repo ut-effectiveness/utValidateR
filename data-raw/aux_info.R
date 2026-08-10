@@ -4,7 +4,7 @@
 # Concurrent list generated from analytics_quad_concurrent excl.
 #concurrent_csv("analytics_quad_concurrent_course.xlsx")
 #concurrent_list <- read.csv("sandbox/analytics_quad_concurrent_courses.csv")
-building_list <- read.csv("sandbox/analytics_quad_buildings.csv")
+building_list <- read.csv("sandbox/analytics_quad_buildings.csv")   #This is outdated. Update it with new list that is going to be updated this Fall.
 
 # ISO country codes from csv
 iso_countries <- read.csv("sandbox/iso-countries.csv")

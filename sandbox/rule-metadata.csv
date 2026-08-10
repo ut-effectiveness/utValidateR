@@ -293,7 +293,7 @@ S30a,missing cip code,Database,Failure,Julie Stender,Declared Major CIP codes Th
 S31a,Membership hours should be 0,USHE,Failure,NA,The institutions in this query should not have membership hours.,NA,n/a,S31a
 S32a,invalid CLEP wrong format,Database,Failure,Julie Stender,S_Total_CLEP wrong format,shrtgpa_activity_date,shrtgpa_hours_earned,S32a
 S33a,invalid AP wrong format,Database,Failure,Julie Stender,S_Total_AP wrong format,shrtgpa_activity_date,shrtgpa_hours_earned,S33a
-S34a,invalid ssid,Database,Failure,Julie Stender,S_SSID is invalid,goradid_activity_date,goradid_additional_id,S34a
+S34a,invalid ssid (ushe),Database,Failure,Julie Stender,S_SSID is invalid,goradid_activity_date,goradid_additional_id,S34a
 S34b,ssid does not align with student type and state code,Database,Failure,Julie Stender,Bad SSID for Reg Status of HS and State of UT,goradid_activity_date,"goradid_additional_id, banner.sabsupl_stat_code_admit, banner.sgbstdn_styp_code",S34b
 S34c,missing ssid for Utah HS students,Database,Failure,Julie Stender,NULL SSID for HS Count,goradid_activity_date,"goradid_additional_id, banner.sabsupl_stat_code_admit, banner.sgbstdn_styp_code",S34c
 S34d,missing ssid for concurrent students,Database,Failure,Julie Stender,SSID for CE Students,goradid_activity_date,"goradid_additional_id, banner.sabsupl_stat_code_admit, banner.sgbstdn_styp_code",S34d
@@ -322,7 +322,7 @@ S47c,invalid major due to non-alpha characters,Database,Failure,Julie Stender,S_
 S48a,invalid college due to non-alpha characters,Database,Failure,Julie Stender,S_College with Non-Alpha characters,sgbstdn_activity_date,"banner.sgbstdn_coll_code_1, banner.sgbstdn_coll_code_2",S46b
 S49a,missing second major with second cip code,Database,Failure,Julie Stender,Missing Second CIP or Major,sgbstdn_activity_date,banner.sgbstdn_majr_code_2,S49a
 S49b,invalid major due to non-alpha characters,Database,Failure,Julie Stender,S_Major with Non-Alpha characters,sgbstdn_activity_date,"banner.sgbstdn_majr_code_1, banner.sgbstdn_majr_code_2",S47c
-UTS07,Invalid SSID format,Database,Failure,Julie Stender,Flags SSIDs that are not 7 digits long or do not begin with 1 or 2,goradid_activity_date,banner.goradid_additional_id,UTS07
+UTS07,Invalid SSID format (internal),Database,Failure,Julie Stender,Flags SSIDs that are not 7 digits long or do not begin with 1 or 2,goradid_activity_date,banner.goradid_additional_id,UTS07
 
 UTS08,missing ssid for high school students,Database,Failure,Julie Stender,Flags high school students (student type 'H') with missing SSIDs,goradid_activity_date,"banner.goradid_additional_id,sgbstdn_styp_code",UTS08
 UTS10,HS students not enrolled in required non-degree programs,Database,Failure,Julie Stender,NA,"sorlcur_activity_date",banner.sorlcur_student_typ,UTS10

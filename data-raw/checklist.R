@@ -307,7 +307,7 @@ rule_spec <- tribble(
   "C22a", expr(is_valid_values(room_use_code_1, valid_room_use_codes, missing_ok = TRUE)),
   "C30a", expr(is_valid_values(room_use_code_2, valid_room_use_codes, missing_ok = TRUE)),
   "C38a", expr(is_valid_values(room_use_code_3, valid_room_use_codes, missing_ok = TRUE)),
-  "C22b", expr(course_conditional_check(room_use_code_1, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_1)),
+  "C22b", expr(active_ind != "A" | course_conditional_check(room_use_code_1, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_1)),
   "C30b", expr(course_conditional_check(room_use_code_2, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_2)),
   "C38b", expr(course_conditional_check(room_use_code_3, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_3)),
   # "C39a", expr(is_valid_dates_for_term(meet_start_date, term_id, "30", campus_id)) , # Summer

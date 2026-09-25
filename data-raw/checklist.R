@@ -332,7 +332,11 @@ rule_spec <- tribble(
     !is_missing_chr(c_instruct_id) &
       matches_regex(trimws(c_instruct_id), "^[A-Za-z]") &
       toupper(substr(trimws(c_instruct_id), 1, 1)) != "D")), # valid_i_banner id is "D" for Utah Tech
-  "C43a", expr(!is_missing_chr(instructor_name) | (class_size == 0)),
+  "C43a", expr(
+    active_ind == "C" |
+      !is_missing_chr(instructor_name) |
+      (class_size == 0)
+  ),
   "C43c", expr(is_alpha_chr(c_instruct_name) | !(c_extract %in% "3")),
   "C44", expr(!is_missing_chr(section_format_type_code)),
   "C44a", expr(is_valid_values(c_instruct_type, valid_instruct_types, missing_ok = TRUE)),

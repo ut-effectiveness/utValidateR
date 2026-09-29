@@ -323,15 +323,23 @@ rule_spec <- tribble(
   "C41d", expr(is_missing_chr(c_title) |
                  !grepl("[^a-zA-Z0-9 /&()+:.-\\']", c_title) |
                  !(c_extract %in% "3")),
-  "C42a", expr(active_ind == "C" | !is_missing_chr(instructor_employee_id) | (class_size == 0)),
-  "C42b", expr(!is_missing_chr(instructor_employee_id) |
-                 (class_size == 0) |
-                 (nchar(instructor_employee_id) == 8 &
-                    grepl("^[0-9]", instructor_employee_id))),
-  "C42c", expr(!(
-    !is_missing_chr(c_instruct_id) &
-      matches_regex(trimws(c_instruct_id), "^[A-Za-z]") &
-      toupper(substr(trimws(c_instruct_id), 1, 1)) != "D")), # valid_i_banner id is "D" for Utah Tech
+  "C42a", expr(
+    campus_id == "XXX" |
+      active_ind == "C" |
+      !is_missing_chr(instructor_employee_id) |
+      (class_size == 0)),
+  "C42b", expr(
+    campus_id == "XXX" |
+      !is_missing_chr(instructor_employee_id) |
+      (class_size == 0) |
+      (nchar(instructor_employee_id) == 8 &
+         grepl("^[0-9]", instructor_employee_id))),
+  "C42c", expr(
+    campus_id == "XXX" |
+      !(
+        !is_missing_chr(c_instruct_id) &
+          matches_regex(trimws(c_instruct_id), "^[A-Za-z]") &
+          toupper(substr(trimws(c_instruct_id), 1, 1)) != "D")), # valid_i_banner id is "D" for Utah Tech
   "C44", expr(!is_missing_chr(section_format_type_code)),
   "C44a", expr(is_valid_values(c_instruct_type, valid_instruct_types, missing_ok = TRUE)),
   "C45", expr(!is_missing_chr(college_id)),

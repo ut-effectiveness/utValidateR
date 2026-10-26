@@ -54,7 +54,7 @@ C18a,First meeting building short name (building ID) is required,Database,Failur
 C19a,missing building number,Database,Failure,Vicki Shurtz,BLDG NUM conditionally required,bldg_activity_date,space_utlz.building_detail.bldg_number,C19a
 C19c,building number not in building table,USHE,Failure,Vicki Shurtz,BLDG NUM not in Building Inventory,bldg_activity_date,space_utlz.building_detail.bldg_number,C19c
 C19d,building number not in rooms inventory,USHE,Failure,Vicki Shurtz,BLDG NUM not in Rooms Inventory,bldg_activity_date,space_utlz.building_detail.bldg_number,C19d
-C20a,Building Number is required for the first scheduled meeting location,Database,Failure,Vicki Shurtz,BLDG Room conditionally required,ssrmeet_activity_date,banner.ssrmeet_room_code,C20a
+C20a,Room Number is required for the first scheduled meeting location,Database,Failure,Vicki Shurtz,BLDG Room conditionally required,ssrmeet_activity_date,banner.ssrmeet_room_code,C20a
 C21a,invalid room max occupancy,Database,Failure,Vicki Shurtz,C_Room_Max Invalid,ssbsect_activity_date,banner.ssbsect_max_enrl,C21a
 C22a,invalid room use type,Database,Failure,Vicki Shurtz,Checking for valid values for c_room_type3,room_activity_date,space_utlz.rooms_detail.room_use_code,C22a
 C22b,missing room use type,Database,Failure,Vicki Shurtz,C_Room_type3 Missing,room_activity_date,space_utlz.rooms_detail.room_use_code,C22b

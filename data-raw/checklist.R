@@ -276,9 +276,13 @@ rule_spec <- tribble(
   "C18", expr(is.na(meet_building_id_1) | !equivalent(meet_building_id_1, building_number_1)),
   "C26", expr(is.na(meet_building_id_2) | !equivalent(meet_building_id_2, building_number_2)),
   "C34", expr(is.na(meet_building_id_3) | !equivalent(meet_building_id_3, building_number_3)),
-  "C18a", expr(!(is_missing_chr(meet_building_id_1) & !(instruction_method_code %in% c("C", "I", "V", "Y")) &
-        section_format_type_code %in% c("LEC", "LEL", "LAB") & budget_code != "SF" &
-        room_use_code_1 %in% c("110", "210") & ushe_c_site_type %in% space_utilizing_site_types)),
+  "C18a", expr(!(is_missing_chr(meet_building_id_1) &
+                   !(instruction_method_code %in% c("C", "I", "V", "Y")) &
+                   section_format_type_code %in% c("LEC", "LEL", "LAB") &
+                   !is.na(budget_code) &
+                   budget_code != "SF" &
+                   room_use_code_1 %in% c("110", "210") &
+                   ushe_c_site_type %in% space_utilizing_site_types)),
   "C19a", expr(!(is_missing_chr(building_number_1) & !(instruction_method_code %in% c("C", "I", "V", "Y")) &
         section_format_type_code %in% c("LEC", "LEL", "LAB") & budget_code != "SF" & room_use_code_1 %in% c("110", "210") &
         ushe_c_site_type %in% space_utilizing_site_types)),

@@ -4,7 +4,7 @@
 # Concurrent list generated from analytics_quad_concurrent excl.
 #concurrent_csv("analytics_quad_concurrent_course.xlsx")
 #concurrent_list <- read.csv("sandbox/analytics_quad_concurrent_courses.csv")
-building_list <- read.csv("sandbox/analytics_quad_buildings.csv")
+building_list <- read.csv("sandbox/analytics_quad_buildings.csv")   #This is outdated. Update it with new list that is going to be updated this Fall.
 
 # ISO country codes from csv
 iso_countries <- read.csv("sandbox/iso-countries.csv")
@@ -47,9 +47,9 @@ etpl_course_ids <- etpl %>%
    transmute(etpl_key = ETPL_CIP_USHE %>%
               stringr::str_trim() %>%
               stringr::str_replace_all("\\s+", " ") %>%
-              stringr::str_to_upper())
-  filter(stringr::str_detect(etpl_key, "^[A-Z]{2,5} \\d{4}$"))
-  distinct(etpl_key)
+              stringr::str_to_upper()) %>%
+  filter(stringr::str_detect(etpl_key, "^[A-Z]{2,5} \\d{4}$")) %>%
+  distinct(etpl_key) %>%
   pull(etpl_key)
 
 # Campus IDs from file--supplied by Justin
@@ -166,6 +166,52 @@ aux_info <- list(
   valid_utah_county_codes = c(
     "001","003","005","007","009","011","013","015","017","019","021","023","025","027","029","031",
     "033","035","037","039","041","043","045","047","049","051","053","055","057","030","097","099"),
+
+  space_utilizing_site_types = c(
+
+    # Main campus
+    "A01",
+
+    # Major instructional centers
+    "B01","B02","B03","B04","B05",
+    "B10","B11","B12","B13","B14","B15","B16","B17","B18","B19",
+    "B20","B21","B22","B23","B24","B25",
+    "B30","B31","B32","B33","B34","B35","B36","B37","B40","B41",
+    "B43","B44","B45","B46","B47","B48","B50",
+    "B52","B53","B54","B55","B56","B57","B58","B59",
+    "B60","B61","B62","B63","B64","B65","B66","B67","B68","B69",
+    "B70","B71","B72","B80","B81",
+
+    # Public education sites
+    "C",
+
+    # University centers
+    "D05","D06","D07","D08","D09",
+
+    # Correctional facilities
+    "E01","E02","E03","E04","E05","E06","E07","E08","E09",
+
+    # Technical colleges
+    "F01","F02","F03","F04","F05","F06","F07","F08","F09","F10",
+
+    # Other site types
+    "G",
+    "H",
+    "I",
+    "O",
+
+    # Distance education to high school
+    "R01","R02",
+
+    # Unknown
+    "U",
+
+    # Online
+    "V",
+
+    # Out of state
+    "Z"
+  ),
 
   valid_perkins_list = valid_perkins_list,
 

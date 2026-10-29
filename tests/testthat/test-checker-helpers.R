@@ -283,10 +283,11 @@ test_that("course_conditional_check works", {
 })
 
 test_that("is_valid_dates_for_term works", {
-  expect_equal(is_valid_dates_for_term(Sys.Date(), "202440", "40", "003"), TRUE)
-  expect_equal(is_valid_dates_for_term(Sys.Date(), "202440", "30", "003"), FALSE)
-  expect_equal(is_valid_dates_for_term(Sys.Date(), "202440", "20", "XXX"), TRUE)
-  expect_equal(is_valid_dates_for_term("1978-11-09", "202440", "40", "003"), FALSE)
-  expect_equal(is_valid_dates_for_term(NA, "202440", "40", "003"), FALSE)
-
+  expect_true(is_valid_dates_for_term(as.Date("2024-09-15"), "202440", "40", "003"))
+  expect_true(is_valid_dates_for_term(as.Date("2024-09-15"), "202440", "30", "003"))
+  expect_true(is_valid_dates_for_term(NA, "202440", "40", "XXX"))
+  expect_false(is_valid_dates_for_term("2024-11-09", "202440", "40", "003"))
+  expect_false(is_valid_dates_for_term(NA, "202440", "40", "003"))
+  expect_false(is_valid_dates_for_term(as.Date("2024-06-15"), "202420", "20", "003"))
+  expect_true(is_valid_dates_for_term(as.Date("2024-06-15"), "202420", "20", "003", date_type = "end"))
 })

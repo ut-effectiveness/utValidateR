@@ -396,20 +396,58 @@ is_missing_space <- function(space, start_time, meet_days) {
 }
 
 
-#' Helper function for valid date for term
-#' @describeIn is_valid_dates_for_term Validates if a given date aligns with the term, suffix, and campus ID criteria.
-#' @param date_ Date would be either start term or end term
-#' @param term_id It is the year with suffix
-#' @param term_sufx It is the suffix only
-#' @param campus_id valid campus id
+#' Validate course dates for a term
+#'
+#' Checks date year and allowed months; other terms and campus "XXX" pass.
+#'
+#' @param date_ A Date vector of course start or end dates.
+#' @param term_id Calendar year plus term suffix, e.g., "202630".
+#' @param term_sufx "30" (summer), "40" (fall), or "20" (spring).
+#' @param campus_id Campus IDs; "XXX" is exempt.
+#' @param date_type "start" (default) or "end".
+#' @return Logical vector: TRUE if valid or exempt; FALSE otherwise.
 #' @export
-is_valid_dates_for_term <- function(date_, term_id, term_sufx, campus_id){
 
-  is.Date(date_) &
-    !is.na(date_) &
-    stringr::str_ends(term_id, term_sufx) |
-    campus_id == 'XXX'
+is_valid_dates_for_term <- function(
+    date_,
+    term_id,
+    term_sufx,
+    campus_id,
+    date_type = c("start", "end")
+) {
+  date_type <- match.arg(date_type)
+  term_sufx <- match.arg(term_sufx, c("30", "40", "20"))
+  term_id <- as.character(term_id)
 
+  # Month ranges taken directly from the USHE SQL.
+  allowed_months <- switch(
+    term_sufx,
+    "30" = 5:8,
+    "40" = 8:12,
+    "20" = if (date_type == "end") 1:6 else 1:5
+  )
+
+  # Each rule checks only its applicable term.
+  term_match <- stringr::str_ends(term_id, term_sufx)
+
+  valid_date <- rep(FALSE, length(date_))
+
+  if (inherits(date_, "Date")) {
+    valid_date <-
+      !is.na(date_) &
+      format(date_, "%Y") == substr(term_id, 1, 4) &
+      as.integer(format(date_, "%m")) %in% allowed_months
+  }
+
+  result <-
+    campus_id %in% "XXX" |
+    !term_match |
+    valid_date
+
+  # Unresolved checks fail unless an exemption already applies.
+  result[is.na(result)] <- FALSE
+
+  result
 }
 
 #' Helper function for validating program prefix consistency

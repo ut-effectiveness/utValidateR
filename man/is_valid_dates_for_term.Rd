@@ -2,24 +2,30 @@
 % Please edit documentation in R/checker-helpers.R
 \name{is_valid_dates_for_term}
 \alias{is_valid_dates_for_term}
-\title{Helper function for valid date for term}
+\title{Validate course dates for a term}
 \usage{
-is_valid_dates_for_term(date_, term_id, term_sufx, campus_id)
+is_valid_dates_for_term(
+  date_,
+  term_id,
+  term_sufx,
+  campus_id,
+  date_type = c("start", "end")
+)
 }
 \arguments{
-\item{date_}{Date would be either start term or end term}
+\item{date_}{A Date vector of course start or end dates.}
 
-\item{term_id}{It is the year with suffix}
+\item{term_id}{Calendar year plus term suffix, e.g., "202630".}
 
-\item{term_sufx}{It is the suffix only}
+\item{term_sufx}{"30" (summer), "40" (fall), or "20" (spring).}
 
-\item{campus_id}{valid campus id}
+\item{campus_id}{Campus IDs; "XXX" is exempt.}
+
+\item{date_type}{"start" (default) or "end".}
+}
+\value{
+Logical vector: TRUE if valid or exempt; FALSE otherwise.
 }
 \description{
-Helper function for valid date for term
+Checks date year and allowed months; other terms and campus "XXX" pass.
 }
-\section{Functions}{
-\itemize{
-\item \code{is_valid_dates_for_term()}: Validates if a given date aligns with the term, suffix, and campus ID criteria.
-
-}}

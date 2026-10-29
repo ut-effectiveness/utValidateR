@@ -195,6 +195,24 @@ is_valid_credits <- function(x, missing_ok = FALSE) {
   out
 }
 
+#' Validate earned credits
+#'
+#' @param x Earned credits; character values preserve original formatting.
+#' @return Logical vector indicating valid numeric format, at most four
+#' characters, credits from 0 to 25, and zero written as "0" or "0.0".
+#' @export
+is_valid_earned_credits <- function(x) {
+  value <- as.character(x)
+  credits <- suppressWarnings(as.numeric(value))
+
+  !is.na(credits) &
+    grepl("^[0-9.]+$", value) &
+    nchar(value) <= 4 &
+    credits >= 0 &
+    credits <= 25 &
+    (credits != 0 | value %in% c("0", "0.0"))
+}
+
 #' @describeIn is_valid_values character-valued credits (min_credits and max_credits)
 #' @export
 is_valid_credits_chr <- function(x) {

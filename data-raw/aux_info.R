@@ -2,9 +2,9 @@
 
 # TODO: get these from a query, since they are subject to change
 # Concurrent list generated from analytics_quad_concurrent excl.
-concurrent_csv("analytics_quad_concurrent_course.xlsx")
-concurrent_list <- read.csv("sandbox/analytics_quad_concurrent_courses.csv")
-building_list <- read.csv("sandbox/analytics_quad_buildings.csv")
+#concurrent_csv("analytics_quad_concurrent_course.xlsx")
+#concurrent_list <- read.csv("sandbox/analytics_quad_concurrent_courses.csv")
+building_list <- read.csv("sandbox/analytics_quad_buildings.csv")   #This is outdated. Update it with new list that is going to be updated this Fall.
 
 # ISO country codes from csv
 iso_countries <- read.csv("sandbox/iso-countries.csv")
@@ -24,6 +24,33 @@ highschools <- read.csv("sandbox/highschools.txt", sep = "|")
 ut_highschools <- highschools %>%
   filter(HS_State == "UT") %>%
   pull(HS_ACT_Code)
+
+# Perkins list
+perkins <- readxl::read_excel("sandbox/2025-26 MASTER CTE COURSE LIST - UT.xlsx")
+valid_perkins_list <- perkins %>%
+  mutate(perkins_list = paste0(stringr::str_trim(Prefix),
+                               stringr::str_trim(Crs_Num))) %>%
+  pull(perkins_list)
+
+# Concurrent course ID list
+concurrent <- readxl::read_excel(here::here("sandbox", "analytics_quad_concurrent_course.xlsx"))
+
+valid_concurrent_list<- concurrent %>%
+  mutate(course_id = as.character(paste0(Prefix, "-", Number))) %>%
+  pull(course_id)
+
+
+# ETPL list
+etpl <- read.csv("sandbox/reference.dbo.ETPL.txt", sep="|", stringsAsFactors = FALSE)
+etpl_course_ids <- etpl %>%
+  filter(ETPL_Inst_Code == "3671", Inactive == "N") %>%
+   transmute(etpl_key = ETPL_CIP_USHE %>%
+              stringr::str_trim() %>%
+              stringr::str_replace_all("\\s+", " ") %>%
+              stringr::str_to_upper()) %>%
+  filter(stringr::str_detect(etpl_key, "^[A-Z]{2,5} \\d{4}$")) %>%
+  distinct(etpl_key) %>%
+  pull(etpl_key)
 
 # Campus IDs from file--supplied by Justin
 campus_ids <- scan("sandbox/valid_campus_ids.txt", what = character(0))
@@ -84,7 +111,7 @@ aux_info <- list(
   non_concurrent_highschools = c("459050","459100","459150","459200","459300",
                                  "459400","459500","459000"), #SC12b
 
-  concurrent_course_ids = concurrent_list$course_id, #C11b
+  concurrent_course_ids = valid_concurrent_list, #C11b
 
   ut_highschools = ut_highschools,
 
@@ -131,6 +158,64 @@ aux_info <- list(
 
   # Section formats that do NOT require a room number
   no_room_required_section_formats = c("MUN", "MUM", "ACT", "ENS", "SGP"), #UTC16
+
+  c_inst = c("3671"),
+
+  valid_gen_ed_codes = c("C", "QL", "AI", "FA", "HU", "SS", "LS", "PS", "ID", "IR", "DV", "CL", "FL"),
+
+  valid_utah_county_codes = c(
+    "001","003","005","007","009","011","013","015","017","019","021","023","025","027","029","031",
+    "033","035","037","039","041","043","045","047","049","051","053","055","057","030","097","099"),
+
+  space_utilizing_site_types = c(
+
+    # Main campus
+    "A01",
+
+    # Major instructional centers
+    "B01","B02","B03","B04","B05",
+    "B10","B11","B12","B13","B14","B15","B16","B17","B18","B19",
+    "B20","B21","B22","B23","B24","B25",
+    "B30","B31","B32","B33","B34","B35","B36","B37","B40","B41",
+    "B43","B44","B45","B46","B47","B48","B50",
+    "B52","B53","B54","B55","B56","B57","B58","B59",
+    "B60","B61","B62","B63","B64","B65","B66","B67","B68","B69",
+    "B70","B71","B72","B80","B81",
+
+    # Public education sites
+    "C",
+
+    # University centers
+    "D05","D06","D07","D08","D09",
+
+    # Correctional facilities
+    "E01","E02","E03","E04","E05","E06","E07","E08","E09",
+
+    # Technical colleges
+    "F01","F02","F03","F04","F05","F06","F07","F08","F09","F10",
+
+    # Other site types
+    "G",
+    "H",
+    "I",
+    "O",
+
+    # Distance education to high school
+    "R01","R02",
+
+    # Unknown
+    "U",
+
+    # Online
+    "V",
+
+    # Out of state
+    "Z"
+  ),
+
+  valid_perkins_list = valid_perkins_list,
+
+  etpl_course_ids = etpl_course_ids,
 
   # Inventories
   building_inventory = building_list$building_number, #C19c and others, TODO: get from a query

@@ -153,7 +153,7 @@ rule_spec <- tribble(
   "S34c", expr(!(is.na(ssid) &
                    first_admit_state_code == "UT" &
                    is_hs_type(s_reg_status))),
-  "S34d", expr(!is.na(ssid) | !(budget_code %in% c("BC", "SF"))),
+  "S34d", expr(!(is.na(ssid) & has_bc_sf_course)),
   "S34e", expr(!is.na(ssid) |
                  (!is_hs_type(s_reg_status) &
                     !is_freshmen_type(s_reg_status))),

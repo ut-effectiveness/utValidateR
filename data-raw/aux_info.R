@@ -4,7 +4,7 @@
 # Concurrent list generated from analytics_quad_concurrent excl.
 #concurrent_csv("analytics_quad_concurrent_course.xlsx")
 #concurrent_list <- read.csv("sandbox/analytics_quad_concurrent_courses.csv")
-building_list <- read.csv("sandbox/analytics_quad_buildings.csv")   #This is outdated. Update it with new list that is going to be updated this Fall.
+building_list <- read.csv("sandbox/ut-b-2026.csv")   #updated from space inventory.
 
 # ISO country codes from csv
 iso_countries <- read.csv("sandbox/iso-countries.csv")
@@ -44,11 +44,6 @@ valid_concurrent_list<- concurrent %>%
 etpl <- read.csv("sandbox/reference.dbo.ETPL.txt", sep="|", stringsAsFactors = FALSE)
 etpl_course_ids <- etpl %>%
   filter(ETPL_Inst_Code == "3671", Inactive == "N") %>%
-  #  transmute(etpl_key = ETPL_CIP_USHE %>%
-  #             stringr::str_trim() %>%
-  #             stringr::str_replace_all("\\s+", " ") %>%
-  #             stringr::str_to_upper()) %>%
-  # filter(stringr::str_detect(etpl_key, "^[A-Z]{2,5} \\d{4}$")) %>%
   distinct(ETPL_CIP_USHE) %>%
   pull(ETPL_CIP_USHE)
 

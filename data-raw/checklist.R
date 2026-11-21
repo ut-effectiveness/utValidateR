@@ -293,7 +293,10 @@ rule_spec <- tribble(
   "C35a", expr(course_conditional_check(building_number_3, instruction_method_code, section_format_type_code, budget_code, campus_id) | is.na(meet_days_3)),
   "C19c", expr(building_number_1 %in% building_inventory),
   "C27c", expr(building_number_2 %in% building_inventory),
-  "C35c", expr(building_number_3 %in% building_inventory),
+  "C35c", expr(
+    is.na(building_number_3) |
+      building_number_3 %in% building_inventory
+  ),
   "C19d", expr(building_number_1 %in% rooms_inventory),
   "C27d", expr(building_number_2 %in% rooms_inventory),
   "C35d", expr(building_number_3 %in% rooms_inventory),
